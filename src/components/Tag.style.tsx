@@ -1,16 +1,43 @@
 import styled from "styled-components";
 
-const TagWrap = styled.div`
+interface ComponentLengthProps {
+    length: 'short' | 'long' | 'medium';
+    fontSize?: string;
+}
+
+const TagWrap = styled.div<ComponentLengthProps>`
     width: fit-content;
     height: fit-content;
     display: flex;
     justify-content: center;
+
+
     color:#FF8D01;
-    background-color: white;
-    border: 1px solid #FF8D01;
-    border-radius: 24px;
-    padding: 8px 16px;
+    font-size: ${({ fontSize }) => fontSize};
     font-weight: bolder;
+    
+    background-color: white;
+    border: 2px solid #FF8D01;
+    border-radius: 24px;
+    
+    cursor: default;
+
+    ${({ length }) => {
+    switch (length) {
+      case 'short':
+        return `padding: 4px 16px;`;
+      case 'medium':
+        return  `padding: 4px 24px;`;
+      case 'long':
+        return `padding: 4px 48px;`;
+      default:
+        return '';
+    }
+  }}
 `
 
-export {TagWrap};
+const TagButtonWrap = styled(TagWrap)`
+    cursor: pointer;
+`
+
+export {TagWrap, TagButtonWrap};

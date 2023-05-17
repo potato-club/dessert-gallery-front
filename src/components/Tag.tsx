@@ -1,9 +1,22 @@
-import { TagWrap } from "./Tag.style"
+import { TagWrap, TagButtonWrap } from "./Tag.style"
 import type { tagValue } from "../types/componentsProps"
 
-function Tag({title}:tagValue) {
+/**
+ * @param title(string): 해당 태그 display text 
+ * @param length: short(16px), medium(24px), long(48px)
+ * @param fontSize(string): 기본 `12px`
+ * @param clickAble(Boolean): 클릭 이벤트가 존재하는 태그인지 확인 
+ * @param onClickHandler( (id: string | Number) => void): 클릭 이벤트 
+ */
+function Tag({title, fontSize=`12px`, length, clickAble, onClickHandler=()=>{}}:tagValue) {
     return (
-      <TagWrap>{title}</TagWrap>
+      <>
+        {
+          clickAble 
+            ? (<TagButtonWrap length={length} fontSize={fontSize} onClick={onClickHandler}>{title}</TagButtonWrap>)
+            : (<TagWrap length={length} fontSize={fontSize} >{title}</TagWrap> )
+        }
+      </>
     )
   }
   
