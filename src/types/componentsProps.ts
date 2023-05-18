@@ -7,5 +7,5 @@ export type tagValue = {
     length: 'short' | 'medium' | 'long'
     fontSize?: string 
     clickAble: Boolean
-    onClickHandler?: (id: Number | string)=>void
+    onClickHandler?: (event: React.MouseEvent<HTMLDivElement>) => void
 }

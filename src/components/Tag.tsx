@@ -6,7 +6,7 @@ import type { tagValue } from "../types/componentsProps"
  * @param length: short(16px), medium(24px), long(48px)
  * @param fontSize(string): 기본 `12px`
  * @param clickAble(Boolean): 클릭 이벤트가 존재하는 태그인지 확인 
- * @param onClickHandler( (id: string | Number) => void): 클릭 이벤트 
+ * @param onClickHandler(event: React.MouseEvent<HTMLDivElement>) => void): 클릭 이벤트 
  */
 function Tag({title, fontSize=`12px`, length, clickAble, onClickHandler=()=>{}}:tagValue) {
     return (
