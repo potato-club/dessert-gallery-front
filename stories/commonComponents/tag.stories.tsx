@@ -5,7 +5,7 @@ import Tag from '../../src/components/Tag';
 const meta: Meta<typeof Tag> = {
   title: 'commonComponents/Tag',
   component: Tag,
-  tags: ['test'],
+  tags: ['autodocs'],
   argTypes: {
     title: {
       control: {
