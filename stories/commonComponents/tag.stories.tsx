@@ -17,14 +17,13 @@ const meta: Meta<typeof Tag> = {
       control: {
         type: 'text',
       },
-      defaultValue: '12px',
+      defaultValue: '16px',
     },
-    length: {
+    padding: {
       control: {
-        type: 'select',
-        options: ['short', 'medium', 'long'],
+        type: 'string',
       },
-      defaultValue: '12px',
+      defaultValue: '12px 32px',
     },
     clickAble: {
       control: {
@@ -38,19 +37,72 @@ const meta: Meta<typeof Tag> = {
       },
       defaultValue: ()=>{},
     },
+    inversion: {
+      control: {
+        type: 'boolean',
+      },
+      defaultValue: false,
+    },
   },
+  parameters: {
+    componentSubtitle: '태그 및 이벤트 허용 태그 컴포넌트 문서'
+  }
 };
 
 export default meta;
 
 type Story = StoryObj<typeof Tag>;
 
-export const Primary: Story = {
+export const option1: Story = {
   args: {
-    title: '공지사항',
-    length: 'long',
+    title: '줄이기',
+    padding: '8px 24px',
+    fontSize: '18px',
     clickAble: true,
     onClickHandler: ()=>{alert('click!')}
   },
 };
 
+export const option2: Story = {
+  args: {
+    title: 'HOT!',
+    padding: '8px 32px',
+  },
+};
+
+export const option3: Story = {
+  args: {
+    title: '이벤트',
+    fontSize: '18px',
+    padding: '4px 48px',
+  },
+};
+
+export const option4: Story = {
+  args: {
+    title: '서울 - 양천구',
+    padding: '12px 72px',
+    fontSize: '20px',
+    clickAble: true,
+    onClickHandler: ()=>{alert('click!')}
+  },
+};
+
+export const option5: Story = {
+  args: {
+    title: '더보기',
+    padding: '8px 88px',
+    clickAble: true,
+    onClickHandler: ()=>{alert('click!')}
+  },
+};
+
+export const option6: Story = {
+  args: {
+    title: '팔로우',
+    padding: '8px 40px',
+    clickAble: true,
+    onClickHandler: ()=>{alert('click!')},
+    inversion: true
+  },
+};
