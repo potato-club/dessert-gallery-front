@@ -1,8 +1,9 @@
 import styled from "styled-components";
 
 interface ComponentLengthProps {
-    length: 'short' | 'long' | 'medium';
+    padding: string;
     fontSize?: string;
+    inversion?: Boolean; 
 }
 
 const TagWrap = styled.div<ComponentLengthProps>`
@@ -12,26 +13,28 @@ const TagWrap = styled.div<ComponentLengthProps>`
     justify-content: center;
 
 
+    font-family: noto-sans-cjk-kr, sans-serif;
+    font-weight: 500;
+    font-style: normal;
+
     color:#FF8D01;
     font-size: ${({ fontSize }) => fontSize};
     font-weight: bolder;
     
     background-color: white;
     border: 2px solid #FF8D01;
-    border-radius: 24px;
+    border-radius: 56px;
     
     cursor: default;
 
-    ${({ length }) => {
-    switch (length) {
-      case 'short':
-        return `padding: 4px 16px;`;
-      case 'medium':
-        return  `padding: 4px 24px;`;
-      case 'long':
-        return `padding: 4px 48px;`;
-      default:
-        return '';
+    padding: ${({ padding }) => padding};
+
+    ${({ inversion }) => {
+    switch (inversion) {
+      case true:
+        return `background-color: #FF8D01;
+                color:white;
+                border: 2px solid #FF8D01;`;
     }
   }}
 `

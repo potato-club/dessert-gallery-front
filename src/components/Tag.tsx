@@ -2,19 +2,15 @@ import { TagWrap, TagButtonWrap } from "./Tag.style"
 import type { tagValue } from "../types/componentsProps"
 
 /**
- * @param title(string): 해당 태그 display text 
- * @param length: short(16px), medium(24px), long(48px)
- * @param fontSize(string): 기본 `12px`
- * @param clickAble(Boolean): 클릭 이벤트가 존재하는 태그인지 확인 
- * @param onClickHandler(event: React.MouseEvent<HTMLDivElement>) => void): 클릭 이벤트 
+ * 공지사항, 이벤트, HOT! 태그 및 더보기 버튼, 게시판 옵션 태그 버튼 사용시 이용합니다.
  */
-function Tag({title, fontSize=`12px`, length, clickAble, onClickHandler=()=>{}}:tagValue) {
+function Tag({title, fontSize=`16px`, padding, clickAble=false, onClickHandler=()=>{}, inversion=false}:tagValue) {
     return (
       <>
         {
           clickAble 
-            ? (<TagButtonWrap length={length} fontSize={fontSize} onClick={onClickHandler}>{title}</TagButtonWrap>)
-            : (<TagWrap length={length} fontSize={fontSize} >{title}</TagWrap> )
+            ? (<TagButtonWrap padding={padding} fontSize={fontSize} onClick={onClickHandler} inversion={inversion}>{title}</TagButtonWrap>)
+            : (<TagWrap padding={padding} fontSize={fontSize} inversion={inversion} >{title}</TagWrap> )
         }
       </>
     )
