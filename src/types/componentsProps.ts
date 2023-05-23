@@ -27,7 +27,7 @@ export type tagValue = {
     /**
      * (선택)색상 반전 처리 기본값 false 
      */
-    inversion: Boolean
+    inversion?: Boolean
 }
 
 
@@ -42,15 +42,19 @@ export type slideImageValue = {
     /**
      * (필수)사진 가로 길이 px단위
      */
-    width: Number
+    width: number
     /**
      * (필수)사진 세로 길이 px단위
      */
-    height: Number
+    height: number
     /**
      * (선택)북마크 옵션 활성화 유무(기본 false)
      */
     bookmark?: Boolean
+    /**
+     * (선택: 북마크옵션 활성화시 필수)스크랩한 게시물인지
+     */
+    onBookmark?: boolean
     /**
      * (선택)태그 등의 컴포넌트를 표현시
      */
