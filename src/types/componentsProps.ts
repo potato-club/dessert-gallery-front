@@ -9,9 +9,13 @@ export type tagValue = {
      */
     title: string
     /**
-     * (필수)태그 길이 조절 padding 값
+     * (필수)태그 내부 길이 조절 padding 값
      */
     padding: string
+    /**
+     * (선택)태그 외부 여백 조절 margin 값, 기본 '0'
+     */
+    margin?: string
     /**
      * (선택)폰트 사이즈 조절 , 기본 `18px`
      */
