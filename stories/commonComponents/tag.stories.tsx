@@ -25,6 +25,12 @@ const meta: Meta<typeof Tag> = {
       },
       defaultValue: '12px 32px',
     },
+    margin: {
+      control: {
+        type: 'string',
+      },
+      defaultValue: '0',
+    },
     clickAble: {
       control: {
         type: 'boolean',
@@ -82,6 +88,7 @@ export const option4: Story = {
   args: {
     title: '서울 - 양천구',
     padding: '12px 72px',
+    margin: '40px 80px',
     fontSize: '20px',
     clickAble: true,
     onClickHandler: ()=>{alert('click!')}
