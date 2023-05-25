@@ -5,6 +5,7 @@ interface componentProps {
 }
 
 const BoardTopWrap = styled.div<componentProps>`
+    width: 100vw;
     height: 264px;
     background-image: ${({imgSrc})=> `url(${imgSrc})`};
     background-color: #FDC886;
