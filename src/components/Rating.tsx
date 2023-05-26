@@ -2,9 +2,18 @@ import React from "react";
 import styled from "styled-components";
 
 interface IRatingProps {
+  /**
+   * 평점 컴포넌트의 전체적인 사이즈 조절
+   */
   size: "small" | "medium" | "large";
+  /**
+   * 평점 value 값
+   */
   ratingValue?: string;
 }
+/**
+ * 후기에대한 평점을 나타내는 컴포넌트입니다.
+ */
 const Rating = ({ size, ratingValue }: IRatingProps) => {
   return (
     <Container size={size}>
