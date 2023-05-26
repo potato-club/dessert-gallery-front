@@ -1,6 +1,6 @@
 import React, { ChangeEvent, KeyboardEvent , useState } from 'react'
 
-import { BoardOptionWrap, OptionCategoriesWrap, OptionCategoriesButton, OptionCategoriesTextInput } from './BoardOption.style'
+import { BoardOptionWrap, OptionCategoriesWrap, OptionCategoriesButton, OptionCategoriesTextInput, SelectOptionWrap } from './BoardOption.style'
 
 function BoardOption() {
   const [selectCategory, setSelectCategory] = useState<number>(2)
@@ -29,6 +29,7 @@ function BoardOption() {
         <OptionCategoriesButton categoryId={1} selectNumber={selectCategory} onClick={()=>{setSelectCategory(1)}} >디저트 종류</OptionCategoriesButton>
         <OptionCategoriesTextInput type="text" onChange={onChangeSearchWord} onKeyDown={handleKeyDown} value={searchWord} onFocus={()=>{setSelectCategory(2)}} />
       </OptionCategoriesWrap>
+      <SelectOptionWrap />
     </BoardOptionWrap>
   )
 }

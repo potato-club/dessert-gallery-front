@@ -53,5 +53,9 @@ export const OptionCategoriesTextInput = styled.input`
 `
 
 export const SelectOptionWrap = styled.div`
-    
+    width: 1624px;
+    height: 336px;
+    background-color: #FCF0E1;
+    border: 2px solid #FF8D00;
+    border-top: none;
 `;
