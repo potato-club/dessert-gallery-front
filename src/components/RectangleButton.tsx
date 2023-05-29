@@ -1,24 +1,17 @@
 import React from "react";
 import styled from "styled-components";
-/*
-    RectangleButton 컴포넌트
+import { RectangleButtonValue } from "../types/componentsProps";
 
-    props 
-    text : 버튼에 출력할 텍스트
-    buttonType : 버튼 타입 지정
-
-    현재 buttonType 관련 
-    
-*/
 const RectangleButton = ({
   text,
   buttonType,
-}: {
-  text: string;
-  buttonType: "type1" | "type2" | "type3";
-}) => {
+  onClickRectangleButton,
+}: RectangleButtonValue) => {
   return (
-    <StyledRectangleButton buttonType={buttonType}>
+    <StyledRectangleButton
+      buttonType={buttonType}
+      onClick={onClickRectangleButton}
+    >
       <TextDiv buttonType={buttonType}>{text}</TextDiv>
       {buttonType === "type3" && (
         <TriangleSvg width="21" height="14">
