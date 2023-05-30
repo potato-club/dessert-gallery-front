@@ -59,3 +59,8 @@ export const SelectOptionWrap = styled.div`
     border: 2px solid #FF8D00;
     border-top: none;
 `;
+
+export const SelectOptionTagWrap = styled.div`
+    padding: 24px 48px;
+    display: flex;
+`
