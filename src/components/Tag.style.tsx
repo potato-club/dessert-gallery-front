@@ -2,6 +2,7 @@ import styled from "styled-components";
 
 interface ComponentLengthProps {
     padding: string;
+    margin: string;
     fontSize?: string;
     inversion?: Boolean; 
 }
@@ -28,6 +29,7 @@ const TagWrap = styled.div<ComponentLengthProps>`
     cursor: default;
 
     padding: ${({ padding }) => padding};
+    margin: ${({ margin }) => margin};
 
     ${({ inversion }) => {
     switch (inversion) {
