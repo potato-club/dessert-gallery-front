@@ -1,7 +1,8 @@
 import styled from "styled-components";
 
 interface ComponentLengthProps {
-    padding: string;
+    width: string;
+    height: string;
     margin: string;
     fontSize?: string;
     inversion?: Boolean; 
@@ -12,6 +13,7 @@ const TagWrap = styled.div<ComponentLengthProps>`
     height: fit-content;
     display: flex;
     justify-content: center;
+    align-items: center;
 
 
     font-family: noto-sans-cjk-kr, sans-serif;
@@ -28,7 +30,9 @@ const TagWrap = styled.div<ComponentLengthProps>`
     
     cursor: default;
 
-    padding: ${({ padding }) => padding};
+    width: ${({ width }) => width};
+    height: ${({height})=> height};
+
     margin: ${({ margin }) => margin};
 
     ${({ inversion }) => {
