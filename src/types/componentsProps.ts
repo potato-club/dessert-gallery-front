@@ -35,7 +35,15 @@ export type tagValue = {
     /**
      * (선택)색상 반전 처리 기본값 false 
      */
-    inversion?: Boolean
+    inversion?: Boolean,
+    /**
+     * (선택)hover시 색상변경 css 설정, 기본 false
+     */
+    hoverCss?: Boolean,
+    /**
+     * (선택)버튼 shadow 처리 css 설정 기본 false 
+     */
+    shadow?: boolean,
 }
 
 

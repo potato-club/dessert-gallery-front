@@ -55,6 +55,18 @@ const meta: Meta<typeof Tag> = {
       },
       defaultValue: false,
     },
+    hoverCss: {
+      control: {
+        type: 'boolean',
+      },
+      defaultValue: false,
+    },
+    shadow: {
+      control: {
+        type: 'boolean',
+      },
+      defaultValue: false
+    }
   },
   parameters: {
     componentSubtitle: '태그 및 이벤트 허용 태그 컴포넌트 문서'
@@ -70,5 +82,17 @@ export const option2: Story = {
     title: 'HOT!',
     width: '110px',
     height: '43px'
+  },
+};
+
+export const option3: Story = {
+  args: {
+    title: '가게 운영자 로그인',
+    width: '342px',
+    height: '60px',
+    clickAble: true,
+    onClickHandler: ()=>{alert('click!')},
+    hoverCss: true,
+    shadow:true
   },
 };
