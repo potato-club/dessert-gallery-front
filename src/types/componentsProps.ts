@@ -9,9 +9,13 @@ export type tagValue = {
      */
     title: string
     /**
-     * (필수)태그 내부 길이 조절 padding 값
+     * (필수)태그 내부 길이 조절 width 값
      */
-    padding: string
+    width: string
+    /**
+     * (필수)태그 내부 길이 조절 height 값
+     */
+    height: string
     /**
      * (선택)태그 외부 여백 조절 margin 값, 기본 '0'
      */
@@ -31,7 +35,15 @@ export type tagValue = {
     /**
      * (선택)색상 반전 처리 기본값 false 
      */
-    inversion?: Boolean
+    inversion?: Boolean,
+    /**
+     * (선택)hover시 색상변경 css 설정, 기본 false
+     */
+    hoverCss?: Boolean,
+    /**
+     * (선택)버튼 shadow 처리 css 설정 기본 false 
+     */
+    shadow?: boolean,
 }
 
 
