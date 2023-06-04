@@ -17,8 +17,6 @@ const Header = () => {
       </BtnList>
 
       <FormDiv>
-        <Rating size="medium" />
-
         <Image
           src={"/svg/header/searchIcon.svg"}
           width="23px"
