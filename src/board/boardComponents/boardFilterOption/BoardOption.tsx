@@ -3,6 +3,7 @@ import React, { ChangeEvent, KeyboardEvent , useState } from 'react'
 import { BoardOptionWrap, OptionCategoriesWrap, OptionCategoriesButton, OptionCategoriesTextInput, SelectOptionWrap, SelectOptionTagWrap } from './BoardOption.style'
 
 import Tag from '../../../components/Tag'
+import { Search } from '../../../../public/SVG/galleryBoardPage'
 
 function BoardOption() {
   const [selectCategory, setSelectCategory] = useState<number>(2)
@@ -33,15 +34,15 @@ function BoardOption() {
       <OptionCategoriesWrap>
         <OptionCategoriesButton categoryId={0} selectNumber={selectCategory} onClick={()=>{setSelectCategory(0)}}>픽업 지역 선택</OptionCategoriesButton>
         <OptionCategoriesButton categoryId={1} selectNumber={selectCategory} onClick={()=>{setSelectCategory(1)}} >디저트 종류</OptionCategoriesButton>
-        <OptionCategoriesTextInput type="text" onChange={onChangeSearchWord} onKeyDown={handleKeyDown} value={searchWord} onFocus={()=>{setSelectCategory(2)}} />
+        <OptionCategoriesTextInput type="text" placeholder='검색어를 입력해 주세요' onChange={onChangeSearchWord} onKeyDown={handleKeyDown} value={searchWord} onFocus={()=>{setSelectCategory(2)}}><Search/></OptionCategoriesTextInput>
       </OptionCategoriesWrap>
       <SelectOptionWrap >
         <SelectOptionTagWrap>
           {
-            optionData.selectSearchWord !== '' && <Tag margin='32px 32px' padding='12px 72px' fontSize='20px' title={optionData.selectSearchWord} key={optionData.selectSearchWord} clickAble={true} onClickHandler={()=>alert('click')} />
+            optionData.selectSearchWord !== '' && <Tag margin='32px 32px' width='304px' height='80px' fontSize='20px' title={optionData.selectSearchWord} key={optionData.selectSearchWord} clickAble={true} onClickHandler={()=>alert('click')} />
           }
-          <Tag margin='32px 32px' padding='12px 72px' fontSize='20px' title='testTag1' key='testTag1' clickAble={true} onClickHandler={()=>alert('click')} />
-          <Tag margin='32px 32px' padding='12px 72px' fontSize='20px' title='testTag2' key='testTag2' clickAble={true} onClickHandler={()=>alert('click')} />
+          <Tag margin='32px 32px' width='304px' height='80px' fontSize='20px' title='testTag1' key='testTag1' clickAble={true} onClickHandler={()=>alert('click')} />
+          <Tag margin='32px 32px' width='304px' height='80px' fontSize='20px' title='testTag2' key='testTag2' clickAble={true} onClickHandler={()=>alert('click')} />
         </SelectOptionTagWrap>
       </SelectOptionWrap>
     </BoardOptionWrap>
