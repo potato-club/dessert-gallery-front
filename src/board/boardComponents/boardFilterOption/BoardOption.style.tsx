@@ -92,14 +92,24 @@ export const OptionCategoriesTextInput = styled.input`
 
 export const SelectOptionWrap = styled.div`
     width: 1620px;
-    height: 336px;
+    min-height: 336px;
     background-color: #FFFDF9;
     border: 3px solid #FF8D00;
     border-top: none;
     border-radius: 0 0 16px 16px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 `;
 
 export const SelectOptionTagWrap = styled.div`
     padding: 24px 48px;
     display: flex;
+    flex-wrap: wrap
+`
+
+export const SelectOptionCancleWrap = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 28px;
 `

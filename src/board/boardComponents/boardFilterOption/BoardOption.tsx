@@ -1,11 +1,12 @@
 import React, { ChangeEvent, KeyboardEvent , useState } from 'react'
 
-import { BoardOptionWrap, OptionCategoriesWrap, OptionCategoriesButton, OptionCategoriesTextInputLabel, OptionCategoriesSVGImg, OptionCategoriesTextInput, SelectOptionWrap, SelectOptionTagWrap } from './BoardOption.style'
+import { BoardOptionWrap, OptionCategoriesWrap, OptionCategoriesButton, OptionCategoriesTextInputLabel, OptionCategoriesSVGImg, OptionCategoriesTextInput, SelectOptionWrap, SelectOptionTagWrap, SelectOptionCancleWrap } from './BoardOption.style'
 
 import Tag from '../../../components/Tag'
 
 
 function BoardOption() {
+  const [isSelected, setIsSelected] = useState<boolean>(false)
   const [selectCategory, setSelectCategory] = useState<number>(2)
   const [searchWord, setSearchWord] = useState<string>('')
   const [optionData, setOptionData] = useState({
@@ -25,7 +26,8 @@ function BoardOption() {
         ...prev,
         selectSearchWord: searchWord
     }))
-      setSearchWord('');
+    setIsSelected(true);
+    setSearchWord('');
     }
   };
 
@@ -44,9 +46,14 @@ function BoardOption() {
           {
             optionData.selectSearchWord !== '' && <Tag margin='32px 32px' width='304px' height='80px' fontSize='20px' title={optionData.selectSearchWord} key={optionData.selectSearchWord} clickAble={true} onClickHandler={()=>alert('click')} />
           }
-          <Tag margin='32px 32px' width='304px' height='80px' fontSize='20px' title='testTag1' key='testTag1' clickAble={true} onClickHandler={()=>alert('click')} />
-          <Tag margin='32px 32px' width='304px' height='80px' fontSize='20px' title='testTag2' key='testTag2' clickAble={true} onClickHandler={()=>alert('click')} />
         </SelectOptionTagWrap>
+        <SelectOptionCancleWrap>
+          {
+            isSelected 
+            ? <Tag margin='0 56px' width='258px' height='70px' title='선택 초기화' clickAble={true} hoverCss={true} onClickHandler={()=>{alert('click')}} fontSize='30px' inversion={true}  />
+            : <Tag margin='0 56px' width='258px' height='70px' title='선택 초기화' clickAble={false}  fontSize='30px' inversion={false}  />
+          }
+        </SelectOptionCancleWrap>
       </SelectOptionWrap>
     </BoardOptionWrap>
   )
