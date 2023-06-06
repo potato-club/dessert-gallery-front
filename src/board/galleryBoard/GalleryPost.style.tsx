@@ -3,14 +3,18 @@ import styled from "styled-components";
 export const GalleryPostWrap = styled.div`
     display: flex;
     flex-direction: column;
+    border-radius: 0 0 16px 16px;
+    box-shadow: 0px 3px 6px rgb(0,0,0,0.1);
+    margin: 48px;
 `
 
-export const informationWrap = styled.div`
+export const InformationWrap = styled.div`
     display: flex;
     flex-direction: column;
     width: 456px;
     background-color: #FCF0E1;
     padding: 32px 32px 20px 32px;
+    border-radius: 0 0 16px 16px;
 `
 
 export const TitleText = styled.div`
