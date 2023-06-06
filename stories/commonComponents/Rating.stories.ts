@@ -9,9 +9,9 @@ const meta: Meta<typeof Rating> = {
     size: {
       control: {
         type: "select",
-        options: ["small", "medium", "large"],
+        options: ["small", "medium"],
       },
-      defaultValue: "small",
+      defaultValue: "medium",
     },
     ratingValue: {
       defaultValue: "0.0",
@@ -33,13 +33,6 @@ export const SRating: Story = {
 export const MRating: Story = {
   args: {
     size: "medium",
-    ratingValue: "0.0",
-  },
-};
-
-export const LRating: Story = {
-  args: {
-    size: "large",
     ratingValue: "0.0",
   },
 };

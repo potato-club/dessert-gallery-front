@@ -37,7 +37,7 @@ function SlideImage({scrArray, width=384, height=384, bookmark=false, onBookmark
         imgCnt !== maxImgCnt && <RightMoveButton width={width} height={height} onClick={onClickMoveRight}/>
       }
       {
-        bookmark && ( onBookmarkState ? <BookmarkOnWrap width={width} height={height} onClick={onClickBookmark}/> : <BookmarkOffWrap width={width} height={height} onClick={onClickBookmark} /> )
+        bookmark && ( onBookmarkState ? <BookmarkOnWrap src='/svg/slideImage/onBookmark.svg' onClick={onClickBookmark}/> : <BookmarkOffWrap src='/svg/slideimage/offBookmark.svg' onClick={onClickBookmark} /> )
       }
       <ImageWrap>
         <Image
