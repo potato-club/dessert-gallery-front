@@ -47,31 +47,48 @@ export const OptionCategoriesButton = styled.button<optionCategoriesState>`
     }}
 `
 
-export const OptionCategoriesTextInput = styled.input`
-    border: 3px solid #FF8D00;
-    width: 651px;
-    height: 101px;
-    background-color: #FDC886;
+export const OptionCategoriesTextInputLabel = styled.label`
+  border: 3px solid #FF8D00;
+  width: 651px;
+  height: 101px;
+  background-color: #FDC886;
+  display: flex;
+  align-items: center;
+  position: relative;
+  left: -6px;
+  border-radius: 16px 16px 0 0;
 
-    position: relative;
-    left: -6px;
-
-    font-size: 28px;
-    font-family: noto-sans-cjk-kr;
-    font-weight: bold;
+  input::placeholder {
     color: #FF8D00;
+  }
 
-    border-radius: 16px 16px 0 0;
-
-    &::placeholder {
-        color: #FF8D00;
-    }
-
-    &:focus {
-        outline: 2px solid transparent;
-        background-color: #FFFDF9;
-    }
+  &:focus-within {
+      background-color: #FFFDF9;
+  }
+`;
+export const OptionCategoriesSVGImg = styled.img`
+    margin: 0 32px;
 `
+
+
+export const OptionCategoriesTextInput = styled.input`
+  border: none;
+  width: 504px;
+  height: 56px;
+  background-color: #FDC886;
+  position: relative;
+  left: -6px;
+  font-size: 28px;
+  font-family: noto-sans-cjk-kr;
+  font-weight: bold;
+  color: #FF8D00;
+
+  &:focus {
+    outline: 2px solid transparent;
+    background-color: #FFFDF9;
+  }
+`;
+
 
 export const SelectOptionWrap = styled.div`
     width: 1620px;

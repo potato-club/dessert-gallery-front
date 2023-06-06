@@ -1,9 +1,9 @@
 import React, { ChangeEvent, KeyboardEvent , useState } from 'react'
 
-import { BoardOptionWrap, OptionCategoriesWrap, OptionCategoriesButton, OptionCategoriesTextInput, SelectOptionWrap, SelectOptionTagWrap } from './BoardOption.style'
+import { BoardOptionWrap, OptionCategoriesWrap, OptionCategoriesButton, OptionCategoriesTextInputLabel, OptionCategoriesSVGImg, OptionCategoriesTextInput, SelectOptionWrap, SelectOptionTagWrap } from './BoardOption.style'
 
 import Tag from '../../../components/Tag'
-import { Search } from '../../../../public/SVG/galleryBoardPage'
+
 
 function BoardOption() {
   const [selectCategory, setSelectCategory] = useState<number>(2)
@@ -34,7 +34,10 @@ function BoardOption() {
       <OptionCategoriesWrap>
         <OptionCategoriesButton categoryId={0} selectNumber={selectCategory} onClick={()=>{setSelectCategory(0)}}>픽업 지역 선택</OptionCategoriesButton>
         <OptionCategoriesButton categoryId={1} selectNumber={selectCategory} onClick={()=>{setSelectCategory(1)}} >디저트 종류</OptionCategoriesButton>
-        <OptionCategoriesTextInput type="text" placeholder='검색어를 입력해 주세요' onChange={onChangeSearchWord} onKeyDown={handleKeyDown} value={searchWord} onFocus={()=>{setSelectCategory(2)}}><Search/></OptionCategoriesTextInput>
+        <OptionCategoriesTextInputLabel>
+          <OptionCategoriesSVGImg src='/SVG/galleryBoardPage/Search.svg'/>
+          <OptionCategoriesTextInput type="text" placeholder='검색어를 입력해 주세요' onChange={onChangeSearchWord} onKeyDown={handleKeyDown} value={searchWord} onFocus={()=>{setSelectCategory(2)}}/>
+        </OptionCategoriesTextInputLabel>
       </OptionCategoriesWrap>
       <SelectOptionWrap >
         <SelectOptionTagWrap>
