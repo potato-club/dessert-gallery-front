@@ -74,7 +74,7 @@ export const option2: Story = {
     width: 400,
     bookmark: true,
     onBookmark: true,
-    children: <Tag title='HOT!' padding='8px 32px' clickAble={false}  />
+    children: <Tag title='HOT!' width='116px' height='46px' clickAble={false}  />
   },
 };
 
@@ -90,6 +90,6 @@ export const option3: Story = {
     width: 400,
     bookmark: true,
     onBookmark: false,
-    children: <Tag title='NEW' padding='8px 32px' clickAble={false}  />
+    children: <Tag title='NEW' width='116px' height='46px' clickAble={false}  />
   },
 };

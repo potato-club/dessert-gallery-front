@@ -10,23 +10,21 @@ const Wrapper = styled.div<componentProps>`
     height: ${({height}) => `${height}px`};
     background-color: #FDC886;
     position: relative;
-    border: 1px solid black;
 `;
 
-const BookmarkOnWrap = styled.div<componentProps>`
-    width: ${({width}) => `${width/16}px`};
-    height: ${({height}) => `${height/16}px`};
-    background-color: white;
+const BookmarkOnWrap = styled.img`
+    width: 57px;
+    height: 57px;
+    background-color: none;
     position: absolute;
     top: 5%;
     right: 5%;
     z-index: 10;
-    border: 1px solid black;
 `
 
 
 const BookmarkOffWrap = styled(BookmarkOnWrap)`
-    background-color: #9c9c9c;
+    background-color: none;
 `
 
 const ImageWrap = styled.div`
