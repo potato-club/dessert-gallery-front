@@ -64,6 +64,13 @@ export type slideImageValue = {
      */
     height: number
     /**
+     * (선택)사진 넘기기 버튼 디자인 type(기본 none)
+     * hoverShow: 사진에 커서를 올렸을 시 화살표 표시
+     * none: 화살표 없이 넘김
+     * show: 기본 화살표 표시
+     */
+    moveBtnType?: 'none' | 'hoverShow' | 'show'
+    /**
      * (선택)북마크 옵션 활성화 유무(기본 false)
      */
     bookmark?: Boolean

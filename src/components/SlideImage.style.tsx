@@ -3,6 +3,7 @@ import styled from "styled-components";
 interface componentProps {
     width: number
     height: number
+    hoverCss?: 'show' | 'hoverShow' | 'none'
 }
 
 const Wrapper = styled.div<componentProps>`
@@ -10,7 +11,19 @@ const Wrapper = styled.div<componentProps>`
     height: ${({height}) => `${height}px`};
     background-color: #FDC886;
     position: relative;
-`;
+    
+    ${({ hoverCss }) =>
+      hoverCss === "hoverShow"
+        ? `
+        z-index: 15;
+        &:hover{
+            ${MoveButton} {
+                display: flex;
+            }
+        }
+        `
+        : ''}
+`
 
 const BookmarkOnWrap = styled.img`
     width: 57px;
@@ -20,6 +33,7 @@ const BookmarkOnWrap = styled.img`
     top: 5%;
     right: 5%;
     z-index: 10;
+
 `
 
 
@@ -27,26 +41,41 @@ const BookmarkOffWrap = styled(BookmarkOnWrap)`
     background-color: none;
 `
 
-const ImageWrap = styled.div`
-    z-index: 0;
-`;
+const MoveWrap = styled.div`
+    display: flex;
+    flex-direction: column;
+`
 
-const MoveButton = styled.div<componentProps>`
-    width: ${({width}) => `${width/16}px`};
-    height: ${({height}) => `${height/16}px`};
-    background-color: white;
+
+const MoveButton = styled.img<componentProps>`
+    width: ${({ width }) => `${width / 16}px`};
+    height: ${({ height }) => `${height / 16}px`};
     position: absolute;
     top: 50%;
     z-index: 10;
-    border: 1px solid black;
-`;
+    ${({ hoverCss }) =>
+      hoverCss === "hoverShow"
+        ? `display: none;`
+        : ''
+      }
+    border-radius: 50%;
+    background-color: #d3d3d363;
+    padding: 4px;
+`
+
 
 const RightMoveButton = styled(MoveButton)`
-    right: 5%;
-`;
+    right: 3%;
+`
 const LeftMoveButton = styled(MoveButton)`
-    left: 5%;
-`;
+    left: 3%;
+`
+
+const MoveAllbutton = styled.div`
+    width: 50%;
+    height: 100%;
+    cursor: pointer;
+`
 
 const BottomComponent = styled.div`
     position: absolute;
@@ -55,4 +84,8 @@ const BottomComponent = styled.div`
     z-index: 10;
 `
 
-export { Wrapper, BookmarkOnWrap, BookmarkOffWrap, ImageWrap, RightMoveButton, LeftMoveButton, BottomComponent};
+const ImageWrap = styled.div`
+    z-index: 0;
+`;
+
+export { Wrapper, BookmarkOnWrap, BookmarkOffWrap, ImageWrap, RightMoveButton, LeftMoveButton, MoveWrap,MoveAllbutton, BottomComponent};
