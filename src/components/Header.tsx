@@ -1,13 +1,16 @@
 import React from "react";
 import styled from "styled-components";
-import Image from "next/image";
-import Rating from "./Rating";
+import LogoSvg from "../../public/svg/header/logo.svg";
+import SearchIconSvg from "../../public/svg/header/searchIcon.svg";
+import InfoSvg from "../../public/svg/header/info.svg";
+import BookmarkSvg from "../../public/svg/header/bookmark.svg";
 
 const Header = () => {
   return (
     <Container>
       <Logo>
-        <Image src={"/svg/header/logo.svg"} width="83px" height="90px" alt="" />
+        <LogoSvg />
+        {/* <Image src={"/svg/header/logo.svg"} width="83px" height="90px" alt="" /> */}
       </Logo>
       <Title>Dessert Gallery</Title>
       <BtnList>
@@ -17,31 +20,34 @@ const Header = () => {
       </BtnList>
 
       <FormDiv>
-        <Image
+        <SearchIconSvg />
+        {/* <Image
           src={"/svg/header/searchIcon.svg"}
           width="23px"
           height="23px"
           alt=""
-        />
+        /> */}
         <SearchInput placeholder="검색어를 입력해 주세요" />
       </FormDiv>
 
       <AboutUser>
         <MyPageBtn>
-          <Image
+          <InfoSvg />
+          {/* <Image
             src={"/svg/header/info.svg"}
             width="48px"
             height="48px"
             alt=""
-          />
+          /> */}
         </MyPageBtn>
         <BookmarkBtn>
-          <Image
+          <BookmarkSvg />
+          {/* <Image
             src={"/svg/header/bookmark.svg"}
             width="34px"
             height="48px"
             alt=""
-          />
+          /> */}
         </BookmarkBtn>
       </AboutUser>
     </Container>
@@ -89,6 +95,7 @@ const Title = styled.h1`
 `;
 const FormDiv = styled.form`
   display: flex;
+  align-items: center;
   width: 416px;
   height: 48px;
   margin: 0px 98px 0px 134px;
