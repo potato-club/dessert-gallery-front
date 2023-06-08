@@ -1,6 +1,8 @@
 import React from "react";
 import styled from "styled-components";
 import Image from "next/image";
+import StarSvg from "../../public/svg/rating/star.svg";
+import Svg from "./Svg";
 
 interface IRatingProps {
   /**
@@ -28,12 +30,7 @@ const Rating = ({ size, ratingValue = "0.0" }: IRatingProps) => {
   return (
     <Container size={size}>
       <ImgBox size={size}>
-        <Image
-          src={"/svg/rating/star.svg"}
-          width={imgWidth}
-          height={imgHeight}
-          alt=""
-        />
+        <Svg svg={<StarSvg />} width={imgWidth} height={imgHeight} />
       </ImgBox>
       <RatingValue size={size}>{ratingValue}</RatingValue>
     </Container>
