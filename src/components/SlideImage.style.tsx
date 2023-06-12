@@ -4,6 +4,7 @@ interface componentProps {
     width: number
     height: number
     hoverCss?: 'show' | 'hoverShow' | 'none'
+    position?: 'right' | 'left'
 }
 
 const Wrapper = styled.div<componentProps>`
@@ -32,7 +33,7 @@ const BookmarkOnWrap = styled.img`
     position: absolute;
     top: 5%;
     right: 5%;
-    z-index: 10;
+    z-index: 20;
 
 `
 
@@ -52,7 +53,7 @@ const MoveButton = styled.img<componentProps>`
     height: ${({ height }) => `${height / 16}px`};
     position: absolute;
     top: 50%;
-    z-index: 10;
+    z-index: 15;
     ${({ hoverCss }) =>
       hoverCss === "hoverShow"
         ? `display: none;`
@@ -71,21 +72,30 @@ const LeftMoveButton = styled(MoveButton)`
     left: 3%;
 `
 
-const MoveAllbutton = styled.div`
-    width: 50%;
-    height: 100%;
+const MoveAllbutton = styled.div<componentProps>`
+    position: absolute;
+    width: ${({ width }) => `${width/2}px`};
+    height: ${({ height }) => `${height}px`};
+    left: ${({position})=> position === 'right' ? `50%` : `0`};
     cursor: pointer;
+    z-index: 15;
 `
 
 const BottomComponent = styled.div`
     position: absolute;
+    padding: 0 5%;
     bottom: 5%;
-    left: 5%;
+    width: 100%;
     z-index: 10;
+`
+
+const BottomCenterComponent = styled.div`
+    display: flex;
+    justify-content: center;
 `
 
 const ImageWrap = styled.div`
     z-index: 0;
 `;
 
-export { Wrapper, BookmarkOnWrap, BookmarkOffWrap, ImageWrap, RightMoveButton, LeftMoveButton, MoveWrap,MoveAllbutton, BottomComponent};
+export { Wrapper, BookmarkOnWrap, BookmarkOffWrap, ImageWrap, RightMoveButton, LeftMoveButton, MoveWrap,MoveAllbutton, BottomComponent, BottomCenterComponent};
