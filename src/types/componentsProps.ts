@@ -63,20 +63,3 @@ export type slideImageValue = {
    */
   children?: ReactNode;
 };
-
-export type RectangleButtonValue = {
-  /**
-   * (필수)버튼에 출력할 텍스트
-   */
-  text: string;
-
-  /**
-   * (필수)버튼의 스타일 타입 값
-   */
-  buttonType: "type1" | "type2" | "type3";
-
-  /**
-   * (필수)버튼 클릭시 작동하는 함수
-   */
-  onClickRectangleButton: () => void;
-};
