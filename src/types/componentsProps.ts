@@ -1,4 +1,4 @@
-import { ReactNode } from "react"
+import { ReactNode } from "react";
 
 /**
  * Tag 컴포넌트 props
@@ -46,7 +46,6 @@ export type tagValue = {
     shadow?: boolean,
 }
 
-
 /**
  * SlideImage 컴포넌트 props
  */
@@ -88,12 +87,11 @@ export type slideImageValue = {
     children?: ReactNode
 }
 
-
-
 /**
  * DotIndicator 컴포넌트 props
  */
 export type dotIndicatorValue = {
+
     /**
      * (필수)전체 사진 수 
      */
