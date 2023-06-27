@@ -64,24 +64,4 @@ export type slideImageValue = {
   children?: ReactNode;
 };
 
-export type RoundButtonValue = {
-  /**
-   * (필수)버튼에 출력할 텍스트
-   */
-  text: string;
 
-  /**
-   * (필수)버튼의 길이 값
-   */
-  width: number;
-
-  /**
-   * (선택)버튼 출력 텍스트를 bold체로 출력할지 여부를 결정하는 boolean값
-   */
-  bold?: boolean;
-
-  /**
-   * (필수)버튼 클릭 시 작동하는 함수
-   */
-  onClickRoundButton: () => void;
-};
