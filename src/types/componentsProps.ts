@@ -9,9 +9,13 @@ export type tagValue = {
    */
   title: string;
   /**
-   * (필수)태그 내부 길이 조절 padding 값
+   * (필수)태그 내부 길이 조절 width 값
    */
-  padding: string;
+  width: string;
+  /**
+   * (필수)태그 내부 길이 조절 height 값
+   */
+  height: string;
   /**
    * (선택)태그 외부 여백 조절 margin 값, 기본 '0'
    */
@@ -32,6 +36,14 @@ export type tagValue = {
    * (선택)색상 반전 처리 기본값 false
    */
   inversion?: Boolean;
+  /**
+   * (선택)hover시 색상변경 css 설정, 기본 false
+   */
+  hoverCss?: Boolean;
+  /**
+   * (선택)버튼 shadow 처리 css 설정 기본 false
+   */
+  shadow?: boolean;
 };
 
 /**
@@ -51,6 +63,17 @@ export type slideImageValue = {
    */
   height: number;
   /**
+   * (선택)사진 넘기기 버튼 디자인 type(기본 none)
+   * hoverShow: 사진에 커서를 올렸을 시 화살표 표시
+   * none: 화살표 없이 넘김
+   * show: 기본 화살표 표시
+   */
+  moveBtnType?: "none" | "hoverShow" | "show";
+  /**
+   * (선택)하단 사진 index dot(기본 false)
+   */
+  dotIndicator?: boolean;
+  /**
    * (선택)북마크 옵션 활성화 유무(기본 false)
    */
   bookmark?: Boolean;
@@ -62,4 +85,18 @@ export type slideImageValue = {
    * (선택)태그 등의 컴포넌트를 표현시
    */
   children?: ReactNode;
+};
+
+/**
+ * DotIndicator 컴포넌트 props
+ */
+export type dotIndicatorValue = {
+  /**
+   * (필수)전체 사진 수
+   */
+  imgLength: number;
+  /**
+   * (필수)현재 index
+   */
+  index: number;
 };
