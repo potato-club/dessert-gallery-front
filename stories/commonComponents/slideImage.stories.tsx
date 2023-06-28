@@ -26,6 +26,13 @@ const meta: Meta<typeof SlideImage> = {
       },
       defaultValue: 80,
     },
+    moveBtnType: {
+      control: {
+        type: 'inline-radio',
+        options: ['none', 'show', 'hoverShow']
+      },
+      defaultValue: 'none',
+    },
     bookmark: {
       control: {
         type: 'boolean',
@@ -57,6 +64,7 @@ export const option1: Story = {
     ],
     height:400,
     width: 400,
+    moveBtnType: 'show',
     bookmark: false,
     children: <></>
   },
@@ -72,6 +80,7 @@ export const option2: Story = {
     ],
     height:400,
     width: 400,
+    moveBtnType: 'hoverShow',
     bookmark: true,
     onBookmark: true,
     children: <Tag title='HOT!' width='116px' height='46px' clickAble={false}  />
@@ -88,6 +97,7 @@ export const option3: Story = {
     ],
     height:400,
     width: 400,
+    moveBtnType: 'none',
     bookmark: true,
     onBookmark: false,
     children: <Tag title='NEW' width='116px' height='46px' clickAble={false}  />
