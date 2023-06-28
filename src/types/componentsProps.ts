@@ -88,6 +88,7 @@ export type slideImageValue = {
     children?: ReactNode
 }
 
+
 /**
  * DotIndicator 컴포넌트 props
  */
@@ -101,4 +102,22 @@ export type dotIndicatorValue = {
      * (필수)현재 index 
      */
     index: number,
+}
+
+/**
+ * boardTop 컴포넌트 props
+ */
+export type boardTopValue = {
+    /**
+     * (필수)게시판 이름
+     */
+    title: string
+    /**
+     * (필수)게시판 설명
+     */
+    decription: string
+    /**
+     * (선택)게시판 답 배너 사진 url
+     */
+    imgSrc?: string
 }
