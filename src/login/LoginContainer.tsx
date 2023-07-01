@@ -5,8 +5,7 @@ import LoginContents from "./components/LoginContents";
 function LoginContainer() {
   return (
     <Wrapper>
-      <LoginContents></LoginContents>
-
+      <LoginContents />
     </Wrapper>
   );
 }
