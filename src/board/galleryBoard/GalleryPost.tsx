@@ -3,24 +3,22 @@ import { GalleryPostWrap, TitleText, InformationWrap,LocationText, Summary } fro
 import SlideImage from '../../components/SlideImage'
 import Tag from '../../components/Tag'
 import Rating from '../../components/Rating'
+import { galleryPostValue } from '../../types/componentsProps'
 
-const imgSrc = [
-  'https://cdn.pixabay.com/photo/2016/11/22/18/52/cake-1850011_960_720.jpg',
-  'https://cdn.pixabay.com/photo/2017/01/11/11/33/cake-1971552_960_720.jpg',
-  'https://cdn.pixabay.com/photo/2018/09/11/11/47/cake-3669245_640.jpg'
-];
 
-export default function GalleryPost() {
+export default function GalleryPost({width,height,location,imgArray, onBookmark,ratingValue,summary,tagSize='none', tagValue='none',title}:galleryPostValue) {
   return (
-    <GalleryPostWrap>
-      <SlideImage scrArray={imgSrc} width={455} height={455} bookmark={true} onBookmark={true} >
-      <Tag title='NEW' width='116px' height='46px' clickAble={false}  />
+    <GalleryPostWrap width={width} height={height}>
+      <SlideImage scrArray={imgArray} width={width} height={width} bookmark={true} onBookmark={onBookmark} >
+      {tagValue !=='none' && tagSize === 'big' && <Tag title={tagValue} width='116px' height='46px' clickAble={false}  />}
+      {tagValue !=='none' && tagSize === 'medium' && <Tag title={tagValue} width='73px' height='28px' fontSize='11px' clickAble={false}  />}
+      {tagValue !=='none' && tagSize === 'small' && <Tag title={tagValue} width='116px' height='46px' fontSize='7px'  clickAble={false}  />}
       </SlideImage>
       <InformationWrap>
-        <TitleText>멍멍카페</TitleText>
-        <LocationText>서울시 강서구 곰달레길 12</LocationText>
-        <Summary>반려견을 위한 디저트를 판매하고 있어요내 강아지와 함께하는 생일파티!</Summary>
-        <Rating size='medium' ratingValue='4.5'/>
+        <TitleText>{title}</TitleText>
+        <LocationText>{location}</LocationText>
+        <Summary>{summary}</Summary>
+        <Rating size='medium' ratingValue={ratingValue}/>
       </InformationWrap>
     </GalleryPostWrap>
   )
