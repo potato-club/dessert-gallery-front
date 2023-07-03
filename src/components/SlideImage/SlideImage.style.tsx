@@ -45,12 +45,11 @@ const BookmarkOffWrap = styled(BookmarkOnWrap)`
 const MoveWrap = styled.div`
     display: flex;
     flex-direction: column;
+    z-index: 20;
 `
 
 
-const MoveButton = styled.img<componentProps>`
-    width: ${({ width }) => `${width / 16}px`};
-    height: ${({ height }) => `${height / 16}px`};
+const MoveButton = styled.div<componentProps>`
     position: absolute;
     top: 50%;
     z-index: 15;

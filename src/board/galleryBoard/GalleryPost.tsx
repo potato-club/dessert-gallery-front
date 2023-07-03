@@ -1,6 +1,6 @@
 import React from 'react'
 import { GalleryPostWrap, TitleText, InformationWrap,LocationText, Summary } from './GalleryPost.style'
-import SlideImage from '../../components/SlideImage'
+import SlideImage from '../../components/SlideImage/SlideImage'
 import Tag from '../../components/Tag'
 import Rating from '../../components/Rating'
 
@@ -13,7 +13,7 @@ const imgSrc = [
 export default function GalleryPost() {
   return (
     <GalleryPostWrap>
-      <SlideImage scrArray={imgSrc} width={455} height={455} bookmark={true} onBookmark={true} >
+      <SlideImage srcArray={imgSrc} width={455} height={455} bookmark={true} onBookmark={true} >
       <Tag title='NEW' width='116px' height='46px' clickAble={false}  />
       </SlideImage>
       <InformationWrap>
