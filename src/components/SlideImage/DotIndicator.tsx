@@ -1,5 +1,5 @@
 import React from 'react'
-import { dotIndicatorValue } from '../types/componentsProps'
+import { dotIndicatorValue } from '../../types/componentsProps'
 import { DotList, TrueDot, FalseDot } from './DotIndicator.style'
 
 export default function DotIndicator({ imgLength, index }: dotIndicatorValue) {

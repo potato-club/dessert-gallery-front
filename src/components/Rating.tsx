@@ -1,7 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import Image from "next/image";
-
+import StarSvg from "../../public/svg/rating/star.svg";
 interface IRatingProps {
   /**
    * 평점 컴포넌트의 전체적인 사이즈 조절
@@ -27,14 +26,7 @@ const Rating = ({ size, ratingValue = "0.0" }: IRatingProps) => {
   }
   return (
     <Container size={size}>
-      <ImgBox size={size}>
-        <Image
-          src={"/svg/rating/star.svg"}
-          width={imgWidth}
-          height={imgHeight}
-          alt=""
-        />
-      </ImgBox>
+      <StarSvg width={imgWidth} height={imgHeight} />
       <RatingValue size={size}>{ratingValue}</RatingValue>
     </Container>
   );
@@ -52,19 +44,6 @@ const Container = styled.div<IRatingProps>`
         return `height:15px;`;
       case "medium":
         return `height:24px;`;
-      default:
-        return "";
-    }
-  }}
-`;
-const ImgBox = styled.div<IRatingProps>`
-  display: flex;
-  ${({ size }) => {
-    switch (size) {
-      case "small":
-        return `width: 13px; height:12px;`;
-      case "medium":
-        return `width: 20px; height:19px;`;
       default:
         return "";
     }

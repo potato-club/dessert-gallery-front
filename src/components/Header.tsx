@@ -1,53 +1,49 @@
 import React from "react";
-import styled from "styled-components";
-import LogoSvg from "../../public/svg/header/logo.svg";
+import styled, { css } from "styled-components";
+import LogoSvg from "../../public/SVG/common/logo.svg";
 import SearchIconSvg from "../../public/svg/header/searchIcon.svg";
 import InfoSvg from "../../public/svg/header/info.svg";
 import BookmarkSvg from "../../public/svg/header/bookmark.svg";
+import { useRouter } from "next/router";
 
 const Header = () => {
+  const router = useRouter();
+
   return (
     <Container>
-      <Logo>
-        <LogoSvg />
-        {/* <Image src={"/svg/header/logo.svg"} width="83px" height="90px" alt="" /> */}
-      </Logo>
-      <Title>Dessert Gallery</Title>
+      <TitleContent href="/">
+        <LogoSvg width="85px" height="92px" />
+        <Title>Dessert Gallery</Title>
+      </TitleContent>
       <BtnList>
-        <MovePageBtn>가게 게시판</MovePageBtn>
-        <MovePageBtn>후기 게시판</MovePageBtn>
-        <MovePageBtn>지도로 찾기</MovePageBtn>
+        <PageMoveBtn
+          href="/galleryBoard"
+          active={router.pathname === "/galleryBoard"}
+        >
+          가게 게시판
+        </PageMoveBtn>
+        <PageMoveBtn
+          href="/reviewBoard"
+          active={router.pathname === "/reviewBoard"}
+        >
+          후기 게시판
+        </PageMoveBtn>
+        <PageMoveBtn href="/map" active={router.pathname === "/map"}>
+          지도로 찾기
+        </PageMoveBtn>
       </BtnList>
 
       <FormDiv>
         <SearchIconSvg />
-        {/* <Image
-          src={"/svg/header/searchIcon.svg"}
-          width="23px"
-          height="23px"
-          alt=""
-        /> */}
         <SearchInput placeholder="검색어를 입력해 주세요" />
       </FormDiv>
 
       <AboutUser>
         <MyPageBtn>
           <InfoSvg />
-          {/* <Image
-            src={"/svg/header/info.svg"}
-            width="48px"
-            height="48px"
-            alt=""
-          /> */}
         </MyPageBtn>
         <BookmarkBtn>
           <BookmarkSvg />
-          {/* <Image
-            src={"/svg/header/bookmark.svg"}
-            width="34px"
-            height="48px"
-            alt=""
-          /> */}
         </BookmarkBtn>
       </AboutUser>
     </Container>
@@ -68,30 +64,38 @@ const BtnList = styled.div`
   display: flex;
   gap: 67px;
 `;
-const MovePageBtn = styled.a`
+const underline = css`
+  cursor: pointer;
+  color: #ff6f00;
+  text-decoration: underline;
+  text-decoration-thickness: 3px;
+  text-underline-offset: 8px;
+`;
+const PageMoveBtn = styled.a<{ active: boolean }>`
   height: fit-content;
   font-size: 26px;
   font-weight: 700;
   line-height: 38px;
   color: #ffb456;
+  ${({ active }) => active && underline}
   &:hover {
-    cursor: pointer;
-    color: #ff6f00;
-    text-decoration: underline;
-    text-decoration-thickness: 3px;
-    text-underline-offset: 8px;
+    ${underline}
   }
 `;
-const Logo = styled.div`
+const TitleContent = styled.a`
   display: flex;
   justify-content: center;
   align-items: center;
+  gap: 27px;
+  margin-right: 44px;
+  &:hover {
+    cursor: pointer;
+  }
 `;
 const Title = styled.h1`
   color: #ff6f00;
   font-size: 40px;
   font-weight: 700;
-  margin: 0px 27px 0px 44px;
 `;
 const FormDiv = styled.form`
   display: flex;

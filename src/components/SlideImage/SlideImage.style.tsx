@@ -24,6 +24,12 @@ const Wrapper = styled.div<componentProps>`
         }
         `
         : ''}
+
+    -webkit-user-drag: none;
+    -khtml-user-drag: none;
+    -moz-user-drag: none;
+    -o-user-drag: none;
+    user-select: none;
 `
 
 const BookmarkOnWrap = styled.img`
@@ -45,12 +51,11 @@ const BookmarkOffWrap = styled(BookmarkOnWrap)`
 const MoveWrap = styled.div`
     display: flex;
     flex-direction: column;
+    z-index: 20;
 `
 
 
-const MoveButton = styled.img<componentProps>`
-    width: ${({ width }) => `${width / 16}px`};
-    height: ${({ height }) => `${height / 16}px`};
+const MoveButton = styled.div<componentProps>`
     position: absolute;
     top: 50%;
     z-index: 15;

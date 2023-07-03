@@ -54,7 +54,7 @@ export type slideImageValue = {
     /**
      * (필수)이미지 배열 
      */
-    scrArray: string[]
+    srcArray: string[]
     /**
      * (필수)사진 가로 길이 px단위
      */
@@ -74,6 +74,10 @@ export type slideImageValue = {
      * (선택)하단 사진 index dot(기본 false)
      */
     dotIndicator?: boolean
+    /**
+     * (선택)태그, 북마크 등의 사이즈 결정(기본 big)
+     */
+    size?: 'big' | 'medium' | 'small'
     /**
      * (선택)북마크 옵션 활성화 유무(기본 false)
      */
@@ -170,3 +174,17 @@ export type galleryPostValue = {
     imgArray:string[]
 }
 
+export type SlideImgBookmarkValue = {
+    /**
+     * (필수) 현재 구독 상태
+     */
+    onBookmark: boolean
+    /**
+     * (필수) 크기 조절
+     */
+    size: 'big'|'medium'| 'small'
+    /**
+     * (필수) 북마크 선택, 선택 해제 기능 함수
+     */
+    onClickBookmark: React.MouseEventHandler<HTMLDivElement>
+}

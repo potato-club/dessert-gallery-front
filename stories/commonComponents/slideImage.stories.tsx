@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
-import SlideImage from '../../src/components/SlideImage';
+import SlideImage from '../../src/components/SlideImage/SlideImage';
 import Tag from '../../src/components/Tag';
 
 const meta: Meta<typeof SlideImage> = {
@@ -8,7 +8,7 @@ const meta: Meta<typeof SlideImage> = {
   component: SlideImage,
   tags: ['autodocs'],
   argTypes: {
-    scrArray: {
+    srcArray: {
       control: {
         type: 'text'
       },
@@ -57,7 +57,7 @@ type Story = StoryObj<typeof SlideImage>;
 
 export const option1: Story = {
   args: {
-    scrArray: [
+    srcArray: [
       'https://cdn.pixabay.com/photo/2016/11/22/18/52/cake-1850011_960_720.jpg',
       'https://cdn.pixabay.com/photo/2017/01/11/11/33/cake-1971552_960_720.jpg',
       'https://cdn.pixabay.com/photo/2018/09/11/11/47/cake-3669245_640.jpg'
@@ -73,7 +73,7 @@ export const option1: Story = {
 
 export const option2: Story = {
   args: {
-    scrArray: [
+    srcArray: [
       'https://cdn.pixabay.com/photo/2016/11/22/18/52/cake-1850011_960_720.jpg',
       'https://cdn.pixabay.com/photo/2017/01/11/11/33/cake-1971552_960_720.jpg',
       'https://cdn.pixabay.com/photo/2018/09/11/11/47/cake-3669245_640.jpg'
@@ -90,7 +90,7 @@ export const option2: Story = {
 
 export const option3: Story = {
   args: {
-    scrArray: [
+    srcArray: [
       'https://cdn.pixabay.com/photo/2016/11/22/18/52/cake-1850011_960_720.jpg',
       'https://cdn.pixabay.com/photo/2017/01/11/11/33/cake-1971552_960_720.jpg',
       'https://cdn.pixabay.com/photo/2018/09/11/11/47/cake-3669245_640.jpg'
