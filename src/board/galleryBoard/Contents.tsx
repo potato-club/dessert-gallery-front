@@ -101,7 +101,8 @@ export default function Contents() {
 }
 
 const Wrap = styled.div`
+  width: 1100px;
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   flex-wrap: wrap;
 `;
