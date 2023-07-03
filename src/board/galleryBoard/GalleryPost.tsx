@@ -10,7 +10,7 @@ export default function GalleryPost({width,height,location,imgArray, onBookmark,
   return (
     <GalleryPostWrap width={width} height={height}>
       
-      <SlideImage srcArray={imgArray} width={width} height={width} bookmark={true} onBookmark={onBookmark} >
+      <SlideImage srcArray={imgArray} width={width} height={width} bookmark={true} onBookmark={onBookmark} dotIndicator={true} >
         {tagValue !=='none' && tagSize === 'big' && <Tag title={tagValue} width='116px' height='46px' clickAble={false}  />}
         {tagValue !=='none' && tagSize === 'medium' && <Tag title={tagValue} width='73px' height='28px' fontSize='11px' clickAble={false}  />}
         {tagValue !=='none' && tagSize === 'small' && <Tag title={tagValue} width='116px' height='46px' fontSize='7px'  clickAble={false}  />}
