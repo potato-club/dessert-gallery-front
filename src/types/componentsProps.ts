@@ -121,3 +121,52 @@ export type boardTopValue = {
      */
     imgSrc?: string
 }
+
+
+/**
+ * galleryPost 컴포넌트 props
+ */
+export type galleryPostValue = {
+    /**
+     * (필수)galleryPost width
+     */
+    width: number
+    /**
+     * (필수)galleryPost height
+     */
+    height: number
+    /**
+     * (필수)가게 이름
+     */
+    title: string
+    /**
+     * (필수)가게 위치
+     */
+    location: string
+    /**
+     * (필수)가게 소개
+     */
+    summary: string
+    /**
+     * (필수)가게 평점
+     */
+    ratingValue: string
+    /**
+     * (필수) 구독 여부
+     */
+    onBookmark: boolean
+    /**
+     * (필수) 태그 상태
+     */
+    tagValue?: string
+    /**
+     * (필수) 태그 사이즈
+     */
+    tagSize?: 'big'|'medium'|'small'|'none'
+    
+    /**
+     * (필수) 이미지 배열 값
+     */
+    imgArray:string[]
+}
+

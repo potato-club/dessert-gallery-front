@@ -1,6 +1,13 @@
 import styled from "styled-components";
 
-export const GalleryPostWrap = styled.div`
+interface componentProps {
+    width?: number
+    height?: number
+}
+
+export const GalleryPostWrap = styled.div<componentProps>`
+    width: ${({width}) => `${width}px`};
+    height: ${({height}) => `${height}px`};
     display: flex;
     flex-direction: column;
     border-radius: 0 0 16px 16px;
@@ -8,10 +15,10 @@ export const GalleryPostWrap = styled.div`
     margin: 48px;
 `
 
-export const InformationWrap = styled.div`
+export const InformationWrap = styled.div<componentProps>`
     display: flex;
     flex-direction: column;
-    width: 456px;
+    width: ${({width}) => `${width}px`};
     background-color: #FCF0E1;
     padding: 32px 32px 20px 32px;
     border-radius: 0 0 16px 16px;
