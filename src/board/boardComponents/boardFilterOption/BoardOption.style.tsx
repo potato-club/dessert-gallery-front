@@ -19,15 +19,15 @@ export const OptionCategoriesWrap = styled.div`
 export const OptionCategoriesButton = styled.button<optionCategoriesState>`
     border: 3px solid #FF8D00;
     border-right: 3px solid #FF8D00;
-    width: 487px;
-    height: 101px;
+    width: 334px;
+    height: 68px;
     background-color: #FDC886;
-    font-size: 28px;
+    font-size: 18px;
     font-family: noto-sans-cjk-kr;
     font-weight: bold;
     border-radius: 16px 16px 0 0;
 
-    color: #FF8D00;
+    color: #FF6F00;
 
 
     cursor: pointer;
@@ -35,7 +35,7 @@ export const OptionCategoriesButton = styled.button<optionCategoriesState>`
     ${({categoryId})=> {
         if(categoryId === 1){
             return `position: relative;
-                    width: 488px;
+                    width: 334px;
                     left: -3px; `
         }
     }} 
@@ -48,9 +48,9 @@ export const OptionCategoriesButton = styled.button<optionCategoriesState>`
 `
 
 export const OptionCategoriesTextInputLabel = styled.label`
-  border: 3px solid #FF8D00;
-  width: 651px;
-  height: 101px;
+  border: 3px solid #FF6F00;
+  width: 438px;
+  height: 68px;
   background-color: #FDC886;
   display: flex;
   align-items: center;
@@ -59,7 +59,7 @@ export const OptionCategoriesTextInputLabel = styled.label`
   border-radius: 16px 16px 0 0;
 
   input::placeholder {
-    color: #FF8D00;
+    color: #FF6F00;
   }
 
   &:focus-within {
@@ -73,15 +73,15 @@ export const OptionCategoriesSVGImg = styled.img`
 
 export const OptionCategoriesTextInput = styled.input`
   border: none;
-  width: 504px;
+  width: 336px;
   height: 56px;
   background-color: #FDC886;
   position: relative;
   left: -6px;
-  font-size: 28px;
+  font-size: 18px;
   font-family: noto-sans-cjk-kr;
   font-weight: bold;
-  color: #FF8D00;
+  color: #FF6F00;
 
   &:focus {
     outline: 2px solid transparent;
@@ -91,10 +91,10 @@ export const OptionCategoriesTextInput = styled.input`
 
 
 export const SelectOptionWrap = styled.div`
-    width: 1620px;
-    min-height: 336px;
+    width: 1100px;
+    min-height: 246px;
     background-color: #FFFDF9;
-    border: 3px solid #FF8D00;
+    border: 3px solid #FF6F00;
     border-top: none;
     border-radius: 0 0 16px 16px;
     display: flex;
@@ -103,7 +103,7 @@ export const SelectOptionWrap = styled.div`
 `;
 
 export const SelectOptionTagWrap = styled.div`
-    padding: 24px 48px;
+    padding: 16px 30px;
     display: flex;
     flex-wrap: wrap
 `
