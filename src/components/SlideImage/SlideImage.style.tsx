@@ -24,6 +24,12 @@ const Wrapper = styled.div<componentProps>`
         }
         `
         : ''}
+
+    -webkit-user-drag: none;
+    -khtml-user-drag: none;
+    -moz-user-drag: none;
+    -o-user-drag: none;
+    user-select: none;
 `
 
 const BookmarkOnWrap = styled.img`
