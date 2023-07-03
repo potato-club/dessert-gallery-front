@@ -1,6 +1,6 @@
 import React from "react";
 import styled, { css } from "styled-components";
-import LogoSvg from "../../public/svg/common/logo.svg";
+import LogoSvg from "../../public/SVG/common/logo.svg";
 import SearchIconSvg from "../../public/svg/header/searchIcon.svg";
 import InfoSvg from "../../public/svg/header/info.svg";
 import BookmarkSvg from "../../public/svg/header/bookmark.svg";
