@@ -10,6 +10,7 @@ export default Title;
 const TitleH2 = styled.h2`
   display: flex;
   align-items: center;
+  justify-content: center;
   width: 264px;
   height: 126px;
   margin-bottom: 21px;

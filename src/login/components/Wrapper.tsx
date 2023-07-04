@@ -22,5 +22,6 @@ const WrapperComponent = styled.div`
 const ContentsWrapper = styled.div`
   height: 710px;
   width: 100%;
+  padding: 63px 0 0 0;
   background-color: #fffdf9;
 `;
