@@ -1,5 +1,5 @@
 import { ReactNode } from "react";
-
+import type { filterData } from "./componentsData";
 /**
  * Tag 컴포넌트 props
  */
@@ -161,12 +161,16 @@ export type galleryPostValue = {
     onBookmark: boolean
     /**
      * (필수) 태그 상태
+     * 없을시 'none'
      */
     tagValue?: string
     /**
-     * (필수) 태그 사이즈
+     * (필수) 태그/구독 버튼/ 텍스트 사이즈
+     * big: 게시판 페이지 기준
+     * medium: 메인 페이지 인기게시글 기준
+     * small: 메인 페이지 새로운 게시글 기준
      */
-    tagSize?: 'big'|'medium'|'small'|'none'
+    size?: 'big'|'medium'|'small'
     
     /**
      * (필수) 이미지 배열 값
@@ -187,4 +191,18 @@ export type SlideImgBookmarkValue = {
      * (필수) 북마크 선택, 선택 해제 기능 함수
      */
     onClickBookmark: React.MouseEventHandler<HTMLDivElement>
+}
+
+
+export type galleryPostSizeValue = {
+    titleTextSize: string,
+    locationTextSize:string,
+    summaryTextSize: string,
+    ratingSize: "medium" | "small"
+}
+
+
+export type customizationSelectorValue = {
+    filterstate: boolean[]
+    onClickFilterOption: ({selected ,idx}:filterData) => void
 }
