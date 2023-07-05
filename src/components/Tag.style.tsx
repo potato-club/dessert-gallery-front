@@ -37,12 +37,6 @@ const TagWrap = styled.div<ComponentLengthProps>`
 
     margin: ${({ margin }) => margin};
 
-    &:hover {
-      background-color: #FF8D01;
-      color:white;
-      border: 2px solid #FF8D01;
-    }
-
     ${({ inversion, hoverCss }) => {
       switch (inversion) {
         case true:
@@ -58,11 +52,10 @@ const TagWrap = styled.div<ComponentLengthProps>`
                     `;
 
           }else{
-            return `&:hover {
-                      background-color: #FF8D01;
-                      color:white;
-                      border: 2px solid #FF8D01;
-                    }`;
+            return `background-color: #FF8D01;
+                    color:white;
+                    border: 2px solid #FF8D01;
+                  `;
           }
         case false:
           if(hoverCss){
@@ -73,12 +66,8 @@ const TagWrap = styled.div<ComponentLengthProps>`
                     }
                     `;
 
-          }else{
-            return `&:hover {
-                      background-color: white;
-                      color:#FF8D01;
-                      border: 2px solid #FF8D01;
-                    }`;
+            }
+            break;
           }
       }
     }}
