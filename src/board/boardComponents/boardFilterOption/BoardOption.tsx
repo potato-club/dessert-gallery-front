@@ -1,15 +1,17 @@
-import React, { ChangeEvent, KeyboardEvent , useEffect, useState } from 'react'
+import React, { ChangeEvent, KeyboardEvent, useState } from 'react'
 
 import { BoardOptionWrap, OptionCategoriesWrap, OptionCategoriesButton, OptionCategoriesTextInputLabel, OptionCategoriesSVGImg, OptionCategoriesTextInput, SelectOptionWrap, SelectOptionTagWrap, SelectOptionCancleWrap } from './BoardOption.style'
-
+import CustomizationSelector from './CustomizationSelector'
 import Tag from '../../../components/Tag'
+import type { boardOptionData, filterData } from '../../../types/componentsData'
 
 
 function BoardOption() {
   const [isSelected, setIsSelected] = useState<boolean>(false)
   const [selectCategory, setSelectCategory] = useState<number>(2)
   const [searchWord, setSearchWord] = useState<string>('')
-  const [optionData, setOptionData] = useState({
+  const [filterOptionState, setFilterOptionState] = useState(Array(7).fill(false))
+  const [optionData, setOptionData] = useState<boardOptionData>({
     location: [],
     selectSearchWord: '',
     filterOption: []
@@ -40,6 +42,23 @@ function BoardOption() {
     }
   };
 
+  const onClickFilterOption = ({selected, idx}:filterData) => {
+    let temp = optionData.filterOption.concat(selected)
+    let state = filterOptionState.map((e,i) => {
+      if(i === idx){
+        return true;
+      }else{
+        return e;
+      }
+    })
+    setOptionData((prev)=>({
+      ...prev,
+      filterOption: temp
+  }))
+  setFilterOptionState(state);
+  setIsSelected(true);
+  }
+
   return (
     <BoardOptionWrap>
       <OptionCategoriesWrap>
@@ -50,10 +69,32 @@ function BoardOption() {
           <OptionCategoriesTextInput type="text" placeholder='검색어를 입력해 주세요' onChange={onChangeSearchWord} onKeyDown={handleKeyDown} value={searchWord} onFocus={()=>{setSelectCategory(2)}}/>
         </OptionCategoriesTextInputLabel>
       </OptionCategoriesWrap>
+      {selectCategory === 1 && <CustomizationSelector filterstate={filterOptionState} onClickFilterOption={onClickFilterOption} />}
       <SelectOptionWrap >
         <SelectOptionTagWrap>
           {
-            optionData.selectSearchWord !== '' && <Tag margin='18px 30px' width='207px' height='55px' fontSize='20px' title={optionData.selectSearchWord} key={optionData.selectSearchWord} clickAble={true} onClickHandler={()=>alert('click')} />
+            optionData.selectSearchWord !== '' && <Tag 
+                                                    margin='18px 30px'
+                                                    width='207px' 
+                                                    height='55px' 
+                                                    fontSize='20px' 
+                                                    title={optionData.selectSearchWord} 
+                                                    key={optionData.selectSearchWord} 
+                                                    clickAble={true} 
+                                                    onClickHandler={()=>alert('click')} 
+                                                  />
+          }
+          {
+            optionData.filterOption.length !== 0 && optionData.filterOption.map((e)=> <Tag 
+                                                                                        margin='18px 30px'
+                                                                                        width='207px' 
+                                                                                        height='55px' 
+                                                                                        fontSize='20px' 
+                                                                                        title={e} 
+                                                                                        key={e} 
+                                                                                        clickAble={true} 
+                                                                                        onClickHandler={()=>alert('click')} 
+                                                                                      />)
           }
         </SelectOptionTagWrap>
         <SelectOptionCancleWrap>

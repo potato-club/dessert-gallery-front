@@ -14,11 +14,12 @@ export const OptionCategoriesWrap = styled.div`
     border: 2px soild #FF8D00;
     border-bottom: none;
     position: relative;
+    z-index: 15;
 `
 
 export const OptionCategoriesButton = styled.button<optionCategoriesState>`
-    border: 3px solid #FF8D00;
-    border-right: 3px solid #FF8D00;
+    border: 3px solid #FF6F00;
+    border-right: 3px solid #FF6F00;
     width: 334px;
     height: 68px;
     background-color: #FDC886;
