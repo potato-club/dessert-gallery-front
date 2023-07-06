@@ -24,13 +24,14 @@ const Container = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  min-width: 1280px;
 `;
 const StoreInfo = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 121px;
+  gap: 101px;
   background-color: #fcf0e1;
   width: 100%;
-  height: 697px;
+  height: 465px;
 `;

@@ -25,16 +25,17 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 81px;
+  gap: 45px;
   margin: 0px auto;
+  max-width: 1280px;
 `;
 const Options = styled.div`
-  border-bottom: 1px solid #ff8d00;
+  border-bottom: 3px solid #ff8d00;
 `;
 const optionDefault = css`
-  width: 810px;
-  height: 80px;
-  font-size: 32px;
+  width: 550px;
+  height: 54px;
+  font-size: 20px;
   font-weight: 500;
   border: none;
   color: #ff8d00;
