@@ -1,9 +1,9 @@
 import React from "react";
 import styled, { css } from "styled-components";
-import LogoSvg from "../../public/SVG/common/logo.svg";
-import SearchIconSvg from "../../public/svg/header/searchIcon.svg";
-import InfoSvg from "../../public/svg/header/info.svg";
-import BookmarkSvg from "../../public/svg/header/bookmark.svg";
+import LogoSvg from "../../public/svg/common/Logo.svg";
+import SearchIconSvg from "../../public/svg/header/SearchIcon.svg";
+import InfoSvg from "../../public/svg/header/Info.svg";
+import BookmarkSvg from "../../public/svg/header/Bookmark.svg";
 import { useRouter } from "next/router";
 
 const Header = () => {
@@ -12,7 +12,7 @@ const Header = () => {
   return (
     <Container>
       <TitleContent href="/">
-        <LogoSvg width="85px" height="92px" />
+        <LogoSvg width="55px" height="60px" />
         <Title>Dessert Gallery</Title>
       </TitleContent>
       <BtnList>
@@ -34,16 +34,16 @@ const Header = () => {
       </BtnList>
 
       <FormDiv>
-        <SearchIconSvg />
+        <SearchIconSvg width="15px" height="15px" />
         <SearchInput placeholder="검색어를 입력해 주세요" />
       </FormDiv>
 
       <AboutUser>
         <MyPageBtn>
-          <InfoSvg />
+          <InfoSvg width="31px" height="32px" />
         </MyPageBtn>
         <BookmarkBtn>
-          <BookmarkSvg />
+          <BookmarkSvg width="23px" height="32px" />
         </BookmarkBtn>
       </AboutUser>
     </Container>
@@ -58,11 +58,13 @@ const Container = styled.header`
   align-items: center;
   background-color: #fffdf9;
   box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.161);
-  height: 100px;
+  height: 96px;
+  min-width: 1280px;
 `;
 const BtnList = styled.div`
   display: flex;
-  gap: 67px;
+  gap: 47px;
+  margin-right: 135px;
 `;
 const underline = css`
   cursor: pointer;
@@ -73,7 +75,7 @@ const underline = css`
 `;
 const PageMoveBtn = styled.a<{ active: boolean }>`
   height: fit-content;
-  font-size: 26px;
+  font-size: 16px;
   font-weight: 700;
   line-height: 38px;
   color: #ffb456;
@@ -86,7 +88,7 @@ const TitleContent = styled.a`
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 27px;
+  gap: 24px;
   margin-right: 44px;
   &:hover {
     cursor: pointer;
@@ -94,34 +96,36 @@ const TitleContent = styled.a`
 `;
 const Title = styled.h1`
   color: #ff6f00;
-  font-size: 40px;
+  font-size: 18px;
   font-weight: 700;
 `;
 const FormDiv = styled.form`
   display: flex;
   align-items: center;
-  width: 416px;
-  height: 48px;
-  margin: 0px 98px 0px 134px;
-  border: 3px solid #ff8d00;
+  width: 277px;
+  height: 33px;
+  border: 2px solid #ff8d00;
   border-radius: 40px;
-  padding: 0px 22px;
+  padding: 0px 15px;
+  margin-right: 24px;
 `;
 const SearchInput = styled.input`
   border: none;
   background-color: #fffdf9;
-  padding: 0px 25px;
+  padding: 0px 17px;
   width: 100%;
   &:focus {
     outline: none;
   }
   &::placeholder {
     color: #fdc886;
+    font-size: 11px;
+    font-weight: 500;
   }
 `;
 const AboutUser = styled.div`
   display: flex;
-  gap: 33px;
+  gap: 23px;
 `;
 const MyPageBtn = styled.div``;
 const BookmarkBtn = styled.div``;
