@@ -3,7 +3,7 @@ import { slideImageValue } from '../../types/componentsProps';
 import { useState } from 'react';
 import DotIndicator from './DotIndicator';
 import Bookmark from './Bookmark';
-import { RightMoveButtonIcon, LeftMoveButtonIcon } from '../../../public/SVG';
+import { RightMoveButtonIcon, LeftMoveButtonIcon } from '../../../public/svg';
 import { Wrapper, ImageWrap, RightMoveButton, LeftMoveButton,MoveWrap,MoveAllbutton, BottomComponent, BottomCenterComponent } from './SlideImage.style';
 
 function SlideImage({srcArray, width=304, height=304, moveBtnType='none', size='big', dotIndicator=false, bookmark=false, onBookmark=false, children=<></>}:slideImageValue) {
