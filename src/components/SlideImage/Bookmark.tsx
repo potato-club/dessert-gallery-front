@@ -1,6 +1,6 @@
 import React from 'react'
 import { SlideImgBookmarkValue } from '../../types/componentsProps'
-import { OnBookmark, OffBookmark } from '../../../public/SVG';
+import { OnBookmark, OffBookmark } from '../../../public/svg';
 import { BookmarkOnWrap, BookmarkOffWrap } from './Bookmark.style';
 
 export default function Bookmark({onBookmark, size, onClickBookmark}:SlideImgBookmarkValue) {

@@ -1,9 +1,6 @@
 import React from "react";
 import styled, { css } from "styled-components";
-import LogoSvg from "../../public/svg/common/Logo.svg";
-import SearchIconSvg from "../../public/svg/header/SearchIcon.svg";
-import InfoSvg from "../../public/svg/header/Info.svg";
-import BookmarkSvg from "../../public/svg/header/Bookmark.svg";
+import { Logo, Search, HeaderBookmark, HeaderInfo } from "../../public/svg";
 import { useRouter } from "next/router";
 
 const Header = () => {
@@ -12,7 +9,7 @@ const Header = () => {
   return (
     <Container>
       <TitleContent href="/">
-        <LogoSvg width="55px" height="60px" />
+        <Logo width="55px" height="60px" />
         <Title>Dessert Gallery</Title>
       </TitleContent>
       <BtnList>
@@ -34,16 +31,16 @@ const Header = () => {
       </BtnList>
 
       <FormDiv>
-        <SearchIconSvg width="15px" height="15px" />
+        <Search width="15px" height="15px" />
         <SearchInput placeholder="검색어를 입력해 주세요" />
       </FormDiv>
 
       <AboutUser>
         <MyPageBtn>
-          <InfoSvg width="31px" height="32px" />
+          <HeaderInfo width="31px" height="32px" />
         </MyPageBtn>
         <BookmarkBtn>
-          <BookmarkSvg width="23px" height="32px" />
+          <HeaderBookmark width="23px" height="32px" />
         </BookmarkBtn>
       </AboutUser>
     </Container>
