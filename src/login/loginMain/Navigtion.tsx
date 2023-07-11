@@ -1,11 +1,19 @@
 import React, { ReactNode } from "react";
 import styled from "styled-components";
+import { useRouter } from "next/router";
 
 function Navigaiton() {
+  const router = useRouter();
   return (
     <NavigationWrapper>
       <NavigationA bold={false}>로그인이 안되시나요?</NavigationA>
-      <NavigationA bold={true} color={"#FF8D00"}>
+      <NavigationA
+        bold={true}
+        color={"#FF8D00"}
+        onClick={() => {
+          router.push("/login/join");
+        }}
+      >
         회원가입
       </NavigationA>
     </NavigationWrapper>
@@ -36,7 +44,7 @@ const NavigationA = styled.a<{ bold: boolean; color?: string }>`
   @media screen and (max-width: 1919px) {
     font-size: 9px;
   }
+  cursor: pointer;
   font-weight: ${(props) => (props.bold === true ? "bold" : "")};
   color: ${(props) => props.color};
 `;
-
