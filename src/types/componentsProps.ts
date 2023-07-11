@@ -178,6 +178,47 @@ export type galleryPostValue = {
     imgArray:string[]
 }
 
+
+/**
+ * ReviewPost 컴포넌트 props
+ */
+export type ReviewPostValue = {
+    /**
+     * (필수)galleryPost width
+     */
+    width: number
+    /**
+     * (필수)galleryPost height
+     */
+    height: number
+    /**
+     * (필수)가게 이름
+     */
+    title: string
+    /**
+     * (필수) 가게 소개글
+     */
+    summary: string
+    /**
+     * (필수) 가게 대표 이미지
+     */
+    imgSrc: string
+    /**
+     * 리뷰 목록
+     */
+    reviewList: UserReview[]
+}
+
+export type UserReview = {
+    userId: string
+    date: Date
+    rating: string
+    contents: string
+}
+
+
+
+
 export type SlideImgBookmarkValue = {
     /**
      * (필수) 현재 구독 상태
