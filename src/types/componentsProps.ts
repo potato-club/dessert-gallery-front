@@ -203,6 +203,6 @@ export type galleryPostSizeValue = {
 
 
 export type customizationSelectorValue = {
-    filterstate: boolean[]
+    filterstate: filterData[]
     onClickFilterOption: ({selected ,idx}:filterData) => void
 }

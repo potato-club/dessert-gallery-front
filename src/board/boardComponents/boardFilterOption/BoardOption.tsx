@@ -1,22 +1,31 @@
-import React, { ChangeEvent, KeyboardEvent, useState } from 'react'
+import React, { ChangeEvent, KeyboardEvent, useEffect, useState } from 'react'
 
 import { BoardOptionWrap, OptionCategoriesWrap, OptionCategoriesButton, OptionCategoriesTextInputLabel, OptionCategoriesSVGImg, OptionCategoriesTextInput, SelectOptionWrap, SelectOptionTagWrap, SelectOptionCancleWrap } from './BoardOption.style'
 import CustomizationSelector from './CustomizationSelector'
 import Tag from '../../../components/Tag'
-import type { boardOptionData, filterData } from '../../../types/componentsData'
+import type { boardOptionData, filterData, tagClickData } from '../../../types/componentsData'
 
 
 function BoardOption() {
   const [isSelected, setIsSelected] = useState<boolean>(false)
   const [selectCategory, setSelectCategory] = useState<number>(2)
   const [searchWord, setSearchWord] = useState<string>('')
-  const [filterOptionState, setFilterOptionState] = useState(Array(7).fill(false))
+  const [filterOptionState, setFilterOptionState] = useState<filterData[]>([
+    { selected: '쌀', idx: 0, state: false },
+    { selected: '떡', idx: 1, state: false },
+    { selected: '일반', idx: 2, state: false },
+    { selected: '용돈 케이크', idx: 3, state: false },
+    { selected: '포토 케이크', idx: 4, state: false },
+    { selected: '토퍼 포함', idx: 5, state: false },
+    { selected: 'for 반려동물', idx: 6, state: false },
+  ]);
   const [optionData, setOptionData] = useState<boardOptionData>({
     location: [],
     selectSearchWord: '',
     filterOption: []
   })
 
+  useEffect(()=>{}, [isSelected])
   /**
    * 검색어 입력 함수
    */
@@ -33,7 +42,33 @@ function BoardOption() {
       selectSearchWord: '',
       filterOption: []
     })
+    setFilterOptionState([
+      { selected: '쌀', idx: 0, state: false },
+      { selected: '떡', idx: 1, state: false },
+      { selected: '일반', idx: 2, state: false },
+      { selected: '용돈 케이크', idx: 3, state: false },
+      { selected: '포토 케이크', idx: 4, state: false },
+      { selected: '토퍼 포함', idx: 5, state: false },
+      { selected: 'for 반려동물', idx: 6, state: false },
+    ]);
     setIsSelected(false);
+  }
+
+  const isAllClean=()=>{
+    console.log("이게? ", optionData)
+    let check = false;
+    if(optionData.filterOption.length > 1){
+      check = true;
+    }
+    else if(optionData.location.length !== 0){
+      check = true;
+    }else if( optionData.selectSearchWord !== ''){
+      check = true
+    }
+
+    if(check === false){
+      setIsSelected(false);
+    }
   }
 
   /**
@@ -56,36 +91,62 @@ function BoardOption() {
    * 디저트 종류 선택 함수
    * @param param0 
    */
-  const onClickFilterOption = ({selected, idx}:filterData) => {
-    let temp: string[];
-    let state: boolean[];
-
-    if(optionData.filterOption.findIndex(e=> e === selected)===-1){
-      temp = optionData.filterOption.concat(selected)
-      state = filterOptionState.map((e,i) => {
-        if(i === idx){
-          return true;
+  const onClickFilterOption = (data: filterData) => {
+    let temp: filterData[];
+    let filter: filterData[]
+  
+    if (optionData.filterOption.findIndex((e) => e.selected === data.selected) === -1) {
+      temp = optionData.filterOption.concat(data);
+      filter = filterOptionState.map((e)=> {
+        if(e.selected === data.selected){
+          return {selected: e.selected, idx: e.idx, state: true}
         }else{
           return e;
         }
-      })
-    }
-    else{
-      temp = optionData.filterOption.filter(e => e !==selected)
-      state = filterOptionState.map((e,i) => {
-        if(i === idx){
-          return false;
+      });
+    } else {
+      temp = optionData.filterOption.filter((e) => e.selected !== data.selected);
+      filter = filterOptionState.map((e)=> {
+        if(e.selected === data.selected){
+          return {selected: e.selected, idx: e.idx, state: false}
         }else{
           return e;
         }
-      })
+      });
+      isAllClean();
     }
-    setOptionData((prev)=>({
+    setOptionData((prev) => ({
       ...prev,
-      filterOption: temp
-  }))
-  setFilterOptionState(state);
-  setIsSelected(true);
+      filterOption: temp,
+    }));
+    setFilterOptionState(filter); // filterOptionState 업데이트
+    setIsSelected(true);
+  };
+
+  const onClickTag = ({menu, selected='', idx=0}:tagClickData) => {
+    if(menu === 2){
+      let temp = optionData.filterOption.filter(e => e.selected !==selected)
+      let state = filterOptionState.map((e,i) => {
+        if(i === idx){
+          return {selected: e.selected, idx: e.idx, state: false};
+        }else{
+          return e;
+        }
+      })
+      setOptionData((prev)=>({
+        ...prev,
+        filterOption: temp
+      }))
+      setFilterOptionState(state); // filterOptionState 업데이트
+    }
+
+    if(menu === 3){
+      setOptionData((prev)=>({
+        ...prev,
+        selectSearchWord: ''
+      }))
+    }
+    isAllClean();
   }
 
   return (
@@ -110,7 +171,7 @@ function BoardOption() {
                                                     title={optionData.selectSearchWord} 
                                                     key={optionData.selectSearchWord} 
                                                     clickAble={true} 
-                                                    onClickHandler={()=>alert('click')} 
+                                                    onClickHandler={()=>onClickTag({menu: 3})} 
                                                   />
           }
           {
@@ -119,10 +180,10 @@ function BoardOption() {
                                                                                         width='207px' 
                                                                                         height='55px' 
                                                                                         fontSize='20px' 
-                                                                                        title={e} 
-                                                                                        key={e} 
+                                                                                        title={e.selected} 
+                                                                                        key={e.selected} 
                                                                                         clickAble={true} 
-                                                                                        onClickHandler={()=>alert('click')} 
+                                                                                        onClickHandler={()=>onClickTag({menu: 2, selected: e.selected, idx: e.idx})} 
                                                                                       />)
           }
         </SelectOptionTagWrap>
