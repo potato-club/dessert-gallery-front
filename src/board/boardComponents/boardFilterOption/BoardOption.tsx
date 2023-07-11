@@ -43,14 +43,29 @@ function BoardOption() {
   };
 
   const onClickFilterOption = ({selected, idx}:filterData) => {
-    let temp = optionData.filterOption.concat(selected)
-    let state = filterOptionState.map((e,i) => {
-      if(i === idx){
-        return true;
-      }else{
-        return e;
-      }
-    })
+    let temp: string[];
+    let state: boolean[];
+
+    if(optionData.filterOption.findIndex(e=> e === selected)===-1){
+      temp = optionData.filterOption.concat(selected)
+      state = filterOptionState.map((e,i) => {
+        if(i === idx){
+          return true;
+        }else{
+          return e;
+        }
+      })
+    }
+    else{
+      temp = optionData.filterOption.filter(e => e !==selected)
+      state = filterOptionState.map((e,i) => {
+        if(i === idx){
+          return false;
+        }else{
+          return e;
+        }
+      })
+    }
     setOptionData((prev)=>({
       ...prev,
       filterOption: temp
