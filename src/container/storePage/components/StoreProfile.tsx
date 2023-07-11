@@ -1,6 +1,7 @@
 import React from "react";
 import styled, { css } from "styled-components";
 import Image from "next/image";
+import Tag from "../../../components/Tag";
 
 const StoreProfile = () => {
   return (
@@ -32,7 +33,25 @@ const StoreProfile = () => {
             </InfoView>
             <InfoView></InfoView>
           </StoreInfo>
-          <BtnList></BtnList>
+          <BtnList>
+            <StoreProfileBtn
+              title="팔로우"
+              clickAble={true}
+              hoverCss={true}
+              width="90px"
+              height="30px"
+              fontSize="12px"
+              inversion={true}
+            />
+            <StoreProfileBtn
+              title="메세지 보내기"
+              clickAble={true}
+              hoverCss={true}
+              width="136px"
+              height="30px"
+              fontSize="12px"
+            />
+          </BtnList>
         </InfoContent>
       </InnerContainer>
     </Container>
@@ -41,6 +60,7 @@ const StoreProfile = () => {
 
 export default StoreProfile;
 
+const StoreProfileBtn = styled(Tag)``;
 const Container = styled.div`
   display: flex;
   width: 640px;
@@ -103,4 +123,8 @@ const Number = styled.span`
   color: #828282;
   font-size: 13px;
 `;
-const BtnList = styled.div``;
+const BtnList = styled.div`
+  display: flex;
+  gap: 21px;
+  margin-top: 19px;
+`;
