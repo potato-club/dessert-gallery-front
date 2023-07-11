@@ -29,8 +29,16 @@ const PickWrapper = styled.div`
 `;
 
 const PickContnentsWrapper = styled.div`
+  @media screen and (min-width: 1920px) {
+    width: 1140px;
+    height: 555px;
+  }
+  @media screen and (max-width: 1919px) {
+    width: 759px;
+    height: 379px;
+  }
   display: flex;
-  width: 1140px;
-  height: 555px;
   justify-content: space-between;
 `;
+
+// 81 258 40 121 379
