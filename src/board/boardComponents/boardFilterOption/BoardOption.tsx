@@ -17,10 +17,16 @@ function BoardOption() {
     filterOption: []
   })
 
+  /**
+   * 검색어 입력 함수
+   */
   const onChangeSearchWord = (e:ChangeEvent<HTMLInputElement>) => {
     setSearchWord(e.target.value)
   }
 
+  /**
+   * 검색 초기화 버튼 클릭 함수
+   */
   const onClickResetForm = () => {
     setOptionData({
       location: [],
@@ -30,6 +36,10 @@ function BoardOption() {
     setIsSelected(false);
   }
 
+  /**
+   * 검색어 입력 후 enter 키 입력시 동작 함수
+   * @param e : enter key press 여부
+   */
   const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
       // 엔터 키가 입력되었을 때 동작할 코드 작성
@@ -42,6 +52,10 @@ function BoardOption() {
     }
   };
 
+  /**
+   * 디저트 종류 선택 함수
+   * @param param0 
+   */
   const onClickFilterOption = ({selected, idx}:filterData) => {
     let temp: string[];
     let state: boolean[];
