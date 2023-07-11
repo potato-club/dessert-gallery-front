@@ -18,7 +18,7 @@ const data:galleryPostValue[] = [{
   onBookmark: true,
   ratingValue: '4.8',
   title: '도시락박스',
-  tagSize: 'big',
+  size: 'big',
   tagValue: 'HOT!'
 },
 {
@@ -40,7 +40,7 @@ const data:galleryPostValue[] = [{
   onBookmark: true,
   ratingValue: '4.8',
   title: '하늘 케이크',
-  tagSize: 'big',
+  size: 'big',
   tagValue: 'NEW!'
 },
 {
@@ -52,7 +52,7 @@ const data:galleryPostValue[] = [{
   onBookmark: true,
   ratingValue: '4.8',
   title: '늘봄 케이크',
-  tagSize: 'big',
+  size: 'big',
   tagValue: 'NEW!'
 },
 {
@@ -64,7 +64,7 @@ const data:galleryPostValue[] = [{
   onBookmark: true,
   ratingValue: '4.8',
   title: '늘봄 케이크',
-  tagSize: 'big',
+  size: 'big',
   tagValue: 'NEW!'
 },
 {
@@ -72,7 +72,7 @@ const data:galleryPostValue[] = [{
   height: 444,
   imgArray: imgSrc,
   location: '서울시 강서구 곰달레길 12',
-  summary: '항상 언제든 늘 봄처럼 따스한 케이크를 드립니다',
+  summary: '항상 언제든 늘 봄처럼 따스한 케이크를 드립니다. 맛있다.',
   onBookmark: true,
   ratingValue: '4.8',
   title: '늘봄 케이크',
@@ -92,7 +92,7 @@ export default function Contents() {
         ratingValue={e.ratingValue} 
         summary={e.summary} 
         title={e.title} 
-        tagSize={e.tagSize} 
+        size={e.size} 
         tagValue={e.tagValue}
         />
       ))}
@@ -101,7 +101,8 @@ export default function Contents() {
 }
 
 const Wrap = styled.div`
+  width: 1100px;
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   flex-wrap: wrap;
 `;
