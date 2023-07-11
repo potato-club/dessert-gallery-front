@@ -15,16 +15,28 @@ function Navigaiton() {
 export default Navigaiton;
 
 const NavigationWrapper = styled.div`
+  @media screen and (min-width: 1920px) {
+    height: 25px;
+    margin: 25px 0 27px 0;
+  }
+  @media screen and (max-width: 1919px) {
+    height: 13px;
+    margin: 18px 0 20px 0;
+  }
   display: flex;
   justify-content: space-between;
   align-items: center;
   width: 100%;
-  height: 25px;
-  margin: 25px 0 27px 0;
 `;
 
 const NavigationA = styled.a<{ bold: boolean; color?: string }>`
-  font-size: 14px;
+  @media screen and (min-width: 1920px) {
+    font-size: 14px;
+  }
+  @media screen and (max-width: 1919px) {
+    font-size: 9px;
+  }
   font-weight: ${(props) => (props.bold === true ? "bold" : "")};
   color: ${(props) => props.color};
 `;
+
