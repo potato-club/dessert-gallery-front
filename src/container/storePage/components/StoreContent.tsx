@@ -1,20 +1,30 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled, { css } from "styled-components";
 import Poster from "./Poster";
-import Reviews from "./Reviews";
+import ReviewList from "./ReviewList";
 const StoreContent = () => {
   const [optionNum, setOptionNum] = useState<number>(1);
+  const optionClick = (num: number) => {
+    localStorage.setItem("detailStoreOption", num.toString());
+    setOptionNum(num);
+  };
+
+  useEffect(() => {
+    const initValue = localStorage.getItem("detailStoreOption");
+    setOptionNum(Number(initValue));
+  }, []);
+
   return (
     <Container>
       <Options>
-        <PostBtn onClick={() => setOptionNum(1)} optionNum={optionNum}>
+        <PostBtn onClick={() => optionClick(1)} optionNum={optionNum}>
           가게 게시물
         </PostBtn>
-        <ReviewBtn onClick={() => setOptionNum(2)} optionNum={optionNum}>
+        <ReviewBtn onClick={() => optionClick(2)} optionNum={optionNum}>
           가게 후기
         </ReviewBtn>
       </Options>
-      {optionNum == 1 ? <Poster /> : <Reviews />}
+      {optionNum == 1 ? <Poster /> : <ReviewList />}
     </Container>
   );
 };
