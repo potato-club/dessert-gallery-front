@@ -4,6 +4,8 @@ import { BoardOptionWrap, OptionCategoriesWrap, OptionCategoriesButton, OptionCa
 import CustomizationSelector from './CustomizationSelector'
 import Tag from '../../../components/Tag'
 import type { boardOptionData, filterData, tagClickData } from '../../../types/componentsData'
+import SortingButton from '../SortingButton'
+import { selectOrder } from '../../../types/componentsProps'
 
 
 function BoardOption() {
@@ -23,6 +25,10 @@ function BoardOption() {
     location: [],
     selectSearchWord: '',
     filterOption: []
+  })
+  const [orderOption, serOrderOption] = useState<selectOrder>({
+    kor: '팔로워순',
+    eng: 'followers'
   })
 
   useEffect(()=>{}, [isSelected])
@@ -195,6 +201,7 @@ function BoardOption() {
           }
         </SelectOptionCancleWrap>
       </SelectOptionWrap>
+      <SortingButton isSelect={true} selected={orderOption}/>
     </BoardOptionWrap>
   )
 }

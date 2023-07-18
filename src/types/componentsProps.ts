@@ -206,3 +206,13 @@ export type customizationSelectorValue = {
     filterstate: filterData[]
     onClickFilterOption: ({selected ,idx}:filterData) => void
 }
+
+export type boardSortProps = {
+    isSelect: boolean
+    selected: selectOrder
+}
+
+export type selectOrder = {
+    kor: string
+    eng: string
+}
