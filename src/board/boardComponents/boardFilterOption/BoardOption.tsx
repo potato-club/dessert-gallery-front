@@ -26,7 +26,8 @@ function BoardOption() {
     selectSearchWord: '',
     filterOption: []
   })
-  const [orderOption, serOrderOption] = useState<selectOrder>({
+  const [sorting, setSorting] = useState<boolean>(false)
+  const [orderOption, setOrderOption] = useState<selectOrder>({
     kor: '팔로워순',
     eng: 'followers'
   })
@@ -59,6 +60,17 @@ function BoardOption() {
     ]);
     setIsSelected(false);
   }
+
+  /**
+   * 정렬 옵션 선택 함수
+   */
+  const onChangeOrderOption = ({eng, kor}: selectOrder) => {
+    setOrderOption({
+      eng: eng,
+      kor: kor
+    })
+    setSorting(false)
+  };
 
   const isAllClean=()=>{
     console.log("이게? ", optionData)
@@ -201,7 +213,7 @@ function BoardOption() {
           }
         </SelectOptionCancleWrap>
       </SelectOptionWrap>
-      <SortingButton isSelect={true} selected={orderOption}/>
+      <SortingButton sorting={()=>{setSorting(prev => !prev)}} isSelect={sorting} selected={orderOption} selectOrder={onChangeOrderOption} />
     </BoardOptionWrap>
   )
 }

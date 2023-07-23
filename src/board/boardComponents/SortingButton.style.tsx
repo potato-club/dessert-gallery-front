@@ -28,6 +28,8 @@ export const OrderMenu = styled.div`
     flex-direction: row;
     justify-content: space-around;
     align-items: center;
+    cursor: pointer;
+
 `
 
 export const OrderButton = styled.button`
@@ -42,4 +44,12 @@ export const OrderButton = styled.button`
     font-family: noto-sans-cjk-kr;
     font-weight: bold;
     border-radius: 28px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
 `;
+
+export const ArrowSVG = styled.div`
+    z-index: 25;
+`

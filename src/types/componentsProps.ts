@@ -210,6 +210,8 @@ export type customizationSelectorValue = {
 export type boardSortProps = {
     isSelect: boolean
     selected: selectOrder
+    sorting: ()=>void
+    selectOrder: ({eng, kor}: selectOrder)=>void
 }
 
 export type selectOrder = {
