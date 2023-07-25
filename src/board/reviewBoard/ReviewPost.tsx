@@ -1,5 +1,5 @@
 import React from 'react'
-import { ReviewPostWrap, TitleText, InformationWrap, Summary} from './ReviewPost.style'
+import { ReviewPostWrap, TitleText, InformationWrap, Summary, ReviewListWrap} from './ReviewPost.style'
 import SlideImage from '../../components/SlideImage/SlideImage'
 import Rating from '../../components/Rating'
 import Tag from '../../components/Tag'
@@ -16,7 +16,8 @@ export default function ReviewPost({width,height,title, imgSrc,summary,  reviewL
         <TitleText size='13px'>{title}</TitleText>
         <Summary size='15px'>{summary}</Summary>
       </InformationWrap>
-    
+
+      <ReviewListWrap>
       {/* <ReviewWrap>
         <TopText >
           <UserIdText>{reviewList[0].userId}</UserIdText>
@@ -34,6 +35,7 @@ export default function ReviewPost({width,height,title, imgSrc,summary,  reviewL
         </TopText>
         <ContentsText>{reviewList[1].contents}</ContentsText>
       </ReviewWrap> */}
+      </ReviewListWrap>
 
       <Tag width='164px' height='32px' title='더보기' fontSize='12px' clickAble={true} hoverCss={true} onClickHandler={()=>{alert('click!')}}/>
 

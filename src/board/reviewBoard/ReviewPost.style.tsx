@@ -41,3 +41,8 @@ export const Summary = styled.div<componentProps>`
     line-height: normal;
 `
 
+export const ReviewListWrap = styled.div`
+    width: 309px;
+    height: 202px;
+    background-color: #FFF7EB;
+`
