@@ -1,9 +1,16 @@
 import React, { useEffect, useState } from "react";
 import styled, { css } from "styled-components";
 import Poster from "./Poster";
+import PostModal from "./PostModal";
 import ReviewList from "./ReviewList";
+import { useRecoilValue } from "recoil";
+import { modalBg } from "../../../recoil/modalBg/atom";
+
 const StoreContent = () => {
   const [optionNum, setOptionNum] = useState<number>(1);
+
+  const onModal = useRecoilValue(modalBg);
+
   const optionClick = (num: number) => {
     localStorage.setItem("detailStoreOption", num.toString());
     setOptionNum(num);
@@ -11,11 +18,13 @@ const StoreContent = () => {
 
   useEffect(() => {
     const initValue = localStorage.getItem("detailStoreOption");
-    setOptionNum(Number(initValue));
+    if (!initValue) setOptionNum(1);
+    else setOptionNum(Number(initValue));
   }, []);
 
   return (
     <Container>
+      {onModal && <PostModal />}
       <Options>
         <PostBtn onClick={() => optionClick(1)} optionNum={optionNum}>
           가게 게시물
@@ -34,10 +43,11 @@ export default StoreContent;
 const Container = styled.div`
   display: flex;
   flex-direction: column;
+  justify-content: center;
   align-items: center;
   gap: 45px;
   margin: 0px auto;
-  max-width: 1280px;
+  max-width: 1100px;
 `;
 const Options = styled.div`
   border-bottom: 3px solid #ff8d00;
