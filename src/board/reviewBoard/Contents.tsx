@@ -1,7 +1,7 @@
 import React from 'react'
 import ReviewPost from './ReviewPost'
 import styled from 'styled-components'
-import { UserReview } from '../../types/componentsProps'
+import { UserReview, ReviewPostValue } from '../../types/componentsProps'
 
 const reviewData:UserReview[] = [
   {
@@ -18,33 +18,81 @@ const reviewData:UserReview[] = [
   }
 ]
 
+const reviewPostData:ReviewPostValue[] = [
+  {
+    width : 309,
+    height : 580,
+    title: '늘봄 케이크',
+    imgSrc: 'https://cdn.pixabay.com/photo/2016/11/22/18/52/cake-1850011_960_720.jpg',
+    summary: '무료 배송! 레터링 케이크 버터크림 맛',
+    reviewList: reviewData
+  },
+  {
+    width : 309,
+    height : 580,
+    title: '늘봄 케이크',
+    imgSrc: 'https://cdn.pixabay.com/photo/2017/10/30/10/07/birthday-2901945_640.jpg',
+    summary: '무료 배송! 레터링 케이크 버터크림 맛',
+    reviewList: reviewData
+  },
+  {
+    width : 309,
+    height : 580,
+    title: '늘봄 케이크',
+    imgSrc: 'https://cdn.pixabay.com/photo/2015/02/17/15/33/wedding-cake-639516_640.jpg',
+    summary: '무료 배송! 레터링 케이크 버터크림 맛',
+    reviewList: reviewData
+  },
+  {
+    width : 309,
+    height : 580,
+    title: '늘봄 케이크',
+    imgSrc: 'https://cdn.pixabay.com/photo/2015/10/23/21/01/bake-1003685_640.jpg',
+    summary: '무료 배송! 레터링 케이크 버터크림 맛',
+    reviewList: reviewData
+  },
+  {
+    width : 309,
+    height : 580,
+    title: '늘봄 케이크',
+    imgSrc: 'https://cdn.pixabay.com/photo/2016/09/30/04/01/wedding-cake-1704427_640.jpg',
+    summary: '무료 배송! 레터링 케이크 버터크림 맛',
+    reviewList: reviewData
+  },
+  {
+    width : 309,
+    height : 580,
+    title: '늘봄 케이크',
+    imgSrc: 'https://cdn.pixabay.com/photo/2015/03/12/10/37/birthday-669968_640.jpg',
+    summary: '무료 배송! 레터링 케이크 버터크림 맛',
+    reviewList: reviewData
+  },
+  {
+    width : 309,
+    height : 580,
+    title: '늘봄 케이크',
+    imgSrc: 'https://cdn.pixabay.com/photo/2018/02/08/18/28/strawberry-pie-3140025_640.jpg',
+    summary: '무료 배송! 레터링 케이크 버터크림 맛',
+    reviewList: reviewData
+  }
+];
+
 export default function Contents() {
   return (
     <Wrap>
+      {
+        reviewPostData.map((e)=>(
         <ReviewPost 
-          width={309} 
-          height={580} 
-          title='늘봄 케이크'
-          imgSrc='https://cdn.pixabay.com/photo/2016/11/22/18/52/cake-1850011_960_720.jpg'
-          summary='무료 배송! 레터링 케이크 버터크림 맛'
+          key={e.imgSrc}
+          width={e.width} 
+          height={e.height} 
+          title={e.title}
+          imgSrc={e.imgSrc}
+          summary={e.summary}
           reviewList={reviewData}
-        />
-        <ReviewPost 
-          width={309} 
-          height={580} 
-          title='늘봄 케이크'
-          imgSrc='https://cdn.pixabay.com/photo/2016/11/22/18/52/cake-1850011_960_720.jpg'
-          summary='무료 배송! 레터링 케이크 버터크림 맛'
-          reviewList={reviewData}
-        />
-        <ReviewPost 
-          width={309} 
-          height={580} 
-          title='늘봄 케이크'
-          imgSrc='https://cdn.pixabay.com/photo/2016/11/22/18/52/cake-1850011_960_720.jpg'
-          summary='무료 배송! 레터링 케이크 버터크림 맛'
-          reviewList={reviewData}
-        />
+        />))
+      }
+        
     </Wrap>
   )
 }
