@@ -1,4 +1,4 @@
-import { boardTopValue } from "../../types/componentsProps"
+import { boardTopValue } from "../../../types/componentsProps"
 import { BoardTopWrap, TextWrap, TitleWrap, DecriptionWrap } from "./BoardTop.style"
 
 function BoardTop({title, decription, imgSrc=''}:boardTopValue) {

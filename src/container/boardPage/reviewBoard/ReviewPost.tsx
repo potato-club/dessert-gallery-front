@@ -1,9 +1,9 @@
 import React from 'react'
 import { ReviewPostWrap, TitleText, InformationWrap, Summary, Box, BoxContentsStart, ReviewWrap, Text, TopTextWrap, TagWrap} from './ReviewPost.style'
-import SlideImage from '../../components/SlideImage/SlideImage'
-import Rating from '../../components/Rating'
-import Tag from '../../components/Tag'
-import { ReviewPostValue } from '../../types/componentsProps'
+import SlideImage from '../../../components/SlideImage/SlideImage'
+import Rating from '../../../components/Rating'
+import Tag from '../../../components/Tag'
+import type { ReviewPostValue } from '../../../types/componentsProps'
 
 
 export default function ReviewPost({width,height,title, imgSrc,summary,  reviewList}:ReviewPostValue) {

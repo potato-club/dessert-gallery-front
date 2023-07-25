@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { CustomizationSelectorWrap, MenuWrap, MenuText, SpecialMenuWrap } from './CustomizationSelector.style'
-import Tag from '../../../components/Tag'
-import type { customizationSelectorValue } from '../../../types/componentsProps'
+import Tag from '../../../../components/Tag';
+import type { customizationSelectorValue } from '../../../../types/componentsProps'
 
 export default function CustomizationSelector({filterstate, onClickFilterOption}: customizationSelectorValue) {
   useEffect(() => {console.log(filterstate)}, [filterstate]);

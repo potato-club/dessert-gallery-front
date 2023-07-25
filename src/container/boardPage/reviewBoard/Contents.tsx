@@ -1,7 +1,7 @@
 import React from 'react'
 import ReviewPost from './ReviewPost'
 import styled from 'styled-components'
-import { UserReview, ReviewPostValue } from '../../types/componentsProps'
+import { UserReview, ReviewPostValue } from '../../../types/componentsProps'
 
 const reviewData:UserReview[] = [
   {

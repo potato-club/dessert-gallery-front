@@ -1,9 +1,9 @@
 import React from 'react'
 import { GalleryPostWrap, TitleText, InformationWrap,LocationText, Summary } from './GalleryPost.style'
-import SlideImage from '../../components/SlideImage/SlideImage'
-import Tag from '../../components/Tag'
-import Rating from '../../components/Rating'
-import { galleryPostValue, galleryPostSizeValue } from '../../types/componentsProps'
+import SlideImage from '../../../components/SlideImage/SlideImage'
+import Tag from '../../../components/Tag'
+import Rating from '../../../components/Rating'
+import { galleryPostValue, galleryPostSizeValue } from '../../../types/componentsProps'
 
 
 export default function GalleryPost({width,height,location,imgArray, onBookmark,ratingValue,summary,size='big', tagValue='none',title}:galleryPostValue) {

@@ -1,7 +1,7 @@
 import React from 'react'
 import { OrderButtonWrap, OrderButton, OrderMenu } from './SortingButton.style'
-import { boardSortProps } from '../../types/componentsProps'
-import { DownArrow } from '../../../public/svg'
+import { boardSortProps } from '../../../types/componentsProps'
+import { DownArrow } from '../../../../public/svg'
 
 export default function SortingButton({sorting, isSelect, selected, selectOrder}:boardSortProps) {
   return (

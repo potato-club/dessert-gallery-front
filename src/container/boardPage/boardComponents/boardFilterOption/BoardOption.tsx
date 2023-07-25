@@ -3,10 +3,10 @@ import React, { ChangeEvent, KeyboardEvent, useEffect, useState } from 'react'
 import { BoardOptionWrap, OptionCategoriesWrap, OptionCategoriesButton, OptionCategoriesTextInputLabel, OptionCategoriesSVGImg, OptionCategoriesTextInput, SelectOptionWrap, SelectOptionTagWrap, SelectOptionCancleWrap } from './BoardOption.style'
 import CustomizationSelector from './CustomizationSelector'
 import LocationSelector from './LocationSelector'
-import Tag from '../../../components/Tag'
-import type { boardOptionData, filterData, tagClickData } from '../../../types/componentsData'
+import Tag from '../../../../components/Tag'
+import type { boardOptionData, filterData, tagClickData  } from '../../../../types/componentsData'
 import SortingButton from '../SortingButton'
-import { selectOrder } from '../../../types/componentsProps'
+import { selectOrder } from '../../../../types/componentsProps'
 
 
 function BoardOption() {
