@@ -2,6 +2,7 @@ import React, { ChangeEvent, KeyboardEvent, useEffect, useState } from 'react'
 
 import { BoardOptionWrap, OptionCategoriesWrap, OptionCategoriesButton, OptionCategoriesTextInputLabel, OptionCategoriesSVGImg, OptionCategoriesTextInput, SelectOptionWrap, SelectOptionTagWrap, SelectOptionCancleWrap } from './BoardOption.style'
 import CustomizationSelector from './CustomizationSelector'
+import LocationSelector from './LocationSelector'
 import Tag from '../../../components/Tag'
 import type { boardOptionData, filterData, tagClickData } from '../../../types/componentsData'
 import SortingButton from '../SortingButton'
@@ -177,6 +178,7 @@ function BoardOption() {
           <OptionCategoriesTextInput type="text" placeholder='검색어를 입력해 주세요' onChange={onChangeSearchWord} onKeyDown={handleKeyDown} value={searchWord} onFocus={()=>{setSelectCategory(2)}}/>
         </OptionCategoriesTextInputLabel>
       </OptionCategoriesWrap>
+      {selectCategory === 0 && <LocationSelector />}
       {selectCategory === 1 && <CustomizationSelector filterstate={filterOptionState} onClickFilterOption={onClickFilterOption} />}
       <SelectOptionWrap >
         <SelectOptionTagWrap>
