@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { useSetRecoilState } from "recoil";
 import { modalBg } from "../../../recoil/modalBg/atom";
-
+import ModalWrapper from "../../../components/ModalWrapper";
 const PostModal = () => {
   const modalBgState = useSetRecoilState(modalBg);
 
@@ -29,13 +29,6 @@ const PostModal = () => {
 
 export default PostModal;
 
-export const ModalWrapper = styled.div`
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 2;
-`;
 const Container = styled.div`
   display: flex;
   background-color: white;
