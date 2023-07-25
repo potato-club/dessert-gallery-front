@@ -4,6 +4,8 @@ import { BoardOptionWrap, OptionCategoriesWrap, OptionCategoriesButton, OptionCa
 import CustomizationSelector from './CustomizationSelector'
 import Tag from '../../../components/Tag'
 import type { boardOptionData, filterData, tagClickData } from '../../../types/componentsData'
+import SortingButton from '../SortingButton'
+import { selectOrder } from '../../../types/componentsProps'
 
 
 function BoardOption() {
@@ -23,6 +25,11 @@ function BoardOption() {
     location: [],
     selectSearchWord: '',
     filterOption: []
+  })
+  const [sorting, setSorting] = useState<boolean>(false)
+  const [orderOption, setOrderOption] = useState<selectOrder>({
+    kor: '팔로워순',
+    eng: 'followers'
   })
 
   useEffect(()=>{}, [isSelected])
@@ -53,6 +60,17 @@ function BoardOption() {
     ]);
     setIsSelected(false);
   }
+
+  /**
+   * 정렬 옵션 선택 함수
+   */
+  const onChangeOrderOption = ({eng, kor}: selectOrder) => {
+    setOrderOption({
+      eng: eng,
+      kor: kor
+    })
+    setSorting(false)
+  };
 
   const isAllClean=()=>{
     console.log("이게? ", optionData)
@@ -195,6 +213,7 @@ function BoardOption() {
           }
         </SelectOptionCancleWrap>
       </SelectOptionWrap>
+      <SortingButton sorting={()=>{setSorting(prev => !prev)}} isSelect={sorting} selected={orderOption} selectOrder={onChangeOrderOption} />
     </BoardOptionWrap>
   )
 }
