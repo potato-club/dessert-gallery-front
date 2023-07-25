@@ -6,7 +6,9 @@ interface optionCategoriesState {
 }
 
 export const BoardOptionWrap = styled.div`
-    margin-top: 64px;
+    margin: 64px 0 54px 0;
+    position: relative;
+    
 `
 
 export const OptionCategoriesWrap = styled.div`

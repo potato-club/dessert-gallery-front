@@ -6,3 +6,6 @@ export { default as Logo } from "./common/Logo.svg";
 export { default as Search } from "./header/Search.svg";
 export { default as HeaderInfo } from "./header/HeaderInfo.svg";
 export { default as HeaderBookmark } from "./header/HeaderBookmark.svg";
+export { default as DownArrow } from "./common/DownArrow.svg";
+export { default as UpArrow } from "./common/UpArrow.svg";
+export { default as DefaultProfileLogo } from "./storePage/DefaultProfileLogo.svg";
