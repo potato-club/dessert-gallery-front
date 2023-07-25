@@ -1,5 +1,11 @@
-export {default as LeftMoveButtonIcon} from './slideImage/LeftMoveButton.svg';
-export {default as RightMoveButtonIcon} from './slideImage/RightMoveButton.svg';
-export {default as OffBookmark} from './slideImage/OffBookmark.svg';
-export {default as OnBookmark} from './slideImage/OnBookmark.svg';
-export {default as ArrowBottom} from './common/arrowBottom.svg'
+export { default as LeftMoveButtonIcon } from "./slideImage/LeftMoveButton.svg";
+export { default as RightMoveButtonIcon } from "./slideImage/RightMoveButton.svg";
+export { default as OffBookmark } from "./slideImage/OffBookmark.svg";
+export { default as OnBookmark } from "./slideImage/OnBookmark.svg";
+export { default as Logo } from "./common/Logo.svg";
+export { default as Search } from "./header/Search.svg";
+export { default as HeaderInfo } from "./header/HeaderInfo.svg";
+export { default as HeaderBookmark } from "./header/HeaderBookmark.svg";
+export { default as DownArrow } from "./common/DownArrow.svg";
+export { default as UpArrow } from "./common/UpArrow.svg";
+export { default as DefaultProfileLogo } from "./storePage/DefaultProfileLogo.svg";

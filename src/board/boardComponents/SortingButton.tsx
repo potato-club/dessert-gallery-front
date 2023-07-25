@@ -1,14 +1,14 @@
 import React from 'react'
 import { OrderButtonWrap, OrderButton, OrderMenu } from './SortingButton.style'
 import { boardSortProps } from '../../types/componentsProps'
-import { ArrowBottom } from '../../../public/svg'
+import { DownArrow } from '../../../public/svg'
 
 export default function SortingButton({sorting, isSelect, selected, selectOrder}:boardSortProps) {
   return (
     <>
         <OrderButton onClick={sorting}>
           {selected.kor}
-          <ArrowBottom width="35px" height="14px" stroke='#FF8D00'/>
+          <DownArrow width="35px" height="14px"/>
         </OrderButton>
         {
             isSelect && (

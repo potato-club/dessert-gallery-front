@@ -23,10 +23,10 @@ const Container = styled.div`
   display: flex;
   justify-content: center;
   flex-flow: wrap;
-  gap: 58px 76px;
+  gap: 56px 55px;
 `;
 const PostDiv = styled.div`
-  width: 490px;
-  height: 490px;
+  width: 328px;
+  height: 328px;
   background-color: black;
 `;
