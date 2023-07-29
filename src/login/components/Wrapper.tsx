@@ -14,7 +14,7 @@ export default Wrapper;
 const WrapperComponent = styled.div`
   @media screen and (min-width: 1920px) {
     height: 936px;
-    width: 1920px;
+    min-width: 1920px;
   }
   @media screen and (max-width: 1919px) {
     height: 624px;
