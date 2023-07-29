@@ -26,13 +26,21 @@ const Input = ({
 export default Input;
 
 const StyledInput = styled.input<{ marginBottom?: number }>`
+  @media screen and (min-width: 1920px) {
+    padding: 0 50px;
+    width: 500px;
+    height: 60px;
+    font-size: 18px;
+  }
+  @media screen and (max-width: 1919px) {
+    padding: 0 33px;
+    width: 333px;
+    height: 40px;
+    font-size: 11px;
+  }
   display: flex;
-  padding: 0 50px;
-  width: 500px;
-  height: 60px;
-  line-height: 60px;
+  /* align-items: center; */
   border: 2px solid #fdc886;
-  font-size: 18px;
   border-radius: 50px;
   margin-bottom: ${(props) => props.marginBottom}px;
 

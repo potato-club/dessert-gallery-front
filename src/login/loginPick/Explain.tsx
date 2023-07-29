@@ -20,20 +20,34 @@ function Explain({ role }: { role: "owner" | "user" }) {
 export default Explain;
 
 const ExplainWrapper = styled.div`
+  @media screen and (min-width: 1920px) {
+    width: 342px;
+    height: 135px;
+    margin-bottom: 37px;
+  }
+  @media screen and (max-width: 1919px) {
+    width: 228px;
+    height: 91px;
+    margin-bottom: 25px;
+  }
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  width: 342px;
-  height: 135px;
-  margin-bottom: 37px;
 `;
 
 const ExplainComponent = styled.div`
+  @media screen and (min-width: 1920px) {
+    width: 342px;
+    height: 60px;
+    font-size: 18px;
+  }
+  @media screen and (max-width: 1919px) {
+    width: 228px;
+    height: 40px;
+    font-size: 11px;
+  }
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 342px;
-  height: 60px;
-  font-size: 18px;
   background-color: #fcf0e1;
 `;

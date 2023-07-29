@@ -31,6 +31,12 @@ const JoinContnentsWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 500px;
-  height: 545px;
+  @media screen and (min-width: 1920px) {
+    width: 500px;
+    height: 545px;
+  }
+  @media screen and (max-width: 1919px) {
+    width: 333px;
+    height: 381px;
+  }
 `;
