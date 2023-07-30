@@ -20,14 +20,27 @@ function LoginMainContainer() {
             <Input placeholder="비밀번호 입력" />
           </InputDiv>
           <Navigaiton />
-          <Tag
-            title="로그인"
-            width="500px"
-            height="60px"
-            inversion={true}
-            clickAble={true}
-            onClickHandler={() => {}}
-          />
+          <TagDiv wrapperWidth={1920}>
+            <Tag
+              title="로그인"
+              width="500px"
+              height="60px"
+              inversion={true}
+              clickAble={true}
+              onClickHandler={() => {}}
+            />
+          </TagDiv>
+          <TagDiv wrapperWidth={1280}>
+            <Tag
+              title="로그인"
+              width="333px"
+              height="40px"
+              fontSize="11px"
+              inversion={true}
+              clickAble={true}
+              onClickHandler={() => {}}
+            />
+          </TagDiv>
           <Horizon />
           <SocialLogin />
         </MainContnentsWrapper>
@@ -47,16 +60,36 @@ const MainWrapper = styled.div`
 `;
 
 const MainContnentsWrapper = styled.div`
+  @media screen and (min-width: 1920px) {
+    width: 500px;
+    height: 571px;
+  }
+  @media screen and (max-width: 1919px) {
+    width: 333px;
+    height: 379px;
+  }
   display: flex;
-  width: 500px;
-  height: 571px;
   align-items: center;
   flex-direction: column;
 `;
 
 const InputDiv = styled.div`
+  @media screen and (min-width: 1920px) {
+    height: 145px;
+  }
+  @media screen and (max-width: 1919px) {
+    height: 97px;
+  }
   display: flex;
   flex-direction: column;
-  height: 145px;
   justify-content: space-between;
+`;
+
+const TagDiv = styled.div<{ wrapperWidth: 1280 | 1920 }>`
+  @media screen and (min-width: 1920px) {
+    display: ${(props) => (props.wrapperWidth === 1920 ? "" : "none")};
+  }
+  @media screen and (max-width: 1919px) {
+    display: ${(props) => (props.wrapperWidth === 1280 ? "" : "none")};
+  }
 `;
