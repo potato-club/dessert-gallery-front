@@ -76,11 +76,3 @@ const SocialLogoDiv = styled.div`
   }
 `;
 
-const ResponsiveLogoDiv = styled.div<{ wrapperWidth: 1280 | 1920 }>`
-  @media screen and (min-width: 1920px) {
-    /* display: ${(props) => (props.wrapperWidth === 1920 ? "" : "none")}; */
-  }
-  @media screen and (max-width: 1919px) {
-    /* display: ${(props) => (props.wrapperWidth === 1280 ? "" : "none")}; */
-  }
-`;
