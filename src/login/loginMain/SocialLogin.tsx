@@ -16,23 +16,13 @@ function SocialLogin() {
     <SocialLoginWrapper>
       <SocialLoginButton buttonRole="Google">
         <SocialLogoDiv>
-          <ResponsiveLogoDiv wrapperWidth={1920}>
-            <GoogleLogo />
-          </ResponsiveLogoDiv>
-          <ResponsiveLogoDiv wrapperWidth={1280}>
-            <GoogleLogo />
-          </ResponsiveLogoDiv>
+          <GoogleLogo />
         </SocialLogoDiv>
         Google로 로그인
       </SocialLoginButton>
       <SocialLoginButton buttonRole="Kakao" onClick={handleLogin}>
         <SocialLogoDiv>
-          <ResponsiveLogoDiv wrapperWidth={1920}>
-            <KakaoLogo />
-          </ResponsiveLogoDiv>
-          <ResponsiveLogoDiv wrapperWidth={1280}>
-            <KakaoLogo />
-          </ResponsiveLogoDiv>
+          <KakaoLogo />
         </SocialLogoDiv>
         Kakao로 로그인
       </SocialLoginButton>
@@ -88,9 +78,9 @@ const SocialLogoDiv = styled.div`
 
 const ResponsiveLogoDiv = styled.div<{ wrapperWidth: 1280 | 1920 }>`
   @media screen and (min-width: 1920px) {
-    display: ${(props) => (props.wrapperWidth === 1920 ? "" : "none")};
+    /* display: ${(props) => (props.wrapperWidth === 1920 ? "" : "none")}; */
   }
   @media screen and (max-width: 1919px) {
-    display: ${(props) => (props.wrapperWidth === 1280 ? "" : "none")};
+    /* display: ${(props) => (props.wrapperWidth === 1280 ? "" : "none")}; */
   }
 `;
