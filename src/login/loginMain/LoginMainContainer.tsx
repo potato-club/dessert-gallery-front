@@ -20,27 +20,17 @@ function LoginMainContainer() {
             <Input placeholder="비밀번호 입력" />
           </InputDiv>
           <Navigaiton />
-          <TagDiv wrapperWidth={1920}>
+          <TagButtonWrapper>
             <Tag
               title="로그인"
-              width="500px"
-              height="60px"
+              width="100%"
+              height="100%"
+              fontSize="100%"
               inversion={true}
               clickAble={true}
               onClickHandler={() => {}}
             />
-          </TagDiv>
-          <TagDiv wrapperWidth={1280}>
-            <Tag
-              title="로그인"
-              width="333px"
-              height="40px"
-              fontSize="11px"
-              inversion={true}
-              clickAble={true}
-              onClickHandler={() => {}}
-            />
-          </TagDiv>
+          </TagButtonWrapper>
           <Horizon />
           <SocialLogin />
         </MainContnentsWrapper>
@@ -85,11 +75,14 @@ const InputDiv = styled.div`
   justify-content: space-between;
 `;
 
-const TagDiv = styled.div<{ wrapperWidth: 1280 | 1920 }>`
+const TagButtonWrapper = styled.div`
   @media screen and (min-width: 1920px) {
-    display: ${(props) => (props.wrapperWidth === 1920 ? "" : "none")};
+    width: 500px;
+    height: 60px;
   }
   @media screen and (max-width: 1919px) {
-    display: ${(props) => (props.wrapperWidth === 1280 ? "" : "none")};
+    width: 333px;
+    height: 40px;
+    font-size: 11px;
   }
 `;

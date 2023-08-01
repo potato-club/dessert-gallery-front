@@ -2,7 +2,6 @@ import React, { ReactNode, useEffect } from "react";
 import styled from "styled-components";
 import GoogleLogo from "../../../public/svg/loginPage/googleLogo.svg";
 import KakaoLogo from "../../../public/svg/loginPage/kakaoLogo.svg";
-import Link from "next/link";
 
 function SocialLogin() {
   const Rest_api_key = process.env.NEXT_PUBLIC_REST_API_KEY; //REST API KEY
@@ -75,4 +74,3 @@ const SocialLogoDiv = styled.div`
     height: 20px;
   }
 `;
-
