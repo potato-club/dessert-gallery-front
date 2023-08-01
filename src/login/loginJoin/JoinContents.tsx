@@ -10,8 +10,7 @@ function JoinContents() {
       <Input placeholder="닉네임 입력" />
       <Input placeholder="이메일 입력" />
       <Input placeholder="비밀번호 입력" />
-
-      <TagDiv wrapperWidth={1920}>
+      <TagButtonWrapper>
         <Tag
           title="회원가입"
           width="500px"
@@ -20,18 +19,7 @@ function JoinContents() {
           clickAble={true}
           onClickHandler={() => {}}
         />
-      </TagDiv>
-      <TagDiv wrapperWidth={1280}>
-        <Tag
-          title="회원가입"
-          width="333px"
-          height="40px"
-          fontSize="11px"
-          inversion={true}
-          clickAble={true}
-          onClickHandler={() => {}}
-        />
-      </TagDiv>
+      </TagButtonWrapper>
     </JoinContentsWrapper>
   );
 }
@@ -50,11 +38,14 @@ const JoinContentsWrapper = styled.div`
   justify-content: space-between;
 `;
 
-const TagDiv = styled.div<{ wrapperWidth: 1280 | 1920 }>`
+const TagButtonWrapper = styled.div`
   @media screen and (min-width: 1920px) {
-    display: ${(props) => (props.wrapperWidth === 1920 ? "" : "none")};
+    width: 500px;
+    height: 60px;
   }
   @media screen and (max-width: 1919px) {
-    display: ${(props) => (props.wrapperWidth === 1280 ? "" : "none")};
+    width: 333px;
+    height: 40px;
+    font-size: 11px;
   }
 `;

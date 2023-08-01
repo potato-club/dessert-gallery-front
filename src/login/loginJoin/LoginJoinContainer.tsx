@@ -10,7 +10,7 @@ function LoginPickContainer() {
       <JoinkWrapper>
         <JoinContnentsWrapper>
           <Title>Join</Title>
-          <JoinContents></JoinContents>
+          <JoinContents />
         </JoinContnentsWrapper>
       </JoinkWrapper>
     </Wrapper>
