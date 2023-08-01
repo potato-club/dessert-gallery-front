@@ -5,8 +5,26 @@ import OwnerImage from "../../../public/svg/loginPage/owner.svg";
 import UserImage from "../../../public/svg/loginPage/user.svg";
 import Explain from "./Explain";
 import Tag from "../../components/Tag";
+import { useRouter } from "next/router";
+import { useRecoilState } from "recoil";
+import { signUpDataState } from "../../recoil/login/signUpState";
 
 function PickContents({ role }: { role: "owner" | "user" }) {
+  const router = useRouter();
+  const [signUpData, setSignUpData] = useRecoilState(signUpDataState);
+
+  const updateUserRole = () => {
+    console.log(123);
+
+    const userRole = role === "owner" ? "MANAGER" : "USER";
+    console.log(userRole);
+
+    setSignUpData({
+      ...signUpData,
+      userRole: userRole,
+    });
+  };
+
   return (
     <PickContentsDiv>
       <ResponsiveDiv wrapperWidth={1920}>
@@ -35,7 +53,10 @@ function PickContents({ role }: { role: "owner" | "user" }) {
           height="60px"
           inversion={role === "owner" ? true : false}
           clickAble={true}
-          onClickHandler={() => {}}
+          onClickHandler={() => {
+            updateUserRole();
+            router.push("/login/nickname");
+          }}
         />
       </ResponsiveDiv>
       <ResponsiveDiv wrapperWidth={1280}>
@@ -46,7 +67,10 @@ function PickContents({ role }: { role: "owner" | "user" }) {
           inversion={role === "owner" ? true : false}
           fontSize="11px"
           clickAble={true}
-          onClickHandler={() => {}}
+          onClickHandler={() => {
+            updateUserRole();
+            router.push("/login/nickname");
+          }}
         />
       </ResponsiveDiv>
     </PickContentsDiv>
