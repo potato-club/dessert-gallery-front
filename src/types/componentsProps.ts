@@ -259,3 +259,7 @@ export type selectOrder = {
     kor: string
     eng: string
 }
+
+export type locationSelectorProps = {
+    onChangeLocation: (e:string)=> void
+}

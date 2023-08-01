@@ -38,11 +38,32 @@ export const CategoryText = styled.div`
 `;
 
 export const CityWrap = styled.div`
-  width: 333px;
+  width: 337px;
   height: 320px;
   border-right: 2px solid #ff6f0099;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  align-items: center;
 `
 export const DistrictWrap = styled.div`
-  width: 766px;
+  width: 762px;
   height: 320px;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  margin-left: 16px;
 `
+
+
+export const CheckboxInput = styled.input.attrs({ type: 'radio' })`
+  
+  margin-right: 8px;
+`;
+
+export const CheckboxLabel = styled.label`
+  font-family: noto-sans-cjk-kr;
+  font-size: 16px;
+  margin: 16px;
+`;

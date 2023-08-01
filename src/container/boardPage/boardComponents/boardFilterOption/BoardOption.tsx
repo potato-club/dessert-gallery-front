@@ -4,7 +4,7 @@ import { BoardOptionWrap, OptionCategoriesWrap, OptionCategoriesButton, OptionCa
 import CustomizationSelector from './CustomizationSelector'
 import LocationSelector from './LocationSelector'
 import Tag from '../../../../components/Tag'
-import type { boardOptionData, filterData, tagClickData  } from '../../../../types/componentsData'
+import type { boardOptionData, filterData, tagClickData, locationData } from '../../../../types/componentsData'
 import SortingButton from '../SortingButton'
 import { selectOrder } from '../../../../types/componentsProps'
 
@@ -23,7 +23,7 @@ function BoardOption() {
     { selected: 'for 반려동물', idx: 6, state: false },
   ]);
   const [optionData, setOptionData] = useState<boardOptionData>({
-    location: [],
+    location: '',
     selectSearchWord: '',
     filterOption: []
   })
@@ -32,6 +32,7 @@ function BoardOption() {
     kor: '팔로워순',
     eng: 'followers'
   })
+
 
   useEffect(()=>{}, [isSelected])
   /**
@@ -46,7 +47,7 @@ function BoardOption() {
    */
   const onClickResetForm = () => {
     setOptionData({
-      location: [],
+      location: '',
       selectSearchWord: '',
       filterOption: []
     })
@@ -142,6 +143,17 @@ function BoardOption() {
     setIsSelected(true);
   };
 
+  /**
+   * 지역 옵션 선택 처리 함수
+   */
+  const onChangeLocation = (e:string) => {
+    setOptionData((prev) =>({
+      ...prev,
+      location: e
+    }))
+    setIsSelected(true)
+  }
+
   const onClickTag = ({menu, selected='', idx=0}:tagClickData) => {
     if(menu === 2){
       let temp = optionData.filterOption.filter(e => e.selected !==selected)
@@ -178,10 +190,21 @@ function BoardOption() {
           <OptionCategoriesTextInput type="text" placeholder='검색어를 입력해 주세요' onChange={onChangeSearchWord} onKeyDown={handleKeyDown} value={searchWord} onFocus={()=>{setSelectCategory(2)}}/>
         </OptionCategoriesTextInputLabel>
       </OptionCategoriesWrap>
-      {selectCategory === 0 && <LocationSelector />}
+      {selectCategory === 0 && <LocationSelector onChangeLocation={onChangeLocation}/>}
       {selectCategory === 1 && <CustomizationSelector filterstate={filterOptionState} onClickFilterOption={onClickFilterOption} />}
       <SelectOptionWrap >
         <SelectOptionTagWrap>
+          {optionData.location !== '' && <Tag 
+                                                    margin='18px 30px'
+                                                    width='207px' 
+                                                    height='55px' 
+                                                    fontSize='20px' 
+                                                    title={optionData.location} 
+                                                    key={optionData.location} 
+                                                    clickAble={true} 
+                                                    onClickHandler={()=>onClickTag({menu: 1})} 
+                                                  />
+          }
           {
             optionData.selectSearchWord !== '' && <Tag 
                                                     margin='18px 30px'
