@@ -27,30 +27,18 @@ function PickContents({ role }: { role: "owner" | "user" }) {
 
   return (
     <PickContentsDiv>
-      <ResponsiveDiv wrapperWidth={1920}>
-        {role === "owner" ? (
-          <OwnerImage width={123.8} />
-        ) : (
-          <UserImage width={123.8} />
-        )}
-      </ResponsiveDiv>
-      <ResponsiveDiv wrapperWidth={1280}>
-        {role === "owner" ? (
-          <OwnerImage width={82} />
-        ) : (
-          <UserImage width={82} />
-        )}
-      </ResponsiveDiv>
-
+      <ImageWrapper>
+        {role === "owner" ? <OwnerImage /> : <UserImage />}
+      </ImageWrapper>
       <ContentsTitle>
         {role === "owner" ? "가게 운영자" : "일반 회원님"}
       </ContentsTitle>
       <Explain role={role === "owner" ? "owner" : "user"} />
-      <ResponsiveDiv wrapperWidth={1920}>
+      <TagButtonWrapper>
         <Tag
           title={role === "owner" ? "가게 운영자 로그인" : "일반 회원 로그인"}
-          width="342px"
-          height="60px"
+          width="100%"
+          height="100%"
           inversion={role === "owner" ? true : false}
           clickAble={true}
           onClickHandler={() => {
@@ -58,21 +46,7 @@ function PickContents({ role }: { role: "owner" | "user" }) {
             router.push("/login/nickname");
           }}
         />
-      </ResponsiveDiv>
-      <ResponsiveDiv wrapperWidth={1280}>
-        <Tag
-          title={role === "owner" ? "가게 운영자 로그인" : "일반 회원 로그인"}
-          width="228px"
-          height="40px"
-          inversion={role === "owner" ? true : false}
-          fontSize="11px"
-          clickAble={true}
-          onClickHandler={() => {
-            updateUserRole();
-            router.push("/login/nickname");
-          }}
-        />
-      </ResponsiveDiv>
+      </TagButtonWrapper>
     </PickContentsDiv>
   );
 }
@@ -93,11 +67,22 @@ const PickContentsDiv = styled.div`
   align-items: center;
 `;
 
-const ResponsiveDiv = styled.div<{ wrapperWidth: 1280 | 1920 }>`
+const ImageWrapper = styled.div`
   @media screen and (min-width: 1920px) {
-    display: ${(props) => (props.wrapperWidth === 1920 ? "" : "none")};
+    width: 123.8px;
   }
   @media screen and (max-width: 1919px) {
-    display: ${(props) => (props.wrapperWidth === 1280 ? "" : "none")};
+    width: 82px;
+  }
+`;
+
+const TagButtonWrapper = styled.div`
+  @media screen and (min-width: 1920px) {
+    width: 342px;
+    height: 60px;
+  }
+  @media screen and (max-width: 1919px) {
+    width: 228px;
+    height: 40px;
   }
 `;
