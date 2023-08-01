@@ -2,10 +2,10 @@ import React, { ReactNode } from "react";
 import styled from "styled-components";
 import LoginBackground from "../../../public/svg/loginPage/loginBackground.svg";
 import Title from "../components/Title";
-import Input from "../../components/Input";
+import Input from "../../../components/Input";
 import Navigaiton from "./Navigtion";
 import Horizon from "./Horizon";
-import Tag from "../../components/Tag";
+import Tag from "../../../components/Tag";
 import SocialLogin from "./SocialLogin";
 import Wrapper from "../components/Wrapper";
 

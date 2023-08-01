@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import LoginPickContainer from "../../src/login/loginPick/LoginPickContainer";
+import LoginPickContainer from "../../src/container/loginPage/loginPick/LoginPickContainer";
 import { useRouter } from "next/router";
 import { useRecoilState } from "recoil";
 import { signUpDataState } from "../../src/recoil/login/signUpState";
@@ -10,7 +10,7 @@ const LoginPick = () => {
 
   useEffect(() => {
     console.log(signUpData);
-  }, []);
+  }, [signUpData]);
   return <LoginPickContainer />;
 };
 

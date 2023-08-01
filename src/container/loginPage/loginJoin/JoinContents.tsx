@@ -1,6 +1,6 @@
 import React from "react";
-import Input from "../../components/Input";
-import Tag from "../../components/Tag";
+import Input from "../../../components/Input";
+import Tag from "../../../components/Tag";
 import styled from "styled-components";
 
 function JoinContents() {
@@ -13,8 +13,9 @@ function JoinContents() {
       <TagButtonWrapper>
         <Tag
           title="회원가입"
-          width="500px"
-          height="60px"
+          width="100%"
+          height="100%"
+          fontSize="100%"
           inversion={true}
           clickAble={true}
           onClickHandler={() => {}}

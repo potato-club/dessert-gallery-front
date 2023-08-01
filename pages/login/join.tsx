@@ -1,5 +1,5 @@
 import React from "react";
-import LoginJoinContainer from "../../src/login/loginJoin/LoginJoinContainer";
+import LoginJoinContainer from "../../src/container/loginPage/loginJoin/LoginJoinContainer";
 
 const LoginJoin = () => {
   return <LoginJoinContainer />;

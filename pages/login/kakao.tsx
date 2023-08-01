@@ -3,7 +3,7 @@ import axios from "axios";
 import { useRouter } from "next/router";
 import { useRecoilState } from "recoil";
 import { signUpDataState } from "../../src/recoil/login/signUpState";
-import Wrapper from "../../src/login/components/Wrapper";
+import Wrapper from "../../src/container/loginPage/components/Wrapper";
 
 const Kakao = () => {
   const router = useRouter();

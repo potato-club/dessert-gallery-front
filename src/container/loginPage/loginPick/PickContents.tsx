@@ -1,13 +1,13 @@
 import React from "react";
 import styled from "styled-components";
 import ContentsTitle from "./ContentsTitle";
-import OwnerImage from "../../../public/svg/loginPage/owner.svg";
-import UserImage from "../../../public/svg/loginPage/user.svg";
+import OwnerImage from "../../../../public/svg/loginPage/owner.svg";
+import UserImage from "../../../../public/svg/loginPage/user.svg";
 import Explain from "./Explain";
-import Tag from "../../components/Tag";
+import Tag from "../../../components/Tag";
 import { useRouter } from "next/router";
 import { useRecoilState } from "recoil";
-import { signUpDataState } from "../../recoil/login/signUpState";
+import { signUpDataState } from "../../../recoil/login/signUpState";
 
 function PickContents({ role }: { role: "owner" | "user" }) {
   const router = useRouter();
