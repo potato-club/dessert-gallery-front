@@ -1,17 +1,23 @@
-import React, { ReactNode } from "react";
+import React, { ReactNode, useEffect } from "react";
 import styled from "styled-components";
 import GoogleLogo from "../../../public/svg/loginPage/googleLogo.svg";
 import KakaoLogo from "../../../public/svg/loginPage/kakaoLogo.svg";
-import GoogleLogoBig from "../../../public/svg/loginPage/googleLogoBig.svg";
-import KakaoLogoBig from "../../../public/svg/loginPage/kakaoLogoBig.svg";
+import Link from "next/link";
 
 function SocialLogin() {
+  const Rest_api_key = process.env.NEXT_PUBLIC_REST_API_KEY; //REST API KEY
+  const redirect_uri = "http://localhost:3000/login/kakao"; //Redirect URI
+  // oauth 요청 URL
+  const kakaoURL = `https://kauth.kakao.com/oauth/authorize?client_id=${Rest_api_key}&redirect_uri=${redirect_uri}&response_type=code`;
+  const handleLogin = () => {
+    window.location.href = kakaoURL;
+  };
   return (
     <SocialLoginWrapper>
       <SocialLoginButton buttonRole="Google">
         <SocialLogoDiv>
           <ResponsiveLogoDiv wrapperWidth={1920}>
-            <GoogleLogoBig />
+            <GoogleLogo />
           </ResponsiveLogoDiv>
           <ResponsiveLogoDiv wrapperWidth={1280}>
             <GoogleLogo />
@@ -19,10 +25,10 @@ function SocialLogin() {
         </SocialLogoDiv>
         Google로 로그인
       </SocialLoginButton>
-      <SocialLoginButton buttonRole="Kakao">
+      <SocialLoginButton buttonRole="Kakao" onClick={handleLogin}>
         <SocialLogoDiv>
           <ResponsiveLogoDiv wrapperWidth={1920}>
-            <KakaoLogoBig />
+            <KakaoLogo />
           </ResponsiveLogoDiv>
           <ResponsiveLogoDiv wrapperWidth={1280}>
             <KakaoLogo />
@@ -53,7 +59,7 @@ const SocialLoginButton = styled.button<{ buttonRole: "Google" | "Kakao" }>`
     height: 40px;
     font-size: 10px;
   }
-
+  cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -70,8 +76,8 @@ const SocialLogoDiv = styled.div`
   justify-content: center;
   @media screen and (min-width: 1920px) {
     margin-right: 10px;
-    width: 32px;
-    height: 32px;
+    width: 33px;
+    height: 33px;
   }
   @media screen and (max-width: 1919px) {
     margin-right: 7px;
