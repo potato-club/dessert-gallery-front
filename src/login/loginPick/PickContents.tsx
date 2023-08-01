@@ -39,6 +39,7 @@ function PickContents({ role }: { role: "owner" | "user" }) {
           title={role === "owner" ? "가게 운영자 로그인" : "일반 회원 로그인"}
           width="100%"
           height="100%"
+          fontSize="100%"
           inversion={role === "owner" ? true : false}
           clickAble={true}
           onClickHandler={() => {
@@ -80,9 +81,11 @@ const TagButtonWrapper = styled.div`
   @media screen and (min-width: 1920px) {
     width: 342px;
     height: 60px;
+    font-size: 18px;
   }
   @media screen and (max-width: 1919px) {
     width: 228px;
     height: 40px;
+    font-size: 11px;
   }
 `;
