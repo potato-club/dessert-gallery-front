@@ -4,13 +4,15 @@ export type signUpDataType = {
   email: string;
   userRole: "USER" | "MANAGER";
   loginType: "NORMAL" | "KAKAO";
+  nickname: string;
 };
 
-export const signUpDataState = atom<signUpDataType>({
+export const signUpDataStateAtom = atom<signUpDataType>({
   key: "signUpDataState",
   default: {
     email: "",
     userRole: "USER",
     loginType: "NORMAL",
+    nickname: "",
   },
 });

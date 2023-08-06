@@ -7,11 +7,13 @@ import Explain from "./Explain";
 import Tag from "../../../components/Tag";
 import { useRouter } from "next/router";
 import { useRecoilState } from "recoil";
-import { signUpDataState } from "../../../recoil/login/signUpState";
+import { signUpDataStateAtom } from "../../../recoil/login/signUpStateAtom";
+import { modalStateAtom } from "../../../recoil/login/modalStateAtom";
 
 function PickContents({ role }: { role: "owner" | "user" }) {
   const router = useRouter();
-  const [signUpData, setSignUpData] = useRecoilState(signUpDataState);
+  const [signUpData, setSignUpData] = useRecoilState(signUpDataStateAtom);
+  const [modalState, setModalState] = useRecoilState(modalStateAtom);
 
   const updateUserRole = () => {
     console.log(123);
