@@ -261,5 +261,6 @@ export type selectOrder = {
 }
 
 export type locationSelectorProps = {
+    selectedLocation: string
     onChangeLocation: (e:string)=> void
 }

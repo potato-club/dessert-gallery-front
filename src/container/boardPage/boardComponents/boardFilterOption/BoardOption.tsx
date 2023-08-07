@@ -155,7 +155,14 @@ function BoardOption() {
   }
 
   const onClickTag = ({menu, selected='', idx=0}:tagClickData) => {
-    if(menu === 2){
+    if(menu === 1){
+      setOptionData((prev)=>({
+        ...prev,
+        location: ''
+      }))
+    }
+
+    else if(menu === 2){
       let temp = optionData.filterOption.filter(e => e.selected !==selected)
       let state = filterOptionState.map((e,i) => {
         if(i === idx){
@@ -171,7 +178,7 @@ function BoardOption() {
       setFilterOptionState(state); // filterOptionState 업데이트
     }
 
-    if(menu === 3){
+    else if(menu === 3){
       setOptionData((prev)=>({
         ...prev,
         selectSearchWord: ''
@@ -190,7 +197,7 @@ function BoardOption() {
           <OptionCategoriesTextInput type="text" placeholder='검색어를 입력해 주세요' onChange={onChangeSearchWord} onKeyDown={handleKeyDown} value={searchWord} onFocus={()=>{setSelectCategory(2)}}/>
         </OptionCategoriesTextInputLabel>
       </OptionCategoriesWrap>
-      {selectCategory === 0 && <LocationSelector onChangeLocation={onChangeLocation}/>}
+      {selectCategory === 0 && <LocationSelector selectedLocation={optionData.location} onChangeLocation={onChangeLocation}/>}
       {selectCategory === 1 && <CustomizationSelector filterstate={filterOptionState} onClickFilterOption={onClickFilterOption} />}
       <SelectOptionWrap >
         <SelectOptionTagWrap>
