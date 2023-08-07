@@ -74,18 +74,34 @@ function BoardOption() {
     setSorting(false)
   };
 
-  const isAllClean=()=>{
-    console.log("이게? ", optionData)
+  const isAllClean=(menu:number)=>{
     let check = false;
-    if(optionData.filterOption.length > 1){
-      check = true;
+    if(menu ===1){
+      if(optionData.filterOption.length > 0){
+        check = true;
+      }
+      else if(optionData.selectSearchWord.length !==0){
+        check = true;
+      }
+    }else if(menu ===2){
+      if(optionData.filterOption.length > 1){
+        check = true;
+      }
+      else if(optionData.location.length !== 0){
+        check = true;
+      }
+      else if(optionData.selectSearchWord.length !==0){
+        check = true;
+      }
+    }else{
+      if(optionData.filterOption.length > 0){
+        check = true;
+      }
+      else if(optionData.location.length !== 0){
+        check = true;
+      }
     }
-    else if(optionData.location.length !== 0){
-      check = true;
-    }else if( optionData.selectSearchWord !== ''){
-      check = true
-    }
-
+    
     if(check === false){
       setIsSelected(false);
     }
@@ -133,7 +149,7 @@ function BoardOption() {
           return e;
         }
       });
-      isAllClean();
+      isAllClean(2);
     }
     setOptionData((prev) => ({
       ...prev,
@@ -155,11 +171,13 @@ function BoardOption() {
   }
 
   const onClickTag = ({menu, selected='', idx=0}:tagClickData) => {
+    console.log("onClickTag menu", menu)
     if(menu === 1){
       setOptionData((prev)=>({
         ...prev,
         location: ''
       }))
+      isAllClean(menu);
     }
 
     else if(menu === 2){
@@ -176,6 +194,7 @@ function BoardOption() {
         filterOption: temp
       }))
       setFilterOptionState(state); // filterOptionState 업데이트
+      isAllClean(menu);
     }
 
     else if(menu === 3){
@@ -183,8 +202,8 @@ function BoardOption() {
         ...prev,
         selectSearchWord: ''
       }))
+      isAllClean(menu);
     }
-    isAllClean();
   }
 
   return (
@@ -213,18 +232,6 @@ function BoardOption() {
                                                   />
           }
           {
-            optionData.selectSearchWord !== '' && <Tag 
-                                                    margin='18px 30px'
-                                                    width='207px' 
-                                                    height='55px' 
-                                                    fontSize='20px' 
-                                                    title={optionData.selectSearchWord} 
-                                                    key={optionData.selectSearchWord} 
-                                                    clickAble={true} 
-                                                    onClickHandler={()=>onClickTag({menu: 3})} 
-                                                  />
-          }
-          {
             optionData.filterOption.length !== 0 && optionData.filterOption.map((e)=> <Tag 
                                                                                         margin='18px 30px'
                                                                                         width='207px' 
@@ -235,6 +242,18 @@ function BoardOption() {
                                                                                         clickAble={true} 
                                                                                         onClickHandler={()=>onClickTag({menu: 2, selected: e.selected, idx: e.idx})} 
                                                                                       />)
+          }
+          {
+            optionData.selectSearchWord !== '' && <Tag 
+                                                    margin='18px 30px'
+                                                    width='207px' 
+                                                    height='55px' 
+                                                    fontSize='20px' 
+                                                    title={optionData.selectSearchWord} 
+                                                    key={optionData.selectSearchWord} 
+                                                    clickAble={true} 
+                                                    onClickHandler={()=>onClickTag({menu: 3})} 
+                                                  />
           }
         </SelectOptionTagWrap>
         <SelectOptionCancleWrap>
