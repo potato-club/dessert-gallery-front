@@ -1,7 +1,7 @@
 import React from 'react'
 import GalleryPost from './GalleryPost'
 import styled from 'styled-components'
-import { galleryPostValue } from '../../types/componentsProps';
+import { galleryPostValue } from '../../../types/componentsProps';
 
 const imgSrc = [
   'https://cdn.pixabay.com/photo/2016/11/22/18/52/cake-1850011_960_720.jpg',

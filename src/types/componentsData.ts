@@ -1,5 +1,5 @@
 export type boardOptionData = {
-  location: string[],
+  location: string,
   selectSearchWord:string,
   filterOption: filterData[],
 }
@@ -21,4 +21,14 @@ export type tagClickData = {
   selected?: string,
   menu: number
   idx?: number
+}
+
+export type locationData = {
+  city: string,
+  child: string[]
+}
+
+export type selectLocationOptionData = {
+  location: locationData,
+  idx: number
 }

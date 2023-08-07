@@ -1,4 +1,4 @@
-import GalleryBoardContainer from '../src/board/galleryBoard/GalleryBoardContainer'
+import GalleryBoardContainer from "../src/container/boardPage/galleryBoard/GalleryBoardContainer"
 
 const GalleryBoard = () => {
   return (
