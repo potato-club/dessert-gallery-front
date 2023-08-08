@@ -13,9 +13,8 @@ export default function SortingButton({sorting, isSelect, selected, selectOrder}
         {
             isSelect && (
                 <OrderButtonWrap>
-                    <OrderMenu onClick={()=>{selectOrder({kor:'팔로워순', eng:'followers'})}}>팔로워순</OrderMenu>
-                    <OrderMenu onClick={()=>{selectOrder({kor:'인기순', eng:'popularity'})}}>인기순</OrderMenu>
-                    <OrderMenu onClick={()=>{selectOrder({kor:'최신순', eng:'latest'})}}>최신순</OrderMenu>
+                    <OrderMenu onClick={()=>{selectOrder({kor:'팔로워순', value:true})}}>팔로워순</OrderMenu>
+                    <OrderMenu onClick={()=>{selectOrder({kor:'평점순', value:false})}}>평점순</OrderMenu>
                 </OrderButtonWrap>
             )
         }

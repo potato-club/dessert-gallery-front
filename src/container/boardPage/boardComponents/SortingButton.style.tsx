@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 export const OrderButtonWrap = styled.div`
     width: 172px;
-    height: 157px;
+    height: 103px;
     background-color: #FCF0E1;
     border: 3px solid #FF8D00;
     display: flex;

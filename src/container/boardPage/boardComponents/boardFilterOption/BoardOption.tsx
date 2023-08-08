@@ -30,7 +30,7 @@ function BoardOption() {
   const [sorting, setSorting] = useState<boolean>(false)
   const [orderOption, setOrderOption] = useState<selectOrder>({
     kor: '팔로워순',
-    eng: 'followers'
+    value: true
   })
 
 
