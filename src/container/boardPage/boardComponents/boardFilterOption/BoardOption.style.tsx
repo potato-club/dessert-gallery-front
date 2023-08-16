@@ -52,13 +52,13 @@ export const OptionCategoriesButton = styled.button<optionCategoriesState>`
 
 export const OptionCategoriesTextInputLabel = styled.label`
   border: 3px solid #FF6F00;
-  width: 438px;
+  width: 772px;
   height: 68px;
   background-color: #FDC886;
   display: flex;
   align-items: center;
   position: relative;
-  left: -6px;
+  left: -3px;
   border-radius: 16px 16px 0 0;
 
   input::placeholder {

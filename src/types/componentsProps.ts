@@ -252,12 +252,12 @@ export type boardSortProps = {
     isSelect: boolean
     selected: selectOrder
     sorting: ()=>void
-    selectOrder: ({kor, value}: selectOrder)=>void
+    selectOrder: ({kor, eng}: selectOrder)=>void
 }
 
 export type selectOrder = {
     kor: string
-    value: boolean
+    eng: string
 }
 
 export type locationSelectorProps = {

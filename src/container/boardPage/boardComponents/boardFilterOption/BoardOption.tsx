@@ -1,7 +1,6 @@
 import React, { ChangeEvent, KeyboardEvent, useEffect, useState } from 'react'
 
 import { BoardOptionWrap, OptionCategoriesWrap, OptionCategoriesButton, OptionCategoriesTextInputLabel, OptionCategoriesSVGImg, OptionCategoriesTextInput, SelectOptionWrap, SelectOptionTagWrap, SelectOptionCancleWrap } from './BoardOption.style'
-import CustomizationSelector from './CustomizationSelector'
 import LocationSelector from './LocationSelector'
 import Tag from '../../../../components/Tag'
 import type { boardOptionData, filterData, tagClickData, locationData } from '../../../../types/componentsData'
@@ -13,28 +12,20 @@ function BoardOption() {
   const [isSelected, setIsSelected] = useState<boolean>(false)
   const [selectCategory, setSelectCategory] = useState<number>(2)
   const [searchWord, setSearchWord] = useState<string>('')
-  const [filterOptionState, setFilterOptionState] = useState<filterData[]>([
-    { selected: '쌀', idx: 0, state: false },
-    { selected: '떡', idx: 1, state: false },
-    { selected: '일반', idx: 2, state: false },
-    { selected: '용돈 케이크', idx: 3, state: false },
-    { selected: '포토 케이크', idx: 4, state: false },
-    { selected: '토퍼 포함', idx: 5, state: false },
-    { selected: 'for 반려동물', idx: 6, state: false },
-  ]);
+  const [searchWordList, setSearchWordList] = useState<string[]>([])
   const [optionData, setOptionData] = useState<boardOptionData>({
     location: '',
-    selectSearchWord: '',
-    filterOption: []
+    selectSearchWord: [],
   })
   const [sorting, setSorting] = useState<boolean>(false)
   const [orderOption, setOrderOption] = useState<selectOrder>({
     kor: '팔로워순',
-    value: true
+    eng: 'FOLLOWER'
   })
 
 
-  useEffect(()=>{}, [isSelected])
+  useEffect(()=>{}, [])
+
   /**
    * 검색어 입력 함수
    */
@@ -48,18 +39,8 @@ function BoardOption() {
   const onClickResetForm = () => {
     setOptionData({
       location: '',
-      selectSearchWord: '',
-      filterOption: []
+      selectSearchWord: [],
     })
-    setFilterOptionState([
-      { selected: '쌀', idx: 0, state: false },
-      { selected: '떡', idx: 1, state: false },
-      { selected: '일반', idx: 2, state: false },
-      { selected: '용돈 케이크', idx: 3, state: false },
-      { selected: '포토 케이크', idx: 4, state: false },
-      { selected: '토퍼 포함', idx: 5, state: false },
-      { selected: 'for 반려동물', idx: 6, state: false },
-    ]);
     setIsSelected(false);
   }
 
@@ -77,27 +58,13 @@ function BoardOption() {
   const isAllClean=(menu:number)=>{
     let check = false;
     if(menu ===1){
-      if(optionData.filterOption.length > 0){
-        check = true;
-      }
-      else if(optionData.selectSearchWord.length !==0){
-        check = true;
-      }
-    }else if(menu ===2){
-      if(optionData.filterOption.length > 1){
-        check = true;
-      }
-      else if(optionData.location.length !== 0){
-        check = true;
-      }
-      else if(optionData.selectSearchWord.length !==0){
+      if(optionData.selectSearchWord.length !==0){
         check = true;
       }
     }else{
-      if(optionData.filterOption.length > 0){
+      if(optionData.location.length !== 0){
         check = true;
-      }
-      else if(optionData.location.length !== 0){
+      }else if(optionData.selectSearchWord.length>1){
         check = true;
       }
     }
@@ -112,52 +79,23 @@ function BoardOption() {
    * @param e : enter key press 여부
    */
   const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
+    // 엔터 키가 입력되었을 때 동작할 코드 작성
     if (e.key === 'Enter') {
-      // 엔터 키가 입력되었을 때 동작할 코드 작성
+    console.log("처리중", searchWord, searchWordList, optionData.selectSearchWord)
+
+      // 사용자가 입력한 키워드가 겹치지 않으면 배열에 추가
+      let data = searchWordList.findIndex((e)=> e === searchWord) === -1 ? searchWordList.concat(searchWord) : searchWordList 
       setOptionData((prev)=>({
         ...prev,
-        selectSearchWord: searchWord
+        selectSearchWord: data
     }))
+    setSearchWordList(data);
     setIsSelected(true);
     setSearchWord('');
+
     }
   };
 
-  /**
-   * 디저트 종류 선택 함수
-   * @param param0 
-   */
-  const onClickFilterOption = (data: filterData) => {
-    let temp: filterData[];
-    let filter: filterData[]
-  
-    if (optionData.filterOption.findIndex((e) => e.selected === data.selected) === -1) {
-      temp = optionData.filterOption.concat(data);
-      filter = filterOptionState.map((e)=> {
-        if(e.selected === data.selected){
-          return {selected: e.selected, idx: e.idx, state: true}
-        }else{
-          return e;
-        }
-      });
-    } else {
-      temp = optionData.filterOption.filter((e) => e.selected !== data.selected);
-      filter = filterOptionState.map((e)=> {
-        if(e.selected === data.selected){
-          return {selected: e.selected, idx: e.idx, state: false}
-        }else{
-          return e;
-        }
-      });
-      isAllClean(2);
-    }
-    setOptionData((prev) => ({
-      ...prev,
-      filterOption: temp,
-    }));
-    setFilterOptionState(filter); // filterOptionState 업데이트
-    setIsSelected(true);
-  };
 
   /**
    * 지역 옵션 선택 처리 함수
@@ -170,8 +108,7 @@ function BoardOption() {
     setIsSelected(true)
   }
 
-  const onClickTag = ({menu, selected='', idx=0}:tagClickData) => {
-    console.log("onClickTag menu", menu)
+  const onClickTag = ({menu, idx=0}:tagClickData) => {
     if(menu === 1){
       setOptionData((prev)=>({
         ...prev,
@@ -179,29 +116,13 @@ function BoardOption() {
       }))
       isAllClean(menu);
     }
-
     else if(menu === 2){
-      let temp = optionData.filterOption.filter(e => e.selected !==selected)
-      let state = filterOptionState.map((e,i) => {
-        if(i === idx){
-          return {selected: e.selected, idx: e.idx, state: false};
-        }else{
-          return e;
-        }
-      })
+      let temp = searchWordList.filter((e, i) => i !==idx)
       setOptionData((prev)=>({
         ...prev,
-        filterOption: temp
+        selectSearchWord: temp
       }))
-      setFilterOptionState(state); // filterOptionState 업데이트
-      isAllClean(menu);
-    }
-
-    else if(menu === 3){
-      setOptionData((prev)=>({
-        ...prev,
-        selectSearchWord: ''
-      }))
+      setSearchWordList(temp)
       isAllClean(menu);
     }
   }
@@ -210,18 +131,16 @@ function BoardOption() {
     <BoardOptionWrap>
       <OptionCategoriesWrap>
         <OptionCategoriesButton categoryId={0} selectNumber={selectCategory} onClick={()=>{setSelectCategory(0)}}>픽업 지역 선택</OptionCategoriesButton>
-        <OptionCategoriesButton categoryId={1} selectNumber={selectCategory} onClick={()=>{setSelectCategory(1)}} >디저트 종류</OptionCategoriesButton>
         <OptionCategoriesTextInputLabel>
           <OptionCategoriesSVGImg src='/SVG/galleryBoardPage/Search.svg'/>
-          <OptionCategoriesTextInput type="text" placeholder='검색어를 입력해 주세요' onChange={onChangeSearchWord} onKeyDown={handleKeyDown} value={searchWord} onFocus={()=>{setSelectCategory(2)}}/>
+          <OptionCategoriesTextInput type="text" placeholder='해시태그를 검색해보세요' onChange={onChangeSearchWord} onKeyDown={handleKeyDown} value={searchWord} onFocus={()=>{setSelectCategory(2)}}/>
         </OptionCategoriesTextInputLabel>
       </OptionCategoriesWrap>
       {selectCategory === 0 && <LocationSelector selectedLocation={optionData.location} onChangeLocation={onChangeLocation}/>}
-      {selectCategory === 1 && <CustomizationSelector filterstate={filterOptionState} onClickFilterOption={onClickFilterOption} />}
       <SelectOptionWrap >
         <SelectOptionTagWrap>
           {optionData.location !== '' && <Tag 
-                                                    margin='18px 30px'
+                                                    margin='18px 24px'
                                                     width='207px' 
                                                     height='55px' 
                                                     fontSize='20px' 
@@ -232,28 +151,16 @@ function BoardOption() {
                                                   />
           }
           {
-            optionData.filterOption.length !== 0 && optionData.filterOption.map((e)=> <Tag 
-                                                                                        margin='18px 30px'
-                                                                                        width='207px' 
-                                                                                        height='55px' 
-                                                                                        fontSize='20px' 
-                                                                                        title={e.selected} 
-                                                                                        key={e.selected} 
-                                                                                        clickAble={true} 
-                                                                                        onClickHandler={()=>onClickTag({menu: 2, selected: e.selected, idx: e.idx})} 
-                                                                                      />)
-          }
-          {
-            optionData.selectSearchWord !== '' && <Tag 
-                                                    margin='18px 30px'
+            optionData.selectSearchWord.length !== 0 && optionData.selectSearchWord.map((e, i)=> <Tag 
+                                                    margin='18px 24px'
                                                     width='207px' 
                                                     height='55px' 
                                                     fontSize='20px' 
-                                                    title={optionData.selectSearchWord} 
-                                                    key={optionData.selectSearchWord} 
+                                                    title={e} 
+                                                    key={e} 
                                                     clickAble={true} 
-                                                    onClickHandler={()=>onClickTag({menu: 3})} 
-                                                  />
+                                                    onClickHandler={()=>onClickTag({menu: 2, idx: i})} 
+                                                  />)
           }
         </SelectOptionTagWrap>
         <SelectOptionCancleWrap>

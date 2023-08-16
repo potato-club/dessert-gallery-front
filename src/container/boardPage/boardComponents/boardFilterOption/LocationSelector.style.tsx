@@ -38,7 +38,7 @@ export const CategoryText = styled.div`
 `;
 
 export const CityWrap = styled.div`
-  width: 337px;
+  width: 330px;
   height: 320px;
   border-right: 2px solid #ff6f0099;
 `
