@@ -2,11 +2,11 @@ import React, { useEffect } from "react";
 import axios from "axios";
 import { useRouter } from "next/router";
 import Wrapper from "../../src/container/loginPage/components/Wrapper";
-import { useSignUpDataState } from "../../src/recoil/login/signUpStateAtom";
+import { useSignupDataState } from "../../src/recoil/login/signupStateAtom";
 
 const Kakao = () => {
   const router = useRouter();
-  const [signUpData, setSignUpData] = useSignUpDataState();
+  const [signUpData, setSignUpData] = useSignupDataState();
 
   useEffect(() => {
     const fetchData = async () => {

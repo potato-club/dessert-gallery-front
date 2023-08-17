@@ -27,16 +27,16 @@ const defaultValue: signUpDataType = {
 };
 
 // 리코일 atom 선언, effects_UNSTABLE 속성을 이용해 웹스토리지 사용 정의
-export const signUpDataStateAtom = atom<signUpDataType>({
+export const signupDataStateAtom = atom<signUpDataType>({
   key: "signUpDataState",
   default: defaultValue,
   effects_UNSTABLE: [persistAtom],
 });
 
 // next.js에서 recoil-persist 사용 시 발생하는 hydration 에러를 해결하기 위한 코드
-export function useSignUpDataState() {
+export function useSignupDataState() {
   const [isInitial, setIsInitial] = useState(true);
-  const [value, setValue] = useRecoilState(signUpDataStateAtom);
+  const [value, setValue] = useRecoilState(signupDataStateAtom);
 
   useEffect(() => {
     setIsInitial(false);
