@@ -11,6 +11,8 @@ function Modal({}: {}) {
     setModalState({ ...modalState, inputValue: inputValue });
     console.log(modalState);
   };
+
+  
   return (
     <ModalWrapper state={modalState.state}>
       <ModalContentsDiv>

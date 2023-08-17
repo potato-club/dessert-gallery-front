@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import ContentsTitle from "./ContentsTitle";
 import OwnerImage from "../../../../public/svg/loginPage/owner.svg";
@@ -7,12 +7,12 @@ import Explain from "./Explain";
 import Tag from "../../../components/Tag";
 import { useRouter } from "next/router";
 import { useRecoilState } from "recoil";
-import { signUpDataStateAtom } from "../../../recoil/login/signUpStateAtom";
 import { modalStateAtom } from "../../../recoil/login/modalStateAtom";
+import { useSignUpDataState } from "../../../recoil/login/signUpStateAtom";
 
 function PickContents({ role }: { role: "owner" | "user" }) {
   const router = useRouter();
-  const [signUpData, setSignUpData] = useRecoilState(signUpDataStateAtom);
+  const [signUpData, setSignUpData] = useSignUpDataState();
   const [modalState, setModalState] = useRecoilState(modalStateAtom);
 
   const updateUserRole = () => {
@@ -55,7 +55,6 @@ function PickContents({ role }: { role: "owner" | "user" }) {
       inputState: true,
       onClickConfirmButton: () => {
         console.log(modalState.inputValue);
-
         checkUserNickname();
       },
       onClickCancelButton: () => {
@@ -65,7 +64,7 @@ function PickContents({ role }: { role: "owner" | "user" }) {
   };
 
   const checkUserNickname = () => {
-    console.log(modalState);
+    console.log(1, modalState);
 
     setModalState({
       ...modalState,
