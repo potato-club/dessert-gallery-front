@@ -1,22 +1,6 @@
 import { atom } from "recoil";
 
-export type modalStateType = {
-  state: boolean;
-  inputState: boolean;
-  inputValue: string;
-  explain: string;
-  onClickConfirmButton: () => void;
-  onClickCancelButton: () => void;
-};
-
-export const modalStateAtom = atom<modalStateType>({
+export const modalStateAtom = atom<boolean>({
   key: "modalState",
-  default: {
-    state: false,
-    inputState: false,
-    explain: "",
-    inputValue: "",
-    onClickConfirmButton: () => {},
-    onClickCancelButton: () => {},
-  },
+  default: false,
 });

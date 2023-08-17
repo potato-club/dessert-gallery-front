@@ -1,34 +1,87 @@
-import React, { ReactNode } from "react";
+import React, { ReactNode, useEffect, useState } from "react";
 import styled from "styled-components";
 import { modalStateAtom } from "../../../recoil/login/modalStateAtom";
 import { useRecoilState } from "recoil";
+import { useSignupDataState } from "../../../recoil/login/signupStateAtom";
 
-function Modal({}: {}) {
+function Modal() {
   const [modalState, setModalState] = useRecoilState(modalStateAtom);
+  const [signupDataState, setSignupDataState] = useSignupDataState();
+  const [nickname, setNickname] = useState("");
+  const [stepSignup, setStepSignup] = useState(1);
 
-  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const inputValue = event.target.value;
-    setModalState({ ...modalState, inputValue: inputValue });
-    console.log(modalState);
+  const closeModal = () => {
+    setModalState(false);
+    setNickname("");
+    setStepSignup(1);
   };
 
-  
-  return (
-    <ModalWrapper state={modalState.state}>
-      <ModalContentsDiv>
-        <ExplainDiv>{modalState.explain}</ExplainDiv>
-        <InputDiv inputState={modalState.inputState}>
-          <NicknameInput onChange={handleInputChange}></NicknameInput>
-        </InputDiv>
-      </ModalContentsDiv>
-      <ButtonDiv>
-        <ModalButton onClick={modalState.onClickConfirmButton}>
-          확인
-        </ModalButton>
-        <ModalButton onClick={modalState.onClickCancelButton}>취소</ModalButton>
-      </ButtonDiv>
-    </ModalWrapper>
-  );
+  const handleNicknameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setNickname(event.target.value);
+  };
+
+  const handleSetNickname = () => {
+    setSignupDataState({ ...signupDataState, nickname: nickname });
+    console.log(signupDataState);
+    closeModal();
+  };
+
+  const renderModalContent = () => {
+    switch (stepSignup) {
+      case 1:
+        return (
+          <>
+            <ModalContentsDiv>
+              <ExplainDiv>
+                {signupDataState.userRole === "MANAGER"
+                  ? "가게 운영자로 회원가입 하시겠습니까?"
+                  : "일반 회원으로 회원가입 하시겠습니까?"}
+              </ExplainDiv>
+            </ModalContentsDiv>
+            <ButtonDiv>
+              <ModalButton onClick={() => setStepSignup(2)}>확인</ModalButton>
+              <ModalButton onClick={closeModal}>취소</ModalButton>
+            </ButtonDiv>
+          </>
+        );
+      case 2:
+        return (
+          <>
+            <ModalContentsDiv>
+              <ExplainDiv>닉네임을 입력하세요</ExplainDiv>
+              <InputDiv>
+                <NicknameInput
+                  type="text"
+                  onChange={handleNicknameChange}
+                  value={nickname}
+                  placeholder="닉네임을 입력하세요"
+                ></NicknameInput>
+              </InputDiv>
+            </ModalContentsDiv>
+            <ButtonDiv>
+              <ModalButton onClick={() => setStepSignup(3)}>확인</ModalButton>
+              <ModalButton onClick={closeModal}>취소</ModalButton>
+            </ButtonDiv>
+          </>
+        );
+      case 3:
+        return (
+          <>
+            <ModalContentsDiv>
+              <ExplainDiv>
+                닉네임을 {nickname}(으)로 설정하시겠습니까?
+              </ExplainDiv>
+            </ModalContentsDiv>
+            <ButtonDiv>
+              <ModalButton onClick={handleSetNickname}>확인</ModalButton>
+              <ModalButton onClick={() => setStepSignup(2)}>취소</ModalButton>
+            </ButtonDiv>
+          </>
+        );
+    }
+  };
+
+  return <ModalWrapper state={modalState}>{renderModalContent()}</ModalWrapper>;
 }
 
 export default Modal;
@@ -57,11 +110,10 @@ const ExplainDiv = styled.div`
   height: 150px;
 `;
 
-const InputDiv = styled.div<{ inputState: boolean }>`
+const InputDiv = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  visibility: ${(props) => (props.inputState === false ? "hidden" : "")};
   width: 100%;
   height: 50px;
 `;

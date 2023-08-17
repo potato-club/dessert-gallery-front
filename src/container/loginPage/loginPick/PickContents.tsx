@@ -6,14 +6,14 @@ import UserImage from "../../../../public/svg/loginPage/user.svg";
 import Explain from "./Explain";
 import Tag from "../../../components/Tag";
 import { useRouter } from "next/router";
-import { useRecoilState } from "recoil";
+import { useSetRecoilState } from "recoil";
 import { modalStateAtom } from "../../../recoil/login/modalStateAtom";
-import { useSignUpDataState } from "../../../recoil/login/signUpStateAtom";
+import { useSignupDataState } from "../../../recoil/login/signupStateAtom";
 
 function PickContents({ role }: { role: "owner" | "user" }) {
   const router = useRouter();
-  const [signUpData, setSignUpData] = useSignUpDataState();
-  const [modalState, setModalState] = useRecoilState(modalStateAtom);
+  const [signupData, setSignUpData] = useSignupDataState();
+  const setModalState = useSetRecoilState(modalStateAtom);
 
   const updateUserRole = () => {
     console.log(123);
@@ -22,62 +22,8 @@ function PickContents({ role }: { role: "owner" | "user" }) {
     console.log(userRole);
 
     setSignUpData({
-      ...signUpData,
+      ...signupData,
       userRole: userRole,
-    });
-  };
-
-  const checkUserRole = () => {
-    const explain =
-      role === "owner"
-        ? "가게 운영자로 회원가입 하시겠습니까?"
-        : "일반 회원으로 회원가입 하시겠습니까?";
-
-    setModalState({
-      ...modalState,
-      state: true,
-      explain: explain,
-      onClickConfirmButton: () => {
-        updateUserRole();
-        inputUserNickname();
-      },
-      onClickCancelButton: () => {
-        setModalState({ ...modalState, state: false });
-      },
-    });
-  };
-
-  const inputUserNickname = () => {
-    setModalState({
-      ...modalState,
-      state: true,
-      explain: "닉네임을 입력해주세요",
-      inputState: true,
-      onClickConfirmButton: () => {
-        console.log(modalState.inputValue);
-        checkUserNickname();
-      },
-      onClickCancelButton: () => {
-        setModalState({ ...modalState });
-      },
-    });
-  };
-
-  const checkUserNickname = () => {
-    console.log(1, modalState);
-
-    setModalState({
-      ...modalState,
-      state: true,
-      explain: `닉네임을 ${modalState.inputValue}로 설정하시겠습니까?`,
-      inputState: false,
-      onClickConfirmButton: () => {
-        setSignUpData({ ...signUpData, nickname: modalState.inputValue });
-        console.log(signUpData);
-      },
-      onClickCancelButton: () => {
-        inputUserNickname();
-      },
     });
   };
 
@@ -99,7 +45,8 @@ function PickContents({ role }: { role: "owner" | "user" }) {
           inversion={role === "owner" ? true : false}
           clickAble={true}
           onClickHandler={() => {
-            checkUserRole();
+            updateUserRole();
+            setModalState(true);
           }}
         />
       </TagButtonWrapper>
