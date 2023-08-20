@@ -264,3 +264,8 @@ export type locationSelectorProps = {
     selectedLocation: string
     onChangeLocation: (e:string)=> void
 }
+
+export type ToastMessageProps = {
+    messageString: string
+    timer: number
+}
