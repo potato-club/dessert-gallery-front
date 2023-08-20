@@ -44,7 +44,7 @@ export const CityWrap = styled.div`
 `
 
 export const City = styled.div`
-  width: 337px;
+  width: 330px;
   height: 320px;
   display: flex;
   flex-direction: column;
@@ -74,5 +74,5 @@ export const CheckboxInput = styled.input.attrs({ type: 'radio' })`
 export const CheckboxLabel = styled.label`
   font-family: noto-sans-cjk-kr;
   font-size: 16px;
-  margin: 16px;
+  margin: 16px 0;
 `;

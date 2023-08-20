@@ -52,8 +52,8 @@ export const OptionCategoriesButton = styled.button<optionCategoriesState>`
 
 export const OptionCategoriesTextInputLabel = styled.label`
   border: 3px solid #FF6F00;
-  width: 772px;
-  height: 68px;
+  width: 769px;
+  height: 62px;
   background-color: #FDC886;
   display: flex;
   align-items: center;

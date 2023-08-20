@@ -257,7 +257,7 @@ export type boardSortProps = {
 
 export type selectOrder = {
     kor: string
-    eng: string
+    eng: "RECENT"| "FOLLOWER"| "SCORE"
 }
 
 export type locationSelectorProps = {

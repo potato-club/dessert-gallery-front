@@ -7,6 +7,8 @@ import type { boardOptionData, filterData, tagClickData, locationData } from '..
 import SortingButton from '../SortingButton'
 import { selectOrder } from '../../../../types/componentsProps'
 
+import { useGetStoreBoardListdData } from '../../../../hooks/useGetStoreBoardList'
+
 
 function BoardOption() {
   const [isSelected, setIsSelected] = useState<boolean>(false)
@@ -22,6 +24,14 @@ function BoardOption() {
     kor: '팔로워순',
     eng: 'FOLLOWER'
   })
+  const [pageCount, setPageCount] = useState<number>(1)
+  const {data, error, isLoading} = useGetStoreBoardListdData({
+    page: pageCount.toString(),
+    sortType: orderOption.eng,
+    address: optionData.location,
+    searchType: optionData.selectSearchWord
+  });
+
 
 
   useEffect(()=>{}, [])
@@ -127,6 +137,17 @@ function BoardOption() {
     }
   }
 
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>Error</div>;
+  }
+
+  if(data){
+    console.log("use", data)
+  }
   return (
     <BoardOptionWrap>
       <OptionCategoriesWrap>
