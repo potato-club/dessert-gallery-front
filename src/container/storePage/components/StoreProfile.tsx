@@ -3,8 +3,17 @@ import styled, { css } from "styled-components";
 import Tag from "../../../components/Tag";
 
 const StoreProfile = ({ storeInfo }: any) => {
-  const { name, introduction, address, phoneNumber, storeImage, postCount } =
-    storeInfo;
+  const {
+    name,
+    introduction,
+    address,
+    phoneNumber,
+    storeImage,
+    postCount,
+    followers,
+    follow,
+    id,
+  } = storeInfo;
 
   return (
     <Container>
@@ -23,13 +32,13 @@ const StoreProfile = ({ storeInfo }: any) => {
             </InfoView>
             <InfoView>
               <Name>팔로워</Name>
-              <Number>2354</Number>
+              <Number>{followers}</Number>
             </InfoView>
             <InfoView></InfoView>
           </StoreInfo>
           <BtnList>
             <StoreProfileBtn
-              title="팔로우"
+              title={follow ? "팔로우 끊기" : "팔로우"}
               clickAble={true}
               hoverCss={true}
               width="90px"
@@ -111,10 +120,12 @@ const StoreInfo = styled.div`
 `;
 const InfoView = styled.div`
   display: flex;
+  align-items: center;
   gap: 13px;
 `;
 const Name = styled.span`
   ${textcss}
+  font-size: 13px;
   font-weight: 700;
 `;
 const Number = styled.span`

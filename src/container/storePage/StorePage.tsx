@@ -10,9 +10,8 @@ import { StoreProps } from "../../../pages/galleryBoard/[store]";
 const StorePage = (props: StoreProps) => {
   const [spreadClick, setSpreadClick] = useState<boolean>(false);
 
-  const { storeInfo, announceData, storePoster } = props;
-
-  console.log(announceData);
+  const { storeInfo, announceData, posterThumnail, storeReview, detailPoster } =
+    props;
 
   return (
     <Container>
@@ -53,7 +52,10 @@ const StorePage = (props: StoreProps) => {
           </AbsoluteDiv>
         )}
       </AnnounceList>
-      <StoreContent storePoster={storePoster} />
+      <StoreContent
+        posterThumnail={posterThumnail}
+        detailPoster={detailPoster}
+      />
     </Container>
   );
 };
