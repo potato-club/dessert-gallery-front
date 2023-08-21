@@ -1,7 +1,11 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import Rating from "../../../components/Rating";
-import { DefaultProfileLogo, DownArrow, UpArrow } from "../../../../public/svg";
+import Rating from "../../../../components/Rating";
+import {
+  DefaultProfileLogo,
+  DownArrow,
+  UpArrow,
+} from "../../../../../public/svg";
 const Review = () => {
   const [infoBtnClick, setInfoBtnClick] = useState<boolean>(false);
 

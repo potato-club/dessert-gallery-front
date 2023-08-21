@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import styled, { css } from "styled-components";
 import Poster from "./Poster";
-import PostModal from "./PostModal";
-import ReviewList from "./ReviewList";
+import PostModal from "./Modal";
+import ReviewList from "./Review";
 import { useRecoilValue } from "recoil";
 import { modalBg } from "../../../recoil/modalBg/atom";
 
-const StoreContent = () => {
+const StoreContent = ({ storePoster }: any) => {
   const [optionNum, setOptionNum] = useState<number>(1);
 
   const onModal = useRecoilValue(modalBg);
@@ -33,7 +33,7 @@ const StoreContent = () => {
           가게 후기
         </ReviewBtn>
       </Options>
-      {optionNum == 1 ? <Poster /> : <ReviewList />}
+      {optionNum == 1 ? <Poster storePoster={storePoster} /> : <ReviewList />}
     </Container>
   );
 };
@@ -44,7 +44,6 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: center;
   gap: 45px;
   margin: 0px auto;
   max-width: 1100px;

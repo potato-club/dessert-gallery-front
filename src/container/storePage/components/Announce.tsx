@@ -3,47 +3,77 @@ import styled from "styled-components";
 import Tag from "../../../components/Tag";
 import { DownArrow, UpArrow } from "../../../../public/svg";
 
-const Announce = ({ ...props }: any) => {
+/**
+ * props 종류
+ * title
+ * createdDate
+ * spreadClick, setSpreadClick
+ */
+const Announce = ({
+  content,
+  spreadClick,
+  setSpreadClick,
+  isFirst,
+  createdDate,
+}: any) => {
+  console.log(createdDate);
   const [infoBtnClick, setInfoBtnClick] = useState<boolean>(false);
-
   return (
     <Container>
       {infoBtnClick ? (
         <InnerCont>
           <LeftCont>
             <Tag title="공지사항" width="112px" height="32px" fontSize="13px" />
-            <TextContent infoBtnClick={infoBtnClick}>
-              Lorem ipsum, dolor sit amet consectetur adipisicing elit. Fugiat
-              consequatur omnis, eveniet vel asperiores maxime iure vitae non
-              illum, accusantium enim saepe fugit. Quidem libero, ducimus id
-              fugiat omnis a.
+            <TextContent infoBtnClick={infoBtnClick} spreadClick={spreadClick}>
+              {content}
             </TextContent>
           </LeftCont>
           <RightCont>
-            <Time>2023-04-27</Time>
+            <Time>{createdDate}</Time>
             <MoreBtn onClick={() => setInfoBtnClick(false)}>
               <span>접기</span>
               <UpArrow width="16px" height="7px" />
             </MoreBtn>
+            {isFirst && !spreadClick && (
+              <FoldBtn
+                title="전체보기"
+                width="106px"
+                height="32px"
+                fontSize="13px"
+                clickAble={true}
+                inversion={true}
+                hoverCss={true}
+                onClickHandler={() => setSpreadClick(true)}
+              />
+            )}
           </RightCont>
         </InnerCont>
       ) : (
         <InnerCont>
           <LeftCont>
             <Tag title="공지사항" width="112px" height="32px" fontSize="13px" />
-            <TextContent infoBtnClick={infoBtnClick}>
-              Lorem ipsum, dolor sit amet consectetur adipisicing elit. Fugiat
-              consequatur omnis, eveniet vel asperiores maxime iure vitae non
-              illum, accusantium enim saepe fugit. Quidem libero, ducimus id
-              fugiat omnis a.
+            <TextContent infoBtnClick={infoBtnClick} spreadClick={spreadClick}>
+              {content}
             </TextContent>
           </LeftCont>
           <RightCont>
-            <Time>2023-04-27</Time>
+            <Time>{createdDate}</Time>
             <MoreBtn onClick={() => setInfoBtnClick(true)}>
               <span>더보기</span>
               <DownArrow width="16px" height="7px" />
             </MoreBtn>
+            {isFirst && !spreadClick && (
+              <FoldBtn
+                title="전체보기"
+                width="106px"
+                height="32px"
+                fontSize="13px"
+                clickAble={true}
+                inversion={true}
+                hoverCss={true}
+                onClickHandler={() => setSpreadClick(true)}
+              />
+            )}
           </RightCont>
         </InnerCont>
       )}
@@ -72,9 +102,12 @@ const LeftCont = styled.div`
   display: flex;
   gap: 55px;
 `;
-const TextContent = styled.span<{ infoBtnClick: boolean }>`
+const TextContent = styled.span<{
+  infoBtnClick: boolean;
+  spreadClick: boolean;
+}>`
   display: inline-block;
-  width: 630px;
+  width: ${({ spreadClick }) => (spreadClick ? "630px" : "510px")};
   color: #000;
   font-size: 15px;
   font-weight: 700;
@@ -86,14 +119,14 @@ const TextContent = styled.span<{ infoBtnClick: boolean }>`
 
 const RightCont = styled.div`
   display: flex;
-  gap: 76px;
-  padding-top: 8px;
-  height: 22px;
+  align-items: center;
+  gap: 43px;
 `;
 const Time = styled.span`
   color: #828282;
   font-size: 15px;
   font-weight: 500;
+  margin-right: 33px;
 `;
 const MoreBtn = styled.button`
   display: flex;
@@ -108,3 +141,4 @@ const MoreBtn = styled.button`
   align-items: center;
   cursor: pointer;
 `;
+const FoldBtn = styled(Tag)``;

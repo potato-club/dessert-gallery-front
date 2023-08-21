@@ -1,9 +1,10 @@
 import React from "react";
 import styled from "styled-components";
 import { useSetRecoilState } from "recoil";
-import { modalBg } from "../../../recoil/modalBg/atom";
+import { modalBg } from "../../../../recoil/modalBg/atom";
 
-const Poster = () => {
+const Poster = ({ storePoster }: any) => {
+  console.log(storePoster);
   const modalBgState = useSetRecoilState(modalBg);
 
   const onClick = () => {
@@ -11,13 +12,13 @@ const Poster = () => {
   };
   return (
     <Container>
-      <PostDiv onClick={onClick} />
-      <PostDiv onClick={onClick} />
-      <PostDiv onClick={onClick} />
-      <PostDiv onClick={onClick} />
-      <PostDiv onClick={onClick} />
-      <PostDiv onClick={onClick} />
-      <PostDiv onClick={onClick} />
+      {storePoster.map((item: any, idx: number) => (
+        <PostDiv
+          key={idx}
+          src={item.thumbnail.fileUrl}
+          onClick={onClick}
+        ></PostDiv>
+      ))}
     </Container>
   );
 };
@@ -29,10 +30,9 @@ const Container = styled.div`
   flex-flow: wrap;
   gap: 52px 58px;
 `;
-const PostDiv = styled.div`
+const PostDiv = styled.img`
   width: 328px;
   height: 328px;
-  background-color: black;
   &:hover {
     cursor: pointer;
   }

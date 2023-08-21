@@ -1,31 +1,25 @@
-import React from "react";
+import React, { useState } from "react";
 import styled, { css } from "styled-components";
-import Image from "next/image";
 import Tag from "../../../components/Tag";
 
-const StoreProfile = () => {
+const StoreProfile = ({ storeInfo }: any) => {
+  const { name, introduction, address, phoneNumber, storeImage, postCount } =
+    storeInfo;
+
   return (
     <Container>
-      <Image
-        src="/image/storeProfile.png"
-        width="320px"
-        height="321px"
-        alt=""
-      />
+      <StoreImg src={storeImage.fileUrl} />
       <InnerContainer>
         <InfoContent>
-          <StoreName>늘봄 케이크</StoreName>
+          <StoreName>{name}</StoreName>
           <SubTitle>레터링 케이크 주문 제작</SubTitle>
-          <MainPhrase>
-            항상 언제든 늘 봄처럼 따스한 케이크를 <br />
-            드립니다 글루톈프리 케이크로 건강하게 =0
-          </MainPhrase>
-          <Address>서울시 강서구 곰달래길 12</Address>
-          <StoreNumber>010-1234-5678</StoreNumber>
+          <MainPhrase>{introduction}</MainPhrase>
+          <Address>{address}</Address>
+          <StoreNumber>{phoneNumber}</StoreNumber>
           <StoreInfo>
             <InfoView>
               <Name>게시물</Name>
-              <Number>15</Number>
+              <Number>{postCount}</Number>
             </InfoView>
             <InfoView>
               <Name>팔로워</Name>
@@ -60,11 +54,15 @@ const StoreProfile = () => {
 
 export default StoreProfile;
 
+const StoreImg = styled.img`
+  width: 320px;
+  height: 320px;
+`;
 const StoreProfileBtn = styled(Tag)``;
 const Container = styled.div`
   display: flex;
   width: 640px;
-  height: 321px;
+  height: 320px;
   box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.161);
   background-color: #fffdf9;
 `;
@@ -96,6 +94,7 @@ const SubTitle = styled.h2`
 `;
 const MainPhrase = styled.p`
   ${textcss}
+  min-height: 50px;
   margin-bottom: 11px;
 `;
 const Address = styled.p`
