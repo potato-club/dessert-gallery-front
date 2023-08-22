@@ -8,12 +8,12 @@ interface componentProps {
 
 export const GalleryPostWrap = styled.div<componentProps>`
     width: ${({width}) => `${width}px`};
-    height: ${({height}) => `${height}px`};
+    height: max-content;
     display: flex;
     flex-direction: column;
     border-radius: 0 0 16px 16px;
     box-shadow: 0px 3px 5px 2px rgb(0 0 0 / 15%);
-    margin: 64px 0;
+    margin: 48px 0;
 `
 
 export const InformationWrap = styled.div<componentProps>`

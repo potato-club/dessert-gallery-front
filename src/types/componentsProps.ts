@@ -136,10 +136,6 @@ export type galleryPostValue = {
      */
     width: number
     /**
-     * (필수)galleryPost height
-     */
-    height: number
-    /**
      * (필수)가게 이름
      */
     title: string
@@ -155,10 +151,6 @@ export type galleryPostValue = {
      * (필수)가게 평점
      */
     ratingValue: string
-    /**
-     * (필수) 구독 여부
-     */
-    onBookmark: boolean
     /**
      * (필수) 태그 상태
      * 없을시 'none'
