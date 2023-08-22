@@ -8,6 +8,17 @@ export const BookmarkOnWrap = styled.div<props>`
     width: ${({sizeValue}) => `${sizeValue}px`};
     height: ${({sizeValue}) => `${sizeValue}px`};
     background-color: none;
+    cursor: pointer;
+`
+
+export const BookmarkOffWrap = styled(BookmarkOnWrap)`
+    background-color: none;
+`
+
+export const BookmarkOnAbsoluteWrap = styled.div<props>`
+    width: ${({sizeValue}) => `${sizeValue}px`};
+    height: ${({sizeValue}) => `${sizeValue}px`};
+    background-color: none;
     position: absolute;
     top: 5%;
     right: 5%;
@@ -15,6 +26,6 @@ export const BookmarkOnWrap = styled.div<props>`
     cursor: pointer;
 `
 
-export const BookmarkOffWrap = styled(BookmarkOnWrap)`
+export const BookmarkOffAbsoluteWrap = styled(BookmarkOnAbsoluteWrap)`
     background-color: none;
 `
