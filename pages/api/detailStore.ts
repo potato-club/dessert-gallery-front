@@ -36,12 +36,18 @@ export const getPosterThumnail = async (accessToken: string | null) => {
   return res.data;
 };
 
-export const getDetailPoster = async (accessToken: string | null) => {
-  const res = await axios.get(`https://api.dessert-gallery.site/boards/1`, {
-    headers: {
-      Authorization: `Bearer ${accessToken}`,
-    },
-  });
+export const getDetailPoster = async (
+  boardId: number,
+  accessToken: string | null
+) => {
+  const res = await axios.get(
+    `https://api.dessert-gallery.site/boards/${boardId}`,
+    {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    }
+  );
 
   return res.data;
 };

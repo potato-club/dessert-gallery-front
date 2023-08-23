@@ -13,6 +13,7 @@ const StoreProfile = ({ storeInfo }: any) => {
     followers,
     follow,
     id,
+    info,
   } = storeInfo;
 
   return (
@@ -21,7 +22,7 @@ const StoreProfile = ({ storeInfo }: any) => {
       <InnerContainer>
         <InfoContent>
           <StoreName>{name}</StoreName>
-          <SubTitle>레터링 케이크 주문 제작</SubTitle>
+          <SubTitle>{info || "default 값"}</SubTitle>
           <MainPhrase>{introduction}</MainPhrase>
           <Address>{address}</Address>
           <StoreNumber>{phoneNumber}</StoreNumber>

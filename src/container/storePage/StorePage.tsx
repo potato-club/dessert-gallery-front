@@ -13,6 +13,16 @@ const StorePage = (props: StoreProps) => {
   const { storeInfo, announceData, posterThumnail, storeReview, detailPoster } =
     props;
 
+  console.log(
+    storeInfo
+    // announceData,
+    // posterThumnail,
+    // storeReview,
+    // detailPoster
+  );
+
+  // storeInfo -> name, storeImage.fileUrl, info 넘겨주기
+
   return (
     <Container>
       <StoreInfo>
@@ -55,6 +65,7 @@ const StorePage = (props: StoreProps) => {
       <StoreContent
         posterThumnail={posterThumnail}
         detailPoster={detailPoster}
+        storeInfo={storeInfo}
       />
     </Container>
   );

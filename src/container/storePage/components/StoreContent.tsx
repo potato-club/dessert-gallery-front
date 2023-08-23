@@ -6,9 +6,9 @@ import ReviewList from "./Review";
 import { useRecoilValue } from "recoil";
 import { modalBg } from "../../../recoil/modalBg/atom";
 
-const StoreContent = ({ posterThumnail, detailPoster }: any) => {
+const StoreContent = ({ posterThumnail, storeInfo }: any) => {
   const [optionNum, setOptionNum] = useState<number>(1);
-
+  const [boardId, setBoardId] = useState<number>(1);
   const onModal = useRecoilValue(modalBg);
 
   const optionClick = (num: number) => {
@@ -24,7 +24,6 @@ const StoreContent = ({ posterThumnail, detailPoster }: any) => {
 
   return (
     <Container>
-      {onModal && <PostModal detailPoster={detailPoster} />}
       <Options>
         <PostBtn onClick={() => optionClick(1)} optionNum={optionNum}>
           가게 게시물
@@ -33,8 +32,10 @@ const StoreContent = ({ posterThumnail, detailPoster }: any) => {
           가게 후기
         </ReviewBtn>
       </Options>
+      {onModal && <PostModal boardId={boardId} storeInfo={storeInfo} />}
+
       {optionNum == 1 ? (
-        <Poster posterThumnail={posterThumnail} />
+        <Poster posterThumnail={posterThumnail} setBoardId={setBoardId} />
       ) : (
         <ReviewList />
       )}
