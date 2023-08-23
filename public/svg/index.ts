@@ -10,3 +10,4 @@ export { default as DownArrow } from "./common/DownArrow.svg";
 export { default as UpArrow } from "./common/UpArrow.svg";
 export { default as DefaultProfileLogo } from "./storePage/DefaultProfileLogo.svg";
 export { default as MenuIcon } from "./common/MenuIcon.svg";
+export { default as ArrowUp } from "./storePage/ArrowUp.svg";
