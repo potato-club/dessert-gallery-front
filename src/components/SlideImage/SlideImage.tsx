@@ -66,7 +66,7 @@ function SlideImage({srcArray, width=304, height=304, moveBtnType='none', size='
 
       {
         // 북마크가 존재
-        bookmark && <Bookmark onBookmark={onBookmarkState} size={size} onClickBookmark={onClickBookmark}/>
+        bookmark && <Bookmark onBookmark={onBookmarkState} size={size} onClickBookmark={onClickBookmark} absolute={true}/>
       }
       </MoveWrap>
       <ImageWrap>

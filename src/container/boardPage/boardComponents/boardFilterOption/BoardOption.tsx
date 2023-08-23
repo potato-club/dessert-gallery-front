@@ -2,10 +2,11 @@ import React, { ChangeEvent, KeyboardEvent, useEffect, useState } from 'react'
 
 import { BoardOptionWrap, OptionCategoriesWrap, OptionCategoriesButton, OptionCategoriesTextInputLabel, OptionCategoriesSVGImg, OptionCategoriesTextInput, SelectOptionWrap, SelectOptionTagWrap, SelectOptionCancleWrap } from './BoardOption.style'
 import CustomizationSelector from './CustomizationSelector'
-import Tag from '../../../components/Tag'
-import type { boardOptionData, filterData, tagClickData } from '../../../types/componentsData'
+import LocationSelector from './LocationSelector'
+import Tag from '../../../../components/Tag'
+import type { boardOptionData, filterData, tagClickData, locationData } from '../../../../types/componentsData'
 import SortingButton from '../SortingButton'
-import { selectOrder } from '../../../types/componentsProps'
+import { selectOrder } from '../../../../types/componentsProps'
 
 
 function BoardOption() {
@@ -22,7 +23,7 @@ function BoardOption() {
     { selected: 'for 반려동물', idx: 6, state: false },
   ]);
   const [optionData, setOptionData] = useState<boardOptionData>({
-    location: [],
+    location: '',
     selectSearchWord: '',
     filterOption: []
   })
@@ -31,6 +32,7 @@ function BoardOption() {
     kor: '팔로워순',
     eng: 'followers'
   })
+
 
   useEffect(()=>{}, [isSelected])
   /**
@@ -45,7 +47,7 @@ function BoardOption() {
    */
   const onClickResetForm = () => {
     setOptionData({
-      location: [],
+      location: '',
       selectSearchWord: '',
       filterOption: []
     })
@@ -72,18 +74,34 @@ function BoardOption() {
     setSorting(false)
   };
 
-  const isAllClean=()=>{
-    console.log("이게? ", optionData)
+  const isAllClean=(menu:number)=>{
     let check = false;
-    if(optionData.filterOption.length > 1){
-      check = true;
+    if(menu ===1){
+      if(optionData.filterOption.length > 0){
+        check = true;
+      }
+      else if(optionData.selectSearchWord.length !==0){
+        check = true;
+      }
+    }else if(menu ===2){
+      if(optionData.filterOption.length > 1){
+        check = true;
+      }
+      else if(optionData.location.length !== 0){
+        check = true;
+      }
+      else if(optionData.selectSearchWord.length !==0){
+        check = true;
+      }
+    }else{
+      if(optionData.filterOption.length > 0){
+        check = true;
+      }
+      else if(optionData.location.length !== 0){
+        check = true;
+      }
     }
-    else if(optionData.location.length !== 0){
-      check = true;
-    }else if( optionData.selectSearchWord !== ''){
-      check = true
-    }
-
+    
     if(check === false){
       setIsSelected(false);
     }
@@ -131,7 +149,7 @@ function BoardOption() {
           return e;
         }
       });
-      isAllClean();
+      isAllClean(2);
     }
     setOptionData((prev) => ({
       ...prev,
@@ -141,8 +159,28 @@ function BoardOption() {
     setIsSelected(true);
   };
 
+  /**
+   * 지역 옵션 선택 처리 함수
+   */
+  const onChangeLocation = (e:string) => {
+    setOptionData((prev) =>({
+      ...prev,
+      location: e
+    }))
+    setIsSelected(true)
+  }
+
   const onClickTag = ({menu, selected='', idx=0}:tagClickData) => {
-    if(menu === 2){
+    console.log("onClickTag menu", menu)
+    if(menu === 1){
+      setOptionData((prev)=>({
+        ...prev,
+        location: ''
+      }))
+      isAllClean(menu);
+    }
+
+    else if(menu === 2){
       let temp = optionData.filterOption.filter(e => e.selected !==selected)
       let state = filterOptionState.map((e,i) => {
         if(i === idx){
@@ -156,15 +194,16 @@ function BoardOption() {
         filterOption: temp
       }))
       setFilterOptionState(state); // filterOptionState 업데이트
+      isAllClean(menu);
     }
 
-    if(menu === 3){
+    else if(menu === 3){
       setOptionData((prev)=>({
         ...prev,
         selectSearchWord: ''
       }))
+      isAllClean(menu);
     }
-    isAllClean();
   }
 
   return (
@@ -177,19 +216,19 @@ function BoardOption() {
           <OptionCategoriesTextInput type="text" placeholder='검색어를 입력해 주세요' onChange={onChangeSearchWord} onKeyDown={handleKeyDown} value={searchWord} onFocus={()=>{setSelectCategory(2)}}/>
         </OptionCategoriesTextInputLabel>
       </OptionCategoriesWrap>
+      {selectCategory === 0 && <LocationSelector selectedLocation={optionData.location} onChangeLocation={onChangeLocation}/>}
       {selectCategory === 1 && <CustomizationSelector filterstate={filterOptionState} onClickFilterOption={onClickFilterOption} />}
       <SelectOptionWrap >
         <SelectOptionTagWrap>
-          {
-            optionData.selectSearchWord !== '' && <Tag 
+          {optionData.location !== '' && <Tag 
                                                     margin='18px 30px'
                                                     width='207px' 
                                                     height='55px' 
                                                     fontSize='20px' 
-                                                    title={optionData.selectSearchWord} 
-                                                    key={optionData.selectSearchWord} 
+                                                    title={optionData.location} 
+                                                    key={optionData.location} 
                                                     clickAble={true} 
-                                                    onClickHandler={()=>onClickTag({menu: 3})} 
+                                                    onClickHandler={()=>onClickTag({menu: 1})} 
                                                   />
           }
           {
@@ -203,6 +242,18 @@ function BoardOption() {
                                                                                         clickAble={true} 
                                                                                         onClickHandler={()=>onClickTag({menu: 2, selected: e.selected, idx: e.idx})} 
                                                                                       />)
+          }
+          {
+            optionData.selectSearchWord !== '' && <Tag 
+                                                    margin='18px 30px'
+                                                    width='207px' 
+                                                    height='55px' 
+                                                    fontSize='20px' 
+                                                    title={optionData.selectSearchWord} 
+                                                    key={optionData.selectSearchWord} 
+                                                    clickAble={true} 
+                                                    onClickHandler={()=>onClickTag({menu: 3})} 
+                                                  />
           }
         </SelectOptionTagWrap>
         <SelectOptionCancleWrap>

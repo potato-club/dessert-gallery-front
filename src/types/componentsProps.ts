@@ -178,6 +178,47 @@ export type galleryPostValue = {
     imgArray:string[]
 }
 
+
+/**
+ * ReviewPost 컴포넌트 props
+ */
+export type ReviewPostValue = {
+    /**
+     * (필수)galleryPost width
+     */
+    width: number
+    /**
+     * (필수)galleryPost height
+     */
+    height: number
+    /**
+     * (필수)가게 이름
+     */
+    title: string
+    /**
+     * (필수) 가게 소개글
+     */
+    summary: string
+    /**
+     * (필수) 가게 대표 이미지
+     */
+    imgSrc: string
+    /**
+     * 리뷰 목록
+     */
+    reviewList: UserReview[]
+}
+
+export type UserReview = {
+    userId: string
+    date: Date
+    rating: string
+    contents: string
+}
+
+
+
+
 export type SlideImgBookmarkValue = {
     /**
      * (필수) 현재 구독 상태
@@ -187,6 +228,10 @@ export type SlideImgBookmarkValue = {
      * (필수) 크기 조절
      */
     size: 'big'|'medium'| 'small'
+    /**
+     * (선택) 지정 위치 사용 유무(absolute 사용/미사용), 기본 false
+     */
+    absolute?: boolean
     /**
      * (필수) 북마크 선택, 선택 해제 기능 함수
      */
@@ -217,4 +262,9 @@ export type boardSortProps = {
 export type selectOrder = {
     kor: string
     eng: string
+}
+
+export type locationSelectorProps = {
+    selectedLocation: string
+    onChangeLocation: (e:string)=> void
 }
