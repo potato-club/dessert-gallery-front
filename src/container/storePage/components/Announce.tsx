@@ -16,7 +16,6 @@ const Announce = ({
   isFirst,
   createdDate,
 }: any) => {
-  console.log(createdDate);
   const [infoBtnClick, setInfoBtnClick] = useState<boolean>(false);
   return (
     <Container>

@@ -1,15 +1,17 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import { useSetRecoilState } from "recoil";
-import { modalBg } from "../../../../recoil/modalBg/atom";
 import ModalWrapper from "../../../../components/ModalWrapper";
 import { MenuIcon } from "../../../../../public/svg";
 import Comment from "./Comment";
-import Tag from "../../../../components/Tag";
+import Bookmark from "../../../../components/SlideImage/Bookmark";
+import SlideImage from "../../../../components/SlideImage/SlideImage";
+import MenuBox from "./MenuBox";
+import { useGetDetailBoard } from "../../../../hooks/useBoard";
 
-const PostModal = () => {
-  const modalBgState = useSetRecoilState(modalBg);
+const PostModal = ({ boardId, storeInfo }: any) => {
   const [comment, setComment] = useState<string>("");
+  const [onBookmarkState, setOnBookmarkState] = useState<boolean>(false);
+  const [menuIconClick, setMenuIconClick] = useState<boolean>(false);
 
   const submit = (e: any) => {
     // 댓글 submit
@@ -18,29 +20,54 @@ const PostModal = () => {
     console.log(comment);
     // 대충 게시물 댓글 postApi 훅 들어갈 자리
   };
+  const detailPoster = useGetDetailBoard({}, boardId);
+
+  if (!detailPoster) {
+    return <></>;
+  }
+
+  const { name, info, storeImage, address } = storeInfo;
+  const { title, content, tags, images } = detailPoster;
 
   return (
     <ModalWrapper>
       <Container>
-        <ImgDiv onClick={() => modalBgState(false)}></ImgDiv>
+        <SlideImage
+          srcArray={images.map((item: any) => {
+            return item.fileUrl;
+          })}
+          width={692}
+          height={692}
+        />
         <PostInfo>
           <InfoHeader>
             <StoreInfo>
-              <StoreProfile></StoreProfile>
+              <StoreProfile src={storeImage.fileUrl} />
               <div>
-                <StoreName>늘봄 케이크</StoreName>
-                <SubCategory>레터링 케이크 주문 제작</SubCategory>
+                <StoreName>{name}</StoreName>
+                <SubCategory>{info || "default 값"}</SubCategory>
               </div>
             </StoreInfo>
-            <MenuIcon width="5px" height="13px" />
+            <MenuIcon
+              width="5px"
+              height="13px"
+              onClick={() => {
+                setMenuIconClick((prev) => !prev);
+              }}
+            />
+            {menuIconClick && <MenuBox />}
           </InfoHeader>
           <InfoContent>
-            <Address>서울시 강서구 곰달래길 12</Address>
-            <Title>상큼오독 산딸기 디저트</Title>
-            <TextContent>
-              딸기잼이 듬북 들어간 케이크에요 오독오독 씹히는 산딸기의 매력!!
-              문의 남겨주시면 빠르게 답장 드리겠습니다
-            </TextContent>
+            <BookmarkDiv>
+              <Bookmark
+                onBookmark={onBookmarkState}
+                size="medium"
+                onClickBookmark={() => setOnBookmarkState((prev) => !prev)}
+              />
+            </BookmarkDiv>
+            <Address>{address}</Address>
+            <Title>{title}</Title>
+            <TextContent>{content}</TextContent>
             <HashTagBox>
               {/* 대충 리스트 형태로 날아오면 map으로 뿌려주기 */}
               <HashTag>#해시태그</HashTag>
@@ -61,6 +88,9 @@ const PostModal = () => {
               <Comment />
               <Comment />
               <Comment />
+              <Comment />
+              <Comment />
+              <Comment />
             </CommentList>
           </InfoContent>
           <Bottom>
@@ -68,15 +98,12 @@ const PostModal = () => {
               <InputBox placeholder="댓글 추가" />
             </InputWrapper>
             <ReservedBtn
-              title="예약하러 가기"
-              width="408px"
-              height="64px"
-              clickAble={true}
-              hoverCss={true}
-              onClickHandler={() => {
+              onClick={() => {
                 console.log("대충 예약하러가는 라우팅");
               }}
-            />
+            >
+              예약하러 가기
+            </ReservedBtn>
           </Bottom>
         </PostInfo>
       </Container>
@@ -91,10 +118,6 @@ const Container = styled.div`
   background-color: #fffdf9;
   width: 1100px;
   height: 692px;
-`;
-const ImgDiv = styled.div`
-  width: 692px;
-  background-color: black;
 `;
 const PostInfo = styled.div`
   display: flex;
@@ -121,11 +144,15 @@ const StoreInfo = styled.div`
   align-items: center;
   gap: 21px;
 `;
-const StoreProfile = styled.div`
+const StoreProfile = styled.img`
   width: 65px;
   height: 65px;
   border-radius: 100%;
   background-color: black;
+`;
+const BookmarkDiv = styled.div`
+  position: relative;
+  left: 20px;
 `;
 const StoreName = styled.div`
   color: #000;
@@ -169,9 +196,14 @@ const HashTag = styled.div`
   line-height: normal;
 `;
 const InfoContent = styled.div`
+  display: flex;
+  flex-direction: column;
   padding: 33px 28px;
   height: 444px;
   overflow-y: scroll;
+  ::-webkit-scrollbar {
+    display: none;
+  }
 `;
 const CommentList = styled.div`
   display: flex;
@@ -183,10 +215,8 @@ const Bottom = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  position: sticky;
-  bottom: 0;
   height: 142px;
-  border: 2px solid #fdc886;
+  border-top: 2px solid #fdc886;
 `;
 const InputWrapper = styled.form`
   padding: 20px 28px;
@@ -194,9 +224,26 @@ const InputWrapper = styled.form`
 const InputBox = styled.input`
   width: 352px;
   height: 39px;
-  background-color: #dedede;
+  background-color: rgb(242, 241, 238);
+  border: none;
+  border-radius: 10px;
+  outline: none;
+  padding-left: 15px;
 `;
-const ReservedBtn = styled(Tag)`
+const ReservedBtn = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
   width: 100%;
   height: 64px;
+  background-color: #fcf0e1;
+  color: #ff6f00;
+  font-size: 22px;
+  font-weight: 700;
+  line-height: normal;
+  &:hover {
+    color: #fcf0e1;
+    background-color: #ff6f00;
+    cursor: pointer;
+  }
 `;
