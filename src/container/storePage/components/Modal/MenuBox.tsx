@@ -22,7 +22,7 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   position: absolute;
-  top: 60%;
+  top: 9%;
   right: -30px;
   z-index: 100;
   filter: drop-shadow(3px 3px 6px rgba(0, 0, 0, 0.16));

@@ -55,9 +55,9 @@ const PostModal = ({ boardId, storeInfo }: any) => {
                 setMenuIconClick((prev) => !prev);
               }}
             />
-            {menuIconClick && <MenuBox />}
           </InfoHeader>
           <InfoContent>
+            {menuIconClick && <MenuBox />}
             <BookmarkDiv>
               <Bookmark
                 onBookmark={onBookmarkState}
@@ -151,8 +151,9 @@ const StoreProfile = styled.img`
   background-color: black;
 `;
 const BookmarkDiv = styled.div`
-  position: relative;
-  left: 20px;
+  position: absolute;
+  right: 30px;
+  z-index: 10;
 `;
 const StoreName = styled.div`
   color: #000;
