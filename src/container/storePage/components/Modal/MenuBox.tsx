@@ -38,6 +38,7 @@ const FunctionBox = styled.div`
   align-items: center;
   background-color: #ffffff;
   width: 212px;
+  border-radius: 10px;
 `;
 const Func = styled.div`
   font-size: 15px;
