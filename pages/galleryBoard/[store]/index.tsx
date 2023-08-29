@@ -32,11 +32,11 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   const queryClient = new QueryClient();
 
   const accessToken =
-    "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJybGFlaGRyYnM1ODBAbmF2ZXIuY29tIiwicm9sZXMiOiJNQU5BR0VSIiwiaWF0IjoxNjkyNzczOTQ1LCJleHAiOjE2OTI3NzU3NDV9.7oQ5Y78WrO2q8Lk4iuGqq7yGq83uDuMgW3sB9Eso72E";
+    "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJybGFlaGRyYnM1ODBAbmF2ZXIuY29tIiwicm9sZXMiOiJNQU5BR0VSIiwiaWF0IjoxNjkzMjk2NzA3LCJleHAiOjE2OTMyOTg1MDd9.sTra93juT5g9evrvnGxHc1nzUOtEu6w16vvBK6tqcRA";
   const storeInfo = await getStoreInfo(accessToken);
   const announceData = await getStoreAnnounce(accessToken);
   const posterThumnail = await getPosterThumnail(accessToken);
-  const storeReview = await getStoreReview(accessToken);
+  const storeReview = await getStoreReview();
 
   return {
     props: {

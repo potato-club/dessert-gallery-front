@@ -48,18 +48,12 @@ export const getDetailPoster = async (
       },
     }
   );
-
   return res.data;
 };
 
-export const getStoreReview = async (accessToken: string | null) => {
+export const getStoreReview = async () => {
   const res = await axios.get(
-    `https://api.dessert-gallery.site/reviews/stores/3`,
-    {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-    }
+    `https://api.dessert-gallery.site/reviews/stores/3`
   );
   return res.data;
 };
