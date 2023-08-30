@@ -12,5 +12,5 @@ export default NearbyStore
 const NearbyStoreWrap = styled.div`
   width: 100vw;
   height: 1226px;
-  background-color: ;
+  background-color: #FCF0E1;
 `
