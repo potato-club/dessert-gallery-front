@@ -14,6 +14,10 @@ export const GalleryPostWrap = styled.div<componentProps>`
     border-radius: 0 0 16px 16px;
     box-shadow: 0px 3px 5px 2px rgb(0 0 0 / 15%);
     margin: 64px 0;
+    ${({size})=>{
+        if(size==='small')
+            return `padding: 12px 8px 12px 16px;`
+    }}
 `
 
 export const InformationWrap = styled.div<componentProps>`
@@ -23,6 +27,12 @@ export const InformationWrap = styled.div<componentProps>`
     background-color: #FFFDF9;
     padding: 17px 32px 20px 32px;
     border-radius: 0 0 16px 16px;
+    box-shadow: 0px 3px 5px 2px rgb(0 0 0 / 15%);
+
+    ${({size})=>{
+        if(size==='small')
+            return `padding: 12px 8px 12px 16px;`
+    }}
 `
 
 export const TitleText = styled.div<componentProps>`
