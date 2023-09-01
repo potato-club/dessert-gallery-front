@@ -3,12 +3,15 @@ import styled from "styled-components";
 import { modalStateAtom } from "../../../recoil/login/modalStateAtom";
 import { useRecoilState } from "recoil";
 import { useSignupDataState } from "../../../recoil/login/signupStateAtom";
+import { useJWTState } from "../../../recoil/login/JWTStateAtom";
+import axios from "axios";
 
 function Modal() {
   const [modalState, setModalState] = useRecoilState(modalStateAtom);
   const [signupDataState, setSignupDataState] = useSignupDataState();
   const [nickname, setNickname] = useState("");
   const [stepSignup, setStepSignup] = useState(1);
+  const [jwtState, setJwtState] = useJWTState();
 
   const closeModal = () => {
     setModalState(false);
@@ -73,7 +76,25 @@ function Modal() {
               </ExplainDiv>
             </ModalContentsDiv>
             <ButtonDiv>
-              <ModalButton onClick={handleSetNickname}>확인</ModalButton>
+              <ModalButton
+                onClick={async () => {
+                  handleSetNickname();
+                  try {
+                    const response: any = await axios.post(
+                      `https://api.dessert-gallery.site/users/signup`,
+                      { ...signupDataState, password: "" }
+                    );
+                    const accessToken = response.headers.get("Authorization");
+                    const refreshToken = response.headers.get("Refreshtoken");
+                    setJwtState({
+                      accessToken: accessToken,
+                      refreshToken: refreshToken,
+                    });
+                  } catch {}
+                }}
+              >
+                확인
+              </ModalButton>
               <ModalButton onClick={() => setStepSignup(2)}>취소</ModalButton>
             </ButtonDiv>
           </>
