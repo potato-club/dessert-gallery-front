@@ -7,7 +7,7 @@ function JoinContents() {
   return (
     <JoinContentsWrapper>
       <Input placeholder="이메일 입력" />
-      <Input placeholder="비밀번호 입력" type="password" />
+      <Input placeholder="비밀번호 입력" />
       <TagButtonWrapper>
         <Tag
           title="회원가입"

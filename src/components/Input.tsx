@@ -4,7 +4,6 @@ import styled from "styled-components";
 const Input = ({
   placeholder,
   marginBottom,
-  type,
 }: {
   /**
    * (선택)placeholder에 출력할 텍스트
@@ -15,13 +14,11 @@ const Input = ({
    * (선택)Input의 margin-bottom 값
    */
   marginBottom?: number;
-  type?: "password";
 }) => {
   return (
     <StyledInput
       placeholder={placeholder}
       marginBottom={marginBottom}
-      type={type}
     ></StyledInput>
   );
 };

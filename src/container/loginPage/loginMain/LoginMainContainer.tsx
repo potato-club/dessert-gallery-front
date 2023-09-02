@@ -17,7 +17,7 @@ function LoginMainContainer() {
           <Title>LOGIN</Title>
           <InputDiv>
             <Input placeholder="이메일 입력" />
-            <Input placeholder="비밀번호 입력" type="password" />
+            <Input placeholder="비밀번호 입력" />
           </InputDiv>
           <Navigaiton />
           <TagButtonWrapper>
