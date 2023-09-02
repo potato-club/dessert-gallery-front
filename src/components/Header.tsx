@@ -57,6 +57,8 @@ const Container = styled.header`
   box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.161);
   height: 96px;
   min-width: 1280px;
+  position: relative;
+  z-index: 100;
 `;
 const BtnList = styled.div`
   display: flex;
