@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import MarketDetailInfo from "./components/SideNav/MarketInfos";
 import SideNav from "./components/SideNav/SideNav";
 
 const MapPage = () => {
@@ -7,6 +8,7 @@ const MapPage = () => {
     <Container>
       <MapLayout>
         <SideNav />
+        <MarketDetailInfo />
         <div>map</div>
       </MapLayout>
     </Container>
