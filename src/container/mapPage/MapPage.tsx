@@ -2,15 +2,14 @@ import React from "react";
 import styled from "styled-components";
 import MarketDetailInfo from "./components/SideNav/MarketInfos";
 import SideNav from "./components/SideNav/SideNav";
+import Maps from "./components/Maps";
 
 const MapPage = () => {
   return (
     <Container>
-      <MapLayout>
-        <SideNav />
-        <MarketDetailInfo />
-        <div>map</div>
-      </MapLayout>
+      <SideNav />
+      <MarketDetailInfo />
+      <Maps />
     </Container>
   );
 };
@@ -18,9 +17,5 @@ const MapPage = () => {
 export default MapPage;
 
 const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-`;
-const MapLayout = styled.div`
   display: flex;
 `;

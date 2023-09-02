@@ -51,6 +51,8 @@ const Container = styled.aside`
   background-color: #fcf0e1;
   width: 340px;
   height: 100vh;
+  position: relative;
+  z-index: 2;
   @media (min-width: 1280px) {
     width: calc(340px + (438 - 340) * ((100vw - 1280px) / (1920 - 1280)));
   }
