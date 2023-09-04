@@ -1,20 +1,21 @@
 import axios from 'axios';
 import { AUTH_KEY } from '../constants/authkey';
-//import httpService from 'libs/httpService';
+import httpService from '../constants/libs/httpService';
 
 
 export const sendApi = {
-  // get: (url) => {
-  //   return axios.get(
-  //     AUTH_KEY.apiUrl + url,
-  //     httpService.authorization(localStorageService.get(SESSION_ID))
-  //   );
-  // },
+  get: (url:string) => {
+    return axios.get(
+      `https://api.dessert-gallery.site${url}`,
+      // httpService.authorization(localStorageService.get(SESSION_ID))
+    );
+  },
 
 
   guestGet: (url: string) => {
+    console.log("getGuest: ", `https://api.dessert-gallery.site${url}`)
     return axios.get(
-      AUTH_KEY.apiUrl + url,
+      `https://api.dessert-gallery.site${url}`,
     );
   },
 
