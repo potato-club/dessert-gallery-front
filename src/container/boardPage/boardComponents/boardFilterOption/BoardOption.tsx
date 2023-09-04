@@ -3,36 +3,19 @@ import React, { ChangeEvent, KeyboardEvent, useEffect, useState } from 'react'
 import { BoardOptionWrap, OptionCategoriesWrap, OptionCategoriesButton, OptionCategoriesTextInputLabel, OptionCategoriesSVGImg, OptionCategoriesTextInput, SelectOptionWrap, SelectOptionTagWrap, SelectOptionCancleWrap } from './BoardOption.style'
 import LocationSelector from './LocationSelector'
 import Tag from '../../../../components/Tag'
-import type { boardOptionData, filterData, tagClickData, locationData } from '../../../../types/componentsData'
+import type { tagClickData } from '../../../../types/componentsData'
 import SortingButton from '../SortingButton'
-import { selectOrder } from '../../../../types/componentsProps'
-
-import { useGetStoreBoardListdData } from '../../../../hooks/useGetStoreBoardList'
+import { selectOrder, boardOptionValue } from '../../../../types/componentsProps'
 
 
-function BoardOption() {
+function BoardOption({orderOption, setOrderOption,optionData,setOptionData}: boardOptionValue) {
   const [isSelected, setIsSelected] = useState<boolean>(false)
   const [selectCategory, setSelectCategory] = useState<number>(2)
   const [searchWord, setSearchWord] = useState<string>('')
   const [searchWordList, setSearchWordList] = useState<string[]>([])
-  const [optionData, setOptionData] = useState<boardOptionData>({
-    location: '',
-    selectSearchWord: [],
-  })
+  
   const [sorting, setSorting] = useState<boolean>(false)
-  const [orderOption, setOrderOption] = useState<selectOrder>({
-    kor: '팔로워순',
-    eng: 'FOLLOWER'
-  })
-  const [pageCount, setPageCount] = useState<number>(1)
-  const {data, error, isLoading} = useGetStoreBoardListdData({
-    page: pageCount.toString(),
-    sortType: orderOption.eng,
-    address: optionData.location,
-    searchType: optionData.selectSearchWord
-  });
-
-
+  
 
   useEffect(()=>{}, [])
 
@@ -137,17 +120,6 @@ function BoardOption() {
     }
   }
 
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
-
-  if (error) {
-    return <div>Error</div>;
-  }
-
-  if(data){
-    console.log("use", data)
-  }
   return (
     <BoardOptionWrap>
       <OptionCategoriesWrap>

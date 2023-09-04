@@ -1,5 +1,5 @@
 import { ReactNode } from "react";
-import type { filterData } from "./componentsData";
+import type { boardOptionData, filterData } from "./componentsData";
 /**
  * Tag 컴포넌트 props
  */
@@ -260,4 +260,17 @@ export type locationSelectorProps = {
 export type ToastMessageProps = {
     messageString: string
     timer: number
+}
+
+export type boardOptionValue = {
+    orderOption: selectOrder
+    setOrderOption: React.Dispatch<React.SetStateAction<selectOrder>>
+    optionData: boardOptionData
+    setOptionData: React.Dispatch<React.SetStateAction<boardOptionData>>
+}
+
+export type galleryBoardContentsValue = {
+    pageCount: number
+    orderOption: selectOrder
+    optionData: boardOptionData
 }

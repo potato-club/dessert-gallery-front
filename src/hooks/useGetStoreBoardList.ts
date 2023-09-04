@@ -1,9 +1,10 @@
-import { useQuery } from 'react-query';
+import { useInfiniteQuery } from 'react-query';
 import type { boardSearchOptionData } from '../types/apiTypes';
 import { boardApiList } from '../apis/controller/boardPage';
 
 // 게시판 데이터를 가져오는 비동기 함수
 async function fetchStoreBoardData(req: boardSearchOptionData) {
+
   let queryString = `/list/stores?page=${req.page}`;
 
   //지역
@@ -15,9 +16,11 @@ async function fetchStoreBoardData(req: boardSearchOptionData) {
   //정렬타입
   queryString += `&sortType=${req.sortType}`;
 
+  console.log("getBoardListRUL: ", queryString)
 
   try {
     const { data } = await boardApiList.getBoardList(queryString);
+    console.log("getBoardList: ", data)
     return data;
   } catch (error) {
     console.log(error)
@@ -26,5 +29,5 @@ async function fetchStoreBoardData(req: boardSearchOptionData) {
 
 export function useGetStoreBoardListdData(req: boardSearchOptionData) {
   // useQuery 훅을 사용하여 데이터 가져오기
-  return useQuery('boardData', () => fetchStoreBoardData(req));
+  return useInfiniteQuery('boardData', () => fetchStoreBoardData(req));
 }
