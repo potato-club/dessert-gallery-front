@@ -2,12 +2,14 @@ import axios from 'axios';
 import { AUTH_KEY } from '../constants/authkey';
 import httpService from '../constants/libs/httpService';
 
+let ck = `eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0YW1kNTk3MUBuYXZlci5jb20iLCJyb2xlcyI6Ik1BTkFHRVIiLCJpYXQiOjE2OTM4OTE1MzUsImV4cCI6MTY5Mzg5MzMzNX0.xvxGA-2tW3en2DKv-Q-ZaI38r4f2lNCO1M8kNSZwXhk`
 
 export const sendApi = {
   get: (url:string) => {
     return axios.get(
       `https://api.dessert-gallery.site${url}`,
       // httpService.authorization(localStorageService.get(SESSION_ID))
+      httpService.authorization(ck)
     );
   },
 
@@ -19,21 +21,23 @@ export const sendApi = {
     );
   },
 
-  // post: (url, req) => {
-  //   return axios.post(
-  //     AUTH_KEY.apiUrl + url,
-  //     req,
-  //     httpService.authorization(localStorageService.get(SESSION_ID))
-  //   );
-  // },
+  post: (url: string, req: object = {}) => {
+    return axios.post(
+      `https://api.dessert-gallery.site${url}`,
+      req,
+      // httpService.authorization(localStorageService.get(SESSION_ID))
+      httpService.authorization(ck)
+    );
+  },
 
-  // put: (url, req) => {
-  //   return axios.put(
-  //     AUTH_KEY.apiUrl + url,
-  //     req,
-  //     httpService.authorization(localStorageService.get(SESSION_ID))
-  //   );
-  // },
+  put: (url: string, req: object = {}) => {
+    return axios.put(
+      `https://api.dessert-gallery.site${url}`,
+      req,
+      // httpService.authorization(localStorageService.get(SESSION_ID))
+      httpService.authorization(ck)
+    );
+  },
 
   // delete: (url) => {
   //   return axios.delete(

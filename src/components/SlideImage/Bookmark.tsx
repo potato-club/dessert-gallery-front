@@ -3,7 +3,7 @@ import { SlideImgBookmarkValue } from '../../types/componentsProps'
 import { OnBookmark, OffBookmark } from '../../../public/svg';
 import { BookmarkOnWrap, BookmarkOffWrap,BookmarkOnAbsoluteWrap,BookmarkOffAbsoluteWrap } from './Bookmark.style';
 
-export default function Bookmark({onBookmark, size, absolute=false, onClickBookmark}:SlideImgBookmarkValue) {
+export default function Bookmark({storeId,onBookmark, size, absolute=false, onClickBookmark}:SlideImgBookmarkValue) {
   let svgSize = 38;
   if (size === "small") {
     svgSize = 23;
@@ -15,7 +15,7 @@ export default function Bookmark({onBookmark, size, absolute=false, onClickBookm
       {
         onBookmark
         ? (
-            <BookmarkOnAbsoluteWrap sizeValue={svgSize} onClick={onClickBookmark}>
+            <BookmarkOnAbsoluteWrap sizeValue={svgSize} onClick={()=> onClickBookmark(storeId)}>
               <OnBookmark
                 width={svgSize}
                 height={svgSize}
@@ -23,7 +23,7 @@ export default function Bookmark({onBookmark, size, absolute=false, onClickBookm
             </BookmarkOnAbsoluteWrap> 
             )
         : (
-            <BookmarkOffAbsoluteWrap sizeValue={svgSize}  onClick={onClickBookmark} >
+            <BookmarkOffAbsoluteWrap sizeValue={svgSize}  onClick={()=> onClickBookmark(storeId)} >
               <OffBookmark
                 width={svgSize}
                 height={svgSize}
@@ -37,7 +37,7 @@ export default function Bookmark({onBookmark, size, absolute=false, onClickBookm
       {
         onBookmark
         ? (
-            <BookmarkOnWrap sizeValue={svgSize} onClick={onClickBookmark}>
+            <BookmarkOnWrap sizeValue={svgSize} onClick={()=> onClickBookmark(storeId)}>
               <OnBookmark
                 width={svgSize}
                 height={svgSize}
@@ -45,7 +45,7 @@ export default function Bookmark({onBookmark, size, absolute=false, onClickBookm
             </BookmarkOnWrap> 
             )
         : (
-            <BookmarkOffWrap sizeValue={svgSize}  onClick={onClickBookmark} >
+            <BookmarkOffWrap sizeValue={svgSize}  onClick={()=> onClickBookmark(storeId)} >
               <OffBookmark
                 width={svgSize}
                 height={svgSize}

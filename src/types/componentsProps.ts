@@ -52,6 +52,10 @@ export type tagValue = {
  */
 export type slideImageValue = {
     /**
+     * (필수)가게 id
+     */
+    storeId: number
+    /**
      * (필수)이미지 배열 
      */
     srcArray: string[]
@@ -225,6 +229,10 @@ export type UserReview = {
 
 export type SlideImgBookmarkValue = {
     /**
+     * (필수) 가게 ID
+     */
+    storeId: number
+    /**
      * (필수) 현재 구독 상태
      */
     onBookmark: boolean
@@ -239,7 +247,7 @@ export type SlideImgBookmarkValue = {
     /**
      * (필수) 북마크 선택, 선택 해제 기능 함수
      */
-    onClickBookmark: React.MouseEventHandler<HTMLDivElement>
+    onClickBookmark: (storeId:number)=>void
 }
 
 
@@ -283,10 +291,20 @@ export type boardOptionValue = {
     setOrderOption: React.Dispatch<React.SetStateAction<selectOrder>>
     optionData: boardOptionData
     setOptionData: React.Dispatch<React.SetStateAction<boardOptionData>>
+    setPageCount: React.Dispatch<React.SetStateAction<number>>
 }
 
-export type galleryBoardContentsValue = {
-    pageCount: number
-    orderOption: selectOrder
-    optionData: boardOptionData
+
+export type resGalleryPost = {
+    id: number
+    fileUrl: string
+    address: string
+    bookmarkId: null
+    score: string
+    content: string
+    name: string;
+}
+
+export type galleryBoardContentsList = {
+    data: resGalleryPost[][]
 }
