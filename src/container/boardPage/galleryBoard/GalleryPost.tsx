@@ -26,10 +26,9 @@ export default function GalleryPost({storeId, width,location,imgArray,ratingValu
 
   return (
     <GalleryPostWrap width={width}>
-        {bookmark && <Bookmark onBookmark={onBookmark} size='big'  onClickBookmark={()=> alert(`구독${storeId}`)} key={storeId}/>}
 
       
-      <SlideImage srcArray={imgArray} width={width} size={size} height={width} bookmark={false} dotIndicator={true} >
+      <SlideImage storeId={storeId} srcArray={imgArray} width={width} size={size} height={width} bookmark={true} onBookmark={onBookmark} dotIndicator={true} >
         {tagValue !=='none' && size === 'big' && <Tag title={tagValue} width='78px' height='30px' fontSize='12px' clickAble={false}  />}
         {tagValue !=='none' && size === 'medium' && <Tag title={tagValue} width='73px' height='28px' fontSize='11px' clickAble={false}  />}
         {tagValue !=='none' && size === 'small' && <Tag title={tagValue} width='46px' height='19px' fontSize='7px'  clickAble={false}  />}

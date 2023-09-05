@@ -8,7 +8,7 @@ import SortingButton from '../SortingButton'
 import { selectOrder, boardOptionValue } from '../../../../types/componentsProps'
 
 
-function BoardOption({orderOption, setOrderOption,optionData,setOptionData}: boardOptionValue) {
+function BoardOption({orderOption, setOrderOption,optionData,setOptionData, setPageCount}: boardOptionValue) {
   const [isSelected, setIsSelected] = useState<boolean>(false)
   const [selectCategory, setSelectCategory] = useState<number>(2)
   const [searchWord, setSearchWord] = useState<string>('')
@@ -35,6 +35,7 @@ function BoardOption({orderOption, setOrderOption,optionData,setOptionData}: boa
       selectSearchWord: [],
     })
     setIsSelected(false);
+    setPageCount(1);
   }
 
   /**
@@ -45,6 +46,7 @@ function BoardOption({orderOption, setOrderOption,optionData,setOptionData}: boa
       eng: eng,
       kor: kor
     })
+    setPageCount(1)
     setSorting(false)
   };
 
@@ -65,6 +67,7 @@ function BoardOption({orderOption, setOrderOption,optionData,setOptionData}: boa
     if(check === false){
       setIsSelected(false);
     }
+    setPageCount(1)
   }
 
   /**
@@ -85,7 +88,7 @@ function BoardOption({orderOption, setOrderOption,optionData,setOptionData}: boa
     setSearchWordList(data);
     setIsSelected(true);
     setSearchWord('');
-
+    setPageCount(1)
     }
   };
 
@@ -118,6 +121,7 @@ function BoardOption({orderOption, setOrderOption,optionData,setOptionData}: boa
       setSearchWordList(temp)
       isAllClean(menu);
     }
+    setPageCount(1)
   }
 
   return (

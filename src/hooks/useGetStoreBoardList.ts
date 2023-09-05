@@ -28,6 +28,13 @@ async function fetchStoreBoardData(req: boardSearchOptionData) {
 }
 
 export function useGetStoreBoardListdData(req: boardSearchOptionData) {
+  const queryKey = ['boardData', req.page, req.address, req.searchType, req.sortType];
+
   // useQuery 훅을 사용하여 데이터 가져오기
-  return useInfiniteQuery('boardData', () => fetchStoreBoardData(req));
+  return useInfiniteQuery(queryKey, () => fetchStoreBoardData(req), {
+    getNextPageParam: (lastPage, pages) => {
+      // 페이지 번호를 pageCount로 설정합니다.
+      return req.page+1;
+    },
+  });
 }

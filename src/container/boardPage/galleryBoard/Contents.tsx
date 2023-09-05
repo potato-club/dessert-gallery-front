@@ -3,7 +3,7 @@ import GalleryPost from './GalleryPost'
 import styled from 'styled-components'
 import { galleryPostValue } from '../../../types/componentsProps';
 import { useGetStoreBoardListdData } from '../../../hooks/useGetStoreBoardList';
-import type { galleryBoardContentsValue } from '../../../types/componentsProps';
+import type { galleryBoardContentsList } from '../../../types/componentsProps';
 import ToastMessage from '../../../components/ToastMessage';
 
 const imgSrc = [
@@ -72,78 +72,30 @@ const imgSrc = [
 // }
 // ]
 
-export default function Contents({pageCount,orderOption,optionData}: galleryBoardContentsValue) {
-
-  const {
-    data,
-    error,
-    fetchNextPage,
-    hasNextPage,
-    isFetching,
-    isFetchingNextPage,
-    status,} = useGetStoreBoardListdData({
-    page: pageCount.toString(),
-    sortType: orderOption.eng,
-    address: optionData.location,
-    searchType: optionData.selectSearchWord
-  });
-
-  useEffect(() => {
-    const handleScroll = () => {
-      if (
-        window.innerHeight + document.documentElement.scrollTop ===
-        document.documentElement.offsetHeight
-      ) {
-        // 스크롤 하단에 도달하면 다음 페이지의 데이터를 불러옴
-        if (hasNextPage && !isFetchingNextPage) {
-          console.log("Before fetchNextPage:", data, hasNextPage, isFetchingNextPage);
-          fetchNextPage();
-        }
-      }
-    };
-    
-    window.addEventListener("scroll", handleScroll);
-    return () => {
-    console.log("satus", status)
-    console.log("data", data)
-    window.removeEventListener("scroll", handleScroll);
-    };
-
-  }, [hasNextPage, isFetchingNextPage, fetchNextPage, pageCount, orderOption, optionData, data, status]);
-
-
-  if(status === "loading"){
-    return <ToastMessage messageString='불러오는 중...' timer={5000}/>
-  }
-
-  if(status === "error"){
-    return <p>error</p>
-  }
-
-  if(status === "success"){
-    if(data.pages[0] ==! undefined){
-      <ToastMessage messageString='더이상 불러올 가게가 없습니다.' timer={5000}/>
-    }
+export default function Contents({data}: galleryBoardContentsList) {
+  
     return (
       <Wrap>
-        {status === "success" &&  data.pages.map((e,idx)=>(
-          <GalleryPost 
-          key={e[0].id}
-          width={304} 
-          imgArray={[e[0].fileUrl]} 
-          location={e[0].address} 
-          bookmark={true}
-          onBookmark={e[0].bookmarkId !== null ? false: true} 
-          ratingValue={e[0].score} 
-          summary={e[0].content} 
-          title={e[0].name} 
-          size={"big"} 
-          tagValue={e[0].score > 4.5 ? "HOT": "none"}
-          />
+        {data.map((el)=>(
+          el.map((e: { id: number; fileUrl: string; address: string; bookmarkId: null; score: string; content: string; name: string; })=>(
+            <GalleryPost 
+            storeId={e.id}
+            key={e.id}
+            width={304} 
+            imgArray={[e.fileUrl]} 
+            location={e.address} 
+            bookmark={true}
+            onBookmark={e.bookmarkId === null ? false: true} 
+            ratingValue={e.score} 
+            summary={e.content} 
+            title={e.name} 
+            size={"big"} 
+            tagValue={Number(e.score) > 4.5 ? "HOT": "none"}
+            />
+          ))
         ))}
       </Wrap>
     )
-  }
 }
 
 const Wrap = styled.div`
