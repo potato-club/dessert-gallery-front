@@ -4,9 +4,10 @@ import SlideImage from '../../../components/SlideImage/SlideImage'
 import Tag from '../../../components/Tag'
 import Rating from '../../../components/Rating'
 import { galleryPostValue, galleryPostSizeValue } from '../../../types/componentsProps'
+import Bookmark from '../../../components/SlideImage/Bookmark'
 
 
-export default function GalleryPost({width,location,imgArray,ratingValue,summary,size='big', tagValue='none',title}:galleryPostValue) {
+export default function GalleryPost({storeId, width,location,imgArray,ratingValue,summary,size='big', tagValue='none', bookmark, onBookmark ,title}:galleryPostValue) {
   let sizeValue:galleryPostSizeValue = {
     titleTextSize: '18px',
     locationTextSize: '12px',
@@ -25,6 +26,8 @@ export default function GalleryPost({width,location,imgArray,ratingValue,summary
 
   return (
     <GalleryPostWrap width={width}>
+        {bookmark && <Bookmark onBookmark={onBookmark} size='big'  onClickBookmark={()=> alert(`구독${storeId}`)} key={storeId}/>}
+
       
       <SlideImage srcArray={imgArray} width={width} size={size} height={width} bookmark={false} dotIndicator={true} >
         {tagValue !=='none' && size === 'big' && <Tag title={tagValue} width='78px' height='30px' fontSize='12px' clickAble={false}  />}

@@ -132,6 +132,10 @@ export type boardTopValue = {
  */
 export type galleryPostValue = {
     /**
+     * (필수))가게 아이디
+     */
+    storeId: number
+    /**
      * (필수)galleryPost width
      */
     width: number
@@ -156,6 +160,14 @@ export type galleryPostValue = {
      * 없을시 'none'
      */
     tagValue?: string
+    /**
+     * (필수) 구독 기능 존재 여부
+     */
+    bookmark: boolean
+    /**
+     * (필수) 구독 여부
+     */
+    onBookmark: boolean
     /**
      * (필수) 태그/구독 버튼/ 텍스트 사이즈
      * big: 게시판 페이지 기준

@@ -130,9 +130,9 @@ export default function Contents({pageCount,orderOption,optionData}: galleryBoar
           <GalleryPost 
           key={e[0].id}
           width={304} 
-          height={472} 
           imgArray={[e[0].fileUrl]} 
           location={e[0].address} 
+          bookmark={true}
           onBookmark={e[0].bookmarkId !== null ? false: true} 
           ratingValue={e[0].score} 
           summary={e[0].content} 
