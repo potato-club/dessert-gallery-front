@@ -87,6 +87,7 @@ export default function Contents({data}:reviewBoardContentsList ) {
           el.map((e: {id: number; storeName: string; fileUrl: string; content:string; reviewList: reviewList[];  })=>(
             <ReviewPost 
               key={e.id}
+              storeId={e.id}
               width={316} 
               height={620} 
               title={e.storeName}

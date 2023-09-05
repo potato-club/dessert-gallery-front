@@ -23,6 +23,7 @@ export const InformationWrap = styled.div<componentProps>`
     background-color: #FFFDF9;
     padding: 17px 32px 20px 32px;
     border-radius: 0 0 16px 16px;
+    cursor: pointer;
 `
 
 export const TitleText = styled.div<componentProps>`

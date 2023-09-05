@@ -192,6 +192,7 @@ export type galleryPostValue = {
  * ReviewPost 컴포넌트 props
  */
 export type ReviewPostValue = {
+    storeId: number
     /**
      * (필수)galleryPost width
      */

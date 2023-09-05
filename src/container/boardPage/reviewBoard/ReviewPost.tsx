@@ -6,11 +6,15 @@ import Tag from '../../../components/Tag'
 import type { ReviewPostValue } from '../../../types/componentsProps'
 
 
-export default function ReviewPost({width,height,title, imgSrc,summary, reviewList, firstReviewDate, secReviewDate}:ReviewPostValue) {
+export default function ReviewPost({storeId, width,height,title, imgSrc,summary, reviewList, firstReviewDate, secReviewDate}:ReviewPostValue) {
   console.log("힝",secReviewDate, firstReviewDate)
   // /**차후 분리 */
   // let dateToString = [`${firstReviewDate.getFullYear()}-${(firstReviewDate.getMonth()) + 1}-${firstReviewDate.getDate()}`,
   //                     `${secReviewDate.getFullYear()}-${(secReviewDate.getMonth()) + 1}-${secReviewDate.getDate()}`,]
+
+  const onClickMoreButton = () => {
+    window.location.href = `/galleryBoard/${storeId}`
+  }
 
 
   return (
@@ -41,7 +45,7 @@ export default function ReviewPost({width,height,title, imgSrc,summary, reviewLi
           <ContentsText size='11px' color='#000000' bold={true}>{reviewList[1].content}</ContentsText>
         </ReviewWrap> 
         <TagWrap>
-          <Tag width='164px' height='32px' title='더보기' fontSize='12px' clickAble={true} hoverCss={true} onClickHandler={()=>{alert('click!')}}/>
+          <Tag width='164px' height='32px' title='더보기' fontSize='12px' clickAble={true} hoverCss={true} onClickHandler={onClickMoreButton}/>
         </TagWrap>
       </BoxContentsStart>
     </ReviewPostWrap>

@@ -24,6 +24,11 @@ export default function GalleryPost({storeId, width,location,imgArray,ratingValu
     sizeValue.ratingSize = "small"
   }
 
+  const onClickGalleryPost = ()=>{
+    window.location.href  = `/galleryBoard/${storeId}`
+  }
+
+
   return (
     <GalleryPostWrap width={width}>
 
@@ -34,7 +39,7 @@ export default function GalleryPost({storeId, width,location,imgArray,ratingValu
         {tagValue !=='none' && size === 'small' && <Tag title={tagValue} width='46px' height='19px' fontSize='7px'  clickAble={false}  />}
       </SlideImage>
 
-      <InformationWrap>
+      <InformationWrap onClick={onClickGalleryPost}>
         <TitleText size={sizeValue.titleTextSize} >{title}</TitleText>
         <LocationText size={sizeValue.locationTextSize} >{location}</LocationText>
         <Summary size={sizeValue.summaryTextSize} >{summary}</Summary>
