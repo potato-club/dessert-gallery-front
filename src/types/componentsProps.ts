@@ -233,6 +233,10 @@ export type SlideImgBookmarkValue = {
      */
     size: 'big'|'medium'| 'small'
     /**
+     * (선택) 지정 위치 사용 유무(absolute 사용/미사용), 기본 false
+     */
+    absolute?: boolean
+    /**
      * (필수) 북마크 선택, 선택 해제 기능 함수
      */
     onClickBookmark: React.MouseEventHandler<HTMLDivElement>

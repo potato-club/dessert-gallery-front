@@ -1,12 +1,11 @@
 import React, { useEffect } from "react";
 import LoginPickContainer from "../../src/container/loginPage/loginPick/LoginPickContainer";
 import { useRouter } from "next/router";
-import { useRecoilState } from "recoil";
-import { signUpDataState } from "../../src/recoil/login/signUpState";
+import { useSignupDataState } from "../../src/recoil/login/signupStateAtom";
 
 const LoginPick = () => {
   const router = useRouter();
-  const [signUpData, setSignUpData] = useRecoilState(signUpDataState);
+  const [signUpData, setSignUpData] = useSignupDataState();
 
   useEffect(() => {
     console.log(signUpData);
