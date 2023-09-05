@@ -18,3 +18,24 @@ export type resGalleryPost = {
 export type galleryBoardContentsList = {
   data: resGalleryPost[][]
 }
+
+export type reviewList = {
+  content: string
+  createdDate: Date
+  nickname: string
+  score: number
+}
+
+
+export type resReviewPost = {
+  id: number //
+  storeName: string //
+  fileUrl: string //
+  content: string //
+  name: string; //
+  reviewList: reviewList[]
+}
+
+export type reviewBoardContentsList = {
+  data: resReviewPost[][]
+}

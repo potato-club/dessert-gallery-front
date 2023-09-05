@@ -1,5 +1,6 @@
 import { ReactNode } from "react";
 import type { boardOptionData, filterData } from "./componentsData";
+import { reviewList } from "./apiTypes";
 /**
  * Tag 컴포넌트 props
  */
@@ -52,9 +53,9 @@ export type tagValue = {
  */
 export type slideImageValue = {
     /**
-     * (필수)가게 id
+     * (선택)가게 id
      */
-    storeId: number
+    storeId?: number
     /**
      * (필수)이미지 배열 
      */
@@ -214,7 +215,7 @@ export type ReviewPostValue = {
     /**
      * 리뷰 목록
      */
-    reviewList: UserReview[]
+    reviewList: reviewList[]
 }
 
 export type UserReview = {
