@@ -36,26 +36,26 @@ function ReviewBoardContainer() {
     });
 
   useEffect(() => {
-    const handleScroll = () => {
-      if (
-        window.innerHeight + document.documentElement.scrollTop ===
-        document.documentElement.offsetHeight
-      ) {
-        // 스크롤 하단에 도달하면 다음 페이지의 데이터를 불러옴
-        if (hasNextPage && !isFetchingNextPage) {
-          console.log("Before fetchNextPage:", data, hasNextPage, isFetchingNextPage);
-          setPageCount(prev=>prev+1)
-          fetchNextPage();
-        }
-      }
-    };
+    // const handleScroll = () => {
+    //   if (
+    //     window.innerHeight + document.documentElement.scrollTop ===
+    //     document.documentElement.offsetHeight
+    //   ) {
+    //     // 스크롤 하단에 도달하면 다음 페이지의 데이터를 불러옴
+    //     if (hasNextPage && !isFetchingNextPage) {
+    //       console.log("Before fetchNextPage:", data, hasNextPage, isFetchingNextPage);
+    //       setPageCount(prev=>prev+1)
+    //       fetchNextPage();
+    //     }
+    //   }
+    // };
     
-    window.addEventListener("scroll", handleScroll);
-    return () => {
-    console.log("satus", status)
-    console.log("data", data)
-    window.removeEventListener("scroll", handleScroll);
-    };
+    // window.addEventListener("scroll", handleScroll);
+    // return () => {
+    // console.log("satus", status)
+    // console.log("data", data)
+    // window.removeEventListener("scroll", handleScroll);
+    // };
 
   }, [hasNextPage, isFetchingNextPage, fetchNextPage, data, status]);
 

@@ -38,26 +38,26 @@ function GalleryBoardContainer() {
     });
 
   useEffect(() => {
-    const handleScroll = () => {
-      if (
-        window.innerHeight + document.documentElement.scrollTop ===
-        document.documentElement.offsetHeight
-      ) {
-        // 스크롤 하단에 도달하면 다음 페이지의 데이터를 불러옴
-        if (hasNextPage && !isFetchingNextPage) {
-          console.log("Before fetchNextPage:", data, hasNextPage, isFetchingNextPage);
-          setPageCount(prev=>prev+1)
-          fetchNextPage();
-        }
-      }
-    };
+    // const handleScroll = () => {
+    //   if (
+    //     window.innerHeight + document.documentElement.scrollTop ===
+    //     document.documentElement.offsetHeight
+    //   ) {
+    //     // 스크롤 하단에 도달하면 다음 페이지의 데이터를 불러옴
+    //     if (hasNextPage && !isFetchingNextPage) {
+    //       console.log("Before fetchNextPage:", data, hasNextPage, isFetchingNextPage);
+    //       setPageCount(prev=>prev+1)
+    //       fetchNextPage();
+    //     }
+    //   }
+    // };
     
-    window.addEventListener("scroll", handleScroll);
-    return () => {
-    console.log("satus", status)
-    console.log("data", data)
-    window.removeEventListener("scroll", handleScroll);
-    };
+    // window.addEventListener("scroll", handleScroll);
+    // return () => {
+    // console.log("satus", status)
+    // console.log("data", data)
+    // window.removeEventListener("scroll", handleScroll);
+    // };
 
   }, [hasNextPage, isFetchingNextPage, fetchNextPage, data, status]);
 
@@ -73,7 +73,7 @@ function GalleryBoardContainer() {
         <BoardOption orderOption={orderOption} setOrderOption={setOrderOption} optionData={optionData} setOptionData={setOptionData} setPageCount={setPageCount} />
         {status === "loading" && <ToastMessage messageString='불러오는 중...' timer={5000}/>}
         {status === "error" && <p>error</p>}
-        {status === "success" && data.pages[pageCount-1].length !==0 && <Contents data={data.pages} />}
+        {status === "success" &&  (data.pages[pageCount-1].length !==0 || data.pages[pageCount-1].length !==undefined) && <Contents data={data.pages} />}
         {status === "success" && data.pages[pageCount-1].length ===0 && <ToastMessage messageString='더이상 불러올 가게 정보가 없습니다.' timer={5000}/>}
         
     </Wrapper>

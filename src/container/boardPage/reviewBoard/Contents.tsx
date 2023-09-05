@@ -2,7 +2,7 @@ import React from 'react'
 import ReviewPost from './ReviewPost'
 import styled from 'styled-components'
 import { UserReview, ReviewPostValue } from '../../../types/componentsProps'
-import { reviewBoardContentsList } from '../../../types/apiTypes'
+import { reviewBoardContentsList, reviewList } from '../../../types/apiTypes'
 
 // const reviewData:UserReview[] = [
 //   {
@@ -79,19 +79,22 @@ import { reviewBoardContentsList } from '../../../types/apiTypes'
 // ];
 
 export default function Contents({data}:reviewBoardContentsList ) {
+  console.log("reviewBoardConten", data, data[0][0].reviewList)
   return (
     <Wrap>
       {
         data.map((el)=>(
-          el.map((e)=>(
+          el.map((e: {id: number; storeName: string; fileUrl: string; content:string; reviewList: reviewList[];  })=>(
             <ReviewPost 
               key={e.id}
-              width={309} 
-              height={580} 
-              title={e.name}
+              width={316} 
+              height={620} 
+              title={e.storeName}
               imgSrc={e.fileUrl}
               summary={e.content}
               reviewList={e.reviewList}
+              firstReviewDate={e.reviewList[0].createdDate}
+              secReviewDate={e.reviewList[1].createdDate}
             />
           ))
         ))

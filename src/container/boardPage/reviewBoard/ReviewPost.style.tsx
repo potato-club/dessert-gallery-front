@@ -14,7 +14,7 @@ interface textComponentProps {
 }
 
 export const Box = styled.div`
-    width: 100%;
+    width: min-content;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -45,7 +45,7 @@ export const InformationWrap = styled.div<componentProps>`
     flex-direction: column;
     width: ${({width}) => `${width}px`};
     align-items: start;
-    padding-bottom: 20px;
+    padding-bottom: 12px;
     border-radius: 0 0 16px 16px;
 `
 
@@ -77,7 +77,7 @@ export const ReviewWrap = styled.div`
 `
 
 export const TopTextWrap = styled.div`  
-    margin: 10px 0 8px 0;
+    margin: 4px 0 4px 0;
     display: flex;
     justify-content: space-between;
     align-items: flex-end;    
@@ -88,6 +88,9 @@ export const Text = styled.div<textComponentProps>`
     font-size: ${({size}) => `${size}`};
     line-height: normal;
     font-family: noto-sans-cjk-kr;
+    word-break: break-all;
+    overflow: hidden;
+    text-overflow: ellipsis;
     
     ${({bold}) => {
         if(bold === true){
@@ -99,6 +102,10 @@ export const Text = styled.div<textComponentProps>`
             return `margin-right: 72px;`
         }
     }};
+`
+
+export const ContentsText = styled(Text)`
+    height: 46px;
 `
 
 export const TagWrap = styled.div`
