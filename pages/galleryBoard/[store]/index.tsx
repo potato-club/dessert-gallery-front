@@ -7,7 +7,6 @@ import {
   getStoreAnnounce,
   getPosterThumnail,
   getStoreReview,
-  getDetailPoster,
 } from "../../api/detailStore";
 
 export interface StoreProps {
@@ -30,21 +29,33 @@ export default Store;
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const queryClient = new QueryClient();
+  const storeId = Number(context.params?.store);
+  const page = Number(context.params?.page);
+  // storeId가 invalid 값일때 갤러리보드로 라우팅
+  try {
+    const storeInfo = await getStoreInfo({ storeId });
+    const announceData = await getStoreAnnounce({ storeId });
+    const posterThumnail = await getPosterThumnail({ storeId });
+    // accessToken이 있을때는 팔로우 여부 등등을 판단해야함 (처리 필요)
+    queryClient.prefetchQuery(["review", storeId], () =>
+      getStoreReview({ storeId, page })
+    );
 
-  const accessToken =
-    "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJybGFlaGRyYnM1ODBAbmF2ZXIuY29tIiwicm9sZXMiOiJNQU5BR0VSIiwiaWF0IjoxNjkzMjk2NzA3LCJleHAiOjE2OTMyOTg1MDd9.sTra93juT5g9evrvnGxHc1nzUOtEu6w16vvBK6tqcRA";
-  const storeInfo = await getStoreInfo(accessToken);
-  const announceData = await getStoreAnnounce(accessToken);
-  const posterThumnail = await getPosterThumnail(accessToken);
-  const storeReview = await getStoreReview();
-
-  return {
-    props: {
-      dehydratedState: dehydrate(queryClient), // 초기 데이터 캐싱 dehydrate
-      storeInfo,
-      announceData,
-      posterThumnail,
-      storeReview,
-    },
-  };
+    return {
+      props: {
+        dehydratedState: dehydrate(queryClient), // 초기 데이터 캐싱
+        storeInfo,
+        announceData,
+        posterThumnail,
+      },
+    };
+  } catch (error) {
+    console.log(error);
+    return {
+      redirect: {
+        destination: "/galleryBoard",
+        permanent: false,
+      },
+    };
+  }
 };

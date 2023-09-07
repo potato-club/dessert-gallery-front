@@ -1,59 +1,48 @@
 import axios from "axios";
 
-export const getStoreInfo = async (accessToken: string | null) => {
-  const res = await axios.get(`https://api.dessert-gallery.site/stores/3`, {
-    headers: {
-      Authorization: `Bearer ${accessToken}`,
-    },
-  });
-
-  return res.data;
-};
-
-export const getStoreAnnounce = async (accessToken: string | null) => {
+interface GetStoreType {
+  accessToken?: string | null;
+  storeId: number;
+}
+export const getStoreInfo = async ({ storeId }: GetStoreType) => {
   const res = await axios.get(
-    `https://api.dessert-gallery.site/notices/stores/3`,
-    {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-    }
+    `https://api.dessert-gallery.site/stores/${storeId}`
   );
 
   return res.data;
 };
 
-export const getPosterThumnail = async (accessToken: string | null) => {
+export const getStoreAnnounce = async ({ storeId }: GetStoreType) => {
   const res = await axios.get(
-    `https://api.dessert-gallery.site/boards/stores/3`,
-    {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-    }
+    `https://api.dessert-gallery.site/notices/stores/${storeId}`
   );
 
   return res.data;
 };
 
-export const getDetailPoster = async (
-  boardId: number,
-  accessToken: string | null
-) => {
+export const getPosterThumnail = async ({ storeId }: GetStoreType) => {
   const res = await axios.get(
-    `https://api.dessert-gallery.site/boards/${boardId}`,
-    {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-    }
+    `https://api.dessert-gallery.site/boards/stores/${storeId}`
+  );
+
+  return res.data;
+};
+
+export const getDetailPoster = async ({ storeId }: GetStoreType) => {
+  const res = await axios.get(
+    `https://api.dessert-gallery.site/boards/${storeId}`
   );
   return res.data;
 };
 
-export const getStoreReview = async () => {
+interface GetStoreReview {
+  accessToken?: string | null;
+  storeId: number;
+  page?: number;
+}
+export const getStoreReview = async ({ storeId, page }: GetStoreReview) => {
   const res = await axios.get(
-    `https://api.dessert-gallery.site/reviews/stores/3`
+    `https://api.dessert-gallery.site/reviews/stores/${storeId}?page=${page}`
   );
   return res.data;
 };

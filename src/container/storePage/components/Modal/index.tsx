@@ -29,6 +29,7 @@ const PostModal = ({ boardId, storeInfo }: any) => {
   const { name, info, storeImage, address } = storeInfo;
   const { title, content, tags, images } = detailPoster;
 
+  console.log(tags);
   return (
     <ModalWrapper>
       <Container>
@@ -58,29 +59,24 @@ const PostModal = ({ boardId, storeInfo }: any) => {
           </InfoHeader>
           <InfoContent>
             {menuIconClick && <MenuBox />}
-            <BookmarkDiv>
-              <Bookmark
-                onBookmark={onBookmarkState}
-                size="medium"
-                onClickBookmark={() => setOnBookmarkState((prev) => !prev)}
-              />
-            </BookmarkDiv>
-            <Address>{address}</Address>
+            <TopPosition>
+              <Address>{address}</Address>
+              <BookmarkDiv>
+                <Bookmark
+                  onBookmark={onBookmarkState}
+                  size="medium"
+                  onClickBookmark={() => setOnBookmarkState((prev) => !prev)}
+                />
+              </BookmarkDiv>
+            </TopPosition>
             <Title>{title}</Title>
             <TextContent>{content}</TextContent>
             <HashTagBox>
-              {/* 대충 리스트 형태로 날아오면 map으로 뿌려주기 */}
-              <HashTag>#해시태그</HashTag>
-              <HashTag>#해시태그</HashTag>
-              <HashTag>#해시태그</HashTag>
-              <HashTag>#해시태그</HashTag>
-              <HashTag>#해시태그</HashTag>
-              <HashTag>#해시태그</HashTag>
-              <HashTag>#해시태그</HashTag>
-              <HashTag>#해시태그</HashTag>
+              {tags.map((item: string, idx: number) => {
+                return <HashTag key={idx}>{item}</HashTag>;
+              })}
             </HashTagBox>
             <CommentList>
-              {/* 대충 리스트형태로 모든댓글 get하고 뿌려주기 */}
               <Comment />
               <Comment />
               <Comment />
@@ -99,7 +95,7 @@ const PostModal = ({ boardId, storeInfo }: any) => {
             </InputWrapper>
             <ReservedBtn
               onClick={() => {
-                console.log("대충 예약하러가는 라우팅");
+                console.log("예약하러가는 라우팅");
               }}
             >
               예약하러 가기
@@ -151,9 +147,12 @@ const StoreProfile = styled.img`
   background-color: black;
 `;
 const BookmarkDiv = styled.div`
-  position: absolute;
-  right: 30px;
-  z-index: 10;
+  position: relative;
+  top: -10px;
+`;
+const TopPosition = styled.div`
+  display: flex;
+  justify-content: space-between;
 `;
 const StoreName = styled.div`
   color: #000;
@@ -172,12 +171,14 @@ const Address = styled.div`
   color: #828282;
   font-size: 15px;
   font-weight: 700;
+  max-width: 300px;
 `;
 const Title = styled.div`
   color: #000;
   font-size: 24px;
   font-weight: 700;
   margin: 9px 0px 17px 0px;
+  max-width: 300px;
 `;
 const TextContent = styled.div`
   color: #000;

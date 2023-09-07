@@ -1,15 +1,16 @@
 import React from "react";
 import styled from "styled-components";
 import Review from "./Review";
+
 const ReviewList = ({ storeReview }: any) => {
-  // console.log(storeReview);
+  console.log(storeReview);
 
   return (
     <Container>
-      <Review />
-      <Review />
-      <Review />
-      <Review />
+      {storeReview.content.map((item: any, idx: number) => {
+        return <Review storeReview={item} key={idx} />;
+      })}
+      {/* <Pagenation></Pagenation> */}
     </Container>
   );
 };
