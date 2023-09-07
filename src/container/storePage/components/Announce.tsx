@@ -114,6 +114,7 @@ const TextContent = styled.span<{
   overflow: ${({ infoBtnClick }) => (infoBtnClick ? "none" : "hidden")};
   white-space: ${({ infoBtnClick }) => (infoBtnClick ? "normal" : "nowrap")};
   text-overflow: ellipsis;
+  word-wrap: ${({ infoBtnClick }) => infoBtnClick && "break-word"};
 `;
 
 const RightCont = styled.div`
