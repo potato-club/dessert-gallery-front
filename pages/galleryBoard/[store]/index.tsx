@@ -30,14 +30,14 @@ export default Store;
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const queryClient = new QueryClient();
   const storeId = Number(context.params?.store);
-  const page = Number(context.params?.page);
+  const page = Number(context.params?.page) || 1;
   // storeId가 invalid 값일때 갤러리보드로 라우팅
   try {
     const storeInfo = await getStoreInfo({ storeId });
     const announceData = await getStoreAnnounce({ storeId });
     const posterThumnail = await getPosterThumnail({ storeId });
     // accessToken이 있을때는 팔로우 여부 등등을 판단해야함 (처리 필요)
-    queryClient.prefetchQuery(["review", storeId], () =>
+    await queryClient.prefetchQuery(["review", storeId], () =>
       getStoreReview({ storeId, page })
     );
 

@@ -10,8 +10,7 @@ import { StoreProps } from "../../../pages/galleryBoard/[store]";
 const StorePage = (props: StoreProps) => {
   const [spreadClick, setSpreadClick] = useState<boolean>(false);
 
-  const { storeInfo, announceData, posterThumnail, storeReview, detailPoster } =
-    props;
+  const { storeInfo, announceData, posterThumnail, detailPoster } = props;
 
   // console.log(
   //   // storeInfo
@@ -66,7 +65,6 @@ const StorePage = (props: StoreProps) => {
         posterThumnail={posterThumnail}
         detailPoster={detailPoster}
         storeInfo={storeInfo}
-        storeReview={storeReview}
       />
     </Container>
   );

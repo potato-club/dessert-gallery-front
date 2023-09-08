@@ -1,4 +1,4 @@
-import { getDetailPoster } from "../../pages/api/detailStore";
+import { getDetailPoster, getStoreReview } from "../../pages/api/detailStore";
 import { useQuery } from "react-query";
 
 export const useGetDetailBoard = (options = {}, storeId: number) => {
@@ -13,14 +13,14 @@ export const useGetDetailBoard = (options = {}, storeId: number) => {
   return data;
 };
 
-export const useGetReviewList = ({ query, storeId, options }: any) => {
-  const { data } = useQuery(
+export const useGetReviewList = ({ page, storeId, options }: any) => {
+  const { data, refetch } = useQuery(
     ["review", storeId],
-    () => getDetailPoster({ storeId }),
+    () => getStoreReview({ storeId, page }),
     {
       ...options,
     }
   );
 
-  return data;
+  return { data, refetch };
 };
