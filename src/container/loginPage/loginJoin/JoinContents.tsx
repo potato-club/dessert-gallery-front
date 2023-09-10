@@ -2,12 +2,29 @@ import React from "react";
 import Input from "../../../components/Input";
 import Tag from "../../../components/Tag";
 import styled from "styled-components";
+import { useForm } from "react-hook-form";
 
 function JoinContents() {
+  const { handleSubmit, getValues, control } = useForm<{
+    email?: string;
+    password?: string;
+  }>({
+    defaultValues: {
+      email: "",
+      password: "",
+    },
+    mode: "onChange",
+  });
+
   return (
     <JoinContentsWrapper>
-      <Input placeholder="이메일 입력" />
-      <Input placeholder="비밀번호 입력" />
+      <Input placeholder="이메일 입력" name="email" control={control} />
+      <Input
+        placeholder="비밀번호 입력"
+        type="password"
+        name="password"
+        control={control}
+      />
       <TagButtonWrapper>
         <Tag
           title="회원가입"
@@ -16,7 +33,9 @@ function JoinContents() {
           fontSize="100%"
           inversion={true}
           clickAble={true}
-          onClickHandler={() => {}}
+          onClickHandler={() => {
+            console.log(getValues());
+          }}
         />
       </TagButtonWrapper>
     </JoinContentsWrapper>
