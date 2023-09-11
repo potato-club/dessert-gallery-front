@@ -309,7 +309,7 @@ export type resGalleryPost = {
     id: number
     fileUrl: string
     address: string
-    bookmarkId: null
+    followId: null | number
     score: string
     content: string
     name: string;

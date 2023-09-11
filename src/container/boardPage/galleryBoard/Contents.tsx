@@ -77,7 +77,7 @@ export default function Contents({data}: galleryBoardContentsList) {
     return (
       <Wrap>
         {data.map((el)=>(
-          el.map((e: { id: number; fileUrl: string; address: string; bookmarkId: null; score: string; content: string; name: string; })=>(
+          el.map((e: { id: number; fileUrl: string; address: string; followId: null|number; score: string; content: string; name: string; })=>(
             <GalleryPost 
             storeId={e.id}
             key={e.id}
@@ -85,7 +85,7 @@ export default function Contents({data}: galleryBoardContentsList) {
             imgArray={[e.fileUrl]} 
             location={e.address} 
             bookmark={true}
-            onBookmark={e.bookmarkId === null ? false: true} 
+            onBookmark={e.followId === null ? false: true} 
             ratingValue={e.score} 
             summary={e.content} 
             title={e.name} 
