@@ -101,6 +101,6 @@ export default function Contents({data}: {data: resGalleryPost[][]}) {
 const Wrap = styled.div`
   width: 1100px;
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start;
   flex-wrap: wrap;
 `;

@@ -1,10 +1,9 @@
 import React from 'react'
-import { GalleryPostWrap, TitleText, InformationWrap,LocationText, Summary } from './GalleryPost.style'
+import { GalleryPostWrap, TitleText, InformationWrap,LocationText, Summary, TextWrap } from './GalleryPost.style'
 import SlideImage from '../../../components/SlideImage/SlideImage'
 import Tag from '../../../components/Tag'
 import Rating from '../../../components/Rating'
 import { galleryPostValue, galleryPostSizeValue } from '../../../types/componentsProps'
-import Bookmark from '../../../components/SlideImage/Bookmark'
 
 
 export default function GalleryPost({storeId, width,location,imgArray,ratingValue,summary,size='big', tagValue='none', bookmark, onBookmark ,title}:galleryPostValue) {
@@ -40,9 +39,11 @@ export default function GalleryPost({storeId, width,location,imgArray,ratingValu
       </SlideImage>
 
       <InformationWrap onClick={onClickGalleryPost}>
-        <TitleText size={sizeValue.titleTextSize} >{title}</TitleText>
-        <LocationText size={sizeValue.locationTextSize} >{location}</LocationText>
-        <Summary size={sizeValue.summaryTextSize} >{summary}</Summary>
+        <TextWrap>
+          <TitleText size={sizeValue.titleTextSize} >{title}</TitleText>
+          <LocationText size={sizeValue.locationTextSize} >{location}</LocationText>
+          <Summary size={sizeValue.summaryTextSize} >{summary}</Summary>
+        </TextWrap>
         <Rating size={sizeValue.ratingSize} ratingValue={ratingValue}/>
       </InformationWrap>
     
