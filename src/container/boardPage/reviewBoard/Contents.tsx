@@ -1,8 +1,7 @@
 import React from 'react'
 import ReviewPost from './ReviewPost'
 import styled from 'styled-components'
-import { UserReview, ReviewPostValue } from '../../../types/componentsProps'
-import { reviewBoardContentsList, reviewList } from '../../../types/apiTypes'
+import type { reviewBoardContentsList, reviewItem } from '../../../types/apiTypes'
 
 // const reviewData:UserReview[] = [
 //   {
@@ -84,7 +83,7 @@ export default function Contents({data}:reviewBoardContentsList ) {
     <Wrap>
       {
         data.map((el)=>(
-          el.map((e: {id: number; storeName: string; fileUrl: string; content:string; reviewList: reviewList[];  })=>(
+          el.map((e: {id: number; storeName: string; fileUrl: string; content:string; reviewList: reviewItem[];  })=>(
             <ReviewPost 
               key={e.id}
               storeId={e.id}
@@ -94,8 +93,6 @@ export default function Contents({data}:reviewBoardContentsList ) {
               imgSrc={e.fileUrl}
               summary={e.content}
               reviewList={e.reviewList}
-              firstReviewDate={e.reviewList[0].createdDate}
-              secReviewDate={e.reviewList[1].createdDate}
             />
           ))
         ))

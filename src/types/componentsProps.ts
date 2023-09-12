@@ -217,19 +217,11 @@ export type ReviewPostValue = {
      * 리뷰 목록
      */
     reviewList: reviewItem[]
-    /**
-     * 1번 리뷰 작성날짜
-     */
-    firstReviewDate: Date
-    /**
-     * 2번 리뷰 작성날짜
-     */
-    secReviewDate: Date
 }
 
 export type UserReview = {
     userId: string
-    date: Date
+    date: string
     rating: string
     contents: string
 }
