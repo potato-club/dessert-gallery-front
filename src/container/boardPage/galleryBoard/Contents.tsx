@@ -3,7 +3,7 @@ import GalleryPost from './GalleryPost'
 import styled from 'styled-components'
 import { galleryPostValue } from '../../../types/componentsProps';
 import { useGetStoreBoardListdData } from '../../../hooks/useGetStoreBoardList';
-import type { galleryBoardContentsList } from '../../../types/componentsProps';
+import type { resGalleryPost } from '../../../types/apiTypes';
 import ToastMessage from '../../../components/ToastMessage';
 
 const imgSrc = [
@@ -72,12 +72,12 @@ const imgSrc = [
 // }
 // ]
 
-export default function Contents({data}: galleryBoardContentsList) {
-  
+export default function Contents({data}: {data: resGalleryPost[][]}) {
+  console.log("Contents Components data: ", data)
     return (
       <Wrap>
         {data.map((el)=>(
-          el.map((e: { id: number; fileUrl: string; address: string; followId: null|number; score: string; content: string; name: string; })=>(
+          el.map((e: resGalleryPost)=>(
             <GalleryPost 
             storeId={e.id}
             key={e.id}

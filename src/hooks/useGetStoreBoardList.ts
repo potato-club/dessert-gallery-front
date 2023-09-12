@@ -16,11 +16,19 @@ async function fetchStoreBoardData(req: boardSearchOptionData) {
   //정렬타입
   queryString += `&sortType=${req.sortType}`;
 
-  console.log("getBoardListRUL: ", queryString)
-
   try {
     const { data } = await boardApiList.getBoardList(queryString);
-    console.log("getBoardList: ", data)
+    if(data.length ===0){
+      req.setToast(true)
+    }else{
+      if(Number(req.page)-1 >=req.resData.length){
+        let temp = [];
+        if(req.resData.length !== 0)
+          temp.push(req.resData)
+        temp.push(data)
+        req.setResData(temp)
+      }
+    }
     return data;
   } catch (error) {
     console.log(error)

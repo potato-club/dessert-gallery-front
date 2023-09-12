@@ -1,6 +1,6 @@
 import { ReactNode } from "react";
 import type { boardOptionData, filterData } from "./componentsData";
-import { reviewList } from "./apiTypes";
+import { reviewItem } from "./apiTypes";
 /**
  * Tag 컴포넌트 props
  */
@@ -216,7 +216,7 @@ export type ReviewPostValue = {
     /**
      * 리뷰 목록
      */
-    reviewList: reviewList[]
+    reviewList: reviewItem[]
     /**
      * 1번 리뷰 작성날짜
      */
