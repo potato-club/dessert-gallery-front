@@ -34,6 +34,7 @@ const Container = styled.div`
 const PostDiv = styled.img`
   width: 328px;
   height: 328px;
+  background-color: #fdc886;
   &:hover {
     cursor: pointer;
   }

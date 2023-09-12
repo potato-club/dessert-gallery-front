@@ -1,25 +1,27 @@
 import React from "react";
 import styled from "styled-components";
-import { DefaultProfileLogo } from "../../../../../public/svg";
 
 /**
  * props 설명
- * img : 유저의 프로필, 기본값은 DefaultProfileLogo
+ * profile : 유저의 프로필, 기본값은 DefaultProfileLogo
  * nickname : 유저의 닉네임 or 아이디
- * text : 유저가 작성한 댓글
+ * comment : 유저가 작성한 댓글
+ * createdDate : 유저가 작성한 시간
  */
 
 interface CommentType {
-  img?: any;
+  comment: string;
+  createdDate?: string;
   nickname: string;
-  text: string;
+  profile: string | null;
 }
-const Comment = () => {
+const Comment = ({ ...props }: CommentType) => {
+  const { comment, nickname, profile } = props;
   return (
     <Container>
-      <DefaultProfileLogo width="30px" height="30px" />
-      <Nickname>아이디</Nickname>
-      <Text>게시글과 관련된 댓글을 달았습니다</Text>
+      <Profile src={profile || "/svg/storePage/DefaultProfileLogo.svg"} />
+      <Nickname>{nickname}</Nickname>
+      <Text>{comment}</Text>
     </Container>
   );
 };
@@ -41,4 +43,9 @@ const Text = styled.span`
   font-size: 10px;
   font-weight: 500;
   max-width: 260px;
+`;
+const Profile = styled.img`
+  width: 30px;
+  height: 30px;
+  border-radius: 100%;
 `;

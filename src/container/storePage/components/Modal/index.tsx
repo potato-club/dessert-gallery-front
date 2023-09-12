@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import ModalWrapper from "../../../../components/ModalWrapper";
 import { MenuIcon } from "../../../../../public/svg";
@@ -6,30 +6,68 @@ import Comment from "./Comment";
 import Bookmark from "../../../../components/SlideImage/Bookmark";
 import SlideImage from "../../../../components/SlideImage/SlideImage";
 import MenuBox from "./MenuBox";
-import { useGetDetailBoard } from "../../../../hooks/useBoard";
+import {
+  useGetDetailBoard,
+  useGetModalComment,
+} from "../../../../hooks/useBoard";
+import { useInView } from "react-intersection-observer";
 
 const PostModal = ({ boardId, storeInfo }: any) => {
   const [comment, setComment] = useState<string>("");
   const [onBookmarkState, setOnBookmarkState] = useState<boolean>(false);
   const [menuIconClick, setMenuIconClick] = useState<boolean>(false);
 
+  const [page, setPage] = useState<number>(1);
+  const [activeIo, setActiveIo] = useState<boolean>(false);
+  const [commentArr, setCommentArr] = useState<Comment[]>([]); // 댓글 목록을 저장하는 상태
+
   const submit = (e: any) => {
     // 댓글 submit
     e.preventDefault();
-    setComment(e.target.value);
-    console.log(comment);
+    setComment("");
     // 대충 게시물 댓글 postApi 훅 들어갈 자리
   };
   const detailPoster = useGetDetailBoard({}, boardId);
+
+  const { data, refetch } = useGetModalComment({
+    page: page || 1,
+    boardId,
+    options: {
+      refetchOnWindowFocus: false,
+    },
+  });
+
+  const [ref, inView] = useInView();
+
+  useEffect(() => {
+    if (data) {
+      setCommentArr((prevArr) => [...prevArr, ...data.content]);
+    }
+  }, [data]);
+
+  useEffect(() => {
+    if (inView) {
+      setActiveIo(true);
+      refetch();
+    } else {
+      setActiveIo(false);
+    }
+  }, [inView, refetch]);
+
+  useEffect(() => {
+    if (activeIo) {
+      setPage((prev) => prev + 1);
+    }
+  }, [activeIo]);
 
   if (!detailPoster) {
     return <></>;
   }
 
+  console.log(commentArr);
   const { name, info, storeImage, address } = storeInfo;
   const { title, content, tags, images } = detailPoster;
 
-  console.log(tags);
   return (
     <ModalWrapper>
       <Container>
@@ -77,21 +115,28 @@ const PostModal = ({ boardId, storeInfo }: any) => {
               })}
             </HashTagBox>
             <CommentList>
-              <Comment />
-              <Comment />
-              <Comment />
-              <Comment />
-              <Comment />
-              <Comment />
-              <Comment />
-              <Comment />
-              <Comment />
-              <Comment />
+              {commentArr &&
+                commentArr.map((item: any, idx: number) => {
+                  return (
+                    <Comment
+                      nickname={item.nickname}
+                      comment={item.comment}
+                      profile={item.profile}
+                      key={idx}
+                    />
+                  );
+                })}
+              <IoDiv ref={ref} />
             </CommentList>
           </InfoContent>
+
           <Bottom>
             <InputWrapper onSubmit={submit}>
-              <InputBox placeholder="댓글 추가" />
+              <InputBox
+                placeholder="댓글 추가"
+                onChange={(e) => setComment(e.target.value)}
+                value={comment}
+              />
             </InputWrapper>
             <ReservedBtn
               onClick={() => {
@@ -109,6 +154,9 @@ const PostModal = ({ boardId, storeInfo }: any) => {
 
 export default PostModal;
 
+const IoDiv = styled.div`
+  height: 1px;
+`;
 const Container = styled.div`
   display: flex;
   background-color: #fffdf9;

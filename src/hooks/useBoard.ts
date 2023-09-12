@@ -1,5 +1,10 @@
-import { getDetailPoster, getStoreReview } from "../../pages/api/detailStore";
-import { useQuery } from "react-query";
+import {
+  getDetailPoster,
+  getStoreReview,
+  getBoardComment,
+  postBoardComment,
+} from "../../pages/api/detailStore";
+import { useMutation, useQuery } from "react-query";
 
 export const useGetDetailBoard = (options = {}, storeId: number) => {
   const { data } = useQuery(
@@ -23,4 +28,28 @@ export const useGetReviewList = ({ page, storeId, options }: any) => {
   );
 
   return { data, refetch };
+};
+
+export const useGetModalComment = ({ page, boardId, options }: any) => {
+  const { data, refetch } = useQuery(
+    ["boardComment", boardId],
+    () => getBoardComment({ boardId, page }),
+    {
+      ...options,
+    }
+  );
+
+  return { data, refetch };
+};
+
+export const usePostModalComment = ({ boardId, options }: any) => {
+  const { mutate } = useMutation(
+    ["boardComment", boardId],
+    () => postBoardComment({ boardId }),
+    {
+      ...options,
+    }
+  );
+
+  return { mutate };
 };
