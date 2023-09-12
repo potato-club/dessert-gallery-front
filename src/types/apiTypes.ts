@@ -41,12 +41,13 @@ export type reviewItem = {
 
 
 export type resReviewPost = {
-  id: number;
-  storeName: string;
-  fileUrl: string;
-  content: string;
-  name: string;
-  reviewList: reviewItem[];
+  id: number
+  storeId: number
+  storeName: string
+  fileUrl: string
+  content: string
+  name: string
+  reviewList: reviewItem[]
 }
 
 export type reviewBoardContentsList = {

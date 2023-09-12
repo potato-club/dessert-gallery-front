@@ -83,10 +83,10 @@ export default function Contents({data}:reviewBoardContentsList ) {
     <Wrap>
       {
         data.map((el)=>(
-          el.map((e: {id: number; storeName: string; fileUrl: string; content:string; reviewList: reviewItem[];  })=>(
+          el.map((e: {id: number; storeId: number; storeName: string; fileUrl: string; content:string; reviewList: reviewItem[];  })=>(
             <ReviewPost 
               key={e.id}
-              storeId={e.id}
+              storeId={e.storeId}
               width={316} 
               height={620} 
               title={e.storeName}
