@@ -8,6 +8,7 @@ import type { selectOrder } from '../../../types/componentsProps'
 import { boardOptionData } from '../../../types/componentsData'
 import type { resGalleryPost } from '../../../types/apiTypes'
 import ToastMessage from '../../../components/ToastMessage'
+import { BoardBanner } from '../../../../public/image'
 
 function GalleryBoardContainer() {
   const [pageCount, setPageCount] = useState<number>(1)
@@ -68,7 +69,7 @@ function GalleryBoardContainer() {
 
   return (
     <Wrapper>
-        <BoardTop title='가게 게시판' decription='다양한 가게의 게시물을 볼 수 있는 가게 게시판입니다.' imgSrc={''}/>
+        <BoardTop title='가게 게시판' decription='다양한 가게의 게시물을 볼 수 있는 가게 게시판입니다.' imgSrc={BoardBanner.src}/>
         <BoardOption orderOption={orderOption} setOrderOption={setOrderOption} optionData={optionData} setOptionData={setOptionData} setPageCount={setPageCount} />
         {status === "loading" && <ToastMessage messageString='불러오는 중...' timer={5000}/>}
         {status === "error" && <p>error</p>}
