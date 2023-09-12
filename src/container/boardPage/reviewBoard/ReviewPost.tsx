@@ -6,11 +6,14 @@ import Tag from '../../../components/Tag'
 import type { ReviewPostValue } from '../../../types/componentsProps'
 
 
-export default function ReviewPost({storeId, width,height,title, imgSrc,summary, reviewList, firstReviewDate, secReviewDate}:ReviewPostValue) {
-  console.log("힝",secReviewDate, firstReviewDate)
-  // /**차후 분리 */
-  // let dateToString = [`${firstReviewDate.getFullYear()}-${(firstReviewDate.getMonth()) + 1}-${firstReviewDate.getDate()}`,
-  //                     `${secReviewDate.getFullYear()}-${(secReviewDate.getMonth()) + 1}-${secReviewDate.getDate()}`,]
+export default function ReviewPost({storeId, width,height,title, imgSrc,summary, reviewList}:ReviewPostValue) {
+
+  /**차후 분리 */
+  let fir = new Date(reviewList[0].createDate);
+  let sec = new Date(reviewList[1].createDate);
+  
+  let dateToString = [`${fir.getFullYear()}-${(fir.getMonth()) + 1}-${fir.getDate()}`,
+                      `${sec.getFullYear()}-${(sec.getMonth()) + 1}-${sec.getDate()}`,]
 
   const onClickMoreButton = () => {
     window.location.href = `/galleryBoard/${storeId}`
@@ -30,7 +33,7 @@ export default function ReviewPost({storeId, width,height,title, imgSrc,summary,
         <ReviewWrap>
           <TopTextWrap >
             <Text size='13px' color='#FF8D00' bold={true}>{reviewList[0].nickname}</Text>
-            {/* <Text size='13px' color='#828282' marginRight={true}>{dateToString[0]}</Text> */}
+            <Text size='13px' color='#828282' marginRight={true}>{dateToString[0]}</Text>
             <Rating size='medium' ratingValue={String(reviewList[0].score)}/>
           </TopTextWrap>
           <ContentsText size='11px' color='#000000' bold={true}>{reviewList[0].content}</ContentsText>
@@ -39,7 +42,7 @@ export default function ReviewPost({storeId, width,height,title, imgSrc,summary,
         <ReviewWrap>
           <TopTextWrap >
             <Text size='13px' color='#FF8D00' bold={true}>{reviewList[1].nickname}</Text>
-            {/* <Text size='13px' color='#828282' marginRight={true}>{dateToString[1]}</Text> */}
+            <Text size='13px' color='#828282' marginRight={true}>{dateToString[1]}</Text>
             <Rating size='medium' ratingValue={String(reviewList[1].score)}/>
           </TopTextWrap>
           <ContentsText size='11px' color='#000000' bold={true}>{reviewList[1].content}</ContentsText>
