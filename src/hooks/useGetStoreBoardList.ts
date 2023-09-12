@@ -28,6 +28,7 @@ async function fetchStoreBoardData(req: boardSearchOptionData) {
           let temp = [];
           temp.push(data)             // 데이터 가공
           req.setResData(temp)        // 받은 데이터 저장
+          req.setToast(false);
         } 
       }
 
@@ -39,6 +40,7 @@ async function fetchStoreBoardData(req: boardSearchOptionData) {
           let temp = req.resData;
           temp.push(data)     
           req.setResData(temp)
+          req.setToast(false);
         } 
       }
     
