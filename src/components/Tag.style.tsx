@@ -8,6 +8,7 @@ interface ComponentLengthProps {
     inversion?: Boolean; 
     hoverCss?: Boolean;
     shadow?: boolean;
+    color?: string;
 }
 
 const TagWrap = styled.div<ComponentLengthProps>`
@@ -22,12 +23,12 @@ const TagWrap = styled.div<ComponentLengthProps>`
     font-weight: 500;
     font-style: normal;
 
-    color:#FF8D01;
+    color:${({ color }) => color};
     font-size: ${({ fontSize }) => fontSize};
     font-weight: bolder;
     
     background-color: white;
-    border: 2px solid #FF8D01;
+    border: ${({ color }) => `2px solid ${color}`};
     border-radius: 56px;
     
     cursor: default;
