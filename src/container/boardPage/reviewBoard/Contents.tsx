@@ -105,6 +105,6 @@ export default function Contents({data}:reviewBoardContentsList ) {
 const Wrap = styled.div`
   width: 1100px;
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start;
   flex-wrap: wrap;
 `;
