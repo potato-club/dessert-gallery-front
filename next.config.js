@@ -3,6 +3,9 @@ const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
 
+  images: {
+    domains: ['dessert-gallery.s3.ap-northeast-2.amazonaws.com','cdn.pixabay.com']
+  },
   webpack(config) {
     config.module.rules.push({
       test: /\.svg$/i,
