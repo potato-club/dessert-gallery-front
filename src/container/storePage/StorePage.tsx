@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import Calender from "./components/Calender";
+import Calender from "./components/Calendar";
 import StoreProfile from "./components/StoreProfile";
 import Announce from "./components/Announce";
 import StoreContent from "./components/StoreContent";
