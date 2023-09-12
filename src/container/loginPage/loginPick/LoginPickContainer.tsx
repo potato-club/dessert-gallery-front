@@ -3,11 +3,13 @@ import Wrapper from "../components/Wrapper";
 import styled from "styled-components";
 import PickContents from "./PickContents";
 import Title from "../components/Title";
+import Modal from "../components/Modal";
 
 function LoginPickContainer() {
   return (
     <Wrapper>
       <PickWrapper>
+        <Modal />
         <PickContnentsWrapper>
           <PickContents role={"owner"}></PickContents>
           <Title>Pick!</Title>
@@ -40,5 +42,3 @@ const PickContnentsWrapper = styled.div`
   display: flex;
   justify-content: space-between;
 `;
-
-// 81 258 40 121 379

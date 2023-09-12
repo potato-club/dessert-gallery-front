@@ -1,10 +1,13 @@
 import React from "react";
+import {
+  useController,
+  FieldValues,
+  FieldPath,
+  UseControllerProps,
+} from "react-hook-form";
 import styled from "styled-components";
 
-const Input = ({
-  placeholder,
-  marginBottom,
-}: {
+type inputType = {
   /**
    * (선택)placeholder에 출력할 텍스트
    */
@@ -14,11 +17,26 @@ const Input = ({
    * (선택)Input의 margin-bottom 값
    */
   marginBottom?: number;
-}) => {
+  type?: "password";
+};
+
+const Input = <
+  TFieldValues extends FieldValues = FieldValues,
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
+>({
+  placeholder,
+  marginBottom,
+  type,
+  ...props
+}: inputType & UseControllerProps<TFieldValues, TName>) => {
+  const { field, fieldState } = useController(props);
+
   return (
     <StyledInput
       placeholder={placeholder}
       marginBottom={marginBottom}
+      type={type}
+      {...field}
     ></StyledInput>
   );
 };

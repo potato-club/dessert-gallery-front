@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import ContentsTitle from "./ContentsTitle";
 import OwnerImage from "../../../../public/svg/loginPage/owner.svg";
@@ -6,12 +6,14 @@ import UserImage from "../../../../public/svg/loginPage/user.svg";
 import Explain from "./Explain";
 import Tag from "../../../components/Tag";
 import { useRouter } from "next/router";
-import { useRecoilState } from "recoil";
-import { signUpDataState } from "../../../recoil/login/signUpState";
+import { useSetRecoilState } from "recoil";
+import { modalStateAtom } from "../../../recoil/login/modalStateAtom";
+import { useSignupDataState } from "../../../recoil/login/signupStateAtom";
 
 function PickContents({ role }: { role: "owner" | "user" }) {
   const router = useRouter();
-  const [signUpData, setSignUpData] = useRecoilState(signUpDataState);
+  const [signupData, setSignUpData] = useSignupDataState();
+  const setModalState = useSetRecoilState(modalStateAtom);
 
   const updateUserRole = () => {
     console.log(123);
@@ -20,7 +22,7 @@ function PickContents({ role }: { role: "owner" | "user" }) {
     console.log(userRole);
 
     setSignUpData({
-      ...signUpData,
+      ...signupData,
       userRole: userRole,
     });
   };
@@ -44,7 +46,7 @@ function PickContents({ role }: { role: "owner" | "user" }) {
           clickAble={true}
           onClickHandler={() => {
             updateUserRole();
-            router.push("/login/nickname");
+            setModalState(true);
           }}
         />
       </TagButtonWrapper>
