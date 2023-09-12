@@ -9,6 +9,7 @@ import { boardOptionData } from '../../../types/componentsData'
 import ToastMessage from '../../../components/ToastMessage'
 import Contents from './Contents'
 import { BoardBanner } from '../../../../public/image'
+import Bottom from '../boardComponents/Bottom'
 
 function ReviewBoardContainer() {
   const [pageCount, setPageCount] = useState<number>(1)
@@ -79,6 +80,7 @@ function ReviewBoardContainer() {
         {status === "error" && <p>error</p>}
         {status === "success" && resData.length !== 0 && <Contents data={resData} />}
         {status === "success" && toast && <ToastMessage messageString='더이상 불러올 리뷰 정보가 없습니다.' timer={5000}/>}
+        <Bottom/>
     </Wrapper>
   )
 }
