@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from "react";
 import styled, { css } from "styled-components";
 import Poster from "./Poster";
-import PostModal from "./PostModal";
-import ReviewList from "./ReviewList";
+import PostModal from "./Modal";
+import ReviewList from "./Review";
 import { useRecoilValue } from "recoil";
 import { modalBg } from "../../../recoil/modalBg/atom";
 
-const StoreContent = () => {
+const StoreContent = ({ posterThumnail, storeInfo }: any) => {
   const [optionNum, setOptionNum] = useState<number>(1);
-
+  const [boardId, setBoardId] = useState<number>(1);
   const onModal = useRecoilValue(modalBg);
 
   const optionClick = (num: number) => {
@@ -24,7 +24,6 @@ const StoreContent = () => {
 
   return (
     <Container>
-      {onModal && <PostModal />}
       <Options>
         <PostBtn onClick={() => optionClick(1)} optionNum={optionNum}>
           가게 게시물
@@ -33,7 +32,13 @@ const StoreContent = () => {
           가게 후기
         </ReviewBtn>
       </Options>
-      {optionNum == 1 ? <Poster /> : <ReviewList />}
+      {onModal && <PostModal boardId={boardId} storeInfo={storeInfo} />}
+
+      {optionNum == 1 ? (
+        <Poster posterThumnail={posterThumnail} setBoardId={setBoardId} />
+      ) : (
+        <ReviewList />
+      )}
     </Container>
   );
 };
@@ -44,7 +49,6 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: center;
   gap: 45px;
   margin: 0px auto;
   max-width: 1100px;

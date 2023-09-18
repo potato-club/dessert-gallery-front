@@ -1,10 +1,15 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import Rating from "../../../components/Rating";
-import { DefaultProfileLogo, DownArrow, UpArrow } from "../../../../public/svg";
-const Review = () => {
+import Rating from "../../../../components/Rating";
+import {
+  DefaultProfileLogo,
+  DownArrow,
+  UpArrow,
+} from "../../../../../public/svg";
+const Review = ({ storeReview }: any) => {
   const [infoBtnClick, setInfoBtnClick] = useState<boolean>(false);
 
+  const { userName, content, score, images, createDate } = storeReview;
   return (
     <Container>
       <UserInfoDIv>
@@ -13,22 +18,14 @@ const Review = () => {
         </UserProfile>
         <TextInfo>
           <Top>
-            <Nickname>아이디</Nickname>
-            <Time>2023-04-27</Time>
+            <Nickname>{userName}</Nickname>
+            <Time>{createDate}</Time>
           </Top>
-          <Rating size="medium" ratingValue="4.8" />
+          <Rating size="medium" ratingValue={score} />
         </TextInfo>
       </UserInfoDIv>
       <Content infoBtnClick={infoBtnClick}>
-        <Text infoBtnClick={infoBtnClick}>
-          안녕하세요안녕하세요안녕하세요안녕하세요 안녕하세요 안녕하세요
-          안녕하세요 안녕하세요 안녕하세요 안녕하세요 안녕하세요 안녕하세요
-          안녕하세요 안녕하세요 안녕하세요 안녕하세요 안녕하세요 안녕하세요
-          안녕하세요 안녕하세요 안녕하세요 안녕하세요 안녕하세요 안녕하세요
-          안녕하세요 안녕하세요 안녕하세요 안녕하세요 안녕하세요 안녕하세요
-          안녕하세요 안녕하세요 안녕하세요 안녕하세요 안녕하세요 안녕하세요
-          안녕하세요 안녕하세요
-        </Text>
+        <Text infoBtnClick={infoBtnClick}>{content}</Text>
         <Photo infoBtnClick={infoBtnClick}>PHOTO</Photo>
       </Content>
       {infoBtnClick ? (

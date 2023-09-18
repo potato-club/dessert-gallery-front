@@ -45,6 +45,10 @@ export type tagValue = {
      * (선택)버튼 shadow 처리 css 설정 기본 false 
      */
     shadow?: boolean,
+    /**
+     * (선택)태그 기본 색상 변경(테두리 및 폰트 컬러) 없을시 기본 컬러
+     */
+    color?: string
 }
 
 

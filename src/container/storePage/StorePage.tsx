@@ -1,40 +1,71 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import Calender from "./components/Calender";
+import Calender from "./components/Calendar";
 import StoreProfile from "./components/StoreProfile";
 import Announce from "./components/Announce";
 import StoreContent from "./components/StoreContent";
 import Tag from "../../components/Tag";
+import { StoreProps } from "../../../pages/galleryBoard/[store]";
 
-const StorePage = () => {
-  const [foldClick, setFoldClick] = useState<boolean>(false);
+const StorePage = (props: StoreProps) => {
+  const [spreadClick, setSpreadClick] = useState<boolean>(false);
+
+  const { storeInfo, announceData, posterThumnail, detailPoster } = props;
+
+  // console.log(
+  //   // storeInfo
+  //   // announceData,
+  //   // posterThumnail,
+  //   // storeReview
+  //   // detailPoster
+  // );
+
+  // storeInfo -> name, storeImage.fileUrl, info 넘겨주기
+
   return (
     <Container>
       <StoreInfo>
-        <StoreProfile />
+        <StoreProfile storeInfo={storeInfo} />
         <Calender />
       </StoreInfo>
-      <Announce />
+      <Announce
+        content={announceData[0].content}
+        createdDate={announceData[0].createdDate}
+        spreadClick={spreadClick}
+        setSpreadClick={setSpreadClick}
+        isFirst={true}
+      />
       <AnnounceList>
-        {!foldClick && (
-          <AbsoluteDiv foldClick={foldClick}>
-            <Announce />
-            <Announce />
+        {spreadClick && (
+          <AbsoluteDiv spreadClick={spreadClick}>
+            {announceData.slice(1).map((item: any, idx: number) => (
+              <Announce
+                key={idx}
+                content={item.content}
+                setSpreadClick={setSpreadClick}
+                createdDate={item.createdDate}
+              />
+            ))}
             <InnerDiv>
               <FoldBtn
                 title="접기"
-                width="150px"
-                height="48px"
+                width="106px"
+                height="32px"
+                fontSize="13px"
                 clickAble={true}
                 inversion={true}
                 hoverCss={true}
-                onClickHandler={() => setFoldClick(true)}
+                onClickHandler={() => setSpreadClick(false)}
               />
             </InnerDiv>
           </AbsoluteDiv>
         )}
       </AnnounceList>
-      <StoreContent />
+      <StoreContent
+        posterThumnail={posterThumnail}
+        detailPoster={detailPoster}
+        storeInfo={storeInfo}
+      />
     </Container>
   );
 };
@@ -46,7 +77,7 @@ const Container = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  min-width: 1280px;
+  width: 100%;
 `;
 const StoreInfo = styled.div`
   display: flex;
@@ -55,7 +86,7 @@ const StoreInfo = styled.div`
   gap: 101px;
   background-color: #fcf0e1;
   width: 100%;
-  height: 465px;
+  padding: 72px 0;
 `;
 const AnnounceList = styled.div`
   display: flex;
@@ -64,15 +95,15 @@ const AnnounceList = styled.div`
   width: 100%;
   gap: 16px;
 `;
-const AbsoluteDiv = styled.div<{ foldClick: boolean }>`
+const AbsoluteDiv = styled.div<{ spreadClick: boolean }>`
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 16px;
   position: absolute;
   background-color: #fcf0e1;
-  box-shadow: ${({ foldClick }) =>
-    !foldClick && `0px 3px 6px rgba(0, 0, 0, 0.161);`};
+  box-shadow: ${({ spreadClick }) =>
+    !spreadClick && `0px 3px 6px rgba(0, 0, 0, 0.161);`};
   width: 100%;
   padding-top: 16px;
 `;
