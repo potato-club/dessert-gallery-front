@@ -1,7 +1,6 @@
 import React, {useEffect} from 'react'
 import GalleryPost from './GalleryPost'
 import styled from 'styled-components'
-import { galleryPostValue } from '../../../types/componentsProps';
 import { useGetStoreBoardListdData } from '../../../hooks/useGetStoreBoardList';
 import type { resGalleryPost } from '../../../types/apiTypes';
 import ToastMessage from '../../../components/ToastMessage';
@@ -74,6 +73,7 @@ const imgSrc = [
 
 export default function Contents({data}: {data: resGalleryPost[][]}) {
   console.log("Contents Components data: ", data)
+
     return (
       <Wrap>
         {data.map((el)=>(
@@ -100,7 +100,10 @@ export default function Contents({data}: {data: resGalleryPost[][]}) {
 
 const Wrap = styled.div`
   width: 1100px;
-  display: flex;
-  justify-content: flex-start;
+  display: grid;
+  grid-template-columns: repeat(3, auto); /* 각 열의 너비를 설정 */
+  justify-content: space-between;
+  margin: 0 auto;
   flex-wrap: wrap;
+  gap: 20px; /* 그리드 아이템 간의 간격 설정 */
 `;

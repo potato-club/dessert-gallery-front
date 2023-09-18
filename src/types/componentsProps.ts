@@ -310,3 +310,7 @@ export type resGalleryPost = {
 export type galleryBoardContentsList = {
     data: resGalleryPost[][]
 }
+
+export type boardContentGridColumns = {
+    columns: number
+}

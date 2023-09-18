@@ -16,7 +16,7 @@ export const GalleryPostWrap = styled.div<componentProps>`
     flex-direction: column;
     border-radius: 0 0 16px 16px;
     box-shadow: 0px 3px 5px 2px rgb(0 0 0 / 15%);
-    margin: 48px 88px 48px 0;
+    margin: 48px 0;
 `
 
 export const InformationWrap = styled.div<componentProps>`

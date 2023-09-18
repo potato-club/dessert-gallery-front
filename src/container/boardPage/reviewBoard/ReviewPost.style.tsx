@@ -37,7 +37,7 @@ export const ReviewPostWrap = styled.div<componentProps>`
     border-radius: 0 0 16px 16px;
     background-color: #FFFDF9;
     box-shadow: 0px 3px 5px 2px rgb(0 0 0 / 15%);
-    margin: 64px 76px 64px 0;
+    margin: 64px 0;
 `
 
 export const InformationWrap = styled.div<componentProps>`
