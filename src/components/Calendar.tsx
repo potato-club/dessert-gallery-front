@@ -4,7 +4,10 @@ import FullCalendar from "@fullcalendar/react";
 import interactionPlugin from "@fullcalendar/interaction";
 import dayGridPlugin from "@fullcalendar/daygrid";
 
-const Calendar = () => {
+interface CalendarType {
+  pageType: "myPage" | "storePage";
+}
+const Calendar = ({ pageType }: CalendarType) => {
   const customDayCellContent = (info: any) => {
     return info.dayNumberText.replace("일", "");
   };
@@ -122,12 +125,15 @@ const Container = styled.div`
     /* height: 213px; */
   }
   .fc-day-sun a {
-    color: red;
+    color: #ff6f00;
     text-decoration: none;
   }
   .fc-day-sat a {
-    color: blue;
+    color: #ff8d00;
     text-decoration: none;
+  }
+  .fc-day-other {
+    color: #fdc886;
   }
   .fc .fc-col-header-cell {
     border-bottom: 2px solid #fdc886;

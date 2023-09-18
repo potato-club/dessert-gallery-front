@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import Calender from "./components/Calendar";
+import Calender from "../../components/Calendar";
 import StoreProfile from "./components/StoreProfile";
 import Announce from "./components/Announce";
 import StoreContent from "./components/StoreContent";
@@ -26,15 +26,25 @@ const StorePage = (props: StoreProps) => {
     <Container>
       <StoreInfo>
         <StoreProfile storeInfo={storeInfo} />
-        <Calender />
+        <Calender pageType="storePage" />
       </StoreInfo>
-      <Announce
-        content={announceData[0].content}
-        createdDate={announceData[0].createdDate}
-        spreadClick={spreadClick}
-        setSpreadClick={setSpreadClick}
-        isFirst={true}
-      />
+      {announceData[0] ? (
+        <Announce
+          content={announceData[0].content}
+          createdDate={announceData[0].createdDate || ""}
+          spreadClick={spreadClick}
+          setSpreadClick={setSpreadClick}
+          isFirst={true}
+        />
+      ) : (
+        <Announce
+          content="등록된 공지사항이 없습니다."
+          createdDate=""
+          spreadClick={spreadClick}
+          setSpreadClick={setSpreadClick}
+          isFirst={true}
+        />
+      )}
       <AnnounceList>
         {spreadClick && (
           <AbsoluteDiv spreadClick={spreadClick}>
@@ -72,6 +82,7 @@ const StorePage = (props: StoreProps) => {
 
 export default StorePage;
 
+const CalDiv = styled.div``;
 const Container = styled.div`
   display: flex;
   flex-direction: column;
