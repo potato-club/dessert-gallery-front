@@ -74,36 +74,36 @@ const imgSrc = [
 export default function Contents({data}: {data: resGalleryPost[][]}) {
   console.log("Contents Components data: ", data)
 
-    return (
-      <Wrap>
-        {data.map((el)=>(
-          el.map((e: resGalleryPost)=>(
-            <GalleryPost 
-            storeId={e.id}
-            key={e.id}
-            width={304} 
-            imgArray={[e.fileUrl]} 
-            location={e.address} 
-            bookmark={true}
-            onBookmark={e.followId === null ? false: true} 
-            ratingValue={e.score} 
-            summary={e.content} 
-            title={e.name} 
-            size={"big"} 
-            tagValue={Number(e.score) > 4.5 ? "HOT": "none"}
-            />
-          ))
-        ))}
-      </Wrap>
-    )
+  return (
+    <Wrap>
+      {data.map((el)=>(
+        el.map((e: resGalleryPost)=>(
+          <GalleryPost 
+          storeId={e.id}
+          key={e.id}
+          width={304} 
+          imgArray={[e.fileUrl]} 
+          location={e.address} 
+          bookmark={true}
+          onBookmark={e.followId === null ? false: true} 
+          ratingValue={e.score} 
+          summary={e.content} 
+          title={e.name} 
+          size={"big"} 
+          tagValue={Number(e.score) > 4.5 ? "HOT": "none"}
+          />
+        ))
+      ))}
+    </Wrap>
+  )
 }
 
 const Wrap = styled.div`
   width: 1100px;
   display: grid;
   grid-template-columns: repeat(3, auto); /* 각 열의 너비를 설정 */
-  justify-content: space-between;
+  justify-content: start;
   margin: 0 auto;
   flex-wrap: wrap;
-  gap: 20px; /* 그리드 아이템 간의 간격 설정 */
+  gap: 94px; /* 그리드 아이템 간의 간격 설정 */
 `;

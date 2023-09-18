@@ -106,8 +106,8 @@ const Wrap = styled.div`
   width: 1100px;
   display: grid;
   grid-template-columns: repeat(3, auto); /* 각 열의 너비를 설정 */
-  justify-content: space-between;
+  justify-content: start;
   margin: 0 auto;
   flex-wrap: wrap;
-  gap: 20px; /* 그리드 아이템 간의 간격 설정 */
+  gap: 75px; /* 그리드 아이템 간의 간격 설정 */
 `;
