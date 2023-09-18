@@ -24,8 +24,6 @@ function GalleryBoardContainer() {
   const [toast, setToast] = useState<boolean>(false)
   const [resData, setResData] = useState<resGalleryPost[][]>([])
 
-  useEffect(()=>{}, [orderOption.eng, optionData.location, optionData.selectSearchWord,pageCount])
-
   const {
     data,
     error,
@@ -45,27 +43,25 @@ function GalleryBoardContainer() {
 
   useEffect(() => {
     const handleScroll = () => {
-      if (
-        window.innerHeight + document.documentElement.scrollTop ===
-        document.documentElement.offsetHeight
-      ) {
-        // 스크롤 하단에 도달하면 다음 페이지의 데이터를 불러옴
+      const scrollY = window.scrollY || document.documentElement.scrollTop;
+      const windowHeight = window.innerHeight;
+      const documentHeight = document.documentElement.offsetHeight;
+  
+      // 스크롤 위치가 페이지 높이의 80% 이상으로 내려갔을 때 데이터를 새로고침
+      if (scrollY + windowHeight >= documentHeight -100) {
         if (hasNextPage && !isFetchingNextPage) {
-          console.log("Before fetchNextPage:", data, hasNextPage, isFetchingNextPage);
-          setPageCount(prev=>prev+1)
+          setPageCount((prev) => prev + 1);
           fetchNextPage();
         }
       }
     };
-    
+  
     window.addEventListener("scroll", handleScroll);
     return () => {
-    console.log("satus", status)
-    console.log("data", data)
-    window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("scroll", handleScroll);
     };
+  }, [hasNextPage, isFetchingNextPage, fetchNextPage, orderOption.eng, optionData.location, optionData.selectSearchWord,pageCount]);
 
-  }, [hasNextPage, isFetchingNextPage, fetchNextPage, data, status]);
 
 
   return (

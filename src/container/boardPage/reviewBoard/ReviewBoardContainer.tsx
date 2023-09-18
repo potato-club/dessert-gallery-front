@@ -50,7 +50,7 @@ function ReviewBoardContainer() {
         const documentHeight = document.documentElement.offsetHeight;
     
         // 스크롤 위치가 페이지 높이의 80% 이상으로 내려갔을 때 데이터를 새로고침
-        if (scrollY + windowHeight >= documentHeight * 0.8) {
+        if (scrollY + windowHeight >= documentHeight -100) {
           if (hasNextPage && !isFetchingNextPage) {
             setPageCount((prev) => prev + 1);
             fetchNextPage();
@@ -63,7 +63,7 @@ function ReviewBoardContainer() {
         window.removeEventListener("scroll", handleScroll);
       };
     }, [hasNextPage, isFetchingNextPage, fetchNextPage, orderOption.eng, optionData.location, optionData.selectSearchWord,pageCount]);
-
+  
 
   if(status === "success"){
     console.log("데이터 판별 여부 확인 중: !data.pages[0]", data)
