@@ -1,14 +1,25 @@
 import React from 'react'
-import { ReviewPostWrap, TitleText, InformationWrap, Summary, Box, BoxContentsStart, ReviewWrap, Text, TopTextWrap, TagWrap} from './ReviewPost.style'
+import { ReviewPostWrap, TitleText, InformationWrap, Summary, ContentsText, BoxContentsStart, ReviewWrap, Text, TopTextWrap, TagWrap} from './ReviewPost.style'
 import SlideImage from '../../../components/SlideImage/SlideImage'
 import Rating from '../../../components/Rating'
 import Tag from '../../../components/Tag'
 import type { ReviewPostValue } from '../../../types/componentsProps'
 
 
-export default function ReviewPost({width,height,title, imgSrc,summary,  reviewList}:ReviewPostValue) {
+export default function ReviewPost({storeId, width,height,title, imgSrc,summary, reviewList}:ReviewPostValue) {
+
   /**차후 분리 */
-  const DateToString = reviewList.map(e=> `${e.date.getFullYear()}-${(e.date.getMonth())+1}-${e.date.getDay()}`)
+  let fir = new Date(reviewList[0].createDate);
+  let sec = new Date(reviewList[1].createDate);
+  
+  let dateToString = [`${fir.getFullYear()}-${(fir.getMonth()) + 1}-${fir.getDate()}`,
+                      `${sec.getFullYear()}-${(sec.getMonth()) + 1}-${sec.getDate()}`,]
+
+  const onClickMoreButton = () => {
+    window.location.href = `/galleryBoard/${storeId}`
+  }
+
+
   return (
     <ReviewPostWrap width={width} height={height}>
       
@@ -21,23 +32,23 @@ export default function ReviewPost({width,height,title, imgSrc,summary,  reviewL
         </InformationWrap>
         <ReviewWrap>
           <TopTextWrap >
-            <Text size='13px' color='#FF8D00' bold={true}>{reviewList[0].userId}</Text>
-            <Text size='13px' color='#828282' marginRight={true}>{DateToString[0]}</Text>
-            <Rating size='medium' ratingValue={reviewList[0].rating}/>
+            <Text size='13px' color='#FF8D00' bold={true}>{reviewList[0].nickname}</Text>
+            <Text size='13px' color='#828282' marginRight={true}>{dateToString[0]}</Text>
+            <Rating size='medium' ratingValue={String(reviewList[0].score)}/>
           </TopTextWrap>
-          <Text size='11px' color='#000000' bold={true}>{reviewList[0].contents}</Text>
+          <ContentsText size='11px' color='#000000' bold={true}>{reviewList[0].content}</ContentsText>
         </ReviewWrap>
 
         <ReviewWrap>
           <TopTextWrap >
-            <Text size='13px' color='#FF8D00' bold={true}>{reviewList[1].userId}</Text>
-            <Text size='13px' color='#828282' marginRight={true}>{DateToString[1]}</Text>
-            <Rating size='medium' ratingValue={reviewList[1].rating}/>
+            <Text size='13px' color='#FF8D00' bold={true}>{reviewList[1].nickname}</Text>
+            <Text size='13px' color='#828282' marginRight={true}>{dateToString[1]}</Text>
+            <Rating size='medium' ratingValue={String(reviewList[1].score)}/>
           </TopTextWrap>
-          <Text size='11px' color='#000000' bold={true}>{reviewList[1].contents}</Text>
+          <ContentsText size='11px' color='#000000' bold={true}>{reviewList[1].content}</ContentsText>
         </ReviewWrap> 
         <TagWrap>
-          <Tag width='164px' height='32px' title='더보기' fontSize='12px' clickAble={true} hoverCss={true} onClickHandler={()=>{alert('click!')}}/>
+          <Tag width='164px' height='32px' title='더보기' fontSize='12px' clickAble={true} hoverCss={true} onClickHandler={onClickMoreButton}/>
         </TagWrap>
       </BoxContentsStart>
     </ReviewPostWrap>

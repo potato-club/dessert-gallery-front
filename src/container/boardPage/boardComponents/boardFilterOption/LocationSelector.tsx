@@ -1,5 +1,5 @@
 import React, { useState, ChangeEvent, useEffect  } from 'react'
-import { LocationSelectorWrap,CityWrap, DistrictWrap, CheckboxInput, CheckboxLabel } from './LocationSelector.style'
+import { LocationSelectorWrap,CityWrap, City, DistrictWrap, CheckboxInput, CheckboxLabel } from './LocationSelector.style'
 import { regionsData } from '../../../../constants/regions'
 import type { locationData,selectLocationOptionData } from '../../../../types/componentsData';
 import type { locationSelectorProps } from '../../../../types/componentsProps';
@@ -45,6 +45,7 @@ export default function LocationSelector({selectedLocation, onChangeLocation}: l
   return (
     <LocationSelectorWrap>
       <CityWrap>
+        <City>
           {
             regionsData.map(e => (
               selectOption.length !== 0 && selectOption[0].city === e.city? (
@@ -61,7 +62,7 @@ export default function LocationSelector({selectedLocation, onChangeLocation}: l
               )
             ))
           }
-        
+        </City>
       </CityWrap>
       <DistrictWrap>
         {

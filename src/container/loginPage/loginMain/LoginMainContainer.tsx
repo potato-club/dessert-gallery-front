@@ -8,16 +8,46 @@ import Horizon from "./Horizon";
 import Tag from "../../../components/Tag";
 import SocialLogin from "./SocialLogin";
 import Wrapper from "../components/Wrapper";
+import { useForm } from "react-hook-form";
+
+type inputType = {
+  /**
+   * (선택)placeholder에 출력할 텍스트
+   */
+  placeholder?: string;
+
+  /**
+   * (선택)Input의 margin-bottom 값
+   */
+  marginBottom?: number;
+  type?: "password";
+};
 
 function LoginMainContainer() {
+  const { handleSubmit, getValues, control } = useForm<{
+    email?: string;
+    password?: string;
+  }>({
+    defaultValues: {
+      email: "",
+      password: "",
+    },
+    mode: "onChange",
+  });
+
   return (
     <Wrapper>
       <MainWrapper>
         <MainContnentsWrapper>
           <Title>LOGIN</Title>
           <InputDiv>
-            <Input placeholder="이메일 입력" />
-            <Input placeholder="비밀번호 입력" />
+            <Input placeholder="이메일 입력" name="email" control={control} />
+            <Input
+              placeholder="비밀번호 입력"
+              type="password"
+              name="password"
+              control={control}
+            />
           </InputDiv>
           <Navigaiton />
           <TagButtonWrapper>
@@ -28,7 +58,9 @@ function LoginMainContainer() {
               fontSize="100%"
               inversion={true}
               clickAble={true}
-              onClickHandler={() => {}}
+              onClickHandler={() => {
+                console.log(getValues());
+              }}
             />
           </TagButtonWrapper>
           <Horizon />

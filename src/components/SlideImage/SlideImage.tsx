@@ -5,8 +5,9 @@ import DotIndicator from './DotIndicator';
 import Bookmark from './Bookmark';
 import { RightMoveButtonIcon, LeftMoveButtonIcon } from '../../../public/svg';
 import { Wrapper, ImageWrap, RightMoveButton, LeftMoveButton,MoveWrap,MoveAllbutton, BottomComponent, BottomCenterComponent } from './SlideImage.style';
+import useFollowAction from '../../hooks/useFollowAction';
 
-function SlideImage({srcArray, width=304, height=304, moveBtnType='none', size='big', dotIndicator=false, bookmark=false, onBookmark=false, children=<></>}:slideImageValue) {
+function SlideImage({storeId, srcArray, width=304, height=304, moveBtnType='none', size='big', dotIndicator=false, bookmark=false, onBookmark=false, children=<></>}:slideImageValue) {
   const [imgCnt, setImgCnt] = useState<number>(0);
   const [onBookmarkState, setOnBookmarkState] = useState<boolean>(onBookmark);
   const maxImgCnt = srcArray.length -1;
@@ -27,8 +28,14 @@ function SlideImage({srcArray, width=304, height=304, moveBtnType='none', size='
     }
   }
 
-  const onClickBookmark = () => {
+  const onClickBookmark = async (storeId: number) => {
+    if(onBookmarkState){
+      alert('해당 손님/가게를 언팔로우했습니다.')
+    }else{
+      alert('해당 가게를 팔로우했습니다.')
+    }
     setOnBookmarkState(prev => !prev)
+    useFollowAction(onBookmarkState,storeId)
   }
 
   return (
@@ -66,7 +73,7 @@ function SlideImage({srcArray, width=304, height=304, moveBtnType='none', size='
 
       {
         // 북마크가 존재
-        bookmark && <Bookmark onBookmark={onBookmarkState} size={size} onClickBookmark={onClickBookmark}/>
+        bookmark && <Bookmark storeId={storeId} onBookmark={onBookmarkState} size={size} onClickBookmark={onClickBookmark} absolute={true}/>
       }
       </MoveWrap>
       <ImageWrap>
