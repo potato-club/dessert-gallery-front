@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import Calender from "../../components/Calendar";
+import Calender from "./components/StoreCalendar";
 import StoreProfile from "./components/StoreProfile";
 import Announce from "./components/Announce";
 import StoreContent from "./components/StoreContent";
@@ -26,7 +26,9 @@ const StorePage = (props: StoreProps) => {
     <Container>
       <StoreInfo>
         <StoreProfile storeInfo={storeInfo} />
-        <Calender pageType="storePage" />
+        <CalDiv>
+          <Calender />
+        </CalDiv>
       </StoreInfo>
       {announceData[0] ? (
         <Announce
@@ -82,7 +84,11 @@ const StorePage = (props: StoreProps) => {
 
 export default StorePage;
 
-const CalDiv = styled.div``;
+const CalDiv = styled.div`
+  border: 3px solid #ff8d00;
+  border-radius: 20px;
+  background-color: white;
+`;
 const Container = styled.div`
   display: flex;
   flex-direction: column;

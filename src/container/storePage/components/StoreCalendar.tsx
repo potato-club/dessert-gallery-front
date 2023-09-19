@@ -4,10 +4,7 @@ import FullCalendar from "@fullcalendar/react";
 import interactionPlugin from "@fullcalendar/interaction";
 import dayGridPlugin from "@fullcalendar/daygrid";
 
-interface CalendarType {
-  pageType: "myPage" | "storePage";
-}
-const Calendar = ({ pageType }: CalendarType) => {
+const StoreCalendar = () => {
   const customDayCellContent = (info: any) => {
     return info.dayNumberText.replace("일", "");
   };
@@ -51,7 +48,7 @@ const Calendar = ({ pageType }: CalendarType) => {
   );
 };
 
-export default Calendar;
+export default StoreCalendar;
 
 const InfoList = styled.div`
   display: flex;
@@ -82,7 +79,7 @@ const EventBlock = styled.div`
 `;
 const TodayBlock = styled.div`
   ${block}
-  background-color: rgba(255, 220, 40, 0.15);
+  background-color: rgba(255, 220, 40, 0.5);
 `;
 const Text = styled.span`
   color: #000;
@@ -90,17 +87,16 @@ const Text = styled.span`
   font-weight: 700;
   line-height: normal;
 `;
-const Container = styled.div`
+export const Container = styled.div`
   display: flex;
   flex-direction: column;
   gap: 2px;
-  background-color: white;
   width: 360px;
   height: 321px;
-  border-radius: 20px;
-  border: 3px solid #ff8d00;
   box-sizing: border-box;
+  border-radius: 20px;
   padding: 12px 30px;
+
   /* fullCalandar header style */
   .fc .fc-toolbar.fc-header-toolbar {
     display: flex;
@@ -110,30 +106,29 @@ const Container = styled.div`
     border-bottom: 2px solid #fdc886;
     .fc-toolbar-title {
       font-size: 25px;
+      color: #ff6f00;
     }
   }
   .fc .fc-button {
-    padding: 0;
+    padding: 0px;
   }
   .fc .fc-button-primary {
     border: none;
-    color: black;
-    background-color: #ff6f00;
+    color: #ff6f00;
+    background-color: #fcf0e1;
   }
   /* fullCalandar body style */
-  .fc-view-harness .fc-view-harness-active {
-    /* height: 213px; */
+  .fc .fc-day-other .fc-daygrid-day-top {
+    opacity: 0.4;
   }
   .fc-day-sun a {
     color: #ff6f00;
-    text-decoration: none;
   }
   .fc-day-sat a {
     color: #ff8d00;
-    text-decoration: none;
   }
   .fc-day-other {
-    color: #fdc886;
+    color: #000;
   }
   .fc .fc-col-header-cell {
     border-bottom: 2px solid #fdc886;
