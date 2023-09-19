@@ -1,17 +1,38 @@
 import React, { ReactNode, useEffect, useState } from "react";
 import styled from "styled-components";
 import { modalStateAtom } from "../../../recoil/login/modalStateAtom";
-import { useRecoilState } from "recoil";
-import { useSignupDataState } from "../../../recoil/login/signupStateAtom";
+import { useRecoilState, useResetRecoilState } from "recoil";
+import { useKakaoSignupDataState } from "../../../recoil/login/kakaoSignUpStateAtom";
+import {
+  signUpDataType,
+  signupDataStateAtom,
+} from "../../../recoil/login/signUpStateAtom";
 import { useJWTState } from "../../../recoil/login/JWTStateAtom";
 import axios from "axios";
 
 function Modal() {
   const [modalState, setModalState] = useRecoilState(modalStateAtom);
-  const [signupDataState, setSignupDataState] = useSignupDataState();
+  const [signupData, setSignupData] = useRecoilState(signupDataStateAtom);
+  const [kakaoSignupData, setKakaoSignupData] = useKakaoSignupDataState();
   const [nickname, setNickname] = useState("");
   const [stepSignup, setStepSignup] = useState(1);
   const [jwtState, setJwtState] = useJWTState();
+
+  const excuteSetSignupData = (signupData: signUpDataType) => {
+    if (kakaoSignupData.loginType === "KAKAO") {
+      setKakaoSignupData(signupData);
+    } else {
+      setSignupData(signupData);
+    }
+  };
+
+  const getSignupData = () => {
+    if (kakaoSignupData.loginType === "KAKAO") {
+      return kakaoSignupData;
+    } else {
+      return signupData;
+    }
+  };
 
   const closeModal = () => {
     setModalState(false);
@@ -24,9 +45,24 @@ function Modal() {
   };
 
   const handleSetNickname = () => {
-    setSignupDataState({ ...signupDataState, nickname: nickname });
-    console.log(signupDataState);
+    excuteSetSignupData({ ...getSignupData(), nickname: nickname });
+    console.log(getSignupData());
     closeModal();
+  };
+
+  const handleSignup = async () => {
+    try {
+      const response: any = await axios.post(
+        `https://api.dessert-gallery.site/users/signup`,
+        { ...getSignupData(), password: "" }
+      );
+      const accessToken = response.headers.get("Authorization");
+      const refreshToken = response.headers.get("Refreshtoken");
+      setJwtState({
+        accessToken: accessToken,
+        refreshToken: refreshToken,
+      });
+    } catch {}
   };
 
   const renderModalContent = () => {
@@ -36,7 +72,7 @@ function Modal() {
           <>
             <ModalContentsDiv>
               <ExplainDiv>
-                {signupDataState.userRole === "MANAGER"
+                {getSignupData().userRole === "MANAGER"
                   ? "가게 운영자로 회원가입 하시겠습니까?"
                   : "일반 회원으로 회원가입 하시겠습니까?"}
               </ExplainDiv>
@@ -77,20 +113,9 @@ function Modal() {
             </ModalContentsDiv>
             <ButtonDiv>
               <ModalButton
-                onClick={async () => {
+                onClick={() => {
                   handleSetNickname();
-                  try {
-                    const response: any = await axios.post(
-                      `https://api.dessert-gallery.site/users/signup`,
-                      { ...signupDataState, password: "" }
-                    );
-                    const accessToken = response.headers.get("Authorization");
-                    const refreshToken = response.headers.get("Refreshtoken");
-                    setJwtState({
-                      accessToken: accessToken,
-                      refreshToken: refreshToken,
-                    });
-                  } catch {}
+                  handleSignup();
                 }}
               >
                 확인
