@@ -6,14 +6,27 @@ import UserImage from "../../../../public/svg/loginPage/user.svg";
 import Explain from "./Explain";
 import Tag from "../../../components/Tag";
 import { useRouter } from "next/router";
-import { useSetRecoilState } from "recoil";
+import { useSetRecoilState, useRecoilState } from "recoil";
 import { modalStateAtom } from "../../../recoil/login/modalStateAtom";
-import { useSignupDataState } from "../../../recoil/login/signupStateAtom";
+import { useKakaoSignupDataState } from "../../../recoil/login/kakaoSignUpStateAtom";
+import {
+  signUpDataType,
+  signupDataStateAtom,
+} from "../../../recoil/login/signUpStateAtom";
 
 function PickContents({ role }: { role: "owner" | "user" }) {
   const router = useRouter();
-  const [signupData, setSignUpData] = useSignupDataState();
+  const [signupData, setSignupData] = useRecoilState(signupDataStateAtom);
+  const [kakaoSignupData, setKakaoSignupData] = useKakaoSignupDataState();
   const setModalState = useSetRecoilState(modalStateAtom);
+
+  const excuteSetSignupData = (signupData: signUpDataType) => {
+    if (kakaoSignupData.loginType === "KAKAO") {
+      setKakaoSignupData(signupData);
+    } else {
+      setSignupData(signupData);
+    }
+  };
 
   const updateUserRole = () => {
     console.log(123);
@@ -21,7 +34,7 @@ function PickContents({ role }: { role: "owner" | "user" }) {
     const userRole = role === "owner" ? "MANAGER" : "USER";
     console.log(userRole);
 
-    setSignUpData({
+    excuteSetSignupData({
       ...signupData,
       userRole: userRole,
     });
