@@ -102,6 +102,7 @@ function BoardOption({orderOption, setOrderOption,optionData,setOptionData, setP
       location: e
     }))
     setIsSelected(true)
+    setPageCount(1)
   }
 
   const onClickTag = ({menu, idx=0}:tagClickData) => {
