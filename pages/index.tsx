@@ -4,6 +4,8 @@ import Image from "next/image";
 import { useRecoilValue } from "recoil";
 import { JWTStateAtom } from "../src/recoil/login/JWTStateAtom";
 import { useEffect } from "react";
+import MainPage from "../src/container/mainPage/MainPage";
+
 
 const Home = () => {
   // jwt 토큰 저장 확인 테스트용 코드
@@ -12,7 +14,7 @@ const Home = () => {
     console.log(jwtValue);
   }, [jwtValue]);
 
-  return <div>mainPage</div>;
-};
+  return <MainPage/>;
+}
 
 export default Home;

@@ -26,7 +26,8 @@
     "react-query": "^3.39.3",
     "react-spinners": "^0.13.8",
     "recoil-persist": "^5.1.0",
-    "styled-components": "^5.3.9"
+    "styled-components": "^5.3.9",
+    "swiper": "^10.2.0"
   },
   "devDependencies": {
     "@babel/core": "^7.21.4",
