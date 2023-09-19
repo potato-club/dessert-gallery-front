@@ -1,5 +1,6 @@
 import { ReactNode } from "react";
-import type { filterData } from "./componentsData";
+import type { boardOptionData, filterData } from "./componentsData";
+import { reviewItem } from "./apiTypes";
 /**
  * Tag 컴포넌트 props
  */
@@ -55,6 +56,10 @@ export type tagValue = {
  * SlideImage 컴포넌트 props
  */
 export type slideImageValue = {
+    /**
+     * (선택)가게 id
+     */
+    storeId?: number
     /**
      * (필수)이미지 배열 
      */
@@ -136,13 +141,13 @@ export type boardTopValue = {
  */
 export type galleryPostValue = {
     /**
+     * (필수))가게 아이디
+     */
+    storeId: number
+    /**
      * (필수)galleryPost width
      */
     width: number
-    /**
-     * (필수)galleryPost height
-     */
-    height: number
     /**
      * (필수)가게 이름
      */
@@ -160,14 +165,18 @@ export type galleryPostValue = {
      */
     ratingValue: string
     /**
-     * (필수) 구독 여부
-     */
-    onBookmark: boolean
-    /**
      * (필수) 태그 상태
      * 없을시 'none'
      */
     tagValue?: string
+    /**
+     * (필수) 구독 기능 존재 여부
+     */
+    bookmark: boolean
+    /**
+     * (필수) 구독 여부
+     */
+    onBookmark: boolean
     /**
      * (필수) 태그/구독 버튼/ 텍스트 사이즈
      * big: 게시판 페이지 기준
@@ -187,6 +196,7 @@ export type galleryPostValue = {
  * ReviewPost 컴포넌트 props
  */
 export type ReviewPostValue = {
+    storeId: number
     /**
      * (필수)galleryPost width
      */
@@ -210,12 +220,12 @@ export type ReviewPostValue = {
     /**
      * 리뷰 목록
      */
-    reviewList: UserReview[]
+    reviewList: reviewItem[]
 }
 
 export type UserReview = {
     userId: string
-    date: Date
+    date: string
     rating: string
     contents: string
 }
@@ -224,6 +234,10 @@ export type UserReview = {
 
 
 export type SlideImgBookmarkValue = {
+    /**
+     * (필수) 가게 ID
+     */
+    storeId: number
     /**
      * (필수) 현재 구독 상태
      */
@@ -239,7 +253,7 @@ export type SlideImgBookmarkValue = {
     /**
      * (필수) 북마크 선택, 선택 해제 기능 함수
      */
-    onClickBookmark: React.MouseEventHandler<HTMLDivElement>
+    onClickBookmark: (storeId:number)=>void
 }
 
 
@@ -260,15 +274,47 @@ export type boardSortProps = {
     isSelect: boolean
     selected: selectOrder
     sorting: ()=>void
-    selectOrder: ({eng, kor}: selectOrder)=>void
+    selectOrder: ({kor, eng}: selectOrder)=>void
 }
 
 export type selectOrder = {
     kor: string
-    eng: string
+    eng: "RECENT"| "FOLLOWER"| "SCORE"
 }
 
 export type locationSelectorProps = {
     selectedLocation: string
     onChangeLocation: (e:string)=> void
+}
+
+export type ToastMessageProps = {
+    messageString: string
+    timer: number
+}
+
+export type boardOptionValue = {
+    orderOption: selectOrder
+    setOrderOption: React.Dispatch<React.SetStateAction<selectOrder>>
+    optionData: boardOptionData
+    setOptionData: React.Dispatch<React.SetStateAction<boardOptionData>>
+    setPageCount: React.Dispatch<React.SetStateAction<number>>
+}
+
+
+export type resGalleryPost = {
+    id: number
+    fileUrl: string
+    address: string
+    followId: null | number
+    score: string
+    content: string
+    name: string;
+}
+
+export type galleryBoardContentsList = {
+    data: resGalleryPost[][]
+}
+
+export type boardContentGridColumns = {
+    columns: number
 }
