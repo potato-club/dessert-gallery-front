@@ -16,8 +16,13 @@ async function fetchStoreBoardData(req: boardSearchOptionData) {
   //정렬타입
   queryString += `&sortType=${req.sortType}`;
 
+  console.log("getBoardListRUL: ", queryString)
+
+
   try {
     const { data } = await boardApiList.getBoardList(queryString);
+
+    console.log("req data: ", data)
     
       // pageCount 1, 첫 검색시, 초기화
       if(Number(req.page) === 1 ){
