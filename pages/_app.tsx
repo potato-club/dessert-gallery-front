@@ -4,6 +4,7 @@ import { RecoilRoot } from "recoil";
 import Layout from "../src/components/Layout";
 import { Hydrate, QueryClient, QueryClientProvider } from "react-query";
 import { useState } from "react";
+import '../styles/globals.css'
 
 function MyApp({ Component, pageProps }: AppProps) {
   const queryClient = useState(() => new QueryClient())[0];

@@ -15,9 +15,6 @@ const nextConfig = {
 
     return config;
   }, 
-  images: {
-    domains: ['dessert-gallery.s3.ap-northeast-2.amazonaws.com'],
-  },
 }
 
 module.exports = nextConfig

@@ -34,9 +34,11 @@ export type galleryBoardContentsList = {
 
 export type reviewItem = {
   content: string
-  createDate: Date
+  createDate: string
   nickname: string
   score: number
+  fileName?: string
+  fileUrl?: string
 }
 
 
@@ -46,6 +48,7 @@ export type resReviewPost = {
   storeName: string
   fileUrl: string
   content: string
+  address?: string
   name: string
   reviewList: reviewItem[]
 }
