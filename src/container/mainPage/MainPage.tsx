@@ -8,6 +8,7 @@ import NearbyStore from './components/NearbyStore'
 import type { resReviewPost } from '../../types/apiTypes'
 
 import { galleryPostValue } from '../../types/componentsProps'
+import MoveToMap from './components/MoveToMap'
 
 const imgSrc = [
   'https://cdn.pixabay.com/photo/2016/11/22/18/52/cake-1850011_960_720.jpg',
@@ -26,7 +27,7 @@ const data:galleryPostValue[] = [{
   height: 444,
   imgArray: imgSrc,
   location: '서울시 강서구 곰달레길 12',
-  summary: '항상 언제든 늘 봄처럼 따스한 케이크를 드립니다',
+  summary: '항상 언제든 늘 봄처럼 따스한 케이크를 드립니다 가장 긴 문장이란 어떤 것을 의미하는지요 ㅎ하하하 제대로 보이긴 하는자ㅣ?>',
   onBookmark: true,
   ratingValue: '4.8',
   title: '도시락박스',
@@ -40,6 +41,7 @@ const data:galleryPostValue[] = [{
   location: '서울시 강서구 곰달레길 12',
   summary: '항상 언제든 늘 봄처럼 따스한 케이크를 드립니다',
   onBookmark: false,
+  size: 'medium',
   ratingValue: '4.0',
   title: '늘봄 케이크',
 },
@@ -87,6 +89,8 @@ const data:galleryPostValue[] = [{
   summary: '항상 언제든 늘 봄처럼 따스한 케이크를 드립니다',
   onBookmark: false,
   ratingValue: '4.0',
+  size: 'medium',
+
   title: '늘봄 케이크',
 },
 {
@@ -265,7 +269,7 @@ const recReviewData: resReviewPost[] = [
     storeName: "동균 가게",
     content: "안녕하세요 새로 가입한 동균 가게입니다. 맛보장 합니다 ㅎㅎ",
     fileUrl: "https://dessert-gallery.s3.ap-northeast-2.amazonaws.com/26c8478d-f050-4b30-881d-b4b0617bab01-%E1%84%83%E1%85%A9%E1%86%BC%E1%84%80%E1%85%B2%E1%86%AB.jpg",
-    address: "경기 군포시 산본로323번길 20-25 우정빌딩 303, 304호",
+    address: "경기 군포시 산본로323번길 20-25 우정빌딩 303, 304호 위치합니다",
     name: "ManagerTest1",
     reviewList: [
       {
@@ -378,6 +382,7 @@ function MainPage() {
       <FeedSwitcher storeListNew={storeListNew} storeListFol={storeListFol}/>
       <NewReview recentReviewList={recReviewData}/>
       <NearbyStore/>
+      <MoveToMap/>
     </MainWrap>
   )
 }

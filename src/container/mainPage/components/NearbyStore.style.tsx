@@ -34,3 +34,4 @@ export const SumText = styled.div`
     color: #FF8D00;
 
 `
+

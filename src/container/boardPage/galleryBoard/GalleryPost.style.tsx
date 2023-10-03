@@ -45,6 +45,7 @@ export const TitleText = styled.div<componentProps>`
 `
 
 export const LocationText = styled.div<componentProps>`
+    margin-top: 4px;
     font-size: ${({size}) => `${size}`};
     font-family: noto-sans-cjk-kr;
 `

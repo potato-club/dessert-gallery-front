@@ -13,6 +13,7 @@ const BannerWrap = styled.div`
   width: 100vw;
   height: 478px;
   background-image: url(${mainBannerBGImage.src});
+  background-size: cover;
   display: flex;
   justify-content: center;
   align-items: center;

@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import {NearbyStoreWrap, TitleWrap, TextLogo,SumText,  } from './NearbyStore.style'
+import {NearbyStoreWrap, TitleWrap, TextLogo,SumText  } from './NearbyStore.style'
 import NearbyStorePost from './NearbyStorePost'
 
 function NearbyStore() {

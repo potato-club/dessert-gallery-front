@@ -54,7 +54,7 @@ const SummaryText = styled.div`
 `;
 
 const ContentWrap = styled.div`
-  width: 1100px;
+  width: 1200px;
   margin: 0 0 64px 0;
   height: 450px;
   display: flex;
