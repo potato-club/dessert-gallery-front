@@ -149,6 +149,10 @@ export type galleryPostValue = {
      */
     width: number
     /**
+     * (필수)galleryPost width
+     */
+    height?: number;
+    /**
      * (필수)가게 이름
      */
     title: string
@@ -184,7 +188,6 @@ export type galleryPostValue = {
      * small: 메인 페이지 새로운 게시글 기준
      */
     size?: 'big'|'medium'|'small'
-    
     /**
      * (필수) 이미지 배열 값
      */
@@ -262,6 +265,7 @@ export type galleryPostSizeValue = {
     locationTextSize:string,
     summaryTextSize: string,
     ratingSize: "medium" | "small"
+    textPadding: string
 }
 
 
