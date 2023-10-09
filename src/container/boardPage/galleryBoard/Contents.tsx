@@ -82,6 +82,7 @@ export default function Contents({data}: {data: resGalleryPost[][]}) {
           storeId={e.id}
           key={e.id}
           width={304} 
+          height={460}
           imgArray={[e.fileUrl]} 
           location={e.address} 
           bookmark={true}

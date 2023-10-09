@@ -31,7 +31,6 @@ export default function PopularStore({ propsData }: PopularStoreProps) {
                 <GalleryPost
                   key={idx}
                   width={e.width}
-                  height={e.height}
                   imgArray={e.imgArray}
                   location={e.location}
                   onBookmark={e.onBookmark}
@@ -39,8 +38,7 @@ export default function PopularStore({ propsData }: PopularStoreProps) {
                   summary={e.summary}
                   title={e.title}
                   size={e.size}
-                  tagValue={e.tagValue}
-                />
+                  tagValue={e.tagValue} height={e.height} storeId={e.storeId} bookmark={true}/>
               </SwiperSlide>
             ))}
         </Swiper>
@@ -58,7 +56,7 @@ const TextWrap = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin: 60px 0 53px 0;
+  margin: 60px 0 24px 0;
 `;
 
 const TitleText = styled.div`

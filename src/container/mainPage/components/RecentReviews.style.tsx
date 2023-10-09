@@ -4,35 +4,18 @@ interface componentProps {
     width?: number
     height?: number
     size?: string
-}
-
-interface textComponentProps {
-    color?: string
-    size?: string
     bold?: boolean
-    marginRight?: boolean
 }
 
-export const Box = styled.div`
-    width: 100%;
+export const MiddleWrap = styled.div`
+    width: -webkit-fill-available;
     display: flex;
-    flex-direction: column;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
+    margin: 12px 0;
+    padding-bottom: 8px;
+    border-bottom: 2px solid #FF8D00;
 `
-
-export const BoxContentsStart = styled(Box)`
-    padding: 17px 17px 15px 17px;
-    display: flex;
-    flex-direction: column;
-    justify-content: start;
-    align-items: flex-start;
-    cursor: pointer;
-`
-const ContentsWrap = styled.div`
-  display: flex;
-  margin-bottom: 30px;
-`;
 
 export const ReviewPostWrap = styled.div<componentProps>`
     width: ${({width}) => `${width}px`};
@@ -45,73 +28,81 @@ export const ReviewPostWrap = styled.div<componentProps>`
     margin: 64px 0;
 `
 
-export const InformationWrap = styled.div<componentProps>`
+export const InformationWrap = styled.div`
     display: flex;
     flex-direction: column;
-    width: ${({width}) => `${width}px`};
     align-items: start;
-    padding-bottom: 20px;
+    margin: 12px 16px;
     border-radius: 0 0 16px 16px;
 `
 
+export const Contents = styled.div`
+    display: block;
+    height: 32px;
+    width: 224px;
+    font-size: 10px;
+    font-family: noto-sans-cjk-kr;
+    font-weight: bold;
+    line-height: normal;
+    word-break: break-all;
+    overflow: hidden;
+    text-overflow: ellipsis;
+`
+
 export const TitleText = styled.div<componentProps>`
-    font-size: ${({size}) => `${size}`};
+    font-size: 10px;
     font-family: noto-sans-cjk-kr;
     font-weight: bold;
     color: #FF8D00;
 `
 
-export const Summary = styled.div<componentProps>`
-    margin-top: 9px;
-    font-size: ${({size}) => `${size}`};
-    font-family: noto-sans-cjk-kr;
-    font-weight: bold;
-    line-height: normal;
-`
-
-export const ReviewListWrap = styled.div`
-    width: 309px;
-    height: 202px;
-    background-color: #FFF7EB;
-`
-
-export const ReviewWrap = styled.div`
-    width: 273px;
-    height: 100px;
-    border-top: 3px solid #FF8D00;
-`
-
-export const TopTextWrap = styled.div`  
-    margin: 10px 0 8px 0;
+export const StoreWrap = styled.div`
     display: flex;
+    width: -webkit-fill-available;
     justify-content: space-between;
-    align-items: flex-end;    
+`
+export const StoreInfo = styled.div`
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 128px;
 `
 
-export const Text = styled.div<textComponentProps>`
-    color: ${({color}) => `${color}`};
+export const StoreInfoTextWrap = styled(StoreInfo)`
+    /* height: 50px;
+    overflow: hidden;
+    text-overflow: ellipsis; */
+    
+`
+
+export const Text = styled.div<componentProps>`
     font-size: ${({size}) => `${size}`};
     line-height: normal;
+    height: 14px;
     font-family: noto-sans-cjk-kr;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-bottom: 4px;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    
     
     ${({bold}) => {
         if(bold === true){
             return `font-weight: bold;`
         }
     }};
-    ${({marginRight}) => {
-        if(marginRight === true){
-            return `margin-right: 72px;`
-        }
-    }};
 `
 
-export const TagWrap = styled.div`
-    width: 273px;
-    height: 64px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-top: 3px solid #FF8D00;
-
+export const AddressText = styled(Text)`
+    font-size: ${({size}) => `${size}`};
+    line-height: normal;
+    height: 28px;
+    font-family: noto-sans-cjk-kr;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-bottom: 4px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
 `

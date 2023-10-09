@@ -14,9 +14,14 @@ interface FeedSwitcherProps {
 function FeedSwitcher({storeListNew,storeListFol }:FeedSwitcherProps) {
   const [selected, setSelected] = useState<number>(1);
 
+  const onClickMovegalleryBoard = () => {
+    window.location.href = '/galleryBoard'
+  }
+
   const onChangeFeed = (n:number) => {
     setSelected(n);
   }
+
 
   return (
     <FeedSwitcherWrap>
@@ -32,7 +37,7 @@ function FeedSwitcher({storeListNew,storeListFol }:FeedSwitcherProps) {
           <MoveStoreListWrap>
             <Image alt='' src={smileLogo.src} width={smileLogo.width} height={smileLogo.height}/>
             <SummaryText>더 많은 게시글들을 지금 확인하세요 :)</SummaryText>
-            <Tag title='보러가기' height='55px' width='229px' clickAble={true} fontSize='21px' hoverCss={true} onClickHandler={()=>{alert('페이지 이동!')}}/>
+            <Tag title='보러가기' height='55px' width='229px' clickAble={true} fontSize='21px' hoverCss={true} onClickHandler={onClickMovegalleryBoard}/>
           </MoveStoreListWrap>
         </NenuWrap>
         <PostWrap>
@@ -50,8 +55,9 @@ function FeedSwitcher({storeListNew,storeListFol }:FeedSwitcherProps) {
                   summary={e.summary}
                   title={e.title}
                   size={'small'}
-                  tagValue={e.tagValue}
-                />
+                  tagValue={e.tagValue} 
+                  storeId={e.storeId}
+                  bookmark={true}                />
               ))
             )
           }
@@ -69,8 +75,7 @@ function FeedSwitcher({storeListNew,storeListFol }:FeedSwitcherProps) {
                   summary={e.summary}
                   title={e.title}
                   size={'small'}
-                  tagValue={e.tagValue}
-                />
+                  tagValue={e.tagValue} storeId={0} bookmark={false}                />
               ))
             )
           }

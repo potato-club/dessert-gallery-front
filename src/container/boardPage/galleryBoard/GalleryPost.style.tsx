@@ -4,6 +4,8 @@ interface componentProps {
     width?: number
     height?: number
     size?: string
+    textSize?: string
+    textPadding?: string
 }
 
 interface componentWidthProps {
@@ -12,6 +14,7 @@ interface componentWidthProps {
 
 export const GalleryPostWrap = styled.div<componentProps>`
     width: ${({width}) => `${width}px`};
+    height: ${({height}) => `${height}px`};
     display: flex;
     flex-direction: column;
     border-radius: 0 0 16px 16px;
@@ -24,7 +27,7 @@ export const InformationWrap = styled.div<componentProps>`
     flex-direction: column;
     height: -webkit-fill-available;
     background-color: #FFFDF9;
-    padding: 17px 32px 20px 32px;
+    padding: ${({textPadding}) => `${textPadding}`};
     border-radius: 0 0 16px 16px;
     justify-content: space-between;
     cursor: pointer;
@@ -42,16 +45,37 @@ export const TitleText = styled.div<componentProps>`
 `
 
 export const LocationText = styled.div<componentProps>`
+    margin-top: 4px;
     font-size: ${({size}) => `${size}`};
     font-family: noto-sans-cjk-kr;
-    margin-top: 8px;
 `
 
 export const Summary = styled.div<componentProps>`
-    margin: 9px 0 20px 0;
-    font-size: ${({size}) => `${size}`};
+    margin-top: 9px;
+    
+    font-size: ${({textSize}) => `${textSize}`};
     font-family: noto-sans-cjk-kr;
     font-weight: bold;
     line-height: normal;
+    overflow: hidden;
+    white-space: break-word;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+
+    ${({size}) => {
+        if(size==="small"){
+            return`
+                -webkit-line-clamp: 1; // 원하는 라인수
+            `
+        }
+        else{
+            return`
+                -webkit-line-clamp: 2; // 원하는 라인수
+            `
+        }
+    }}
+    
+    
 `
 
