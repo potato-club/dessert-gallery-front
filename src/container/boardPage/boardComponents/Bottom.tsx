@@ -6,9 +6,13 @@ interface componentsProps {
     imgSrc: string
 }
 
-function Bottom() {
+interface ChildComponentProps {
+  observerRef: React.RefObject<HTMLDivElement>;
+}
+
+const Bottom: React.FC<ChildComponentProps> = ({observerRef})  => {
   return (
-    <BottomWrap imgSrc={BoardBottom.src}/>
+    <BottomWrap ref={observerRef} imgSrc={BoardBottom.src}/>
   )
 }
 

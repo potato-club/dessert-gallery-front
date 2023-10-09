@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState, useEffect, useRef} from 'react'
 import { Wrapper } from './ReviewBoardContainer.style'
 import BoardTop from '../boardComponents/BoardTop'
 import { useGetReviewBoardListdData } from '../../../hooks/useGetReviewBoardList'
@@ -23,6 +23,7 @@ function ReviewBoardContainer() {
   })
   const [toast, setToast] = useState<boolean>(false)
   const [resData, setResData] = useState<resReviewPost[][]>([])
+  const observerRef = useRef<HTMLDivElement>(null);
 
   useEffect(()=>{}, [orderOption.eng, optionData.location, optionData.selectSearchWord,pageCount])
 
@@ -44,24 +45,33 @@ function ReviewBoardContainer() {
     });
 
     useEffect(() => {
-      const handleScroll = () => {
-        const scrollY = window.scrollY || document.documentElement.scrollTop;
-        const windowHeight = window.innerHeight;
-        const documentHeight = document.documentElement.offsetHeight;
-    
-        // 스크롤 위치가 페이지 높이의 80% 이상으로 내려갔을 때 데이터를 새로고침
-        if (scrollY + windowHeight >= documentHeight -100) {
-          if (hasNextPage && !isFetchingNextPage) {
-            setPageCount((prev) => prev + 1);
-            fetchNextPage();
-          }
-        }
-      };
-    
-      window.addEventListener("scroll", handleScroll);
-      return () => {
-        window.removeEventListener("scroll", handleScroll);
-      };
+      // Intersection Observer 콜백
+    const handleIntersection = (entries: IntersectionObserverEntry[]) => {
+      const target = entries[0];
+      if (target.isIntersecting && status === "success") {
+        window.scrollTo(0, window.scrollY - 100);
+        setPageCount((prev) => prev + 1);
+        fetchNextPage();
+      }
+    };
+
+    const options = {
+      root: null,
+      rootMargin: '0px',
+      threshold: 0.5,
+    };
+
+    const observer = new IntersectionObserver(handleIntersection, options);
+
+    if (observerRef.current) {
+      observer.observe(observerRef.current);
+    }
+
+    return () => {
+      if (observerRef.current) {
+        observer.unobserve(observerRef.current);
+      }
+    };
     }, [hasNextPage, isFetchingNextPage, fetchNextPage, orderOption.eng, optionData.location, optionData.selectSearchWord,pageCount]);
   
 
@@ -77,7 +87,7 @@ function ReviewBoardContainer() {
         {status === "error" && <p>error</p>}
         {status === "success" && resData.length !== 0 && <Contents data={resData} />}
         {status === "success" && toast && <ToastMessage messageString='더이상 불러올 리뷰 정보가 없습니다.' timer={5000}/>}
-        <Bottom/>
+        <Bottom observerRef={observerRef}/>
     </Wrapper>
   )
 }
