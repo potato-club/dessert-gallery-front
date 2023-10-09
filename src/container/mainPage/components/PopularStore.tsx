@@ -4,12 +4,19 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/swiper-bundle.css';
 import { galleryPostValue } from '../../../types/componentsProps';
 import GalleryPost from '../../boardPage/galleryBoard/GalleryPost';
+import { useGetPopularStores } from '../../../hooks/useGetMain';
+import { resGalleryPost } from '../../../types/apiTypes';
+import PopularStorePrevSlide from './PopularStorePrevSlide';
+import PopularStoreSlide from './PopularStoreSlide';
 
 interface PopularStoreProps {
   propsData: galleryPostValue[];
 }
 
 export default function PopularStore({ propsData }: PopularStoreProps) {
+  const {data, isLoading, error} = useGetPopularStores();
+  console.log("popularStoreList", data, isLoading, error);
+
   useEffect(() => {}, [propsData]);
 
   return (
@@ -19,29 +26,8 @@ export default function PopularStore({ propsData }: PopularStoreProps) {
         <SummaryText>사진을 드래그하면 더 멋진 인기 게시물과 신규 게시물을 더 보실 수 있습니다</SummaryText>
       </TextWrap>
       <ContentsWrap>
-        <Swiper
-          spaceBetween={10}
-          slidesPerView={5}
-          effect="fade"
-          direction="horizontal"
-        >
-          {propsData.length > 0 &&
-            propsData.map((e, idx) => (
-              <SwiperSlide key={`slide${idx}`}>
-                <GalleryPost
-                  key={idx}
-                  width={e.width}
-                  imgArray={e.imgArray}
-                  location={e.location}
-                  onBookmark={e.onBookmark}
-                  ratingValue={e.ratingValue}
-                  summary={e.summary}
-                  title={e.title}
-                  size={e.size}
-                  tagValue={e.tagValue} height={e.height} storeId={e.storeId} bookmark={true}/>
-              </SwiperSlide>
-            ))}
-        </Swiper>
+        {isLoading && <PopularStorePrevSlide/>}
+        {!isLoading && <PopularStoreSlide popularStoreList={data}/>}
       </ContentsWrap>
     </PopularStoreWrap>
   );
@@ -74,6 +60,12 @@ const SummaryText = styled.div`
 const ContentsWrap = styled.div`
   display: flex;
   margin-bottom: 30px;
+  justify-content: center;
+  width: 100vw;
+
+  .swiper-wrapper {
+    width: 100vw;
+  }
 
   .swiper-container {
     width: 100%; 
