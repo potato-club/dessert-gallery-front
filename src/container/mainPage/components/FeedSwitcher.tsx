@@ -31,12 +31,12 @@ function FeedSwitcher({storeListNew,storeListFol }:FeedSwitcherProps) {
             {
               selected === 1 ? <TextLogo>NEW!</TextLogo> : <TextLogo>FOL!</TextLogo>
             }
-            <TextNEW menu={selected} onClick={()=>onChangeFeed(1)}>새로운 게시글</TextNEW>
-            <TextFollow menu={selected} onClick={()=>onChangeFeed(2)}>팔로우한 게시글</TextFollow>
+            <TextNEW menu={selected} onClick={()=>onChangeFeed(1)}>새로운 가게</TextNEW>
+            <TextFollow menu={selected} onClick={()=>onChangeFeed(2)}>팔로우한 가게</TextFollow>
           </ToggleWrap>
           <MoveStoreListWrap>
             <Image alt='' src={smileLogo.src} width={smileLogo.width} height={smileLogo.height}/>
-            <SummaryText>더 많은 게시글들을 지금 확인하세요 :)</SummaryText>
+            <SummaryText>더 많은 가게들을 지금 확인하세요 :)</SummaryText>
             <Tag title='보러가기' height='55px' width='229px' clickAble={true} fontSize='21px' hoverCss={true} onClickHandler={onClickMovegalleryBoard}/>
           </MoveStoreListWrap>
         </NenuWrap>

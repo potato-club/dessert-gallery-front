@@ -23,7 +23,7 @@ export default function PopularStore({ propsData }: PopularStoreProps) {
     <PopularStoreWrap>
       <TextWrap>
         <TitleText>인기 가게 게시글</TitleText>
-        <SummaryText>사진을 드래그하면 더 멋진 인기 게시물과 신규 게시물을 더 보실 수 있습니다</SummaryText>
+        <SummaryText>사진을 드래그하면 더 멋진 인기 가게와 신규 가게들을 확인하실 수 있습니다</SummaryText>
       </TextWrap>
       <ContentsWrap>
         {isLoading && <PopularStorePrevSlide/>}
