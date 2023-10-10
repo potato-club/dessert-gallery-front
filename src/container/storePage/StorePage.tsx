@@ -94,7 +94,7 @@ const Container = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: 100%;
+  min-width: 1280px;
 `;
 const StoreInfo = styled.div`
   display: flex;

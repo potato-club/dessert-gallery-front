@@ -42,25 +42,46 @@ interface GetStoreReview {
 }
 
 export const getStoreReview = async ({ storeId, page }: GetStoreReview) => {
-  const res = await axios.get(
-    `https://api.dessert-gallery.site/reviews/stores/${storeId}?page=${page}`
-  );
-  return res.data;
+  try {
+    const res = await axios.get(
+      `https://api.dessert-gallery.site/reviews/stores/${storeId}?page=${page}`
+    );
+    return res.data;
+  } catch (error: any) {
+    throw error;
+  }
 };
 
-interface BoardCommentType {
+interface GetCommentType {
   boardId: number;
   page?: number;
 }
-export const getBoardComment = async ({ boardId, page }: BoardCommentType) => {
+export const getBoardComment = async ({ boardId, page }: GetCommentType) => {
   const res = await axios.get(
     `https://api.dessert-gallery.site/comments/${boardId}?p=${page}`
   );
   return res.data;
 };
-export const postBoardComment = async ({ boardId }: BoardCommentType) => {
+interface PostCommentType {
+  boardId: number;
+  comment: string;
+  accessToken: string;
+}
+export const postBoardComment = async ({
+  boardId,
+  comment,
+  accessToken,
+}: PostCommentType) => {
   const res = await axios.post(
-    `https://api.dessert-gallery.site/comments/${boardId}`
+    `https://api.dessert-gallery.site/comments/${boardId}`,
+    {
+      comment: comment,
+    },
+    {
+      headers: {
+        Authorization: accessToken,
+      },
+    }
   );
   return res.data;
 };
