@@ -122,7 +122,9 @@ const AbsoluteDiv = styled.div<{ spreadClick: boolean }>`
   box-shadow: ${({ spreadClick }) =>
     !spreadClick && `0px 3px 6px rgba(0, 0, 0, 0.161);`};
   width: 100%;
+  min-width: 1280px;
   padding-top: 16px;
+  z-index: 10;
 `;
 const InnerDiv = styled.div`
   display: flex;
