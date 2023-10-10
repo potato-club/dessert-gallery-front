@@ -6,7 +6,7 @@ interface GetStoreType {
 }
 export const getStoreInfo = async ({ storeId }: GetStoreType) => {
   const res = await axios.get(
-    `https://api.dessert-gallery.site/stores/${storeId}`
+    `${process.env.NEXT_PUBLIC_API_URL}/stores/${storeId}`
   );
 
   return res.data;
@@ -14,7 +14,7 @@ export const getStoreInfo = async ({ storeId }: GetStoreType) => {
 
 export const getStoreAnnounce = async ({ storeId }: GetStoreType) => {
   const res = await axios.get(
-    `https://api.dessert-gallery.site/notices/stores/${storeId}`
+    `${process.env.NEXT_PUBLIC_API_URL}/notices/stores/${storeId}`
   );
 
   return res.data;
@@ -22,7 +22,7 @@ export const getStoreAnnounce = async ({ storeId }: GetStoreType) => {
 
 export const getPosterThumnail = async ({ storeId }: GetStoreType) => {
   const res = await axios.get(
-    `https://api.dessert-gallery.site/boards/stores/${storeId}`
+    `${process.env.NEXT_PUBLIC_API_URL}/boards/stores/${storeId}`
   );
 
   return res.data;
@@ -30,7 +30,7 @@ export const getPosterThumnail = async ({ storeId }: GetStoreType) => {
 
 export const getDetailPoster = async ({ storeId }: GetStoreType) => {
   const res = await axios.get(
-    `https://api.dessert-gallery.site/boards/${storeId}`
+    `${process.env.NEXT_PUBLIC_API_URL}/boards/${storeId}`
   );
   return res.data;
 };
@@ -44,7 +44,7 @@ interface GetStoreReview {
 export const getStoreReview = async ({ storeId, page }: GetStoreReview) => {
   try {
     const res = await axios.get(
-      `https://api.dessert-gallery.site/reviews/stores/${storeId}?page=${page}`
+      `${process.env.NEXT_PUBLIC_API_URL}/reviews/stores/${storeId}?page=${page}`
     );
     return res.data;
   } catch (error: any) {
@@ -58,7 +58,7 @@ interface GetCommentType {
 }
 export const getBoardComment = async ({ boardId, page }: GetCommentType) => {
   const res = await axios.get(
-    `https://api.dessert-gallery.site/comments/${boardId}?p=${page}`
+    `${process.env.NEXT_PUBLIC_API_URL}/comments/${boardId}?p=${page}`
   );
   return res.data;
 };
@@ -73,7 +73,7 @@ export const postBoardComment = async ({
   accessToken,
 }: PostCommentType) => {
   const res = await axios.post(
-    `https://api.dessert-gallery.site/comments/${boardId}`,
+    `${process.env.NEXT_PUBLIC_API_URL}/comments/${boardId}`,
     {
       comment: comment,
     },
