@@ -2,12 +2,12 @@ import React, { useEffect } from "react";
 import axios from "axios";
 import { useRouter } from "next/router";
 import Wrapper from "../../src/container/loginPage/components/Wrapper";
-import { useSignupDataState } from "../../src/recoil/login/signUpStateAtom";
+import { useKakaoSignupDataState } from "../../src/recoil/login/kakaoSignUpStateAtom";
 import { useJWTState } from "../../src/recoil/login/JWTStateAtom";
 
 const Kakao = () => {
   const router = useRouter();
-  const [signUpData, setSignUpData] = useSignupDataState();
+  const [kakaoSignUpData, setKakaoSignUpData] = useKakaoSignupDataState();
   const [jwtState, setJwtState] = useJWTState();
   useEffect(() => {
     const fetchData = async () => {
@@ -18,10 +18,10 @@ const Kakao = () => {
           const response: any = await axios.get(
             `https://api.dessert-gallery.site/users/login/kakao?code=${code}`
           );
-          console.log(response.data);
+          console.log(response);
           console.log();
-          setSignUpData({
-            ...signUpData,
+          setKakaoSignUpData({
+            ...kakaoSignUpData,
             email: response.data.email,
             loginType: "KAKAO",
           });

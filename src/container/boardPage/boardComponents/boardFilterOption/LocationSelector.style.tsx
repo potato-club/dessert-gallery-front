@@ -38,14 +38,22 @@ export const CategoryText = styled.div`
 `;
 
 export const CityWrap = styled.div`
-  width: 337px;
+  width: 330px;
   height: 320px;
   border-right: 2px solid #ff6f0099;
+`
+
+export const City = styled.div`
+  width: 330px;
+  height: 320px;
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
   align-items: center;
+  animation: ${slideInAnimation} 0.1s ease-in-out;
+
 `
+
 export const DistrictWrap = styled.div`
   width: 762px;
   height: 320px;
@@ -54,6 +62,7 @@ export const DistrictWrap = styled.div`
   flex-wrap: wrap;
   align-items: flex-start;
   margin-left: 16px;
+  animation: ${slideInAnimation} 0.1s ease-in-out;
 `
 
 
@@ -65,5 +74,5 @@ export const CheckboxInput = styled.input.attrs({ type: 'radio' })`
 export const CheckboxLabel = styled.label`
   font-family: noto-sans-cjk-kr;
   font-size: 16px;
-  margin: 16px;
+  margin: 16px 0;
 `;

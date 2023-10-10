@@ -9,6 +9,9 @@ import Tag from "../../../components/Tag";
 import SocialLogin from "./SocialLogin";
 import Wrapper from "../components/Wrapper";
 import { useForm } from "react-hook-form";
+import axios from "axios";
+import { useJWTState } from "../../../recoil/login/JWTStateAtom";
+import { useRouter } from "next/router";
 
 type inputType = {
   /**
@@ -24,6 +27,9 @@ type inputType = {
 };
 
 function LoginMainContainer() {
+  const router = useRouter();
+  const [jwtState, setJwtState] = useJWTState();
+
   const { handleSubmit, getValues, control } = useForm<{
     email?: string;
     password?: string;
@@ -34,6 +40,39 @@ function LoginMainContainer() {
     },
     mode: "onChange",
   });
+
+  const handleLogin = async () => {
+    const email = getValues("email");
+    const password = getValues("password");
+
+    try {
+      console.log("try login");
+
+      const response: any = await axios.post(
+        `https://api.dessert-gallery.site/users/login`,
+        {
+          email: email,
+          password: password,
+        }
+      );
+
+      if (response.data.responseCode === "200") {
+        // 여기는 로그인 처리 후 메인페이지로
+        console.log(200);
+        const accessToken = response.headers.get("Authorization");
+        const refreshToken = response.headers.get("Refreshtoken");
+        setJwtState({
+          accessToken: accessToken,
+          refreshToken: refreshToken,
+        });
+        router.push("/");
+      } else {
+        console.log("에러", response.data.responseCode);
+      }
+    } catch (error) {
+      console.log("Error: ", error);
+    }
+  };
 
   return (
     <Wrapper>
@@ -58,9 +97,7 @@ function LoginMainContainer() {
               fontSize="100%"
               inversion={true}
               clickAble={true}
-              onClickHandler={() => {
-                console.log(getValues());
-              }}
+              onClickHandler={handleLogin}
             />
           </TagButtonWrapper>
           <Horizon />

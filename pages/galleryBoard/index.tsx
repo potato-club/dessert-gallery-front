@@ -1,7 +1,9 @@
-import React from "react";
+import GalleryBoardContainer from "../../src/container/boardPage/galleryBoard/GalleryBoardContainer"
 
 const GalleryBoard = () => {
-  return <></>;
-};
+  return (
+    <GalleryBoardContainer/>
+  )
+}
 
-export default GalleryBoard;
+export default GalleryBoard
