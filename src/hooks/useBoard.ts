@@ -4,7 +4,7 @@ import {
   getBoardComment,
   postBoardComment,
 } from "../../pages/api/detailStore";
-import { useMutation, useQuery } from "react-query";
+import { useMutation, useQuery, useQueryClient } from "react-query";
 
 export const useGetDetailBoard = (options = {}, storeId: number) => {
   const { data } = useQuery(
@@ -42,11 +42,27 @@ export const useGetModalComment = ({ page, boardId, options }: any) => {
   return { data, refetch };
 };
 
-export const usePostModalComment = ({ boardId, options }: any) => {
+export const usePostModalComment = ({
+  boardId,
+  comment,
+  accessToken,
+  options,
+}: any) => {
+  const queryClient = useQueryClient();
+
   const { mutate } = useMutation(
     ["boardComment", boardId],
-    () => postBoardComment({ boardId }),
+    () => postBoardComment({ boardId, comment, accessToken }),
     {
+      onSuccess: async () => {
+        await queryClient.invalidateQueries(["boardComment", boardId]);
+      },
+      onError: (err: any) => {
+        if (err.response.status == 403) {
+          alert("로그인을 해주세요.");
+          return;
+        }
+      },
       ...options,
     }
   );
