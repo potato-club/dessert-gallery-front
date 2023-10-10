@@ -1,11 +1,10 @@
+import "../styles/globals.css";
 import type { AppProps } from "next/app";
-import { ReactQueryDevtools } from "react-query/devtools";
-import { RecoilRoot } from "recoil";
 import Layout from "../src/components/Layout";
+import { RecoilRoot } from "recoil";
 import { Hydrate, QueryClient, QueryClientProvider } from "react-query";
 import { useState } from "react";
-import "../styles/globals.css";
-import myPage from "./myPage";
+import myPage from "../pages/myPage/[store]";
 
 function MyApp({ Component, pageProps }: AppProps) {
   const queryClient = useState(() => new QueryClient())[0];
