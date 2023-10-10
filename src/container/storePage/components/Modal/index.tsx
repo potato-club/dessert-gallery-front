@@ -9,6 +9,7 @@ import MenuBox from "./MenuBox";
 import {
   useGetDetailBoard,
   useGetModalComment,
+  usePostModalComment,
 } from "../../../../hooks/useBoard";
 import { useInView } from "react-intersection-observer";
 
@@ -21,17 +22,28 @@ const PostModal = ({ boardId, storeInfo }: any) => {
   const [activeIo, setActiveIo] = useState<boolean>(false);
   const [commentArr, setCommentArr] = useState<Comment[]>([]); // 댓글 목록을 저장하는 상태
 
-  const submit = (e: any) => {
+  const submit = async (e: any) => {
     // 댓글 submit
-    e.preventDefault();
-    setComment("");
-    // 대충 게시물 댓글 postApi 훅 들어갈 자리
+    await e.preventDefault();
+    // await mutate();
+    // await setCommentArr((prev) => [...prev, comment]);
+    // await setComment("");
   };
   const detailPoster = useGetDetailBoard({}, boardId);
 
   const { data, refetch } = useGetModalComment({
     page: page || 1,
     boardId,
+    options: {
+      refetchOnWindowFocus: false,
+    },
+  });
+
+  const { mutate } = usePostModalComment({
+    boardId,
+    comment,
+    accessToken:
+      "bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJybGFlaGRyYnM1ODBAbmF2ZXIuY29tIiwicm9sZXMiOiJNQU5BR0VSIiwiaWF0IjoxNjk1MTMwMTQwLCJleHAiOjE2OTUxMzE5NDB9.DA8MOCZaWdoyPgPCGg9pVPLXtmAvhXalpni2cLvHCxM",
     options: {
       refetchOnWindowFocus: false,
     },
@@ -65,6 +77,7 @@ const PostModal = ({ boardId, storeInfo }: any) => {
   }
 
   console.log(commentArr);
+
   const { name, info, storeImage, address } = storeInfo;
   const { title, content, tags, images } = detailPoster;
 
