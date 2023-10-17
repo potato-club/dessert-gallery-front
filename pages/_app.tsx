@@ -1,10 +1,10 @@
+import "../styles/globals.css";
 import type { AppProps } from "next/app";
-import { ReactQueryDevtools } from "react-query/devtools";
-import { RecoilRoot } from "recoil";
 import Layout from "../src/components/Layout";
+import { RecoilRoot } from "recoil";
 import { Hydrate, QueryClient, QueryClientProvider } from "react-query";
 import { useState } from "react";
-import '../styles/globals.css'
+import myPage from "../pages/myPage/[store]";
 
 function MyApp({ Component, pageProps }: AppProps) {
   const queryClient = useState(() => new QueryClient())[0];
@@ -13,9 +13,13 @@ function MyApp({ Component, pageProps }: AppProps) {
     <QueryClientProvider client={queryClient}>
       <Hydrate state={pageProps}>
         <RecoilRoot>
-          <Layout>
+          {Component == myPage ? (
             <Component {...pageProps} />
-          </Layout>
+          ) : (
+            <Layout>
+              <Component {...pageProps} />
+            </Layout>
+          )}
         </RecoilRoot>
       </Hydrate>
     </QueryClientProvider>

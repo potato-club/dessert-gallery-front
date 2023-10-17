@@ -1,9 +1,8 @@
-import Link from "next/link";
 import { useRouter } from "next/router";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import styled, { css } from "styled-components";
-import { useGetReviewList } from "../../../../hooks/useBoard";
-import Review from "./Review";
+import { useGetReviewList } from "../../hooks/useBoard";
+import Review, { StoreReviewType } from "./Review";
 
 const ReviewList = () => {
   const router = useRouter();
@@ -35,8 +34,17 @@ const ReviewList = () => {
   return (
     <Container>
       {data &&
-        data.content.map((item: any, idx: number) => {
-          return <Review storeReview={item} key={idx} />;
+        data.content.map((item: StoreReviewType, idx: number) => {
+          return (
+            <Review
+              key={idx}
+              userName={item.userName}
+              content={item.content}
+              score={item.score}
+              images={item.images}
+              createDate={item.createDate}
+            />
+          );
         })}
       <Pagenation>
         <PrevBtn>{"<"}</PrevBtn>

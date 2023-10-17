@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import styled, { css } from "styled-components";
 import Poster from "./Poster";
 import PostModal from "./Modal";
-import ReviewList from "./Review";
+import ReviewList from "../../../components/ReviewList";
 import { useRecoilValue } from "recoil";
 import { modalBg } from "../../../recoil/modalBg/atom";
 

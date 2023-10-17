@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import Calender from "./components/Calendar";
+import Calender from "./components/StoreCalendar";
 import StoreProfile from "./components/StoreProfile";
 import Announce from "./components/Announce";
 import StoreContent from "./components/StoreContent";
@@ -26,15 +26,27 @@ const StorePage = (props: StoreProps) => {
     <Container>
       <StoreInfo>
         <StoreProfile storeInfo={storeInfo} />
-        <Calender />
+        <CalDiv>
+          <Calender />
+        </CalDiv>
       </StoreInfo>
-      <Announce
-        content={announceData[0].content}
-        createdDate={announceData[0].createdDate}
-        spreadClick={spreadClick}
-        setSpreadClick={setSpreadClick}
-        isFirst={true}
-      />
+      {announceData[0] ? (
+        <Announce
+          content={announceData[0].content}
+          createdDate={announceData[0].createdDate || ""}
+          spreadClick={spreadClick}
+          setSpreadClick={setSpreadClick}
+          isFirst={true}
+        />
+      ) : (
+        <Announce
+          content="등록된 공지사항이 없습니다."
+          createdDate=""
+          spreadClick={spreadClick}
+          setSpreadClick={setSpreadClick}
+          isFirst={true}
+        />
+      )}
       <AnnounceList>
         {spreadClick && (
           <AbsoluteDiv spreadClick={spreadClick}>
@@ -72,12 +84,17 @@ const StorePage = (props: StoreProps) => {
 
 export default StorePage;
 
+const CalDiv = styled.div`
+  border: 3px solid #ff8d00;
+  border-radius: 20px;
+  background-color: white;
+`;
 const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: 100%;
+  min-width: 1280px;
 `;
 const StoreInfo = styled.div`
   display: flex;
