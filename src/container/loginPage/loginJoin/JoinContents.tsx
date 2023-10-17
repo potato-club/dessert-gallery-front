@@ -4,44 +4,51 @@ import Tag from "../../../components/Tag";
 import styled from "styled-components";
 import { useForm } from "react-hook-form";
 import { useSetRecoilState, useRecoilState } from "recoil";
-import { signupDataStateAtom } from "../../../recoil/login/signUpStateAtom";
+import { useSignupDataState } from "../../../recoil/login/signUpStateAtom";
 import axios from "axios";
 import { useRouter } from "next/router";
+import { useJWTState } from "../../../recoil/login/JWTStateAtom";
+import { useTokenService } from "../../../hooks/useTokenService";
 
-function JoinContents({
-  getPassword,
-}: {
-  getPassword: (password?: string) => void;
-}) {
+function JoinContents() {
   const router = useRouter();
 
+  const [isEmailSend, setIsEmailSend] = useState(false);
   const [isVerify, setIsVerify] = useState(false);
   const [isPasswordChecked, setIsPasswordChecked] = useState(false);
-  const [signupDataState, setSignupDataState] =
-    useRecoilState(signupDataStateAtom);
+  const [isNicknameChecked, setIsNicknameChecked] = useState(false);
+  const [signtupData, setSignupData] = useSignupDataState();
+  const { setToken } = useTokenService();
 
   const { handleSubmit, getValues, control } = useForm<{
     email?: string;
     verifyCode?: string;
     password?: string;
     checkPassword?: string;
+    nickname?: string;
   }>({
     defaultValues: {
       email: "",
       verifyCode: "",
       password: "",
       checkPassword: "",
+      nickname: "",
     },
     mode: "onChange",
   });
 
   const handleCheckEmail = async () => {
     const email = getValues("email");
+    console.log(email);
 
-    if (email?.includes("gmail")) {
+    if (email !== "") {
       const response = await axios.post(
         "https://api.dessert-gallery.site/users/mail/gmail",
-        {},
+        {
+          headers: {
+            "Content-Type": "text/javascript",
+          },
+        },
         {
           params: {
             recipientEmail: email,
@@ -49,17 +56,10 @@ function JoinContents({
         }
       );
       console.log(response);
-    } else if (email?.includes("naver")) {
-      const response = await axios.post(
-        "https://api.dessert-gallery.site/users/mail/naver",
-        {},
-        {
-          params: {
-            recipientEmail: email,
-          },
-        }
-      );
-      console.log(response);
+      console.log(response.status);
+      if (response.status === 200) {
+        setIsEmailSend(true);
+      }
     } else {
       console.log("gmail 혹은 네이버 아이디 형식이 아닙니다.");
     }
@@ -67,41 +67,79 @@ function JoinContents({
 
   const handlCheckVerifyCode = async () => {
     const verifyCode = getValues("verifyCode");
+    const formData = new FormData();
+    const key = getValues("verifyCode");
+    if (key) {
+      formData.append("key", key);
+    }
+
     const response = await axios.post(
       "https://api.dessert-gallery.site/users/mail/verify",
-      {},
+      formData,
       {
-        params: {
-          key: verifyCode,
+        headers: {
+          "Content-Type": "multipart/form-data",
         },
       }
     );
-
     console.log(response);
-    // 성공했을 경우 isVerify state를 true로 변경하기
+    console.log(response.data.responseCode);
+    if (response.status === 200) {
+      setIsVerify(true);
+    }
   };
 
-  const handleSignup = () => {
+  const handlCheckNickname = async () => {
+    const nickname = getValues("nickname");
+    const response = await axios.get(
+      "https://api.dessert-gallery.site/users/duplication/nickname",
+      {
+        params: {
+          nickname: nickname,
+        },
+      }
+    );
+    console.log(response);
+    if (response.status === 200) {
+      setIsNicknameChecked(true);
+    }
+  };
+
+  const handleSignup = async () => {
     const email = getValues("email");
     const password = getValues("password");
 
     if (!isVerify) {
       console.log("인증되지 않은 이메일입니다.");
-    } else if (!isPasswordChecked) {
+    } else if (!(getValues("password") === getValues("checkPassword"))) {
       console.log("비밀번호 확인이 일치하지 않습니다.");
+    } else if (!isNicknameChecked) {
+      console.log("닉네임 중복 확인이 처리되지 않았습니다.");
     } else {
-      setSignupDataState({
-        ...signupDataState,
-        email: email,
-      });
-      getPassword(password);
+      try {
+        const response: any = await axios.post(
+          `https://api.dessert-gallery.site/users/signup`,
+          {
+            loginType: signtupData.loginType,
+            userRole: signtupData.userRole,
+            email: getValues("email"),
+            nickname: getValues("nickname"),
+            password: getValues("password"),
+          }
+        );
+        const accessToken = response.headers.get("Authorization");
+        const refreshToken = response.headers.get("Refreshtoken");
+        setToken(accessToken, refreshToken);
+        console.log(response);
+      } catch {
+        // console.log();
+      }
     }
-    router.push("/login/pick");
   };
 
   return (
     <JoinContentsWrapper>
-      <EmailVerifyWrapper>
+      <ExtendedInputWrapper>
         <Input
           placeholder="이메일 입력(네이버 혹은 구글)"
           name="email"
@@ -110,7 +148,7 @@ function JoinContents({
         />
         <SmallTagButtonWrapper>
           <Tag
-            title="인증 코드 전송"
+            title={isEmailSend ? "인증 코드 재전송" : "인증 코드 전송"}
             width="100%"
             height="100%"
             fontSize="100%"
@@ -119,8 +157,8 @@ function JoinContents({
             onClickHandler={handleCheckEmail}
           />
         </SmallTagButtonWrapper>
-      </EmailVerifyWrapper>
-      <EmailVerifyWrapper>
+      </ExtendedInputWrapper>
+      <ExtendedInputWrapper>
         <Input
           placeholder="인증 코드 입력"
           name="verifyCode"
@@ -128,7 +166,7 @@ function JoinContents({
         />
         <SmallTagButtonWrapper>
           <Tag
-            title="인증 코드 확인"
+            title={isVerify ? "인증 완료" : "인증 코드 확인"}
             width="100%"
             height="100%"
             fontSize="100%"
@@ -137,7 +175,23 @@ function JoinContents({
             onClickHandler={handlCheckVerifyCode}
           />
         </SmallTagButtonWrapper>
-      </EmailVerifyWrapper>
+      </ExtendedInputWrapper>
+
+      <ExtendedInputWrapper>
+        <Input placeholder="닉네임 입력" name="nickname" control={control} />
+        <SmallTagButtonWrapper>
+          <Tag
+            title={isNicknameChecked ? "닉네임 확인 완료" : "닉네임 중복 확인"}
+            width="100%"
+            height="100%"
+            fontSize="100%"
+            inversion={true}
+            clickAble={true}
+            onClickHandler={handlCheckNickname}
+          />
+        </SmallTagButtonWrapper>
+      </ExtendedInputWrapper>
+
       <Input
         placeholder="비밀번호 입력"
         type="password"
@@ -150,6 +204,7 @@ function JoinContents({
         name="checkPassword"
         control={control}
       />
+      <button>123123</button>
       <TagButtonWrapper>
         <Tag
           title="회원가입"
@@ -172,7 +227,7 @@ const JoinContentsWrapper = styled.div`
     height: 420px;
   }
   @media screen and (max-width: 1919px) {
-    height: 280px;
+    height: 290px;
   }
   display: flex;
   flex-direction: column;
@@ -180,12 +235,17 @@ const JoinContentsWrapper = styled.div`
   justify-content: space-between;
 `;
 
-const EmailVerifyWrapper = styled.div`
+const ExtendedInputWrapper = styled.div`
   position: relative;
-  width: 500px;
   display: flex;
   align-items: center;
   justify-content: center;
+  @media screen and (min-width: 1920px) {
+    width: 750px;
+  }
+  @media screen and (max-width: 1919px) {
+    width: 500px;
+  }
 `;
 
 const SmallTagButtonWrapper = styled.div`

@@ -61,7 +61,7 @@ const StyledInput = styled.input<{ marginBottom?: number }>`
   border: 2px solid #fdc886;
   border-radius: 50px;
   margin-bottom: ${(props) => props.marginBottom}px;
-
+  box-sizing: border-box;
   //Input 컴포넌트 클릭 시 바깥에 생기는 검은 테두리를 없애는 용도
   outline: none;
   ::placeholder {

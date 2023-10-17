@@ -1,8 +1,10 @@
 import React, { ReactNode } from "react";
 import styled from "styled-components";
 import { useRouter } from "next/router";
+import { useSignupDataState } from "../../../recoil/login/signUpStateAtom";
 
 function Navigaiton() {
+  const [signupData, setSignupData] = useSignupDataState();
   const router = useRouter();
   return (
     <NavigationWrapper>
@@ -11,7 +13,8 @@ function Navigaiton() {
         bold={true}
         color={"#FF8D00"}
         onClick={() => {
-          router.push("/login/join");
+          setSignupData({ ...signupData, loginType: "NORMAL" });
+          router.push("/login/pick");
         }}
       >
         회원가입
