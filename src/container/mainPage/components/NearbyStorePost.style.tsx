@@ -24,7 +24,7 @@ export const TextWrap = styled.div`
 `
 
 export const Text = styled.div<componentsProps>`
-    margin: 6px 0;
+    margin: 10px 0;
     font-family: noto-sans-cjk-kr;
     font-size: ${({fontSize})=>`${fontSize}`};
     ${({bold}) => {
