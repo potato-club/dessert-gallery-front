@@ -38,22 +38,16 @@ function JoinContents() {
 
   const handleCheckEmail = async () => {
     const email = getValues("email");
+    console.log(email);
 
-    if (email?.includes("gmail")) {
+    if (email !== "") {
       const response = await axios.post(
         "https://api.dessert-gallery.site/users/mail/gmail",
-        {},
         {
-          params: {
-            recipientEmail: email,
+          headers: {
+            "Content-Type": "text/javascript",
           },
-        }
-      );
-      console.log(response);
-    } else if (email?.includes("naver")) {
-      const response = await axios.post(
-        "https://api.dessert-gallery.site/users/mail/naver",
-        {},
+        },
         {
           params: {
             recipientEmail: email,
