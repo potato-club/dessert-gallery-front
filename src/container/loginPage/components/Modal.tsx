@@ -2,37 +2,17 @@ import React, { ReactNode, useEffect, useState } from "react";
 import styled from "styled-components";
 import { modalStateAtom } from "../../../recoil/login/modalStateAtom";
 import { useRecoilState, useResetRecoilState } from "recoil";
-import { useKakaoSignupDataState } from "../../../recoil/login/kakaoSignUpStateAtom";
-import {
-  signUpDataType,
-  signupDataStateAtom,
-} from "../../../recoil/login/signUpStateAtom";
-import { useJWTState } from "../../../recoil/login/JWTStateAtom";
+import { useSignupDataState } from "../../../recoil/login/signUpStateAtom";
+import { useTokenService } from "../../../hooks/useTokenService";
 import axios from "axios";
 
 function Modal() {
   const [modalState, setModalState] = useRecoilState(modalStateAtom);
-  const [signupData, setSignupData] = useRecoilState(signupDataStateAtom);
-  const [kakaoSignupData, setKakaoSignupData] = useKakaoSignupDataState();
+
+  const [signupData, setSignupData] = useSignupDataState();
   const [nickname, setNickname] = useState("");
   const [stepSignup, setStepSignup] = useState(1);
-  const [jwtState, setJwtState] = useJWTState();
-
-  const excuteSetSignupData = (signupData: signUpDataType) => {
-    if (kakaoSignupData.loginType === "KAKAO") {
-      setKakaoSignupData(signupData);
-    } else {
-      setSignupData(signupData);
-    }
-  };
-
-  const getSignupData = () => {
-    if (kakaoSignupData.loginType === "KAKAO") {
-      return kakaoSignupData;
-    } else {
-      return signupData;
-    }
-  };
+  const { setToken } = useTokenService();
 
   const closeModal = () => {
     setModalState(false);
@@ -44,24 +24,21 @@ function Modal() {
     setNickname(event.target.value);
   };
 
-  const handleSetNickname = () => {
-    excuteSetSignupData({ ...getSignupData(), nickname: nickname });
-    console.log(getSignupData());
-    closeModal();
-  };
-
   const handleSignup = async () => {
     try {
       const response: any = await axios.post(
         `https://api.dessert-gallery.site/users/signup`,
-        { ...getSignupData(), password: "" }
+        {
+          email: signupData.email,
+          loginType: signupData.loginType,
+          userRole: signupData.userRole,
+          nickname: nickname,
+          password: "",
+        }
       );
       const accessToken = response.headers.get("Authorization");
       const refreshToken = response.headers.get("Refreshtoken");
-      setJwtState({
-        accessToken: accessToken,
-        refreshToken: refreshToken,
-      });
+      setToken(accessToken, refreshToken);
     } catch {}
   };
 
@@ -72,7 +49,7 @@ function Modal() {
           <>
             <ModalContentsDiv>
               <ExplainDiv>
-                {getSignupData().userRole === "MANAGER"
+                {signupData.userRole === "MANAGER"
                   ? "가게 운영자로 회원가입 하시겠습니까?"
                   : "일반 회원으로 회원가입 하시겠습니까?"}
               </ExplainDiv>

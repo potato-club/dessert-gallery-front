@@ -4,27 +4,28 @@ import Tag from "../../../components/Tag";
 import styled from "styled-components";
 import { useForm } from "react-hook-form";
 import { useSetRecoilState, useRecoilState } from "recoil";
-import { signupDataStateAtom } from "../../../recoil/login/signUpStateAtom";
+import { useSignupDataState } from "../../../recoil/login/signUpStateAtom";
 import axios from "axios";
 import { useRouter } from "next/router";
+import { useJWTState } from "../../../recoil/login/JWTStateAtom";
+import { useTokenService } from "../../../hooks/useTokenService";
 
-function JoinContents({
-  getPassword,
-}: {
-  getPassword: (password?: string) => void;
-}) {
+function JoinContents() {
   const router = useRouter();
 
+  const [isEmailSend, setIsEmailSend] = useState(false);
   const [isVerify, setIsVerify] = useState(false);
   const [isPasswordChecked, setIsPasswordChecked] = useState(false);
-  const [signupDataState, setSignupDataState] =
-    useRecoilState(signupDataStateAtom);
+  const [isNicknameChecked, setIsNicknameChecked] = useState(false);
+  const [signtupData, setSignupData] = useSignupDataState();
+  const { setToken } = useTokenService();
 
   const { handleSubmit, getValues, control } = useForm<{
     email?: string;
     verifyCode?: string;
     password?: string;
     checkPassword?: string;
+    nickname?: string;
   }>({
     defaultValues: {
       email: "",
