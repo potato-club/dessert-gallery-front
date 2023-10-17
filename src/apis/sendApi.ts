@@ -2,7 +2,7 @@ import axios from 'axios';
 import { AUTH_KEY } from '../constants/authkey';
 import httpService from '../constants/libs/httpService';
 
-let ck = `eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0YW1kNTk3MUBuYXZlci5jb20iLCJyb2xlcyI6Ik1BTkFHRVIiLCJpYXQiOjE2OTM4OTE1MzUsImV4cCI6MTY5Mzg5MzMzNX0.xvxGA-2tW3en2DKv-Q-ZaI38r4f2lNCO1M8kNSZwXhk`
+let ck = `eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0YW1kNTk3MUBuYXZlci5jb20iLCJyb2xlcyI6Ik1BTkFHRVIiLCJpYXQiOjE2OTY5Mzk0MzgsImV4cCI6MTY5Njk0MTIzOH0.KIktA7E3SWuAUu_o2nlzXz3mEfBHWU3sVaLaR9SpTpM`
 
 export const sendApi = {
   get: (url:string) => {

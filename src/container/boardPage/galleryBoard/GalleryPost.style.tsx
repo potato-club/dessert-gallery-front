@@ -48,6 +48,12 @@ export const LocationText = styled.div<componentProps>`
     margin-top: 4px;
     font-size: ${({size}) => `${size}`};
     font-family: noto-sans-cjk-kr;
+    overflow: hidden;
+    white-space: break-word;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
 `
 
 export const Summary = styled.div<componentProps>`

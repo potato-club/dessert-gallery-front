@@ -380,7 +380,7 @@ function MainPage() {
       <Banner/>
       <PopularStore propsData={data}/>
       <FeedSwitcher storeListNew={storeListNew} storeListFol={storeListFol}/>
-      <NewReview recentReviewList={recReviewData}/>
+      <NewReview/>
       <NearbyStore/>
       <MoveToMap/>
     </MainWrap>

@@ -1,11 +1,8 @@
 import React, { useEffect } from 'react';
 import styled from 'styled-components';
-import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/swiper-bundle.css';
 import { galleryPostValue } from '../../../types/componentsProps';
-import GalleryPost from '../../boardPage/galleryBoard/GalleryPost';
 import { useGetPopularStores } from '../../../hooks/useGetMain';
-import { resGalleryPost } from '../../../types/apiTypes';
 import PopularStorePrevSlide from './PopularStorePrevSlide';
 import PopularStoreSlide from './PopularStoreSlide';
 

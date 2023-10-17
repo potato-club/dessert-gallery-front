@@ -19,6 +19,6 @@ export const mainApiList = {
   },
 
   getNearbyStore: async() => {
-    return (await sendApi.get("/kakaoMap?lat=37.34701&lon=126.9509&radius=1000")).data;
+    return (await sendApi.get("/kakaoMap?lat=37.34701&lon=126.9509&radius=130")).data;
   },
 } 
