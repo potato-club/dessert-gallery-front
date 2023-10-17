@@ -11,7 +11,8 @@ function Navigaiton() {
         bold={true}
         color={"#FF8D00"}
         onClick={() => {
-          router.push("/login/join");
+          setSignupData({ ...signupData, loginType: "NORMAL" });
+          router.push("/login/pick");
         }}
       >
         회원가입
