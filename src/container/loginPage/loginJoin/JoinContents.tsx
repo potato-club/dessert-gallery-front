@@ -204,7 +204,7 @@ function JoinContents() {
         name="checkPassword"
         control={control}
       />
-      <button>123123</button>
+
       <TagButtonWrapper>
         <Tag
           title="회원가입"
