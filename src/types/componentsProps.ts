@@ -353,3 +353,7 @@ export type recentReviewListProps = {
      */
     reviewList: reviewItem[]
 }
+
+export type mainComponentsProps = {
+    isGuest: boolean;
+}

@@ -4,10 +4,11 @@ import { PostWrap } from './FeedSwitcher.style'
 import { resGalleryPost } from '../../../types/apiTypes'
 
 interface contentsProps {
-  contents: resGalleryPost[] ;
+  contents: resGalleryPost[],
+  isGuest: boolean ;
 }
 
-export default function FeedRecentGallery({contents}: contentsProps) {
+export default function FeedRecentGallery({contents, isGuest}: contentsProps) {
   return (
     <PostWrap>
           {
@@ -25,7 +26,7 @@ export default function FeedRecentGallery({contents}: contentsProps) {
                   size={'small'}
                   tagValue={Number(e.score) > 4.5 ? "HOT": "none"}
                   storeId={e.id}
-                  bookmark={true}/> 
+                  bookmark={isGuest? false:true}/> 
               ))
           }
         </PostWrap>

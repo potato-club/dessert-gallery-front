@@ -7,9 +7,10 @@ import styled from 'styled-components';
 
 interface PopularStoreProps {
   popularStoreList: resGalleryPost[];
+  isGuest: boolean;
 }
 
-export default function PopularStoreSlide({ popularStoreList }: PopularStoreProps) {
+export default function PopularStoreSlide({ popularStoreList,isGuest }: PopularStoreProps) {
 
   useEffect(() => {}, [popularStoreList]);
 
@@ -36,7 +37,7 @@ export default function PopularStoreSlide({ popularStoreList }: PopularStoreProp
               tagValue={Number(e.score) > 4.5 ? "HOT": "none"}
               height={444}
               storeId={e.id}
-              bookmark={true}/>
+              bookmark={isGuest?false:true}/>
           </SwiperSlide>
         ))}
     </Swiper>

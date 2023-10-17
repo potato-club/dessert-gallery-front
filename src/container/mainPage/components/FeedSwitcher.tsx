@@ -2,7 +2,7 @@ import React, {useState} from 'react'
 import Image from 'next/image';
 import { smileLogo } from '../../../../public/image';
 import { FeedSwitcherWrap,ContentsWrap,NenuWrap,PostWrap,TextLogo,ToggleWrap,TextFollow, TextNEW, MoveStoreListWrap, SummaryText } from './FeedSwitcher.style';
-import { galleryPostValue } from '../../../types/componentsProps';
+import { galleryPostValue, mainComponentsProps } from '../../../types/componentsProps';
 import Tag from '../../../components/Tag';
 import { useGetRecentStores,useGetFollowBoardList } from '../../../hooks/useGetMain';
 import FeedFollowStore from './FeedFollowStore';
@@ -10,16 +10,17 @@ import FeedRecentGallery from './FeedRecentGallery';
 import FeedPrev from './FeedPrev';
 import FeedGuest from './FeedGuest';
 
+
 interface FeedSwitcherProps {
   storeListNew: galleryPostValue[];
   storeListFol: galleryPostValue[];
 }
 
-function FeedSwitcher({storeListNew,storeListFol }:FeedSwitcherProps) {
+function FeedSwitcher({ isGuest }: mainComponentsProps) {
   const [selected, setSelected] = useState<number>(1);
   const { data: recentStores, isLoading: recentStoresLoading, error: recentStoresError } = useGetRecentStores();
   const { data: followBoardList, isLoading: followBoardListLoading, error: followBoardListError } = useGetFollowBoardList();
-  const guest = false;
+  
 
   console.log("check: ", recentStores, recentStoresLoading, recentStoresError)
   console.log("check 팔로우한 가게: ", followBoardList, followBoardListLoading, followBoardListError)
@@ -50,10 +51,11 @@ function FeedSwitcher({storeListNew,storeListFol }:FeedSwitcherProps) {
             <Tag title='보러가기' height='55px' width='229px' clickAble={true} fontSize='21px' hoverCss={true} onClickHandler={onClickMovegalleryBoard}/>
           </MoveStoreListWrap>
         </NenuWrap>
-        {(recentStoresLoading || followBoardListLoading) && <FeedPrev/>}
-        {selected === 1 && recentStoresLoading === false &&(<FeedRecentGallery contents={recentStores}/>)}
-        {selected === 2 && guest &&(<FeedGuest/>)}
-        {selected === 2 && !guest && followBoardListLoading === false &&(<FeedFollowStore contents={followBoardList}/>)}
+        {selected === 1 &&recentStoresLoading && <FeedPrev/>}
+        {selected === 2 &&followBoardListLoading && !isGuest && <FeedPrev/>}
+        {selected === 1 && recentStoresLoading === false &&(<FeedRecentGallery isGuest={isGuest} contents={recentStores}/>)}
+        {selected === 2 && isGuest &&(<FeedGuest/>)}
+        {selected === 2 && !isGuest && followBoardListLoading === false &&(<FeedFollowStore contents={followBoardList}/>)}
       </ContentsWrap>
     </FeedSwitcherWrap>
   )

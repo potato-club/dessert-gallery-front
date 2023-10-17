@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import Tag from '../../../components/Tag'
 import mainGuest from '../../../../public/image/mainGuest.png'
 
+
 export default function FeedGuest() {
   const onClickMovePage = () => {
     window.location.href = '/login/main'
