@@ -2,7 +2,7 @@ import React from "react";
 import styled, { css } from "styled-components";
 import { Logo, Search, HeaderBookmark, HeaderInfo } from "../../public/svg";
 import { useRouter } from "next/router";
-import { useTokenService } from "../utils/useTokenService";
+import { useTokenService } from "../hooks/useTokenService";
 
 const Header = () => {
   const router = useRouter();
