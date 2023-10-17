@@ -1,8 +1,10 @@
 import React, { ReactNode } from "react";
 import styled from "styled-components";
 import { useRouter } from "next/router";
+import { useSignupDataState } from "../../../recoil/login/signUpStateAtom";
 
 function Navigaiton() {
+  const [signupData, setSignupData] = useSignupDataState();
   const router = useRouter();
   return (
     <NavigationWrapper>
