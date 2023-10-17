@@ -4,7 +4,11 @@ import { smileLogo } from '../../../../public/image';
 import { FeedSwitcherWrap,ContentsWrap,NenuWrap,PostWrap,TextLogo,ToggleWrap,TextFollow, TextNEW, MoveStoreListWrap, SummaryText } from './FeedSwitcher.style';
 import { galleryPostValue } from '../../../types/componentsProps';
 import Tag from '../../../components/Tag';
-import GalleryPost from '../../boardPage/galleryBoard/GalleryPost';
+import { useGetRecentStores,useGetFollowBoardList } from '../../../hooks/useGetMain';
+import FeedFollowStore from './FeedFollowStore';
+import FeedRecentGallery from './FeedRecentGallery';
+import FeedPrev from './FeedPrev';
+import FeedGuest from './FeedGuest';
 
 interface FeedSwitcherProps {
   storeListNew: galleryPostValue[];
@@ -13,6 +17,12 @@ interface FeedSwitcherProps {
 
 function FeedSwitcher({storeListNew,storeListFol }:FeedSwitcherProps) {
   const [selected, setSelected] = useState<number>(1);
+  const { data: recentStores, isLoading: recentStoresLoading, error: recentStoresError } = useGetRecentStores();
+  const { data: followBoardList, isLoading: followBoardListLoading, error: followBoardListError } = useGetFollowBoardList();
+  const guest = false;
+
+  console.log("check: ", recentStores, recentStoresLoading, recentStoresError)
+  console.log("check 팔로우한 가게: ", followBoardList, followBoardListLoading, followBoardListError)
 
   const onClickMovegalleryBoard = () => {
     window.location.href = '/galleryBoard'
@@ -40,46 +50,10 @@ function FeedSwitcher({storeListNew,storeListFol }:FeedSwitcherProps) {
             <Tag title='보러가기' height='55px' width='229px' clickAble={true} fontSize='21px' hoverCss={true} onClickHandler={onClickMovegalleryBoard}/>
           </MoveStoreListWrap>
         </NenuWrap>
-        <PostWrap>
-          {
-            selected===1 && (
-              storeListNew.map((e,idx)=>(
-                <GalleryPost
-                  key={idx}
-                  width={184}
-                  height={270}
-                  imgArray={e.imgArray}
-                  location={e.location}
-                  onBookmark={e.onBookmark}
-                  ratingValue={e.ratingValue}
-                  summary={e.summary}
-                  title={e.title}
-                  size={'small'}
-                  tagValue={e.tagValue} 
-                  storeId={e.storeId}
-                  bookmark={true}                />
-              ))
-            )
-          }
-          {
-            selected===2 && (
-              storeListFol.map((e,idx)=>(
-                <GalleryPost
-                  key={idx}
-                  width={184}
-                  height={270}
-                  imgArray={e.imgArray}
-                  location={e.location}
-                  onBookmark={e.onBookmark}
-                  ratingValue={e.ratingValue}
-                  summary={e.summary}
-                  title={e.title}
-                  size={'small'}
-                  tagValue={e.tagValue} storeId={0} bookmark={false}                />
-              ))
-            )
-          }
-        </PostWrap>
+        {(recentStoresLoading || followBoardListLoading) && <FeedPrev/>}
+        {selected === 1 && recentStoresLoading === false &&(<FeedRecentGallery contents={recentStores}/>)}
+        {selected === 2 && guest &&(<FeedGuest/>)}
+        {selected === 2 && !guest && followBoardListLoading === false &&(<FeedFollowStore contents={followBoardList}/>)}
       </ContentsWrap>
     </FeedSwitcherWrap>
   )
