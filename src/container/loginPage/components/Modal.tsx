@@ -91,7 +91,6 @@ function Modal() {
             <ButtonDiv>
               <ModalButton
                 onClick={() => {
-                  handleSetNickname();
                   handleSignup();
                 }}
               >
@@ -120,6 +119,7 @@ const ModalWrapper = styled.div<{ state: boolean }>`
 `;
 
 const ModalContentsDiv = styled.div`
+  box-sizing: border-box;
   width: 100%;
   height: 200px;
   padding: 20px;
