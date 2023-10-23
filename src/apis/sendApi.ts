@@ -8,44 +8,44 @@ import authorization from '../libs/httpService';
 
 export const sendApi = {
   get: (url:string) => {
-    console.log('sessionStorageService.get(SESSION_KEY', sessionStorageService.get(SESSION_KEY))
     if(sessionStorageService.get(SESSION_KEY) !== null){ 
       return axios.get(
-        `${AUTH_KEY.apiUrl}${url}`,
+        AUTH_KEY.apiUrl+url,
         authorization(sessionStorageService.get(SESSION_KEY)) 
       );
     }else{
-      return axios.get(`${AUTH_KEY.apiUrl}${url}`);
+      return axios.get(AUTH_KEY.apiUrl + url);
     }
   },
 
-
   guestGet: (url: string) => {
     return axios.get(
-      `${process.env.NEXT_PUBLIC_API_URL}${url}`,
+      AUTH_KEY.apiUrl+url,
     );
   },
 
   post: (url: string, req: object = {}) => {
     return axios.post(
-      `${process.env.NEXT_PUBLIC_API_URL}${url}`,
+      AUTH_KEY.apiUrl+url,
       req,
+      authorization(sessionStorageService.get(SESSION_KEY)) 
     );
   },
 
   put: (url: string, req: object = {}) => {
     return axios.put(
-      `${process.env.NEXT_PUBLIC_API_URL}${url}`,
+      AUTH_KEY.apiUrl+url,
       req,
+      authorization(sessionStorageService.get(SESSION_KEY)) 
     );
   },
 
-  // delete: (url) => {
-  //   return axios.delete(
-  //     AUTH_KEY.apiUrl + url,
-  //     httpService.authorization(localStorageService.get(SESSION_ID))
-  //   );
-  // },
+  delete: (url:string) => {
+    return axios.delete(
+      AUTH_KEY.apiUrl + url,
+      authorization(sessionStorageService.get(SESSION_KEY)) 
+    );
+  },
 };
 
 export default sendApi;
