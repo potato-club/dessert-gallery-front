@@ -5,7 +5,7 @@ import DotIndicator from './DotIndicator';
 import Bookmark from './Bookmark';
 import { RightMoveButtonIcon, LeftMoveButtonIcon } from '../../../public/svg';
 import { Wrapper, ImageWrap, RightMoveButton, LeftMoveButton,MoveWrap,MoveAllbutton, BottomComponent, BottomCenterComponent } from './SlideImage.style';
-import followAction from '../../utils/FollowAction';
+import followAction from '../../utils/followAction';
 
 function SlideImage({storeId, srcArray, width=304, height=304, moveBtnType='none', size='big', dotIndicator=false, bookmark=false, onBookmark=false, children=<></>}:slideImageValue) {
   const [imgCnt, setImgCnt] = useState<number>(0);

@@ -57,9 +57,9 @@ export type tagValue = {
  */
 export type slideImageValue = {
     /**
-     * (선택)가게 id
+     * 가게 id
      */
-    storeId?: number
+    storeId: number
     /**
      * (필수)이미지 배열 
      */
