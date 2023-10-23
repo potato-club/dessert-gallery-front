@@ -2,12 +2,12 @@ import React, { useEffect } from "react";
 import axios from "axios";
 import { useRouter } from "next/router";
 import Wrapper from "../../src/container/loginPage/components/Wrapper";
-import { useKakaoSignupDataState } from "../../src/recoil/login/kakaoSignUpStateAtom";
+import { useSignupDataState } from "../../src/recoil/login/signUpStateAtom";
 import { useJWTState } from "../../src/recoil/login/JWTStateAtom";
 
 const Kakao = () => {
   const router = useRouter();
-  const [kakaoSignUpData, setKakaoSignUpData] = useKakaoSignupDataState();
+  const [signUpData, setSignUpData] = useSignupDataState();
   const [jwtState, setJwtState] = useJWTState();
   useEffect(() => {
     const fetchData = async () => {
@@ -19,12 +19,6 @@ const Kakao = () => {
             `https://api.dessert-gallery.site/users/login/kakao?code=${code}`
           );
           console.log(response);
-          console.log();
-          setKakaoSignUpData({
-            ...kakaoSignUpData,
-            email: response.data.email,
-            loginType: "KAKAO",
-          });
 
           if (response.data.responseCode === "200") {
             // 여기는 로그인 처리 후 메인페이지로
@@ -39,6 +33,10 @@ const Kakao = () => {
           } else if (response.data.responseCode === "201") {
             // 여기는 신규 회원이니 회원가입으로
             console.log(201);
+            setSignUpData({
+              ...signUpData,
+              email: response.data.email,
+            });
             router.replace({
               pathname: "/login/pick",
             });

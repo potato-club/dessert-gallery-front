@@ -6,7 +6,7 @@ interface componentsProps {
 
 export const FeedSwitcherWrap = styled.div`
   width: 100vw;
-  height: fit-content;
+  min-height: 880px;
   background-color: #FCF0E1;
   display: flex;
   justify-content: center;
@@ -47,7 +47,7 @@ export const TextLogo = styled.div`
 export const PostWrap = styled.div`
   width: 70%;
   display: flex;
-  margin: 48px;
+  margin: 24px;
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: space-between;

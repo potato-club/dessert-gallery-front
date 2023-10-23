@@ -11,13 +11,13 @@ const TitleH2 = styled.h2`
   @media screen and (min-width: 1920px) {
     width: 264px;
     height: 126px;
-    margin-bottom: 21px;
+    margin: 0 0 21px 0;
     font-size: 85px;
   }
   @media screen and (max-width: 1919px) {
     width: 171px;
     height: 81px;
-    margin-bottom: 17px;
+    margin: 0 0 17px 0;
     font-size: 55px;
   }
   display: flex;

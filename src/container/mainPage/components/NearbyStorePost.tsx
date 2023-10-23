@@ -1,28 +1,49 @@
-import React from 'react'
-import { NearbyStorePostWrap, TextWrap,Text } from './NearbyStorePost.style'
+import React, {useEffect, useRef} from 'react'
+import { NearbyStorePostWrap, TextWrap,Text, RatingWrap, MapWrap } from './NearbyStorePost.style'
 import Image from 'next/image'
 import Rating from '../../../components/Rating'
 import Tag from '../../../components/Tag'
+import { nearbyStore } from '../../../types/apiTypes'
 
-function NearbyStorePost() {
-    const data =  {
-        width: 304,
-        height: 444,
-        imgArray: 'https://cdn.pixabay.com/photo/2018/09/11/11/47/cake-3669245_640.jpg',
-        location: '서울시 강서구 곰달레길 12',
-        summary: '항상 언제든 늘 봄처럼 따스한 케이크를 드립니다',
-        onBookmark: false,
-        ratingValue: '4.0',
-        title: 'FOL늘봄 케이크',
+interface nearbyStoreProps {
+  item: nearbyStore
+}
+
+function NearbyStorePost({item}: nearbyStoreProps) {
+  const storeMap = useRef<HTMLDivElement>(null);
+
+  useEffect(()=>{
+      if (storeMap && storeMap.current) {
+        // 이미지 지도에서 마커가 표시될 위치입니다 
+        console.log("window kakao", (window as any).kakao)
+        let markerPosition  = new (window as any).kakao.maps.LatLng(item.latitude, item.longitude); 
+
+        // 이미지 지도에 표시할 마커입니다
+        // 이미지 지도에 표시할 마커는 Object 형태입니다
+        var marker = {
+            position: markerPosition
+        };
+
+        let staticMapOption = { 
+            center: new (window as any).kakao.maps.LatLng(item.latitude, item.longitude), // 이미지 지도의 중심좌표
+            level: 3, // 이미지 지도의 확대 레벨
+            marker: marker // 이미지 지도에 표시할 마커 
+        };    
+
+        // 이미지 지도를 생성합니다
+        let staticMap = new (window as any).kakao.maps.StaticMap(storeMap.current, staticMapOption);
       }
+  },[])
+
   return (
-    <NearbyStorePostWrap>
-        <Image objectFit='cover' height={284} width={550} src={data.imgArray}/>
+    <NearbyStorePostWrap key={item.longitude+item.latitude}>
+        <MapWrap ref={storeMap}/>
         <TextWrap>
-            <Text bold fontSize='45px'>늘봄 케이크</Text>
-            <Text fontSize='14px'>서울시 강서구 곰달레길 12</Text>
-            <Text fontSize='12px'>항상 언제든 늘 봄처럼 떠스한 케이크를 드립니다</Text>
-            <Rating size='medium' ratingValue='4.5'/>
+            <Text bold fontSize='45px'>{item.storeName}</Text>
+            <Text fontSize='14px'>{item.storeAddress}</Text>
+            <RatingWrap>
+              <Rating size='medium' ratingValue={item.score}/>
+            </RatingWrap>
             <Tag width='130px' height='32px' clickAble={true} title='보러가기' hoverCss={true} margin='8px 0 0 0' fontSize='11px' onClickHandler={()=>alert('click')}/>
         </TextWrap>
     </NearbyStorePostWrap>

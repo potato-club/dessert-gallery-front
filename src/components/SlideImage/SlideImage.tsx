@@ -5,7 +5,7 @@ import DotIndicator from './DotIndicator';
 import Bookmark from './Bookmark';
 import { RightMoveButtonIcon, LeftMoveButtonIcon } from '../../../public/svg';
 import { Wrapper, ImageWrap, RightMoveButton, LeftMoveButton,MoveWrap,MoveAllbutton, BottomComponent, BottomCenterComponent } from './SlideImage.style';
-import useFollowAction from '../../hooks/useFollowAction';
+import followAction from '../../utils/followAction';
 
 function SlideImage({storeId, srcArray, width=304, height=304, moveBtnType='none', size='big', dotIndicator=false, bookmark=false, onBookmark=false, children=<></>}:slideImageValue) {
   const [imgCnt, setImgCnt] = useState<number>(0);
@@ -35,7 +35,7 @@ function SlideImage({storeId, srcArray, width=304, height=304, moveBtnType='none
       alert('해당 가게를 팔로우했습니다.')
     }
     setOnBookmarkState(prev => !prev)
-    useFollowAction(onBookmarkState,storeId)
+    followAction(onBookmarkState,storeId)
   }
 
   return (

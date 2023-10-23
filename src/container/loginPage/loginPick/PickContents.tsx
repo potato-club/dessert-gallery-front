@@ -8,25 +8,12 @@ import Tag from "../../../components/Tag";
 import { useRouter } from "next/router";
 import { useSetRecoilState, useRecoilState } from "recoil";
 import { modalStateAtom } from "../../../recoil/login/modalStateAtom";
-import { useKakaoSignupDataState } from "../../../recoil/login/kakaoSignUpStateAtom";
-import {
-  signUpDataType,
-  signupDataStateAtom,
-} from "../../../recoil/login/signUpStateAtom";
+import { useSignupDataState } from "../../../recoil/login/signUpStateAtom";
 
 function PickContents({ role }: { role: "owner" | "user" }) {
   const router = useRouter();
-  const [signupData, setSignupData] = useRecoilState(signupDataStateAtom);
-  const [kakaoSignupData, setKakaoSignupData] = useKakaoSignupDataState();
+  const [signupData, setSignupData] = useSignupDataState();
   const setModalState = useSetRecoilState(modalStateAtom);
-
-  const excuteSetSignupData = (signupData: signUpDataType) => {
-    if (kakaoSignupData.loginType === "KAKAO") {
-      setKakaoSignupData(signupData);
-    } else {
-      setSignupData(signupData);
-    }
-  };
 
   const updateUserRole = () => {
     console.log(123);
@@ -34,7 +21,7 @@ function PickContents({ role }: { role: "owner" | "user" }) {
     const userRole = role === "owner" ? "MANAGER" : "USER";
     console.log(userRole);
 
-    excuteSetSignupData({
+    setSignupData({
       ...signupData,
       userRole: userRole,
     });
@@ -59,7 +46,11 @@ function PickContents({ role }: { role: "owner" | "user" }) {
           clickAble={true}
           onClickHandler={() => {
             updateUserRole();
-            setModalState(true);
+            if (signupData.loginType === "KAKAO") {
+              setModalState(true);
+            } else {
+              router.push("/login/join");
+            }
           }}
         />
       </TagButtonWrapper>

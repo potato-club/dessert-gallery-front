@@ -1,8 +1,7 @@
-import { useState } from 'react';
 import { boardApiList } from '../apis/controller/boardPage';
 
 // 팔로우 상태와 팔로우/취소 함수를 관리하는 Hook
-async function useFollowAction(followState:boolean, storeId:number) {
+async function followAction(followState:boolean, storeId:number) {
   console.log("onClickBookmark ", followState, storeId)
     if(followState){
       boardApiList.putUnfollow(storeId.toString())
@@ -23,4 +22,4 @@ async function useFollowAction(followState:boolean, storeId:number) {
     }
 }
 
-export default useFollowAction;
+export default followAction;
