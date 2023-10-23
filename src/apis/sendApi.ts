@@ -1,50 +1,51 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import axios from 'axios';
-import { AUTH_KEY } from '../constants/authkey';
-import httpService from '../constants/libs/httpService';
+import { AUTH_KEY, } from '../constants/authkey';
+import { SESSION_KEY } from '../constants/session';
+import sessionStorageService from '../libs/sessionStorageService';
+import authorization from '../libs/httpService';
 
-let ck = `eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0YW1kNTk3MUBuYXZlci5jb20iLCJyb2xlcyI6Ik1BTkFHRVIiLCJpYXQiOjE2OTM4OTE1MzUsImV4cCI6MTY5Mzg5MzMzNX0.xvxGA-2tW3en2DKv-Q-ZaI38r4f2lNCO1M8kNSZwXhk`
 
 export const sendApi = {
   get: (url:string) => {
-    return axios.get(
-      `https://api.dessert-gallery.site${url}`,
-      // httpService.authorization(localStorageService.get(SESSION_ID))
-      httpService.authorization(ck)
-    );
+    if(sessionStorageService.get(SESSION_KEY) !== null){ 
+      return axios.get(
+        AUTH_KEY.apiUrl+url,
+        authorization(sessionStorageService.get(SESSION_KEY)) 
+      );
+    }else{
+      return axios.get(AUTH_KEY.apiUrl + url);
+    }
   },
 
-
   guestGet: (url: string) => {
-    console.log("getGuest: ", `https://api.dessert-gallery.site${url}`)
     return axios.get(
-      `https://api.dessert-gallery.site${url}`,
+      AUTH_KEY.apiUrl+url,
     );
   },
 
   post: (url: string, req: object = {}) => {
     return axios.post(
-      `https://api.dessert-gallery.site${url}`,
+      AUTH_KEY.apiUrl+url,
       req,
-      // httpService.authorization(localStorageService.get(SESSION_ID))
-      httpService.authorization(ck)
+      authorization(sessionStorageService.get(SESSION_KEY)) 
     );
   },
 
   put: (url: string, req: object = {}) => {
     return axios.put(
-      `https://api.dessert-gallery.site${url}`,
+      AUTH_KEY.apiUrl+url,
       req,
-      // httpService.authorization(localStorageService.get(SESSION_ID))
-      httpService.authorization(ck)
+      authorization(sessionStorageService.get(SESSION_KEY)) 
     );
   },
 
-  // delete: (url) => {
-  //   return axios.delete(
-  //     AUTH_KEY.apiUrl + url,
-  //     httpService.authorization(localStorageService.get(SESSION_ID))
-  //   );
-  // },
+  delete: (url:string) => {
+    return axios.delete(
+      AUTH_KEY.apiUrl + url,
+      authorization(sessionStorageService.get(SESSION_KEY)) 
+    );
+  },
 };
 
 export default sendApi;

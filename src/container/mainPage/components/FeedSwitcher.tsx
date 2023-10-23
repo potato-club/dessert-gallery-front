@@ -2,17 +2,28 @@ import React, {useState} from 'react'
 import Image from 'next/image';
 import { smileLogo } from '../../../../public/image';
 import { FeedSwitcherWrap,ContentsWrap,NenuWrap,PostWrap,TextLogo,ToggleWrap,TextFollow, TextNEW, MoveStoreListWrap, SummaryText } from './FeedSwitcher.style';
-import { galleryPostValue } from '../../../types/componentsProps';
+import { galleryPostValue, mainComponentsProps } from '../../../types/componentsProps';
 import Tag from '../../../components/Tag';
-import GalleryPost from '../../boardPage/galleryBoard/GalleryPost';
+import { useGetRecentStores,useGetFollowBoardList } from '../../../hooks/useGetMain';
+import FeedFollowStore from './FeedFollowStore';
+import FeedRecentGallery from './FeedRecentGallery';
+import FeedPrev from './FeedPrev';
+import FeedGuest from './FeedGuest';
+
 
 interface FeedSwitcherProps {
   storeListNew: galleryPostValue[];
   storeListFol: galleryPostValue[];
 }
 
-function FeedSwitcher({storeListNew,storeListFol }:FeedSwitcherProps) {
+function FeedSwitcher({ isGuest }: mainComponentsProps) {
   const [selected, setSelected] = useState<number>(1);
+  const { data: recentStores, isLoading: recentStoresLoading, error: recentStoresError } = useGetRecentStores();
+  const { data: followBoardList, isLoading: followBoardListLoading, error: followBoardListError } = useGetFollowBoardList();
+  
+
+  console.log("check: ", recentStores, recentStoresLoading, recentStoresError)
+  console.log("check 팔로우한 가게: ", followBoardList, followBoardListLoading, followBoardListError)
 
   const onClickMovegalleryBoard = () => {
     window.location.href = '/galleryBoard'
@@ -31,55 +42,20 @@ function FeedSwitcher({storeListNew,storeListFol }:FeedSwitcherProps) {
             {
               selected === 1 ? <TextLogo>NEW!</TextLogo> : <TextLogo>FOL!</TextLogo>
             }
-            <TextNEW menu={selected} onClick={()=>onChangeFeed(1)}>새로운 게시글</TextNEW>
-            <TextFollow menu={selected} onClick={()=>onChangeFeed(2)}>팔로우한 게시글</TextFollow>
+            <TextNEW menu={selected} onClick={()=>onChangeFeed(1)}>새로운 가게</TextNEW>
+            <TextFollow menu={selected} onClick={()=>onChangeFeed(2)}>팔로우한 가게</TextFollow>
           </ToggleWrap>
           <MoveStoreListWrap>
             <Image alt='' src={smileLogo.src} width={smileLogo.width} height={smileLogo.height}/>
-            <SummaryText>더 많은 게시글들을 지금 확인하세요 :)</SummaryText>
+            <SummaryText>더 많은 가게들을 지금 확인하세요 :)</SummaryText>
             <Tag title='보러가기' height='55px' width='229px' clickAble={true} fontSize='21px' hoverCss={true} onClickHandler={onClickMovegalleryBoard}/>
           </MoveStoreListWrap>
         </NenuWrap>
-        <PostWrap>
-          {
-            selected===1 && (
-              storeListNew.map((e,idx)=>(
-                <GalleryPost
-                  key={idx}
-                  width={184}
-                  height={270}
-                  imgArray={e.imgArray}
-                  location={e.location}
-                  onBookmark={e.onBookmark}
-                  ratingValue={e.ratingValue}
-                  summary={e.summary}
-                  title={e.title}
-                  size={'small'}
-                  tagValue={e.tagValue} 
-                  storeId={e.storeId}
-                  bookmark={true}                />
-              ))
-            )
-          }
-          {
-            selected===2 && (
-              storeListFol.map((e,idx)=>(
-                <GalleryPost
-                  key={idx}
-                  width={184}
-                  height={270}
-                  imgArray={e.imgArray}
-                  location={e.location}
-                  onBookmark={e.onBookmark}
-                  ratingValue={e.ratingValue}
-                  summary={e.summary}
-                  title={e.title}
-                  size={'small'}
-                  tagValue={e.tagValue} storeId={0} bookmark={false}                />
-              ))
-            )
-          }
-        </PostWrap>
+        {selected === 1 &&recentStoresLoading && <FeedPrev/>}
+        {selected === 2 &&followBoardListLoading && !isGuest && <FeedPrev/>}
+        {selected === 1 && recentStoresLoading === false &&(<FeedRecentGallery isGuest={isGuest} contents={recentStores}/>)}
+        {selected === 2 && isGuest &&(<FeedGuest/>)}
+        {selected === 2 && !isGuest && followBoardListLoading === false &&(<FeedFollowStore contents={followBoardList}/>)}
       </ContentsWrap>
     </FeedSwitcherWrap>
   )
