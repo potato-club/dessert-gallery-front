@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/rules-of-hooks */
 import axios from 'axios';
 import { AUTH_KEY, } from '../constants/authkey';
 import { SESSION_KEY } from '../constants/session';
