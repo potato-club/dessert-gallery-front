@@ -19,6 +19,7 @@ export type reviewBoardSearchOptionData = {
 }
 
 export type resGalleryPost = {
+  [x: string]: any
   id: number
   fileUrl: string
   address: string
@@ -55,4 +56,20 @@ export type resReviewPost = {
 
 export type reviewBoardContentsList = {
   data: resReviewPost[][]
+}
+
+export type followStore = {
+  idx: number
+  fileName: string
+  fileUrl: string
+  nickname: string
+  storeName: string
+}
+
+export type nearbyStore = {
+  latitude : number
+  longitude: number
+  score: string
+  storeAddress: string
+  storeName: string
 }

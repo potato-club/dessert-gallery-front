@@ -6,7 +6,7 @@ interface componentsProps {
 
 export const FeedSwitcherWrap = styled.div`
   width: 100vw;
-  height: fit-content;
+  min-height: 715px;
   background-color: #FCF0E1;
   display: flex;
   justify-content: center;
