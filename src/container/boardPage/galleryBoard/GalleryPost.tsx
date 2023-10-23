@@ -18,11 +18,11 @@ export default function GalleryPost({storeId, height=444, width,location,imgArra
   if(size === 'medium'){
     sizeValue.titleTextSize = '17px';
   }else if(size === 'small'){
-    sizeValue.titleTextSize = '11px';
-    sizeValue.locationTextSize = '6px';
-    sizeValue.summaryTextSize = '6px';
+    sizeValue.titleTextSize = '16px';
+    sizeValue.locationTextSize = '10px';
+    sizeValue.summaryTextSize = '10px';
     sizeValue.ratingSize = "small"
-    sizeValue.textPadding = "10px 13px"
+    sizeValue.textPadding = "10px 12px"
   }
 
   const onClickGalleryPost = ()=>{

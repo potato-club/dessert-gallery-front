@@ -23,7 +23,7 @@ export default function FeedGuest() {
 const Wrap = styled.div`
   width: 70%;
   display: flex;
-  margin: 48px;
+  margin: 24px;
   flex-direction: column;
   flex-wrap: wrap;
   justify-content: center;
