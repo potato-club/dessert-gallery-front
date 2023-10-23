@@ -1,12 +1,22 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import axios from 'axios';
+import { AUTH_KEY, } from '../constants/authkey';
+import { SESSION_KEY } from '../constants/session';
+import sessionStorageService from '../libs/sessionStorageService';
+import authorization from '../libs/httpService';
 
 
 export const sendApi = {
   get: (url:string) => {
-    return axios.get(
-      `${process.env.NEXT_PUBLIC_API_URL}${url}`,
-    );
+    console.log('sessionStorageService.get(SESSION_KEY', sessionStorageService.get(SESSION_KEY))
+    if(sessionStorageService.get(SESSION_KEY) !== null){ 
+      return axios.get(
+        `${AUTH_KEY.apiUrl}${url}`,
+        authorization(sessionStorageService.get(SESSION_KEY)) 
+      );
+    }else{
+      return axios.get(`${AUTH_KEY.apiUrl}${url}`);
+    }
   },
 
 
