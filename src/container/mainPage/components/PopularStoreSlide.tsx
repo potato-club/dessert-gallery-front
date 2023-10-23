@@ -17,7 +17,7 @@ export default function PopularStoreSlide({ popularStoreList,isGuest }: PopularS
   return (
     <Swiper
       spaceBetween={10}
-      slidesPerView={5}
+      slidesPerView={parseInt(`${window.innerWidth/304 - 1}`)}
       effect="fade"
       direction="horizontal"
     >
