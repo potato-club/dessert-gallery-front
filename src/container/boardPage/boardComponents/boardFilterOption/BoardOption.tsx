@@ -77,8 +77,6 @@ function BoardOption({orderOption, setOrderOption,optionData,setOptionData, setP
   const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
     // 엔터 키가 입력되었을 때 동작할 코드 작성
     if (e.key === 'Enter') {
-    console.log("처리중", searchWord, searchWordList, optionData.selectSearchWord)
-
       // 사용자가 입력한 키워드가 겹치지 않으면 배열에 추가
       let data = searchWordList.findIndex((e)=> e === searchWord) === -1 ? searchWordList.concat(searchWord) : searchWordList 
       setOptionData((prev)=>({

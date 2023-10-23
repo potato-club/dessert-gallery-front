@@ -15,7 +15,6 @@ function NearbyStorePost({item}: nearbyStoreProps) {
   useEffect(()=>{
       if (storeMap && storeMap.current) {
         // 이미지 지도에서 마커가 표시될 위치입니다 
-        console.log("window kakao", (window as any).kakao)
         let markerPosition  = new (window as any).kakao.maps.LatLng(item.latitude, item.longitude); 
 
         // 이미지 지도에 표시할 마커입니다
