@@ -14,8 +14,8 @@ export default function FeedFollowStore({contents}: contentsProps) {
               contents.slice(0,6).map((e:followStore, idx:number) => (
                 <GalleryPost
                   key={`recGallery${idx}`}
-                  width={184}
-                  height={270}
+                  width={208}
+                  height={320}
                   imgArray={[e.fileUrl]}
                   summary={e.nickname}
                   title={e.storeName}

@@ -15,8 +15,8 @@ export default function FeedRecentGallery({contents, isGuest}: contentsProps) {
               contents.slice(0,6).map((e:resGalleryPost) => (
                 <GalleryPost
                   key={e.id}
-                  width={184}
-                  height={270}
+                  width={208}
+                  height={320}
                   imgArray={[e.fileUrl]}
                   location={e.address}
                   onBookmark={e.followId === null ? false: true} 
