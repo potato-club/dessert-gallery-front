@@ -1,0 +1,168 @@
+import React, { useState } from "react";
+import Input from "../../../components/Input";
+import Tag from "../../../components/Tag";
+import styled from "styled-components";
+import { useForm } from "react-hook-form";
+import { useSignupDataState } from "../../../recoil/login/signUpStateAtom";
+import axios from "axios";
+import { useRouter } from "next/router";
+import { useTokenService } from "../../../hooks/useTokenService";
+
+function VerifyContents() {
+  const router = useRouter();
+  const [isVerifyCodeSend, setIsVerifyCodeSend] = useState(false);
+  const [signupData, setSignupData] = useSignupDataState();
+  const { setToken } = useTokenService();
+
+  const { getValues, control } = useForm<{
+    verifyCode?: string;
+  }>({
+    defaultValues: {
+      verifyCode: "",
+    },
+    mode: "onChange",
+  });
+
+  const handleSendVerifyCode = async () => {
+    const email = signupData.email;
+    console.log(email);
+
+    if (email !== "") {
+      const response = await axios.post(
+        "https://api.dessert-gallery.site/users/mail/gmail",
+        {
+          headers: {
+            "Content-Type": "text/javascript",
+          },
+        },
+        {
+          params: {
+            recipientEmail: email,
+          },
+        }
+      );
+      console.log(response);
+      console.log(response.status);
+      if (response.status === 200) {
+        setIsVerifyCodeSend(true);
+      }
+    }
+  };
+
+  const handleCheckVerifyCode = async () => {
+    const formData = new FormData();
+    const key = getValues("verifyCode");
+    if (key) {
+      formData.append("key", key);
+    }
+
+    const response: any = await axios.post(
+      "https://api.dessert-gallery.site/users/mail/verify",
+      formData,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      }
+    );
+    console.log(response);
+    console.log(response.data.responseCode);
+    console.log("인증 완료");
+    if (response.status === 200) {
+      const accessToken = response.headers.get("Authorization");
+      const refreshToken = response.headers.get("Refreshtoken");
+      setToken(accessToken, refreshToken);
+      router.push("/");
+    }
+  };
+
+  return (
+    <VerifyContentsWrapper>
+      <></>
+      <ExtendedInputWrapper>
+        <Input
+          placeholder="인증 코드 입력"
+          name="verifyCode"
+          control={control}
+        />
+        <SmallTagButtonWrapper>
+          <Tag
+            title={isVerifyCodeSend ? "인증 코드 재전송" : "인증 코드 전송"}
+            width="100%"
+            height="100%"
+            fontSize="100%"
+            inversion={true}
+            clickAble={true}
+            onClickHandler={handleSendVerifyCode}
+          />
+        </SmallTagButtonWrapper>
+      </ExtendedInputWrapper>
+      <TagButtonWrapper>
+        <Tag
+          title="인증코드 확인"
+          width="100%"
+          height="100%"
+          fontSize="100%"
+          inversion={true}
+          clickAble={true}
+          onClickHandler={handleCheckVerifyCode}
+        />
+      </TagButtonWrapper>
+    </VerifyContentsWrapper>
+  );
+}
+
+export default VerifyContents;
+
+const VerifyContentsWrapper = styled.div`
+  @media screen and (min-width: 1920px) {
+    height: 150px;
+  }
+  @media screen and (max-width: 1919px) {
+    height: 100px;
+  }
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+`;
+
+const ExtendedInputWrapper = styled.div`
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  @media screen and (min-width: 1920px) {
+    width: 750px;
+  }
+  @media screen and (max-width: 1919px) {
+    width: 500px;
+  }
+`;
+
+const SmallTagButtonWrapper = styled.div`
+  position: absolute;
+  right: 0;
+  @media screen and (min-width: 1920px) {
+    width: 100px;
+    height: 30px;
+    font-size: 11px;
+  }
+  @media screen and (max-width: 1919px) {
+    width: 70px;
+    height: 20px;
+    font-size: 8px;
+  }
+`;
+
+const TagButtonWrapper = styled.div`
+  @media screen and (min-width: 1920px) {
+    width: 500px;
+    height: 60px;
+  }
+  @media screen and (max-width: 1919px) {
+    width: 333px;
+    height: 40px;
+    font-size: 11px;
+  }
+`;
