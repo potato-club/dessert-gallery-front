@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
+import Profile from "./components/Profile";
 import Calendar from "./components/MyCalendar";
 import Menu from "./components/Menu";
 import myPageBack from "../../../public/image/myPageBack.png"
@@ -141,6 +142,7 @@ const MyPage = () => {
     <PageWrapper>
       <Menu menu={menu.filter(e=>e.selected)[0]} onClickMenu={handleMenuClick}/>
       <Contents>
+        {selectedMenu === 1 && <Profile />}
         {selectedMenu === 8 && <Calendar />}
       </Contents>
     </PageWrapper>
