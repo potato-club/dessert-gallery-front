@@ -1,104 +1,27 @@
 import styled from "styled-components";
 import Image from "next/image";
-import React, { useState } from 'react'
+import React from 'react'
 import myPageLogo from '../../../../public/image/myPageLogo.png'
-
+import type { roleMyMenu, myMenu } from "../../../types/componentsProps";
+ 
 interface styleProp {
   fontSize: string;
   bold: boolean;
   fontColor: string;
-  margin?: string
+  margin?: string;
+  cursorStyle?: boolean;
 }
 
-interface menuI {
-  title: string;
-  selected: boolean,
-  menuId: number
-}
+export default function Menu({menu, onClickMenu}: { menu: roleMyMenu, onClickMenu: (role: string, menuId: number) => void }) {
 
-interface roleMenuI {
-  role: "USER" | "MANAGER";
-  selected: boolean,
-  category: menuI[]
-}
- 
-
-export default function Menu() {
-  const [menu, setMenu] = useState<roleMenuI[]>([
-    {
-      role: "USER",
-      selected: true,
-      category: [
-        {
-          title: "마이페이지",
-          menuId: 1,
-          selected: true
-        },
-        {
-          title: "1:1 채팅",
-          menuId: 2,
-          selected: false
-        },
-        {
-          title: "내가 쓴 후기",
-          menuId: 3,
-          selected: false
-        },
-        {
-          title: "북마크",
-          menuId: 4,
-          selected: false
-        },
-        {
-          title: "팔로우 관리",
-          menuId: 5,
-          selected: false
-        },
-      ]
-    },{
-      role: "MANAGER",
-      selected: false,
-      category: [
-        {
-          title: "마이페이지",
-          menuId: 1,
-          selected: true
-        },
-        {
-          title: "1:1 채팅",
-          menuId: 2,
-          selected: false
-        },
-        {
-          title: "캘린더 작성",
-          menuId: 3,
-          selected: false
-        },
-        {
-          title: "공지사항",
-          menuId: 4,
-          selected: false
-        },
-        {
-          title: "게시물 관리",
-          menuId: 5,
-          selected: false
-        },
-        {
-          title: "팔로우 관리",
-          menuId: 6,
-          selected: false
-        },
-      ]
-    }
-  ])
   const onClickMoveMain = () => {
     window.location.href = "/";
   }
+
   return (
     <MenuWrapper>
       <MenuHeader onClick={onClickMoveMain}>
-        <Image src={myPageLogo.src} alt="myPageLogo" layout="fixed" height={72} width={232}/>
+        <Image src={myPageLogo.src} alt="myPageLogo" layout="fixed" height={72} width={234}/>
       </MenuHeader>
       <MenuContentsWrap>
         <ColumnBox>
@@ -111,25 +34,26 @@ export default function Menu() {
           </UserInfoWrap>
 
           <UserMenuWrap>
-            <CategoryWrap>
-              <CategoryLogo/>
-            </CategoryWrap>
-            <CategoryWrap>
-              <CategoryLogo/>
-            </CategoryWrap>
-            <CategoryWrap>
-              <CategoryLogo/>
-            </CategoryWrap>
-            <CategoryWrap>
-              <CategoryLogo/>
-            </CategoryWrap>
+            {
+              menu.category.map((el: myMenu)=>(
+                <CategoryWrap key={`CategoryWrap${el.menuId}`} onClick={()=>onClickMenu(menu.role, el.menuId)}>
+                  <CategoryLogo key={`CategoryLogo${el.menuId}`}/>
+                  <Text cursorStyle={true} fontColor={el.selected? `#000000`:`#828282`} fontSize="18px" bold={el.selected}>{el.title}</Text>
+                </CategoryWrap>
+              ))
+            }
           </UserMenuWrap>
         </ColumnBox>
 
         <SiteMenuWrap>
-          <CategoryWrap>
-            <CategoryLogo/>
-          </CategoryWrap>
+        {
+              menu.siteDefaultMenu.map((el: myMenu)=>(
+                <CategoryWrap key={`SiteMenuWrap${el.menuId}`} onClick={()=>onClickMenu(menu.role, el.menuId)}>
+                  <CategoryLogo key={`SiteMenuLogo${el.menuId}`}/>
+                  <Text cursorStyle={true} fontColor={el.selected? `#000000`:`#828282`} fontSize="18px" bold={el.selected}>{el.title}</Text>
+                </CategoryWrap>
+              ))
+            }
         </SiteMenuWrap>
       </MenuContentsWrap>
     </MenuWrapper>
@@ -148,7 +72,7 @@ const MenuWrapper = styled.div`
 
 const MenuHeader = styled.div`
   width: 100%;
-  height: 124px;
+  min-height: 88px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -177,13 +101,13 @@ const UserInfoWrap = styled.div`
 `
 
 const ProfileImage = styled.div`
-  width: 152px;
-  height: 152px;
+  width: 140px;
+  height: 140px;
   background-color: #FDC886;
 `
 
 const UserMenuWrap = styled.div`
-  padding: 32px 0;
+  padding: 24px 0;
   display: flex;
   flex-direction: column;
 `
@@ -198,13 +122,15 @@ const CategoryWrap = styled.div`
   display: flex;
   align-items: center;
   width: 100%;
-  padding: 16px;
+  padding: 12px 16px;
+  cursor: pointer;
 `
 
 const CategoryLogo = styled.div`
   width: 32px;
   height: 32px;
   background-color: #DEDEDE;
+  margin-right: 32px;
 `
 
 const RowBox = styled.div`
@@ -223,6 +149,7 @@ const Text = styled.div<styleProp>`
   font-family: noto-sans-cjk-kr;
   font-size: ${({fontSize})=> fontSize};
   color: ${({fontColor})=> fontColor};
+  cursor: default;
 
   ${({margin})=>{
     if(margin){
@@ -233,6 +160,12 @@ const Text = styled.div<styleProp>`
   ${({bold})=>{
     if(bold){
       return `font-weight: bold;`
+    }
+  }}
+
+${({cursorStyle})=>{
+    if(cursorStyle){
+      return `cursor: pointer;`
     }
   }}
 
