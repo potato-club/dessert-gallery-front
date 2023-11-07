@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
-import LocationSelector from "../../../boardPage/boardComponents/boardFilterOption/LocationSelector";
+import LocationModal from "./LocationModal";
+import type { selectedLocationCoordData } from "../../../../types/componentsData";
 
 interface coord {
   lat: string
@@ -8,7 +9,8 @@ interface coord {
 }
 
 interface props {
-  centerCoord: coord
+  centerCoord: selectedLocationCoordData
+  setCenter: React.Dispatch<React.SetStateAction<selectedLocationCoordData>>
   sidebar: boolean
 }
 
@@ -16,9 +18,25 @@ interface style {
   sidebar: boolean
 }
 
-const Maps = ({centerCoord, sidebar}: props) => {
+const Maps = ({centerCoord, sidebar, setCenter}: props) => {
   const mapContainer = useRef<HTMLDivElement>(null);
   const [moveMap, setMoveMap] = useState<boolean>(false);
+  const [renderedMap, setRenderedMap] = useState<any>(null);
+
+  const onClickMoveMap = ()=> {
+    setMoveMap(prev=> !prev)
+  }
+
+  const onChangeLocation = (str:string,lat:string, lng:string) => {
+    console.log("중심 좌표 변경!", str, lat, lng)
+    setCenter({
+      location: str,
+      lat: lat,
+      lng:lng
+    })
+    setMoveMap(false)
+    renderedMap.setCenter(new (window as any).kakao.maps.LatLng(lat, lng))
+  }
 
   useEffect(()=>{
 
@@ -38,12 +56,15 @@ const Maps = ({centerCoord, sidebar}: props) => {
 
           let mapOption = { 
               center: new (window as any).kakao.maps.LatLng(centerCoord.lat,centerCoord.lng), // 지도의 중심좌표
-              level: 3, // 지도의 확대 레벨
+              level: 5, // 지도의 확대 레벨
           };    
     
-          // 지도를 생성합니다
-          let map = new (window as any).kakao.maps.Map(mapContainer.current, mapOption);
-          marker.setMap(map) ;
+          if(renderedMap === null){
+            // 지도를 생성합니다
+            let map = new (window as any).kakao.maps.Map(mapContainer.current, mapOption);
+            setRenderedMap(map)
+            marker.setMap(map) ;
+          }
         }
       });
     };
@@ -53,10 +74,8 @@ const Maps = ({centerCoord, sidebar}: props) => {
 
   return (
     <Container sidebar={sidebar} ref={mapContainer} >
-      <LocationSelectorBtn/>
-      {moveMap&& <LocationSelector selectedLocation={""} onChangeLocation={function (e: string): void {
-        throw new Error("Function not implemented.");
-      } }/>}
+      <LocationSelectorBtn onClick={onClickMoveMap}/>
+      {moveMap&& <LocationModal selectedLocation={centerCoord.location} onChangeLocation={onChangeLocation} onClickMoveMap={onClickMoveMap}/>}
     </Container>
   );
 };
@@ -88,3 +107,4 @@ const LocationSelectorBtn = styled.div`
   z-index: 32;
   cursor: pointer;
 `
+
