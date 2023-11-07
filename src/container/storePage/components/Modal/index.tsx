@@ -11,9 +11,11 @@ import {
   useGetModalComment,
   usePostModalComment,
 } from "../../../../hooks/useBoard";
-import { toggleBookmark } from "../../../../../pages/api/detailStore";
+import { toggleBookmark } from "../../../../apis/controller/detailStore";
+import { useGetStoreInfo } from "../../../../hooks/useStore";
+import { useRouter } from "next/router";
 
-const PostModal = ({ boardId, storeInfo }: any) => {
+const PostModal = ({ boardId }: any) => {
   const [comment, setComment] = useState<string>("");
   const [onBookmarkState, setOnBookmarkState] = useState<boolean>(false);
   const [menuIconClick, setMenuIconClick] = useState<boolean>(false);
@@ -50,12 +52,15 @@ const PostModal = ({ boardId, storeInfo }: any) => {
     await refetch();
     await setComment("");
   };
-
+  const router = useRouter();
+  const { data: storeInfo } = useGetStoreInfo({
+    storeId: Number(router.query.store),
+    options: { refetchOnWindowFocus: false },
+  });
   if (!detailPoster) {
     return <></>;
   }
 
-  const { name, info, storeImage, address } = storeInfo;
   const { title, content, tags, images } = detailPoster;
 
   return (
@@ -71,10 +76,10 @@ const PostModal = ({ boardId, storeInfo }: any) => {
         <PostInfo>
           <InfoHeader>
             <StoreInfo>
-              <StoreProfile src={storeImage.fileUrl} />
+              <StoreProfile src={storeInfo.storeImage.fileUrl} />
               <div>
-                <StoreName>{name}</StoreName>
-                <SubCategory>{info || "default 값"}</SubCategory>
+                <StoreName>{storeInfo.name}</StoreName>
+                <SubCategory>{storeInfo.info || "default 값"}</SubCategory>
               </div>
             </StoreInfo>
             <MenuIcon
@@ -88,7 +93,7 @@ const PostModal = ({ boardId, storeInfo }: any) => {
           <InfoContent>
             {menuIconClick && <MenuBox />}
             <TopPosition>
-              <Address>{address}</Address>
+              <Address>{storeInfo.address}</Address>
               <BookmarkDiv>
                 <Bookmark
                   storeId={boardId}

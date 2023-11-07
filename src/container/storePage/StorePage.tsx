@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import Calender from "./components/StoreCalendar";
 import StoreProfile from "./components/StoreProfile";
@@ -6,11 +6,24 @@ import Announce from "./components/Announce";
 import StoreContent from "./components/StoreContent";
 import Tag from "../../components/Tag";
 import { StoreProps } from "../../../pages/galleryBoard/[store]";
+import { useRecoilValue } from "recoil";
+import { JWTStateAtom } from "../../recoil/login/JWTStateAtom";
 
 const StorePage = (props: StoreProps) => {
+  const [isGuest, setIsGuest] = useState<boolean>(true);
+  const jwtData = useRecoilValue(JWTStateAtom);
+
+  useEffect(() => {
+    if (jwtData.accessToken) {
+      setIsGuest(false);
+    }
+  }, [jwtData]);
+
+  console.log(isGuest);
+
   const [spreadClick, setSpreadClick] = useState<boolean>(false);
 
-  const { storeInfo, announceData, posterThumnail, detailPoster } = props;
+  const { announceData, posterThumnail, detailPoster } = props;
 
   return (
     <Container>
@@ -66,7 +79,6 @@ const StorePage = (props: StoreProps) => {
       <StoreContent
         posterThumnail={posterThumnail}
         detailPoster={detailPoster}
-        storeInfo={storeInfo}
       />
     </Container>
   );
