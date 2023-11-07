@@ -2,10 +2,12 @@ import { useRouter } from "next/router";
 import React, { useEffect } from "react";
 import styled, { css } from "styled-components";
 import { useGetReviewList } from "../../hooks/useBoard";
+import { usePagenate } from "../../hooks/usePagenate";
 import Review, { StoreReviewType } from "./Review";
 
 const ReviewList = () => {
   const router = useRouter();
+
   const { data, refetch } = useGetReviewList({
     page: router.query.page || 1,
     storeId: router.query.store,
@@ -18,19 +20,16 @@ const ReviewList = () => {
     refetch();
   }, [router.query.page, refetch]);
 
-  const getPageNumList = () => {
-    const pageList = [];
-    if (data) {
-      for (let i = 1; i < data.totalPages + 1; i++) {
-        pageList.push(i);
-      }
-    }
-    return pageList;
-  };
+  const {
+    currentPage,
+    handlePageChange,
+    pages,
+    handleNextGroup,
+    handlePrevGroup,
+    lastPageGroup,
+    pageGroups,
+  } = usePagenate({ apiData: data });
 
-  const pageSize = 10; // 한 번에 표시할 페이지 수
-
-  console.log(data);
   return (
     <Container>
       {data &&
@@ -47,19 +46,23 @@ const ReviewList = () => {
           );
         })}
       <Pagenation>
-        <PrevBtn>{"<"}</PrevBtn>
-        {getPageNumList().map((pageNum) => (
+        {pageGroups !== 0 && (
+          <PrevBtn onClick={() => handlePrevGroup(pageGroups)}>{"<"}</PrevBtn>
+        )}
+        {pages.map((pageNum) => (
           <PageNum
             onClick={() => {
-              router.push(`${router.query.store}/?page=${pageNum}`);
+              handlePageChange(pageNum);
             }}
-            isFocus={pageNum == (router.query.page || 1)}
+            isFocus={pageNum == (currentPage || 1)}
             key={pageNum}
           >
             {pageNum}
           </PageNum>
         ))}
-        <NextBtn>{">"}</NextBtn>
+        {pageGroups !== lastPageGroup && (
+          <NextBtn onClick={() => handleNextGroup(pageGroups)}>{">"}</NextBtn>
+        )}
       </Pagenation>
     </Container>
   );

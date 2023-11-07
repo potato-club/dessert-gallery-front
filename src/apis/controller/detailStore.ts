@@ -1,51 +1,46 @@
-import axios from "axios";
+// get 요청중, guestGet과 인증이있는 get을 나눠야하는 api
+// - storeInfo
+
+import sendApi from "../sendApi";
 
 interface GetStoreType {
-  accessToken?: string | null;
   storeId: number;
 }
 export const getStoreInfo = async ({ storeId }: GetStoreType) => {
-  const res = await axios.get(
-    `${process.env.NEXT_PUBLIC_API_URL}/stores/${storeId}`
-  );
-
+  const res = await sendApi.get(`/stores/${storeId}`);
   return res.data;
 };
+// export const getGuestStoreInfo = async ({ storeId }: GetStoreType) => {
+//   const res = await sendApi.guestGet(`/stores/${storeId}`);
+
+//   return res.data;
+// };
 
 export const getStoreAnnounce = async ({ storeId }: GetStoreType) => {
-  const res = await axios.get(
-    `${process.env.NEXT_PUBLIC_API_URL}/notices/stores/${storeId}`
-  );
+  const res = await sendApi.get(`/notices/stores/${storeId}`);
 
   return res.data;
 };
 
 export const getPosterThumnail = async ({ storeId }: GetStoreType) => {
-  const res = await axios.get(
-    `${process.env.NEXT_PUBLIC_API_URL}/boards/stores/${storeId}`
-  );
+  const res = await sendApi.get(`/boards/stores/${storeId}`);
 
   return res.data;
 };
 
 export const getDetailPoster = async ({ storeId }: GetStoreType) => {
-  const res = await axios.get(
-    `${process.env.NEXT_PUBLIC_API_URL}/boards/${storeId}`
-  );
+  const res = await sendApi.get(`/boards/${storeId}`);
   return res.data;
 };
 
 interface GetStoreReview {
-  accessToken?: string | null;
   storeId: number;
   page?: number;
 }
 
 export const getStoreReview = async ({ storeId, page }: GetStoreReview) => {
   try {
-    const res = await axios.get(
-      `${process.env.NEXT_PUBLIC_API_URL}/reviews/stores/${storeId}?page=${page}`
-    );
+    const res = await sendApi.get(`/reviews/stores/${storeId}?page=${page}`);
     return res.data;
   } catch (error: any) {
     throw error;
@@ -57,31 +52,27 @@ interface GetCommentType {
   page?: number;
 }
 export const getBoardComment = async ({ boardId, page }: GetCommentType) => {
-  const res = await axios.get(
-    `${process.env.NEXT_PUBLIC_API_URL}/comments/${boardId}?p=${page}`
-  );
+  const res = await sendApi.get(`/comments/${boardId}?p=${page}`);
   return res.data;
 };
 interface PostCommentType {
   boardId: number;
   comment: string;
-  accessToken: string;
 }
 export const postBoardComment = async ({
   boardId,
   comment,
-  accessToken,
 }: PostCommentType) => {
-  const res = await axios.post(
-    `${process.env.NEXT_PUBLIC_API_URL}/comments/${boardId}`,
-    {
-      comment: comment,
-    },
-    {
-      headers: {
-        Authorization: accessToken,
-      },
-    }
-  );
+  const res = await sendApi.post(`/comments/${boardId}`, {
+    comment: comment,
+  });
+  return res.data;
+};
+
+interface ToggleBookmarkType {
+  boardId: number;
+}
+export const toggleBookmark = async ({ boardId }: ToggleBookmarkType) => {
+  const res = await sendApi.post(`/boards/${boardId}/bookmark`);
   return res.data;
 };
