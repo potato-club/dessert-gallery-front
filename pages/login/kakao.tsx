@@ -36,6 +36,7 @@ const Kakao = () => {
             setSignUpData({
               ...signUpData,
               email: response.data.email,
+              loginType: "KAKAO",
             });
             router.replace({
               pathname: "/login/pick",

@@ -5,8 +5,10 @@ import { useRecoilState, useResetRecoilState } from "recoil";
 import { useSignupDataState } from "../../../recoil/login/signUpStateAtom";
 import { useTokenService } from "../../../hooks/useTokenService";
 import axios from "axios";
+import { useRouter } from "next/router";
 
 function Modal() {
+  const router = useRouter();
   const [modalState, setModalState] = useRecoilState(modalStateAtom);
 
   const [signupData, setSignupData] = useSignupDataState();
@@ -39,6 +41,7 @@ function Modal() {
       const accessToken = response.headers.get("Authorization");
       const refreshToken = response.headers.get("Refreshtoken");
       setToken(accessToken, refreshToken);
+      router.push("/");
     } catch {}
   };
 
