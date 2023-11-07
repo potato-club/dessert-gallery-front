@@ -2,13 +2,16 @@ import React, { ReactNode, useEffect } from "react";
 import styled from "styled-components";
 import GoogleLogo from "../../../../public/svg/loginPage/googleLogo.svg";
 import KakaoLogo from "../../../../public/svg/loginPage/kakaoLogo.svg";
+import { useSignupDataState } from "../../../recoil/login/signUpStateAtom";
 
 function SocialLogin() {
-  const Rest_api_key = process.env.NEXT_PUBLIC_REST_API_KEY; //REST API KEY
+  const Rest_api_key = process.env.NEXT_PUBLIC_KAKAO_LOGIN_API_KEY; //REST API KEY
   const redirect_uri = "http://localhost:3000/login/kakao"; //Redirect URI
   // oauth 요청 URL
   const kakaoURL = `https://kauth.kakao.com/oauth/authorize?client_id=${Rest_api_key}&redirect_uri=${redirect_uri}&response_type=code`;
+  const [signupData, setSignupData] = useSignupDataState();
   const handleLogin = () => {
+    setSignupData({ ...signupData, loginType: "KAKAO" });
     window.location.href = kakaoURL;
   };
   return (

@@ -1,7 +1,7 @@
 const {
-  REACT_APP_API_URI,
+  NEXT_PUBLIC_API_URL,
 } = process.env;
 
 export const AUTH_KEY = {
-  apiUrl: REACT_APP_API_URI,
+  apiUrl: NEXT_PUBLIC_API_URL,
 };

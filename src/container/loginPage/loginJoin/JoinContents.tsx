@@ -3,141 +3,97 @@ import Input from "../../../components/Input";
 import Tag from "../../../components/Tag";
 import styled from "styled-components";
 import { useForm } from "react-hook-form";
-import { useSetRecoilState, useRecoilState } from "recoil";
-import { signupDataStateAtom } from "../../../recoil/login/signUpStateAtom";
+import { useSignupDataState } from "../../../recoil/login/signUpStateAtom";
 import axios from "axios";
-import { useRouter } from "next/router";
+import { useVerifyPageState } from "../../../recoil/login/veifyPageStateAtom";
 
-function JoinContents({
-  getPassword,
-}: {
-  getPassword: (password?: string) => void;
-}) {
-  const router = useRouter();
+function JoinContents() {
+  const [isNicknameChecked, setIsNicknameChecked] = useState(false);
+  const [signupData, setSignupData] = useSignupDataState();
+  const [verifyPageState, setVerifyPageState] = useVerifyPageState();
 
-  const [isVerify, setIsVerify] = useState(false);
-  const [isPasswordChecked, setIsPasswordChecked] = useState(false);
-  const [signupDataState, setSignupDataState] =
-    useRecoilState(signupDataStateAtom);
-
-  const { handleSubmit, getValues, control } = useForm<{
+  const { getValues, control } = useForm<{
     email?: string;
-    verifyCode?: string;
     password?: string;
     checkPassword?: string;
+    nickname?: string;
   }>({
     defaultValues: {
       email: "",
-      verifyCode: "",
       password: "",
       checkPassword: "",
+      nickname: "",
     },
     mode: "onChange",
   });
 
-  const handleCheckEmail = async () => {
-    const email = getValues("email");
-
-    if (email?.includes("gmail")) {
-      const response = await axios.post(
-        "https://api.dessert-gallery.site/users/mail/gmail",
-        {},
-        {
-          params: {
-            recipientEmail: email,
-          },
-        }
-      );
-      console.log(response);
-    } else if (email?.includes("naver")) {
-      const response = await axios.post(
-        "https://api.dessert-gallery.site/users/mail/naver",
-        {},
-        {
-          params: {
-            recipientEmail: email,
-          },
-        }
-      );
-      console.log(response);
-    } else {
-      console.log("gmail 혹은 네이버 아이디 형식이 아닙니다.");
-    }
-  };
-
-  const handlCheckVerifyCode = async () => {
-    const verifyCode = getValues("verifyCode");
-    const response = await axios.post(
-      "https://api.dessert-gallery.site/users/mail/verify",
-      {},
+  const handlCheckNickname = async () => {
+    const nickname = getValues("nickname");
+    const response = await axios.get(
+      "https://api.dessert-gallery.site/users/duplication/nickname",
       {
         params: {
-          key: verifyCode,
+          nickname: nickname,
         },
       }
     );
-
     console.log(response);
-    // 성공했을 경우 isVerify state를 true로 변경하기
+    if (response.status === 200) {
+      setIsNicknameChecked(true);
+    }
   };
 
-  const handleSignup = () => {
+  const handleSignup = async () => {
     const email = getValues("email");
     const password = getValues("password");
 
-    if (!isVerify) {
-      console.log("인증되지 않은 이메일입니다.");
-    } else if (!isPasswordChecked) {
+    if (!(getValues("password") === getValues("checkPassword"))) {
       console.log("비밀번호 확인이 일치하지 않습니다.");
+    } else if (!isNicknameChecked) {
+      console.log("닉네임 중복 확인이 처리되지 않았습니다.");
     } else {
-      setSignupDataState({
-        ...signupDataState,
-        email: email,
-      });
-      getPassword(password);
+      try {
+        const response: any = await axios.post(
+          `https://api.dessert-gallery.site/users/signup`,
+          {
+            loginType: signupData.loginType,
+            userRole: signupData.userRole,
+            email: getValues("email"),
+            nickname: getValues("nickname"),
+            password: getValues("password"),
+          }
+        );
+        console.log(response);
+        if (response.status === 200) {
+          setSignupData({ ...signupData, email: getValues("email") });
+          setVerifyPageState(true);
+        }
+      } catch {}
     }
-    router.push("/login/pick");
   };
 
   return (
     <JoinContentsWrapper>
-      <EmailVerifyWrapper>
-        <Input
-          placeholder="이메일 입력(네이버 혹은 구글)"
-          name="email"
-          control={control}
-          rules={{ required: "이메일은 필수 항목입니다." }}
-        />
+      <Input
+        placeholder="이메일 입력"
+        name="email"
+        control={control}
+        rules={{ required: "이메일은 필수 항목입니다." }}
+      />
+      <ExtendedInputWrapper>
+        <Input placeholder="닉네임 입력" name="nickname" control={control} />
         <SmallTagButtonWrapper>
           <Tag
-            title="인증 코드 전송"
+            title={isNicknameChecked ? "닉네임 확인 완료" : "닉네임 중복 확인"}
             width="100%"
             height="100%"
             fontSize="100%"
             inversion={true}
             clickAble={true}
-            onClickHandler={handleCheckEmail}
+            onClickHandler={handlCheckNickname}
           />
         </SmallTagButtonWrapper>
-      </EmailVerifyWrapper>
-      <EmailVerifyWrapper>
-        <Input
-          placeholder="인증 코드 입력"
-          name="verifyCode"
-          control={control}
-        />
-        <SmallTagButtonWrapper>
-          <Tag
-            title="인증 코드 확인"
-            width="100%"
-            height="100%"
-            fontSize="100%"
-            inversion={true}
-            clickAble={true}
-            onClickHandler={handlCheckVerifyCode}
-          />
-        </SmallTagButtonWrapper>
-      </EmailVerifyWrapper>
+      </ExtendedInputWrapper>
       <Input
         placeholder="비밀번호 입력"
         type="password"
@@ -150,6 +106,7 @@ function JoinContents({
         name="checkPassword"
         control={control}
       />
+
       <TagButtonWrapper>
         <Tag
           title="회원가입"
@@ -172,7 +129,7 @@ const JoinContentsWrapper = styled.div`
     height: 420px;
   }
   @media screen and (max-width: 1919px) {
-    height: 280px;
+    height: 290px;
   }
   display: flex;
   flex-direction: column;
@@ -180,12 +137,17 @@ const JoinContentsWrapper = styled.div`
   justify-content: space-between;
 `;
 
-const EmailVerifyWrapper = styled.div`
+const ExtendedInputWrapper = styled.div`
   position: relative;
-  width: 500px;
   display: flex;
   align-items: center;
   justify-content: center;
+  @media screen and (min-width: 1920px) {
+    width: 750px;
+  }
+  @media screen and (max-width: 1919px) {
+    width: 500px;
+  }
 `;
 
 const SmallTagButtonWrapper = styled.div`

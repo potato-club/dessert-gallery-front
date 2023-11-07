@@ -57,9 +57,9 @@ export type tagValue = {
  */
 export type slideImageValue = {
     /**
-     * (선택)가게 id
+     * 가게 id
      */
-    storeId?: number
+    storeId: number
     /**
      * (필수)이미지 배열 
      */
@@ -352,4 +352,8 @@ export type recentReviewListProps = {
      * 리뷰 목록
      */
     reviewList: reviewItem[]
+}
+
+export type mainComponentsProps = {
+    isGuest: boolean;
 }

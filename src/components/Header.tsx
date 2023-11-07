@@ -2,9 +2,18 @@ import React from "react";
 import styled, { css } from "styled-components";
 import { Logo, Search, HeaderBookmark, HeaderInfo } from "../../public/svg";
 import { useRouter } from "next/router";
+import { useTokenService } from "../hooks/useTokenService";
 
 const Header = () => {
   const router = useRouter();
+  const { getAccessToken } = useTokenService();
+  const onClickMyPageButton = () => {
+    if (getAccessToken() === "") {
+      router.push("login/main");
+    } else {
+      //마이페이지로 라우팅
+    }
+  };
 
   return (
     <Container>
@@ -36,7 +45,7 @@ const Header = () => {
       </FormDiv>
 
       <AboutUser>
-        <MyPageBtn>
+        <MyPageBtn onClick={onClickMyPageButton}>
           <HeaderInfo width="31px" height="32px" />
         </MyPageBtn>
         <BookmarkBtn>
@@ -125,5 +134,7 @@ const AboutUser = styled.div`
   display: flex;
   gap: 23px;
 `;
-const MyPageBtn = styled.div``;
+const MyPageBtn = styled.div`
+  cursor: pointer;
+`;
 const BookmarkBtn = styled.div``;
