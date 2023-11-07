@@ -1,63 +1,71 @@
+import { useRouter } from "next/router";
 import React, { useState } from "react";
 import styled, { css } from "styled-components";
 import Tag from "../../../components/Tag";
+// import useFollowAction from "../../../hooks/useFollowAction";
+import { useGetStoreInfo } from "../../../hooks/useStore";
 
-const StoreProfile = ({ storeInfo }: any) => {
-  const {
-    name,
-    introduction,
-    address,
-    phoneNumber,
-    storeImage,
-    postCount,
-    followers,
-    follow,
-    id,
-    info,
-  } = storeInfo;
+const StoreProfile = () => {
+  const router = useRouter();
+
+  const storeId = parseInt(
+    router.query.store ? router.query.store.toString() : "0"
+  );
+
+  const { data } = useGetStoreInfo({
+    storeId: storeId,
+    options: { refetchOnWindowFocus: false },
+  });
+
+  console.log(data);
+  // const followfn = useFollowAction(data.follow || false, storeId);
 
   return (
     <Container>
-      <StoreImg src={storeImage.fileUrl} />
-      <InnerContainer>
-        <InfoContent>
-          <StoreName>{name}</StoreName>
-          <SubTitle>{info || "default 값"}</SubTitle>
-          <MainPhrase>{introduction}</MainPhrase>
-          <Address>{address}</Address>
-          <StoreNumber>{phoneNumber}</StoreNumber>
-          <StoreInfo>
-            <InfoView>
-              <Name>게시물</Name>
-              <Number>{postCount}</Number>
-            </InfoView>
-            <InfoView>
-              <Name>팔로워</Name>
-              <Number>{followers}</Number>
-            </InfoView>
-            <InfoView></InfoView>
-          </StoreInfo>
-          <BtnList>
-            <StoreProfileBtn
-              title={follow ? "팔로우 끊기" : "팔로우"}
-              clickAble={true}
-              hoverCss={true}
-              width="90px"
-              height="30px"
-              fontSize="12px"
-              inversion={true}
-            />
-            <StoreProfileBtn
-              title="메세지 보내기"
-              clickAble={true}
-              hoverCss={true}
-              width="136px"
-              height="30px"
-              fontSize="12px"
-            />
-          </BtnList>
-        </InfoContent>
-      </InnerContainer>
+      {data && (
+        <>
+          <StoreImg src={data.storeImage.fileUrl} />
+          <InnerContainer>
+            <InfoContent>
+              <StoreName>{data.name}</StoreName>
+              <SubTitle>{data.info || "default 값"}</SubTitle>
+              <MainPhrase>{data.introduction}</MainPhrase>
+              <Address>{data.address}</Address>
+              <StoreNumber>{data.phoneNumber}</StoreNumber>
+              <StoreInfo>
+                <InfoView>
+                  <Name>게시물</Name>
+                  <Number>{data.postCount}</Number>
+                </InfoView>
+                <InfoView>
+                  <Name>팔로워</Name>
+                  <Number>{data.followers}</Number>
+                </InfoView>
+                <InfoView></InfoView>
+              </StoreInfo>
+              <BtnList>
+                <StoreProfileBtn
+                  title={data.follow ? "팔로우 끊기" : "팔로우"}
+                  clickAble={true}
+                  hoverCss={true}
+                  width="90px"
+                  height="30px"
+                  fontSize="12px"
+                  inversion={true}
+                />
+                <StoreProfileBtn
+                  title="메세지 보내기"
+                  clickAble={true}
+                  hoverCss={true}
+                  width="136px"
+                  height="30px"
+                  fontSize="12px"
+                />
+              </BtnList>
+            </InfoContent>
+          </InnerContainer>
+        </>
+      )}
     </Container>
   );
 };

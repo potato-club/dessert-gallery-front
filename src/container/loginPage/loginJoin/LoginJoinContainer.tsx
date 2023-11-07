@@ -3,14 +3,17 @@ import Wrapper from "../components/Wrapper";
 import Title from "../components/Title";
 import styled from "styled-components";
 import JoinContents from "./JoinContents";
+import { useVerifyPageState } from "../../../recoil/login/veifyPageStateAtom";
+import VerifyContents from "./vefiryContents";
 
 function LoginPickContainer() {
+  const [verifyPageState, setVerifyPageState] = useVerifyPageState();
   return (
     <Wrapper>
       <JoinkWrapper>
+        <Title>Join</Title>
         <JoinContnentsWrapper>
-          <Title>Join</Title>
-          <JoinContents />
+          {!verifyPageState ? <JoinContents /> : <VerifyContents />}
         </JoinContnentsWrapper>
       </JoinkWrapper>
     </Wrapper>
@@ -31,6 +34,7 @@ const JoinContnentsWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+
   @media screen and (min-width: 1920px) {
     width: 500px;
     height: 545px;

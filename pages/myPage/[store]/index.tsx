@@ -2,7 +2,10 @@ import React from "react";
 import MyPage from "../../../src/container/myPage/MyPage";
 import { GetServerSideProps } from "next";
 import { dehydrate, QueryClient } from "react-query";
-import { getStoreInfo, getStoreReview } from "../../api/detailStore";
+import {
+  getStoreInfo,
+  getStoreReview,
+} from "../../../src/apis/controller/detailStore";
 const myPage = () => {
   return (
     <>

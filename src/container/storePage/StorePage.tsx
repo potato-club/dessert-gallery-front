@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import Calender from "./components/StoreCalendar";
 import StoreProfile from "./components/StoreProfile";
@@ -6,26 +6,29 @@ import Announce from "./components/Announce";
 import StoreContent from "./components/StoreContent";
 import Tag from "../../components/Tag";
 import { StoreProps } from "../../../pages/galleryBoard/[store]";
+import { useRecoilValue } from "recoil";
+import { JWTStateAtom } from "../../recoil/login/JWTStateAtom";
 
 const StorePage = (props: StoreProps) => {
+  const [isGuest, setIsGuest] = useState<boolean>(true);
+  const jwtData = useRecoilValue(JWTStateAtom);
+
+  useEffect(() => {
+    if (jwtData.accessToken) {
+      setIsGuest(false);
+    }
+  }, [jwtData]);
+
+  console.log(isGuest);
+
   const [spreadClick, setSpreadClick] = useState<boolean>(false);
 
-  const { storeInfo, announceData, posterThumnail, detailPoster } = props;
-
-  // console.log(
-  //   // storeInfo
-  //   // announceData,
-  //   // posterThumnail,
-  //   // storeReview
-  //   // detailPoster
-  // );
-
-  // storeInfo -> name, storeImage.fileUrl, info 넘겨주기
+  const { announceData, posterThumnail, detailPoster } = props;
 
   return (
     <Container>
       <StoreInfo>
-        <StoreProfile storeInfo={storeInfo} />
+        <StoreProfile />
         <CalDiv>
           <Calender />
         </CalDiv>
@@ -76,7 +79,6 @@ const StorePage = (props: StoreProps) => {
       <StoreContent
         posterThumnail={posterThumnail}
         detailPoster={detailPoster}
-        storeInfo={storeInfo}
       />
     </Container>
   );
@@ -122,7 +124,9 @@ const AbsoluteDiv = styled.div<{ spreadClick: boolean }>`
   box-shadow: ${({ spreadClick }) =>
     !spreadClick && `0px 3px 6px rgba(0, 0, 0, 0.161);`};
   width: 100%;
+  min-width: 1280px;
   padding-top: 16px;
+  z-index: 10;
 `;
 const InnerDiv = styled.div`
   display: flex;

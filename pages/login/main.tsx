@@ -4,9 +4,11 @@ import {
   signUpDataType,
   useSignupDataState,
 } from "../../src/recoil/login/signUpStateAtom";
+import { useVerifyPageState } from "../../src/recoil/login/veifyPageStateAtom";
 
 const LoginMain = () => {
   const [signupData, setSignupData] = useSignupDataState();
+  const [verifyPageState, setVerifyPageState] = useVerifyPageState();
 
   const defaultValue: signUpDataType = {
     email: "",
@@ -16,6 +18,7 @@ const LoginMain = () => {
 
   useEffect(() => {
     setSignupData(defaultValue);
+    setVerifyPageState(false);
   }, []);
   return <LoginMainContainer />;
 };
