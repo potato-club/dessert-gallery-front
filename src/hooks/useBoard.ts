@@ -1,10 +1,10 @@
+import { useMutation, useQuery, useQueryClient } from "react-query";
 import {
   getDetailPoster,
   getStoreReview,
   getBoardComment,
   postBoardComment,
-} from "../../pages/api/detailStore";
-import { useMutation, useQuery, useQueryClient } from "react-query";
+} from "../apis/controller/detailStore";
 
 export const useGetDetailBoard = (options = {}, storeId: number) => {
   const { data } = useQuery(

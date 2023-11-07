@@ -2,7 +2,7 @@ import { useRouter } from "next/router";
 import React, { useState } from "react";
 import styled, { css } from "styled-components";
 import Tag from "../../../components/Tag";
-import useFollowAction from "../../../hooks/useFollowAction";
+// import useFollowAction from "../../../hooks/useFollowAction";
 import { useGetStoreInfo } from "../../../hooks/useStore";
 
 const StoreProfile = () => {
@@ -11,10 +11,9 @@ const StoreProfile = () => {
   const storeId = parseInt(
     router.query.store ? router.query.store.toString() : "0"
   );
-  const at = null;
+
   const { data } = useGetStoreInfo({
     storeId: storeId,
-    accessToken: at,
     options: { refetchOnWindowFocus: false },
   });
 

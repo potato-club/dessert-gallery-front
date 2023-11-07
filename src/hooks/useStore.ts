@@ -1,19 +1,14 @@
 import { useQuery, useQueryClient } from "react-query";
-import { getStoreInfo } from "../../pages/api/detailStore";
+import { getStoreInfo } from "../apis/controller/detailStore";
 
 interface GetStoreInfoType {
   storeId: number;
-  accessToken?: string | null;
   options?: any;
 }
-export const useGetStoreInfo = ({
-  options,
-  storeId,
-  accessToken,
-}: GetStoreInfoType) => {
+export const useGetStoreInfo = ({ options, storeId }: GetStoreInfoType) => {
   const { data } = useQuery(
     ["detailBoard", storeId],
-    () => getStoreInfo({ storeId, accessToken }),
+    () => getStoreInfo({ storeId }),
     {
       ...options,
     }
