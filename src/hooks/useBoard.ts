@@ -45,17 +45,18 @@ export const useGetModalComment = ({ page, boardId, options }: any) => {
 export const usePostModalComment = ({
   boardId,
   comment,
-  accessToken,
   options,
+  setOnSubmit,
 }: any) => {
   const queryClient = useQueryClient();
 
   const { mutate } = useMutation(
     ["boardComment", boardId],
-    () => postBoardComment({ boardId, comment, accessToken }),
+    () => postBoardComment({ boardId, comment }),
     {
-      onSuccess: async () => {
-        await queryClient.invalidateQueries(["boardComment", boardId]);
+      onSuccess: () => {
+        queryClient.invalidateQueries(["boardComment", boardId]);
+        setOnSubmit(true);
       },
       onError: (err: any) => {
         if (err.response.status == 403) {
@@ -66,6 +67,5 @@ export const usePostModalComment = ({
       ...options,
     }
   );
-
   return { mutate };
 };
