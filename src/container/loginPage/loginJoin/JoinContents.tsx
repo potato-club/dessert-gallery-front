@@ -6,11 +6,15 @@ import { useForm } from "react-hook-form";
 import { useSignupDataState } from "../../../recoil/login/signUpStateAtom";
 import axios from "axios";
 import { useVerifyPageState } from "../../../recoil/login/veifyPageStateAtom";
+import LoginModal from "../components/LoginModal";
 
 function JoinContents() {
   const [isNicknameChecked, setIsNicknameChecked] = useState(false);
   const [signupData, setSignupData] = useSignupDataState();
   const [verifyPageState, setVerifyPageState] = useVerifyPageState();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalMessage, setModalMessage] = useState("");
+  const [signupState, setSignupState] = useState(false);
 
   const { getValues, control } = useForm<{
     email?: string;
@@ -43,14 +47,49 @@ function JoinContents() {
     }
   };
 
-  const handleSignup = async () => {
+  const checkEmail = () => {
     const email = getValues("email");
-    const password = getValues("password");
+    if (email === "") {
+      return "이메일 미입력\n";
+    } else if (!email?.includes("@")) {
+      return "이메일 형식 오류\n";
+    } else {
+      return "200";
+    }
+  };
 
-    if (!(getValues("password") === getValues("checkPassword"))) {
-      console.log("비밀번호 확인이 일치하지 않습니다.");
-    } else if (!isNicknameChecked) {
-      console.log("닉네임 중복 확인이 처리되지 않았습니다.");
+  const checkPassword = () => {
+    const password = getValues("password");
+    const checkPassword = getValues("checkPassword");
+
+    if (password === "") {
+      return "비밀번호 미입력\n";
+    } else if (password !== checkPassword) {
+      return "비밀번호 확인 불일치\n";
+    } else {
+      return "200";
+    }
+  };
+
+  const handleSignup = async () => {
+    let message = "";
+
+    if (
+      checkEmail() !== "200" ||
+      checkPassword() !== "200" ||
+      !isNicknameChecked
+    ) {
+      if (checkEmail() !== "200") {
+        message += checkEmail();
+      }
+      if (checkPassword() !== "200") {
+        message += checkPassword();
+      }
+      if (!isNicknameChecked) {
+        message += "닉네임 중복 확인 미처리";
+      }
+      setIsModalOpen(true);
+      setModalMessage(`회원가입이 정상 처리되지 않았습니다.\n${message}`);
     } else {
       try {
         const response: any = await axios.post(
@@ -66,14 +105,33 @@ function JoinContents() {
         console.log(response);
         if (response.status === 200) {
           setSignupData({ ...signupData, email: getValues("email") });
-          setVerifyPageState(true);
+          setSignupState(true);
+          setIsModalOpen(true);
+          setModalMessage("이메일을 인증하여 회원가입을 완료해주세요");
         }
-      } catch {}
+      } catch {
+        setIsModalOpen(true);
+        setModalMessage("회원가입이 정상 처리되지 않았습니다.");
+      }
     }
   };
 
   return (
     <JoinContentsWrapper>
+      <LoginModal
+        isOpen={isModalOpen}
+        onClickClose={() => setIsModalOpen(false)}
+        onClickConfirm={() => {
+          if (signupState) {
+            setVerifyPageState(true);
+            setIsModalOpen(false);
+          } else {
+            setIsModalOpen(false);
+          }
+        }}
+      >
+        {modalMessage}
+      </LoginModal>
       <Input
         placeholder="이메일 입력"
         name="email"

@@ -65,6 +65,7 @@ const ModalTextDiv = styled.div`
   height: 200px;
   padding: 80px 108px 80px 108px;
   font-size: 21px;
+  white-space: pre-wrap;
 `;
 
 const ModalButtonDiv = styled.div`

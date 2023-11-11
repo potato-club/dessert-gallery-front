@@ -7,12 +7,16 @@ import { useSignupDataState } from "../../../recoil/login/signUpStateAtom";
 import axios from "axios";
 import { useRouter } from "next/router";
 import { useTokenService } from "../../../hooks/useTokenService";
+import LoginModal from "../components/LoginModal";
 
 function VerifyContents() {
   const router = useRouter();
   const [isVerifyCodeSend, setIsVerifyCodeSend] = useState(false);
   const [signupData, setSignupData] = useSignupDataState();
   const { setToken } = useTokenService();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalMessage, setModalMessage] = useState("");
+  const [isVerify, setIsVerify] = useState(false);
 
   const { getValues, control } = useForm<{
     verifyCode?: string;
@@ -55,30 +59,52 @@ function VerifyContents() {
     if (key) {
       formData.append("key", key);
     }
-
-    const response: any = await axios.post(
-      "https://api.dessert-gallery.site/users/mail/verify",
-      formData,
-      {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
+    try {
+      const response: any = await axios.post(
+        "https://api.dessert-gallery.site/users/mail/verify",
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+      console.log(response);
+      console.log(response.data.responseCode);
+      if (response.status === 200) {
+        const accessToken = response.headers.get("Authorization");
+        const refreshToken = response.headers.get("Refreshtoken");
+        setToken(accessToken, refreshToken);
+        setIsVerify(true);
+        setModalMessage("정상 인증되어 로그인되었습니다.");
+        setIsModalOpen(true);
+      } else {
+        setModalMessage("정상 인증에 실패했습니다.");
+        setIsModalOpen(true);
       }
-    );
-    console.log(response);
-    console.log(response.data.responseCode);
-    console.log("인증 완료");
-    if (response.status === 200) {
-      const accessToken = response.headers.get("Authorization");
-      const refreshToken = response.headers.get("Refreshtoken");
-      setToken(accessToken, refreshToken);
-      router.push("/");
+    } catch (error) {
+      console.log(error);
+      setModalMessage("정상 인증에 실패했습니다.");
+      setIsModalOpen(true);
     }
   };
 
   return (
     <VerifyContentsWrapper>
-      <></>
+      <LoginModal
+        isOpen={isModalOpen}
+        onClickClose={() => setIsModalOpen(false)}
+        onClickConfirm={() => {
+          if (isVerify) {
+            setIsModalOpen(false);
+            router.push("/");
+          } else {
+            setIsModalOpen(false);
+          }
+        }}
+      >
+        {modalMessage}
+      </LoginModal>
       <ExtendedInputWrapper>
         <Input
           placeholder="인증 코드 입력"

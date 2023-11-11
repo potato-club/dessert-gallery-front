@@ -31,7 +31,7 @@ function LoginMainContainer() {
   const router = useRouter();
   const { setToken } = useTokenService();
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [loginMessage, setLoginMessage] = useState("");
+  const [modalMessage, setModalMessage] = useState("");
 
   const { getValues, control } = useForm<{
     email?: string;
@@ -65,16 +65,16 @@ function LoginMainContainer() {
         const accessToken = response.headers.get("Authorization");
         const refreshToken = response.headers.get("Refreshtoken");
         setToken(accessToken, refreshToken);
-        setLoginMessage("정상 로그인 되었습니다.");
+        setModalMessage("정상 로그인 되었습니다.");
         setIsModalOpen(true);
       } else {
         setIsModalOpen(true);
-        setLoginMessage("로그인에 실패했습니다.");
+        setModalMessage("로그인에 실패했습니다.");
         console.log("에러", response.data.responseCode);
       }
     } catch (error) {
       setIsModalOpen(true);
-      setLoginMessage("로그인에 실패했습니다.");
+      setModalMessage("로그인에 실패했습니다.");
     }
   };
 
@@ -88,7 +88,7 @@ function LoginMainContainer() {
           router.push("/");
         }}
       >
-        {loginMessage}
+        {modalMessage}
       </LoginModal>
       <MainWrapper>
         <MainContnentsWrapper>
