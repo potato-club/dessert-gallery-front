@@ -1,4 +1,4 @@
-import React, { ReactNode } from "react";
+import React, { ReactNode, useState } from "react";
 import styled from "styled-components";
 import LoginBackground from "../../../public/svg/loginPage/loginBackground.svg";
 import Title from "../components/Title";
@@ -10,8 +10,9 @@ import SocialLogin from "./SocialLogin";
 import Wrapper from "../components/Wrapper";
 import { useForm } from "react-hook-form";
 import axios from "axios";
-import { useJWTState } from "../../../recoil/login/JWTStateAtom";
 import { useRouter } from "next/router";
+import LoginModal from "../components/LoginModal";
+import { useTokenService } from "../../../hooks/useTokenService";
 
 type inputType = {
   /**
@@ -28,9 +29,11 @@ type inputType = {
 
 function LoginMainContainer() {
   const router = useRouter();
-  const [jwtState, setJwtState] = useJWTState();
+  const { setToken } = useTokenService();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [loginMessage, setLoginMessage] = useState("");
 
-  const { handleSubmit, getValues, control } = useForm<{
+  const { getValues, control } = useForm<{
     email?: string;
     password?: string;
   }>({
@@ -61,21 +64,32 @@ function LoginMainContainer() {
         console.log(200);
         const accessToken = response.headers.get("Authorization");
         const refreshToken = response.headers.get("Refreshtoken");
-        setJwtState({
-          accessToken: accessToken,
-          refreshToken: refreshToken,
-        });
-        router.push("/");
+        setToken(accessToken, refreshToken);
+        setLoginMessage("정상 로그인 되었습니다.");
+        setIsModalOpen(true);
       } else {
+        setIsModalOpen(true);
+        setLoginMessage("로그인에 실패했습니다.");
         console.log("에러", response.data.responseCode);
       }
     } catch (error) {
-      console.log("Error: ", error);
+      setIsModalOpen(true);
+      setLoginMessage("로그인에 실패했습니다.");
     }
   };
 
   return (
     <Wrapper>
+      <LoginModal
+        isOpen={isModalOpen}
+        onClickClose={() => setIsModalOpen(false)}
+        onClickConfirm={() => {
+          setIsModalOpen(false);
+          router.push("/");
+        }}
+      >
+        {loginMessage}
+      </LoginModal>
       <MainWrapper>
         <MainContnentsWrapper>
           <Title>LOGIN</Title>
