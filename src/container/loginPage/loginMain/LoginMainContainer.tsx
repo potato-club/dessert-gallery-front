@@ -32,6 +32,7 @@ function LoginMainContainer() {
   const { setToken } = useTokenService();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalMessage, setModalMessage] = useState("");
+  const [isLoginSuccess, setIsLoginSuccess] = useState(false);
 
   const { getValues, control } = useForm<{
     email?: string;
@@ -84,8 +85,12 @@ function LoginMainContainer() {
         isOpen={isModalOpen}
         onClickClose={() => setIsModalOpen(false)}
         onClickConfirm={() => {
-          setIsModalOpen(false);
-          router.push("/");
+          if (isLoginSuccess) {
+            setIsModalOpen(false);
+            router.push("/");
+          } else {
+            setIsModalOpen(false);
+          }
         }}
       >
         {modalMessage}
