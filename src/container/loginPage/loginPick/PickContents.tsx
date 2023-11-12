@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import ContentsTitle from "./ContentsTitle";
 import OwnerImage from "../../../../public/svg/loginPage/owner.svg";
@@ -9,11 +9,14 @@ import { useRouter } from "next/router";
 import { useSetRecoilState, useRecoilState } from "recoil";
 import { modalStateAtom } from "../../../recoil/login/modalStateAtom";
 import { useSignupDataState } from "../../../recoil/login/signUpStateAtom";
+import LoginModal from "../components/LoginModal";
 
 function PickContents({ role }: { role: "owner" | "user" }) {
   const router = useRouter();
   const [signupData, setSignupData] = useSignupDataState();
   const setModalState = useSetRecoilState(modalStateAtom);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalMessage, setModalMessage] = useState("");
 
   const updateUserRole = () => {
     console.log(123);
@@ -29,6 +32,15 @@ function PickContents({ role }: { role: "owner" | "user" }) {
 
   return (
     <PickContentsDiv>
+      <LoginModal
+        isOpen={isModalOpen}
+        onClickClose={() => setIsModalOpen(false)}
+        onClickConfirm={() => {
+          router.push("/login/join");
+        }}
+      >
+        {modalMessage}
+      </LoginModal>
       <ImageWrapper>
         {role === "owner" ? <OwnerImage /> : <UserImage />}
       </ImageWrapper>
@@ -38,7 +50,9 @@ function PickContents({ role }: { role: "owner" | "user" }) {
       <Explain role={role === "owner" ? "owner" : "user"} />
       <TagButtonWrapper>
         <Tag
-          title={role === "owner" ? "가게 운영자 로그인" : "일반 회원 로그인"}
+          title={
+            role === "owner" ? "가게 운영자 회원가입" : "일반 회원 회원가입"
+          }
           width="100%"
           height="100%"
           fontSize="100%"
@@ -51,7 +65,14 @@ function PickContents({ role }: { role: "owner" | "user" }) {
             if (signupData.loginType === "KAKAO") {
               setModalState(true);
             } else {
-              router.push("/login/join");
+              const message =
+                role === "owner"
+                  ? `가게 운영자로 회원가입 하시겠습니까?\n`
+                  : `일반 회원으로 회원가입 하시겠습니까?\n`;
+              setModalMessage(
+                message + "(회원가입 후에는 변경할 수 없습니다.)"
+              );
+              setIsModalOpen(true);
             }
           }}
         />
