@@ -62,6 +62,7 @@ const ModalTextDiv = styled.div`
   height: 200px;
   padding: 80px 108px 80px 108px;
   font-size: 21px;
+  line-height: 30px;
   white-space: pre-wrap;
 `;
 
