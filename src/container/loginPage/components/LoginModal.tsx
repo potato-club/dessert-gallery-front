@@ -28,10 +28,7 @@ function LoginModal({
   return mounted
     ? createPortal(
         <ModalWrapper>
-          <ModalTextDiv>
-            <CloseModalA onClick={onClickClose}>X</CloseModalA>
-            {children}
-          </ModalTextDiv>
+          <ModalTextDiv>{children}</ModalTextDiv>
           <ModalButtonDiv>
             <ModalButton onClick={onClickConfirm}>확인</ModalButton>
           </ModalButtonDiv>
@@ -53,8 +50,8 @@ const ModalWrapper = styled.div`
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 10;
+  border: 3px solid #ff6f00;
   border-radius: 6px;
-  box-shadow: -1px 2px 4px 3px rgba(0, 0, 0, 0.25);
   flex-direction: row;
 `;
 
@@ -73,14 +70,6 @@ const ModalButtonDiv = styled.div`
   justify-content: center;
   width: 100%;
   height: 100px;
-`;
-
-const CloseModalA = styled.a`
-  position: absolute;
-  right: 10px;
-  top: 10px;
-  cursor: pointer;
-  font-size: 30px;
 `;
 
 const ModalButton = styled.button`
