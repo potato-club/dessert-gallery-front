@@ -8,6 +8,7 @@ import axios from "axios";
 import { useRouter } from "next/router";
 import { useTokenService } from "../../../hooks/useTokenService";
 import LoginModal from "../components/LoginModal";
+import { loginPageApi } from "../../../apis/controller/loginPage";
 
 function VerifyContents() {
   const router = useRouter();
@@ -19,7 +20,7 @@ function VerifyContents() {
   const [isVerify, setIsVerify] = useState(false);
 
   const { getValues, control } = useForm<{
-    verifyCode?: string;
+    verifyCode: string;
   }>({
     defaultValues: {
       verifyCode: "",

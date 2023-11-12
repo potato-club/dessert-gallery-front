@@ -7,6 +7,7 @@ import { useSignupDataState } from "../../../recoil/login/signUpStateAtom";
 import axios from "axios";
 import { useVerifyPageState } from "../../../recoil/login/veifyPageStateAtom";
 import LoginModal from "../components/LoginModal";
+import { loginPageApi } from "../../../apis/controller/loginPage";
 
 function JoinContents() {
   const [isNicknameChecked, setIsNicknameChecked] = useState(false);
@@ -17,10 +18,10 @@ function JoinContents() {
   const [signupState, setSignupState] = useState(false);
 
   const { getValues, control } = useForm<{
-    email?: string;
-    password?: string;
-    checkPassword?: string;
-    nickname?: string;
+    email: string;
+    password: string;
+    checkPassword: string;
+    nickname: string;
   }>({
     defaultValues: {
       email: "",
@@ -33,14 +34,8 @@ function JoinContents() {
 
   const handlCheckNickname = async () => {
     const nickname = getValues("nickname");
-    const response = await axios.get(
-      "https://api.dessert-gallery.site/users/duplication/nickname",
-      {
-        params: {
-          nickname: nickname,
-        },
-      }
-    );
+    const response = await loginPageApi.getDuplicationNickname(nickname);
+
     console.log(response);
     if (response.status === 200) {
       setIsNicknameChecked(true);
@@ -92,16 +87,13 @@ function JoinContents() {
       setModalMessage(`회원가입이 정상 처리되지 않았습니다.\n${message}`);
     } else {
       try {
-        const response: any = await axios.post(
-          `https://api.dessert-gallery.site/users/signup`,
-          {
-            loginType: signupData.loginType,
-            userRole: signupData.userRole,
-            email: getValues("email"),
-            nickname: getValues("nickname"),
-            password: getValues("password"),
-          }
-        );
+        const response: any = await loginPageApi.postSignup({
+          loginType: signupData.loginType,
+          userRole: signupData.userRole,
+          email: getValues("email"),
+          nickname: getValues("nickname"),
+          password: getValues("password"),
+        });
         console.log(response);
         if (response.status === 200) {
           setSignupData({ ...signupData, email: getValues("email") });

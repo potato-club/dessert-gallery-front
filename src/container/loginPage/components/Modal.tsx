@@ -6,6 +6,7 @@ import { useSignupDataState } from "../../../recoil/login/signUpStateAtom";
 import { useTokenService } from "../../../hooks/useTokenService";
 import axios from "axios";
 import { useRouter } from "next/router";
+import { loginPageApi } from "../../../apis/controller/loginPage";
 
 function Modal() {
   const router = useRouter();
@@ -28,14 +29,7 @@ function Modal() {
   };
 
   const handleCheckNickname = async () => {
-    const response = await axios.get(
-      "https://api.dessert-gallery.site/users/duplication/nickname",
-      {
-        params: {
-          nickname: nickname,
-        },
-      }
-    );
+    const response = await loginPageApi.getDuplicationNickname(nickname);
     console.log(response);
     if (response.data === false) {
       setIsNicknameChecked(true);
@@ -50,16 +44,13 @@ function Modal() {
 
   const handleSignup = async () => {
     try {
-      const response: any = await axios.post(
-        `https://api.dessert-gallery.site/users/signup`,
-        {
-          email: signupData.email,
-          loginType: signupData.loginType,
-          userRole: signupData.userRole,
-          nickname: nickname,
-          password: "",
-        }
-      );
+      const response: any = await loginPageApi.postSignup({
+        email: signupData.email,
+        loginType: signupData.loginType,
+        userRole: signupData.userRole,
+        nickname: nickname,
+        password: "",
+      });
       const accessToken = response.headers.get("Authorization");
       const refreshToken = response.headers.get("Refreshtoken");
       setToken(accessToken, refreshToken);

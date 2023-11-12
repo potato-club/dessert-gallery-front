@@ -13,6 +13,7 @@ import axios from "axios";
 import { useRouter } from "next/router";
 import LoginModal from "../components/LoginModal";
 import { useTokenService } from "../../../hooks/useTokenService";
+import { loginPageApi } from "../../../apis/controller/loginPage";
 
 type inputType = {
   /**
@@ -35,8 +36,8 @@ function LoginMainContainer() {
   const [isLoginSuccess, setIsLoginSuccess] = useState(false);
 
   const { getValues, control } = useForm<{
-    email?: string;
-    password?: string;
+    email: string;
+    password: string;
   }>({
     defaultValues: {
       email: "",
@@ -52,17 +53,13 @@ function LoginMainContainer() {
     try {
       console.log("try login");
 
-      const response: any = await axios.post(
-        `https://api.dessert-gallery.site/users/login`,
-        {
-          email: email,
-          password: password,
-        }
-      );
+      const response: any = await loginPageApi.postLogin({
+        email: email,
+        password: password,
+      });
 
       if (response.data.responseCode === "200") {
-        // 여기는 로그인 처리 후 메인페이지로
-        console.log(200);
+        console.log(response);
         const accessToken = response.headers.get("Authorization");
         const refreshToken = response.headers.get("Refreshtoken");
         setToken(accessToken, refreshToken);
@@ -71,7 +68,7 @@ function LoginMainContainer() {
       } else {
         setIsModalOpen(true);
         setModalMessage("로그인에 실패했습니다.");
-        console.log("에러", response.data.responseCode);
+        console.log("에러", response.data);
       }
     } catch (error) {
       setIsModalOpen(true);

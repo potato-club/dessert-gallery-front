@@ -61,6 +61,7 @@ function PickContents({ role }: { role: "owner" | "user" }) {
           onClickHandler={() => {
             // pick 페이지 모달 테스트 시에는 아래 if문 주석처리 후 아래 코드 주석 해제
             // setModalState(true);
+
             updateUserRole();
             if (signupData.loginType === "KAKAO") {
               setModalState(true);
