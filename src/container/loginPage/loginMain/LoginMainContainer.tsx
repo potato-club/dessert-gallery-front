@@ -65,6 +65,7 @@ function LoginMainContainer() {
         setToken(accessToken, refreshToken);
         setModalMessage("정상 로그인 되었습니다.");
         setIsModalOpen(true);
+        setIsLoginSuccess(true);
       } else {
         setIsModalOpen(true);
         setModalMessage("로그인에 실패했습니다.");
@@ -83,8 +84,8 @@ function LoginMainContainer() {
         onClickClose={() => setIsModalOpen(false)}
         onClickConfirm={() => {
           if (isLoginSuccess) {
-            setIsModalOpen(false);
             router.push("/");
+            setIsModalOpen(false);
           } else {
             setIsModalOpen(false);
           }
