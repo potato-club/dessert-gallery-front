@@ -10,7 +10,6 @@ import type { mainComponentsProps } from '../../../types/componentsProps';
 
 export default function PopularStore({ isGuest }: mainComponentsProps) {
   const {data, isLoading, error} = useGetPopularStores();
-  console.log("popularStoreList", data, isLoading, error);
 
   useEffect(() => {}, [isGuest]);
 

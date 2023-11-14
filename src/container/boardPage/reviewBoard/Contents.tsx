@@ -78,7 +78,6 @@ import type { reviewBoardContentsList, reviewItem } from '../../../types/apiType
 // ];
 
 export default function Contents({data}:reviewBoardContentsList ) {
-  console.log("reviewBoardConten", data, data[0][0].reviewList)
   return (
     <Wrap>
       {

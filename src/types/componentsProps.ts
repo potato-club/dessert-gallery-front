@@ -357,3 +357,16 @@ export type recentReviewListProps = {
 export type mainComponentsProps = {
     isGuest: boolean;
 }
+
+export type myMenu = {
+    title: string;
+    selected: boolean,
+    menuId: number
+}
+  
+export type roleMyMenu = {
+    role: "USER" | "MANAGER";
+    selected: boolean,
+    category: myMenu[],
+    siteDefaultMenu: myMenu[]
+}

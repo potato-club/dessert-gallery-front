@@ -20,10 +20,6 @@ function FeedSwitcher({ isGuest }: mainComponentsProps) {
   const [selected, setSelected] = useState<number>(1);
   const { data: recentStores, isLoading: recentStoresLoading, error: recentStoresError } = useGetRecentStores();
   const { data: followBoardList, isLoading: followBoardListLoading, error: followBoardListError } = useGetFollowBoardList();
-  
-
-  console.log("check: ", recentStores, recentStoresLoading, recentStoresError)
-  console.log("check 팔로우한 가게: ", followBoardList, followBoardListLoading, followBoardListError)
 
   const onClickMovegalleryBoard = () => {
     window.location.href = '/galleryBoard'

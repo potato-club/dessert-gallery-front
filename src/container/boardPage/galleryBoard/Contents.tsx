@@ -72,8 +72,6 @@ const imgSrc = [
 // ]
 
 export default function Contents({data}: {data: resGalleryPost[][]}) {
-  console.log("Contents Components data: ", data)
-
   return (
     <Wrap>
       {data.map((el)=>(

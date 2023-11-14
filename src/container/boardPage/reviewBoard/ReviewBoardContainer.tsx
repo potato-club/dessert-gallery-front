@@ -73,11 +73,6 @@ function ReviewBoardContainer() {
       }
     };
     }, [hasNextPage, isFetchingNextPage, fetchNextPage, orderOption.eng, optionData.location, optionData.selectSearchWord,pageCount]);
-  
-
-  if(status === "success"){
-    console.log("데이터 판별 여부 확인 중: !data.pages[0]", data)
-  }
 
   return (
     <Wrapper>
