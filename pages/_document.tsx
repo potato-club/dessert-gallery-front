@@ -37,14 +37,14 @@ class MyDocument extends Document {
     return (
       <Html>
         <Head>
-        <script 
-        type="text/javascript"
-        async
-        defer
-        src={`//dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.NEXT_PUBLIC_KAKAO_MAPS_API_KEY}&autoload=false`}
-        />
-        
-        <script
+          <script
+            type="text/javascript"
+            async
+            defer
+            src={`//dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.NEXT_PUBLIC_KAKAO_MAPS_API_KEY}&autoload=false`}
+          />
+
+          <script
             dangerouslySetInnerHTML={{
               __html: `
                 (function(d) {
@@ -60,6 +60,7 @@ class MyDocument extends Document {
           />
         </Head>
         <body>
+          <div id="loginModal"></div>
           <Main />
           <NextScript />
         </body>

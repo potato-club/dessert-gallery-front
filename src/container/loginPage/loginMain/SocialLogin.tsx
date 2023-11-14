@@ -11,7 +11,7 @@ function SocialLogin() {
   const kakaoURL = `https://kauth.kakao.com/oauth/authorize?client_id=${Rest_api_key}&redirect_uri=${redirect_uri}&response_type=code`;
   const [signupData, setSignupData] = useSignupDataState();
   const handleLogin = () => {
-    setSignupData({ ...signupData, loginType: "KAKAO" });
+    // setSignupData({ ...signupData, loginType: "KAKAO" });
     window.location.href = kakaoURL;
   };
   return (
