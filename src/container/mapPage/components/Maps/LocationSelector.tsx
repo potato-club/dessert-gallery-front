@@ -37,7 +37,7 @@ export default function LocationSelector({selectedLocation, onChangeLocation}: l
     if(idx === 0){
       str = location.city;
     }else{
-      str = location.city + ' '+ location.child[idx]
+      str = location.city + ' '+ location.child[idx].title
     }
     onChangeLocation(str, location.child[idx].lat, location.child[idx].lng)
   }
