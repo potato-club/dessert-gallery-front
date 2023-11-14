@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import LocationModal from "./LocationModal";
 import type { selectedLocationCoordData } from "../../../../types/componentsData";
+import ToastMessage from "../../../../components/ToastMessage";
 
 interface coord {
   lat: string
@@ -21,7 +22,8 @@ interface style {
 const Maps = ({centerCoord, sidebar, setCenter}: props) => {
   const mapContainer = useRef<HTMLDivElement>(null);
   const [moveMap, setMoveMap] = useState<boolean>(false);
-  const [renderedMap, setRenderedMap] = useState<any>(null);
+  const [mapUpdate, setMapUpdate] = useState<boolean>(false)
+  const renderedMap = useRef<any>(null);
 
   const onClickMoveMap = ()=> {
     setMoveMap(prev=> !prev)
@@ -35,7 +37,9 @@ const Maps = ({centerCoord, sidebar, setCenter}: props) => {
       lng:lng
     })
     setMoveMap(false)
-    renderedMap.setCenter(new (window as any).kakao.maps.LatLng(lat, lng))
+    setMapUpdate(true);
+    setTimeout(()=>{setMapUpdate(false)}, 3000)
+    renderedMap.current.setCenter(new (window as any).kakao.maps.LatLng(lat, lng))
   }
 
   useEffect(()=>{
@@ -48,34 +52,52 @@ const Maps = ({centerCoord, sidebar, setCenter}: props) => {
     // 스크립트 로드가 완료되면 메인 컴포넌트 렌더링
     script.onload = () => {
       (window as any).kakao.maps.load(function() {
+
         if (mapContainer && mapContainer.current) {
-          let markerPosition  = new (window as any).kakao.maps.LatLng(centerCoord.lat,centerCoord.lng); 
+          let markerPosition  = new (window as any).kakao.maps.LatLng(centerCoord.lat,centerCoord.lng);
           var marker = new (window as any).kakao.maps.Marker({
             position: markerPosition
         });
 
-          let mapOption = { 
+          let mapOption = {
               center: new (window as any).kakao.maps.LatLng(centerCoord.lat,centerCoord.lng), // 지도의 중심좌표
               level: 5, // 지도의 확대 레벨
-          };    
-    
-          if(renderedMap === null){
+          };
+
+          if(renderedMap.current === null){
             // 지도를 생성합니다
+            console.log("지도 생성")
             let map = new (window as any).kakao.maps.Map(mapContainer.current, mapOption);
-            setRenderedMap(map)
+            renderedMap.current = map
             marker.setMap(map) ;
+
+            // 드래그를 통한 좌표 이동
+            (window as any).kakao.maps.event.addListener(map, 'tilesloaded', function() {
+              console.log("centerCoord.str", centerCoord.location)  
+                setCenter(prev => ({
+                  location:  prev.location,
+                  lat: map.getCenter().getLat(),
+                  lng: map.getCenter().getLng()
+                }))
+                setMapUpdate(true);
+                setTimeout(()=>{setMapUpdate(false)}, 3000)
+            });
+            // (window as any).kakao.maps.event.addListener(map, 'center_changed', function() {
+            //     alert('center changed!');
+            // });
           }
         }
       });
     };
 
-    
-  },[])
+
+  },[centerCoord.location])
 
   return (
     <Container sidebar={sidebar} ref={mapContainer} >
       <LocationSelectorBtn onClick={onClickMoveMap}/>
       {moveMap&& <LocationModal selectedLocation={centerCoord.location} onChangeLocation={onChangeLocation} onClickMoveMap={onClickMoveMap}/>}
+      {mapUpdate&& <ToastMessage messageString="이 지역에서 다시 검색하기" timer={3000}  clickEvent={true} eventFunc={()=>alert("마커 새로고침")} key="mapUpdateToast"/>}
     </Container>
   );
 };

@@ -299,6 +299,8 @@ export type locationCoordSelectorProps = {
 export type ToastMessageProps = {
     messageString: string
     timer: number
+    clickEvent?: boolean
+    eventFunc?: () => void
 }
 
 export type boardOptionValue = {
