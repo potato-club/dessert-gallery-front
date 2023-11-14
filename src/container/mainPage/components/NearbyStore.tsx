@@ -9,8 +9,6 @@ function NearbyStore() {
 
   const {data, isLoading, error} = useGetNearbyStore();
 
-  console.log("data뭔데", data)
-
   return (
     <NearbyStoreWrap>
       <TitleWrap>

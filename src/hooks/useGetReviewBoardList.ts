@@ -16,8 +16,6 @@ async function fetchReviewBoardData(req: reviewBoardSearchOptionData) {
   //정렬타입
   queryString += `&sortType=${req.sortType}`;
 
-  console.log("getBoardListRUL: ", queryString)
-
   try {
     const { data } = await boardApiList.getBoardList(queryString);
     

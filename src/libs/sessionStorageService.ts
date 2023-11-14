@@ -8,7 +8,6 @@ const sessionStorageService = {
       const storedObject = JSON.parse(data);
       const accessToken = storedObject?.JWTDataState?.accessToken;
       if (accessToken) {
-        console.log('Access Token:', accessToken);
         return accessToken
       }
     }

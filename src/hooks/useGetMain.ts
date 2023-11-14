@@ -1,5 +1,6 @@
 import { mainApiList } from "../apis/controller/mainPage";
 import { useQuery } from "react-query";
+import { useUserState } from "./useUser";
 
 export const useGetPopularStores = () => {
   return useQuery(
@@ -23,6 +24,11 @@ export const useGetRecentReviews = () => {
 };
 
 export const useGetFollowBoardList = () => {
+  const {isGuest} = useUserState();
+
+  if(isGuest){
+    return { data: false, isLoading: false, error: "" }
+  }
   return useQuery(
       "getMainFollowBoardList",
       () => mainApiList.getMainFollowBoardList()

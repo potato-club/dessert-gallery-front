@@ -10,18 +10,19 @@ import { useRecoilValue } from 'recoil';
 import { JWTStateAtom } from '../../recoil/login/JWTStateAtom';
 import { galleryPostValue } from '../../types/componentsProps'
 import MoveToMap from './components/MoveToMap'
+import { useUserState } from '../../hooks/useUser'
 
 
 
 function MainPage() {
-  const jwtData = useRecoilValue(JWTStateAtom);
-  const guest = jwtData.accessToken === '' ? true:false;
+  const {isGuest} = useUserState();
+
 
   return (
     <MainWrap>
       <Banner/>
-      <PopularStore isGuest={guest}/>
-      <FeedSwitcher isGuest={guest}/>
+      <PopularStore isGuest={isGuest}/>
+      <FeedSwitcher isGuest={isGuest}/>
       <NewReview/>
       <NearbyStore />
       <MoveToMap/>
