@@ -16,6 +16,8 @@ import {
 } from "../../../../apis/controller/detailStore";
 import { useGetStoreInfo } from "../../../../hooks/useStore";
 import { useRouter } from "next/router";
+import { useInView } from "react-intersection-observer";
+import LoadingSpinner from "./LoadingSpinner";
 
 const PostModal = ({ boardId }: any) => {
   const [comment, setComment] = useState<string>("");
@@ -23,6 +25,7 @@ const PostModal = ({ boardId }: any) => {
   const [menuIconClick, setMenuIconClick] = useState<boolean>(false);
   const [commentList, setCommentList] = useState<any[]>([]);
   const [postCommentList, setPostCommentList] = useState<any[]>([]);
+  const [isLoad, setIsLoad] = useState(false);
 
   // 가게 정보 불러오기
   const router = useRouter();
@@ -62,6 +65,18 @@ const PostModal = ({ boardId }: any) => {
     setComment("");
   };
 
+  const [ref, inView] = useInView({ threshold: 1 });
+
+  useEffect(() => {
+    if (inView && !isLoading && hasNextPage) {
+      setIsLoad(true);
+      setTimeout(() => {
+        fetchNextPage();
+        setIsLoad(false);
+      }, 1500);
+    }
+  }, [inView, isLoading]);
+
   if (!detailPoster) {
     return <></>;
   }
@@ -95,6 +110,7 @@ const PostModal = ({ boardId }: any) => {
               }}
             />
           </InfoHeader>
+
           <InfoContent>
             {menuIconClick && <MenuBox />}
             <TopPosition>
@@ -118,6 +134,7 @@ const PostModal = ({ boardId }: any) => {
                 return <HashTag key={idx}>{item}</HashTag>;
               })}
             </HashTagBox>
+
             <CommentList>
               <>
                 {postCommentList.map((item: any, idx: number) => {
@@ -131,23 +148,24 @@ const PostModal = ({ boardId }: any) => {
                   );
                 })}
               </>
-              <>
-                {commentList &&
-                  commentList.map((item: any, idx: number) => {
-                    return (
-                      <Comment
-                        nickname={item.nickname}
-                        comment={item.comment}
-                        profile={item.profile}
-                        key={idx}
-                      />
-                    );
-                  })}
-              </>
+              {commentList &&
+                commentList.map((item: any, idx: number) => {
+                  return (
+                    <Comment
+                      nickname={item.nickname}
+                      comment={item.comment}
+                      profile={item.profile}
+                      key={idx}
+                    />
+                  );
+                })}
             </CommentList>
-            <MoreBtn onClick={() => fetchNextPage()} disabled={!hasNextPage}>
-              더보기
-            </MoreBtn>
+            <div ref={ref}></div>
+            {isLoad && (
+              <LoadingDiv>
+                <LoadingSpinner />
+              </LoadingDiv>
+            )}
           </InfoContent>
 
           <Bottom>
@@ -173,7 +191,6 @@ const PostModal = ({ boardId }: any) => {
 };
 
 export default PostModal;
-
 const Container = styled.div`
   display: flex;
   background-color: #fffdf9;
@@ -314,8 +331,9 @@ const ReservedBtn = styled.div`
     cursor: pointer;
   }
 `;
-const MoreBtn = styled.button`
-  width: 100px;
-  padding: 10px;
-  margin: 20px auto 0px;
+const LoadingDiv = styled.div`
+  margin-top: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
