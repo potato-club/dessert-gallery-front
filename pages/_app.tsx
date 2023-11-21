@@ -1,10 +1,11 @@
 import "../styles/globals.css";
 import type { AppProps } from "next/app";
-import Layout from "../src/components/Layout";
+import ModalBackground from "../src/components/ModalBackground";
 import { RecoilRoot } from "recoil";
 import { Hydrate, QueryClient, QueryClientProvider } from "react-query";
 import { useEffect, useState } from "react";
 import myPage from "../pages/myPage";
+import Header from "../src/components/Header";
 
 function MyApp({ Component, pageProps }: AppProps) {
   const queryClient = useState(() => new QueryClient())[0];
@@ -25,13 +26,16 @@ function MyApp({ Component, pageProps }: AppProps) {
     <QueryClientProvider client={queryClient}>
       <Hydrate state={pageProps}>
         <RecoilRoot>
-          {Component == myPage ? (
-            <Component {...pageProps} />
-          ) : (
-            <Layout>
+          <ModalBackground>
+            {Component == myPage ? (
               <Component {...pageProps} />
-            </Layout>
-          )}
+            ) : (
+              <>
+                <Header />
+                <Component {...pageProps} />
+              </>
+            )}
+          </ModalBackground>
         </RecoilRoot>
       </Hydrate>
     </QueryClientProvider>
