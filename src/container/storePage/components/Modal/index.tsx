@@ -8,10 +8,12 @@ import SlideImage from "../../../../components/SlideImage/SlideImage";
 import MenuBox from "./MenuBox";
 import {
   useGetDetailBoard,
-  useGetModalComment,
-  usePostModalComment,
+  useInfinityModalComment,
 } from "../../../../hooks/useBoard";
-import { toggleBookmark } from "../../../../apis/controller/detailStore";
+import {
+  postBoardComment,
+  toggleBookmark,
+} from "../../../../apis/controller/detailStore";
 import { useGetStoreInfo } from "../../../../hooks/useStore";
 import { useRouter } from "next/router";
 
@@ -19,44 +21,47 @@ const PostModal = ({ boardId }: any) => {
   const [comment, setComment] = useState<string>("");
   const [onBookmarkState, setOnBookmarkState] = useState<boolean>(false);
   const [menuIconClick, setMenuIconClick] = useState<boolean>(false);
+  const [commentList, setCommentList] = useState<any[]>([]);
+  const [postCommentList, setPostCommentList] = useState<any[]>([]);
 
-  const [page, setPage] = useState<number>(1);
-
-  // 세부 게시물 불러오기
-  const detailPoster = useGetDetailBoard({}, boardId);
-
-  // 모달 댓글 불러오기
-  const { data, refetch } = useGetModalComment({
-    page: page,
-    boardId,
-    options: {
-      refetchOnWindowFocus: false,
-    },
-  });
-
-  useEffect(() => {
-    refetch();
-  }, [page, refetch]);
-
-  // 모달 댓글 작성하기
-  const { mutate } = usePostModalComment({
-    boardId,
-    comment,
-    options: {
-      refetchOnWindowFocus: false,
-    },
-  });
-  const submit = async (e: any) => {
-    await e.preventDefault();
-    await mutate();
-    await refetch();
-    await setComment("");
-  };
+  // 가게 정보 불러오기
   const router = useRouter();
   const { data: storeInfo } = useGetStoreInfo({
     storeId: Number(router.query.store),
     options: { refetchOnWindowFocus: false },
   });
+
+  // 세부 게시물 불러오기
+  const detailPoster = useGetDetailBoard({}, boardId);
+
+  // infiniteQuery 모달 댓글 불러오기
+  const { data, fetchNextPage, hasNextPage, isLoading, refetch } =
+    useInfinityModalComment({ boardId });
+  useEffect(() => {
+    if (data) {
+      const list = data?.pages
+        .map((page) => {
+          return page.result;
+        })
+        .flat();
+      setCommentList(list);
+    }
+  }, [data]);
+
+  // 모달 댓글 작성하기
+  const submit = async (e: any) => {
+    await e.preventDefault();
+    try {
+      const postComment = await postBoardComment({ boardId, comment });
+      setPostCommentList((prev) => [postComment, ...prev]);
+    } catch (err: any) {
+      if (err.response.status == 403) {
+        alert("로그인을 해주세요.");
+      }
+    }
+    setComment("");
+  };
+
   if (!detailPoster) {
     return <></>;
   }
@@ -114,8 +119,8 @@ const PostModal = ({ boardId }: any) => {
               })}
             </HashTagBox>
             <CommentList>
-              {data &&
-                data.content.map((item: any, idx: number) => {
+              <>
+                {postCommentList.map((item: any, idx: number) => {
                   return (
                     <Comment
                       nickname={item.nickname}
@@ -125,16 +130,24 @@ const PostModal = ({ boardId }: any) => {
                     />
                   );
                 })}
+              </>
+              <>
+                {commentList &&
+                  commentList.map((item: any, idx: number) => {
+                    return (
+                      <Comment
+                        nickname={item.nickname}
+                        comment={item.comment}
+                        profile={item.profile}
+                        key={idx}
+                      />
+                    );
+                  })}
+              </>
             </CommentList>
-            {data && !data.last && (
-              <MoreBtn
-                onClick={() => {
-                  setPage((prev) => prev + 1);
-                }}
-              >
-                더보기
-              </MoreBtn>
-            )}
+            <MoreBtn onClick={() => fetchNextPage()} disabled={!hasNextPage}>
+              더보기
+            </MoreBtn>
           </InfoContent>
 
           <Bottom>
