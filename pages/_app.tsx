@@ -4,7 +4,7 @@ import Layout from "../src/components/Layout";
 import { RecoilRoot } from "recoil";
 import { Hydrate, QueryClient, QueryClientProvider } from "react-query";
 import { useEffect, useState } from "react";
-import myPage from "../pages/myPage/[store]";
+import myPage from "../pages/myPage";
 
 function MyApp({ Component, pageProps }: AppProps) {
   const queryClient = useState(() => new QueryClient())[0];
@@ -17,10 +17,9 @@ function MyApp({ Component, pageProps }: AppProps) {
 
     // 스크립트 로드가 완료되면 메인 컴포넌트 렌더링
     script.onload = () => {
-      (window as any).kakao.maps.load(function() {});
+      (window as any).kakao.maps.load(function () {});
     };
-  },[]
-  )
+  }, []);
 
   return (
     <QueryClientProvider client={queryClient}>
