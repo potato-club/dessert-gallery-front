@@ -160,10 +160,10 @@ const PostModal = ({ boardId }: any) => {
                   );
                 })}
             </CommentList>
-            <div ref={ref}></div>
+            <IoDiv ref={ref}></IoDiv>
             {isLoad && (
               <LoadingDiv>
-                <LoadingSpinner />
+                <LoadingSpinner width={20} height={20} borderWidth={2} />
               </LoadingDiv>
             )}
           </InfoContent>
@@ -336,4 +336,7 @@ const LoadingDiv = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+`;
+const IoDiv = styled.div`
+  margin-top: 30px;
 `;
