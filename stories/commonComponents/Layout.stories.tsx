@@ -1,10 +1,10 @@
-import Layout from "../../src/components/Layout";
+import ModalBackground from "../../src/components/ModalBackground";
 import type { Meta, StoryObj } from "@storybook/react";
 import MainPage from "../../pages/index";
 
-const meta: Meta<typeof Layout> = {
-  title: "commonComponents/Layout",
-  component: Layout,
+const meta: Meta<typeof ModalBackground> = {
+  title: "commonComponents/ModalBackground",
+  component: ModalBackground,
   tags: ["autodocs"],
   argTypes: {
     children: {
@@ -15,7 +15,7 @@ const meta: Meta<typeof Layout> = {
   },
 };
 export default meta;
-type Story = StoryObj<typeof Layout>;
+type Story = StoryObj<typeof ModalBackground>;
 
 export const HomePage: Story = {
   args: {
