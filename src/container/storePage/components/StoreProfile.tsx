@@ -1,8 +1,8 @@
 import { useRouter } from "next/router";
-import React, { useState } from "react";
+import React from "react";
 import styled, { css } from "styled-components";
 import Tag from "../../../components/Tag";
-// import useFollowAction from "../../../hooks/useFollowAction";
+import { useFollowAction } from "../../../hooks/useFollowAction";
 import { useGetStoreInfo } from "../../../hooks/useStore";
 
 const StoreProfile = () => {
@@ -17,8 +17,7 @@ const StoreProfile = () => {
     options: { refetchOnWindowFocus: false },
   });
 
-  console.log(data);
-  // const followfn = useFollowAction(data.follow || false, storeId);
+  const { postFollowMutate, putUnFollowMutate } = useFollowAction(storeId);
 
   return (
     <Container>
@@ -44,15 +43,33 @@ const StoreProfile = () => {
                 <InfoView></InfoView>
               </StoreInfo>
               <BtnList>
-                <StoreProfileBtn
-                  title={data.follow ? "팔로우 끊기" : "팔로우"}
-                  clickAble={true}
-                  hoverCss={true}
-                  width="90px"
-                  height="30px"
-                  fontSize="12px"
-                  inversion={true}
-                />
+                {data.follow ? (
+                  <StoreProfileBtn
+                    title={"팔로우 끊기"}
+                    clickAble={true}
+                    width="90px"
+                    height="30px"
+                    fontSize="12px"
+                    hoverCss={true}
+                    onClickHandler={() => {
+                      putUnFollowMutate();
+                    }}
+                  />
+                ) : (
+                  <StoreProfileBtn
+                    title={"팔로우"}
+                    clickAble={true}
+                    width="90px"
+                    height="30px"
+                    fontSize="12px"
+                    hoverCss={true}
+                    inversion={true}
+                    onClickHandler={() => {
+                      postFollowMutate();
+                    }}
+                  />
+                )}
+
                 <StoreProfileBtn
                   title="메세지 보내기"
                   clickAble={true}
