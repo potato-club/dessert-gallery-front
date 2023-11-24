@@ -7,7 +7,7 @@ import styled from "styled-components";
 /**
  * 모달을 띄울때 배경 어두운 색상 적용
  */
-const Layout = ({ children }: React.PropsWithChildren) => {
+const ModalBackground = ({ children }: React.PropsWithChildren) => {
   const [onModal, setOnModal] = useRecoilState(modalBg);
 
   useEffect(() => {
@@ -31,7 +31,7 @@ const Layout = ({ children }: React.PropsWithChildren) => {
   );
 };
 
-export default Layout;
+export default ModalBackground;
 
 const Container = styled.div`
   position: fixed;
