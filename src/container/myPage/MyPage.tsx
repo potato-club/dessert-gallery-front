@@ -3,9 +3,11 @@ import styled from "styled-components";
 import Profile from "./components/Profile";
 import Calendar from "./components/MyCalendar";
 import Menu from "./components/Menu";
-import myPageBack from "../../../public/image/myPageBack.png";
+// import myPageBack from "../../../public/image/myPageBack.png";
 import type { roleMyMenu } from "../../types/componentsProps";
 import { useUserState, useLoginUserInfo } from "../../hooks/useUser";
+import NoticePage from "./notice/NoticePage";
+import WritingPage from "./Writing/WritingPage";
 
 const MyPage = () => {
   const { isGuest } = useUserState();
@@ -152,8 +154,24 @@ const MyPage = () => {
         menu={menu.filter((e) => e.selected)[0]}
         onClickMenu={handleMenuClick}
       />
-      <Contents>{selectedMenu === 1 && <Profile />}</Contents>
-      <Contents>{selectedMenu === 8 && <Calendar />}</Contents>
+      {selectedMenu === 1 && (
+        <Contents>
+          {" "}
+          <Profile />
+        </Contents>
+      )}
+      {selectedMenu === 8 && (
+        <Contents>
+          {" "}
+          <Calendar />
+        </Contents>
+      )}
+      {selectedMenu === 9 && (
+        <Contents>
+          {" "}
+          <NoticePage />
+        </Contents>
+      )}
     </PageWrapper>
   );
 };
@@ -165,7 +183,6 @@ const PageWrapper = styled.div`
   height: 100vh;
   border-radius: 0 16px 16px 0;
   background-color: #fcf0e1;
-  background-image: url(${myPageBack.src});
   background-position: right top;
   background-repeat: no-repeat;
   background-blend-mode: darken;
