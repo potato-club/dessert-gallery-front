@@ -50,4 +50,12 @@ export const loginPageApi = {
       // }
     );
   },
+
+  getReissue: async () => {
+    return await sendApi.get("/users/reissue");
+  },
+
+  getLogout: async () => {
+    return await sendApi.get("/users/logout");
+  },
 };
