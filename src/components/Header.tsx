@@ -1,12 +1,14 @@
-import React from "react";
+import React, { useState } from "react";
 import styled, { css } from "styled-components";
 import { Logo, Search, HeaderBookmark, HeaderInfo } from "../../public/svg";
 import { useRouter } from "next/router";
 import { useTokenService } from "../hooks/useTokenService";
+import Dropdown from "./Dropdown";
 
 const Header = () => {
   const router = useRouter();
   const { getAccessToken } = useTokenService();
+
   const onClickMyPageButton = () => {
     if (getAccessToken() === "") {
       router.push("login/main");
@@ -14,6 +16,7 @@ const Header = () => {
       //마이페이지로 라우팅
     }
   };
+  const [dropdownState, setDropdownState] = useState(false);
 
   return (
     <Container>
@@ -45,8 +48,17 @@ const Header = () => {
       </FormDiv>
 
       <AboutUser>
-        <MyPageBtn onClick={onClickMyPageButton}>
+        <MyPageBtn
+          onClick={onClickMyPageButton}
+          onMouseOver={() => {
+            if (getAccessToken() !== "") {
+              setDropdownState(true);
+            }
+          }}
+          onMouseOut={() => setDropdownState(false)}
+        >
           <HeaderInfo width="31px" height="32px" />
+          <Dropdown dropdownState={dropdownState} />
         </MyPageBtn>
         <BookmarkBtn>
           <HeaderBookmark width="23px" height="32px" />
@@ -136,5 +148,6 @@ const AboutUser = styled.div`
 `;
 const MyPageBtn = styled.div`
   cursor: pointer;
+  position: relative;
 `;
 const BookmarkBtn = styled.div``;
