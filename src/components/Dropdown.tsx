@@ -1,13 +1,20 @@
 import React from "react";
-
 import styled from "styled-components";
 import DropdownMenu from "./DropdownMenu";
+import { loginPageApi } from "../apis/controller/loginPage";
 
 const Dropdown = ({ dropdownState }: { dropdownState: boolean }) => {
   return (
     <DropdownWrapper dropdownState={dropdownState}>
       <DropdownMenu onClickMenu={() => {}}>마이페이지</DropdownMenu>
-      <DropdownMenu onClickMenu={() => {}}>로그아웃</DropdownMenu>
+      <DropdownMenu
+        onClickMenu={async () => {
+          //   const response = await loginPageApi.getLogout();
+          //   console.log(response);
+        }}
+      >
+        로그아웃
+      </DropdownMenu>
     </DropdownWrapper>
   );
 };
