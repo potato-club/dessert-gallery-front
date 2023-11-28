@@ -48,18 +48,18 @@ export default function LocationSelector({selectedLocation, onChangeLocation}: l
         <City>
           {
             regionsCoordData.map(e => (
-              selectOption.length !== 0 && selectOption[0].city === e.city? (
-                <CheckboxLabel key={e.city}>
-                {e.city}
-                <CheckboxInput onChange={onChangeSelectCity} key={e.city} name='city' id={e.city} value={e.city} checked={true}/>
-              </CheckboxLabel>
-              ):(
+              // selectOption.length !== 0 && selectOption[0].city === e.city? (
+              //   <CheckboxLabel key={e.city}>
+              //   {e.city}
+              //   <CheckboxInput onChange={onChangeSelectCity} key={e.city} name='city' id={e.city} value={e.city} checked={true}/>
+              // </CheckboxLabel>
+              // ):(
                 <CheckboxLabel key={e.city}>
                 {e.city}
                 
                 <CheckboxInput onChange={onChangeSelectCity} key={e.city} name='city' id={e.city} value={e.city}/>
               </CheckboxLabel>
-              )
+              // )
             ))
           }
         </City>
@@ -67,17 +67,17 @@ export default function LocationSelector({selectedLocation, onChangeLocation}: l
       <DistrictWrap>
         {
           selectOption.length !== 0 && selectOption[0].child.map((e,idx) => (
-            districtOption === e.title? (
-              <CheckboxLabel key={e.title}>
-              {e.title}
-              <CheckboxInput onChange={()=>onChangeDistrict({location: selectOption[0], idx: idx})} key={e.title} name='district' id={e.title} value={e.title} checked={true}/>
-            </CheckboxLabel>
-            ):(
+            // districtOption === e.title? (
+            //   <CheckboxLabel key={e.title}>
+            //   {e.title}
+            //   <CheckboxInput onChange={()=>onChangeDistrict({location: selectOption[0], idx: idx})} key={e.title} name='district' id={e.title} value={e.title} checked={true}/>
+            // </CheckboxLabel>
+            // ):(
               <CheckboxLabel key={e.title}>
               {e.title}
               <CheckboxInput onChange={()=>onChangeDistrict({location: selectOption[0], idx: idx})} key={e.title} name='district' id={e.title} value={e.title}/>
             </CheckboxLabel>
-            )
+            // )
           ))
         }
       </DistrictWrap>

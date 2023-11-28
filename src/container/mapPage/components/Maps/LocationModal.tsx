@@ -12,7 +12,7 @@ export default function LocationModal({selectedLocation,onChangeLocation, onClic
     <ModalContainer>
         <ModalContent>
           <ModalHeader>
-            <Text>지역 선택</Text>
+            <Text>지역 이동</Text>
             <OutBtn onClick={onClickMoveMap}>X</OutBtn>
           </ModalHeader>
           <LocationSelector selectedLocation={selectedLocation} onChangeLocation={onChangeLocation}/>
