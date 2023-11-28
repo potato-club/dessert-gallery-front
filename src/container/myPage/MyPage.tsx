@@ -162,7 +162,7 @@ export default MyPage;
 
 const PageWrapper = styled.div`
   width: 100vw;
-  height: 100vh;
+  height: 100%;
   border-radius: 0 16px 16px 0;
   background-color: #fcf0e1;
   background-image: url(${myPageBack.src});
@@ -174,5 +174,6 @@ const PageWrapper = styled.div`
 
 const Contents = styled.div`
   width: 100%;
-  height: 100%;
+  height: max-content;
+  min-height: 100vh;
 `;

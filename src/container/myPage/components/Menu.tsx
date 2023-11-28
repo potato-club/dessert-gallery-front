@@ -61,8 +61,8 @@ export default function Menu({menu, onClickMenu}: { menu: roleMyMenu, onClickMen
 }
 
 const MenuWrapper = styled.div`
-  width: 330px;
-  height: 100vh;
+  width: 30%;
+  height: auto;
   border-radius: 0 24px 24px 0;
   display: flex;
   flex-direction: column;
@@ -72,7 +72,7 @@ const MenuWrapper = styled.div`
 
 const MenuHeader = styled.div`
   width: 100%;
-  min-height: 88px;
+  min-height: 96px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -89,7 +89,7 @@ const MenuContentsWrap = styled.div`
   height: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: flex-start;
 `
 
 const UserInfoWrap = styled.div`
