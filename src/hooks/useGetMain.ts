@@ -25,14 +25,17 @@ export const useGetRecentReviews = () => {
 
 export const useGetFollowBoardList = () => {
   const {isGuest} = useUserState();
+  const { data, isLoading, error } = useQuery(
+    "getMainFollowBoardList",
+    () => mainApiList.getMainFollowBoardList()
+  );
+  console.log("useGetFollowBoardList isGuest?", isGuest)
 
   if(isGuest){
     return { data: false, isLoading: false, error: "" }
   }
-  return useQuery(
-      "getMainFollowBoardList",
-      () => mainApiList.getMainFollowBoardList()
-    );
+
+  return { data, isLoading, error };
 };
 
 export const useGetNearbyStore = () => {
