@@ -14,7 +14,7 @@ export const useGetDetailBoard = (options = {}, storeId: number) => {
     }
   );
 
-  return data;
+  return { data };
 };
 
 export const useGetReviewList = ({ page, storeId, options }: any) => {

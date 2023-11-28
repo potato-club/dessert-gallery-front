@@ -21,11 +21,20 @@ import LoadingSpinner from "./LoadingSpinner";
 
 const PostModal = ({ boardId }: any) => {
   const [comment, setComment] = useState<string>("");
-  const [onBookmarkState, setOnBookmarkState] = useState<boolean>(false);
   const [menuIconClick, setMenuIconClick] = useState<boolean>(false);
   const [commentList, setCommentList] = useState<any[]>([]);
   const [postCommentList, setPostCommentList] = useState<any[]>([]);
   const [isLoad, setIsLoad] = useState(false);
+  const [onBookmarkState, setOnBookmarkState] = useState<boolean>(false);
+
+  // 세부 게시물 불러오기
+  const { data: detailPoster } = useGetDetailBoard({}, boardId);
+  // bookmark 불리언값에 따른 onBookmarkState 상태 변경
+  useEffect(() => {
+    if (detailPoster) {
+      setOnBookmarkState(detailPoster.bookmark);
+    }
+  }, [detailPoster]);
 
   // 가게 정보 불러오기
   const router = useRouter();
@@ -33,9 +42,6 @@ const PostModal = ({ boardId }: any) => {
     storeId: Number(router.query.store),
     options: { refetchOnWindowFocus: false },
   });
-
-  // 세부 게시물 불러오기
-  const detailPoster = useGetDetailBoard({}, boardId);
 
   // infiniteQuery 모달 댓글 불러오기
   const { data, fetchNextPage, hasNextPage, isLoading, refetch } =
@@ -65,8 +71,8 @@ const PostModal = ({ boardId }: any) => {
     setComment("");
   };
 
+  // infinite scroll 구현
   const [ref, inView] = useInView({ threshold: 1 });
-
   useEffect(() => {
     if (inView && !isLoading && hasNextPage) {
       setIsLoad(true);
