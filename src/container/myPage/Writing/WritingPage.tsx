@@ -237,6 +237,7 @@ const Label = styled.label`
   border: 2.5px solid #ff6f00;
   cursor: pointer;
   border-radius: 7px;
+  background-color: white;
 `;
 const LabelDiv = styled.div`
   color: #000;
