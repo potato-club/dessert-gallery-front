@@ -1,5 +1,6 @@
 import { mainApiList } from "../apis/controller/mainPage";
 import { useQuery } from "react-query";
+import { useUserState } from "./useUser";
 
 export const useGetPopularStores = () => {
   return useQuery(
@@ -23,10 +24,18 @@ export const useGetRecentReviews = () => {
 };
 
 export const useGetFollowBoardList = () => {
-  return useQuery(
-      "getMainFollowBoardList",
-      () => mainApiList.getMainFollowBoardList()
-    );
+  const {isGuest} = useUserState();
+  const { data, isLoading, error } = useQuery(
+    "getMainFollowBoardList",
+    () => mainApiList.getMainFollowBoardList()
+  );
+  console.log("useGetFollowBoardList isGuest?", isGuest)
+
+  if(isGuest){
+    return { data: false, isLoading: false, error: "" }
+  }
+
+  return { data, isLoading, error };
 };
 
 export const useGetNearbyStore = () => {

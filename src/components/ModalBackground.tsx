@@ -5,9 +5,9 @@ import { modalBg } from "../recoil/modalBg/atom";
 import styled from "styled-components";
 
 /**
- * 각 페이지들을 props로 받아 공통컴포넌트(header,footer 등등)를 페이지와 같이 렌더링
+ * 모달을 띄울때 배경 어두운 색상 적용
  */
-const Layout = ({ children }: React.PropsWithChildren) => {
+const ModalBackground = ({ children }: React.PropsWithChildren) => {
   const [onModal, setOnModal] = useRecoilState(modalBg);
 
   useEffect(() => {
@@ -26,13 +26,12 @@ const Layout = ({ children }: React.PropsWithChildren) => {
   return (
     <>
       {onModal && <Container onClick={() => setOnModal(false)} />}
-      <Header />
       {children}
     </>
   );
 };
 
-export default Layout;
+export default ModalBackground;
 
 const Container = styled.div`
   position: fixed;

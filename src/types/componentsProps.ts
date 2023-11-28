@@ -57,9 +57,10 @@ export type tagValue = {
  */
 export type slideImageValue = {
     /**
-     * 가게 id
+     * (선택)가게 id
+     * bookmark: true(북마크 옵션 활성화)시 필수
      */
-    storeId: number
+    storeId?: number
     /**
      * (필수)이미지 배열 
      */
@@ -363,4 +364,17 @@ export type recentReviewListProps = {
 
 export type mainComponentsProps = {
     isGuest: boolean;
+}
+
+export type myMenu = {
+    title: string;
+    selected: boolean,
+    menuId: number
+}
+  
+export type roleMyMenu = {
+    role: "USER" | "MANAGER";
+    selected: boolean,
+    category: myMenu[],
+    siteDefaultMenu: myMenu[]
 }

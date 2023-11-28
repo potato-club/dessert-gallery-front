@@ -1,4 +1,4 @@
-import React, { ReactNode } from "react";
+import React, { ReactNode, useState } from "react";
 import styled from "styled-components";
 import LoginBackground from "../../../public/svg/loginPage/loginBackground.svg";
 import Title from "../components/Title";
@@ -10,8 +10,10 @@ import SocialLogin from "./SocialLogin";
 import Wrapper from "../components/Wrapper";
 import { useForm } from "react-hook-form";
 import axios from "axios";
-import { useJWTState } from "../../../recoil/login/JWTStateAtom";
 import { useRouter } from "next/router";
+import LoginModal from "../components/LoginModal";
+import { useTokenService } from "../../../hooks/useTokenService";
+import { loginPageApi } from "../../../apis/controller/loginPage";
 
 type inputType = {
   /**
@@ -28,11 +30,14 @@ type inputType = {
 
 function LoginMainContainer() {
   const router = useRouter();
-  const [jwtState, setJwtState] = useJWTState();
+  const { setToken } = useTokenService();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalMessage, setModalMessage] = useState("");
+  const [isLoginSuccess, setIsLoginSuccess] = useState(false);
 
-  const { handleSubmit, getValues, control } = useForm<{
-    email?: string;
-    password?: string;
+  const { getValues, control } = useForm<{
+    email: string;
+    password: string;
   }>({
     defaultValues: {
       email: "",
@@ -48,34 +53,46 @@ function LoginMainContainer() {
     try {
       console.log("try login");
 
-      const response: any = await axios.post(
-        `https://api.dessert-gallery.site/users/login`,
-        {
-          email: email,
-          password: password,
-        }
-      );
+      const response: any = await loginPageApi.postLogin({
+        email: email,
+        password: password,
+      });
 
       if (response.data.responseCode === "200") {
-        // 여기는 로그인 처리 후 메인페이지로
-        console.log(200);
+        console.log(response);
         const accessToken = response.headers.get("Authorization");
         const refreshToken = response.headers.get("Refreshtoken");
-        setJwtState({
-          accessToken: accessToken,
-          refreshToken: refreshToken,
-        });
-        router.push("/");
+        setToken(accessToken, refreshToken);
+        setModalMessage("정상 로그인 되었습니다.");
+        setIsModalOpen(true);
+        setIsLoginSuccess(true);
       } else {
-        console.log("에러", response.data.responseCode);
+        setIsModalOpen(true);
+        setModalMessage("로그인에 실패했습니다.");
+        console.log("에러", response.data);
       }
     } catch (error) {
-      console.log("Error: ", error);
+      setIsModalOpen(true);
+      setModalMessage("로그인에 실패했습니다.");
     }
   };
 
   return (
     <Wrapper>
+      <LoginModal
+        isOpen={isModalOpen}
+        onClickClose={() => setIsModalOpen(false)}
+        onClickConfirm={() => {
+          if (isLoginSuccess) {
+            router.push("/");
+            setIsModalOpen(false);
+          } else {
+            setIsModalOpen(false);
+          }
+        }}
+      >
+        {modalMessage}
+      </LoginModal>
       <MainWrapper>
         <MainContnentsWrapper>
           <Title>LOGIN</Title>

@@ -8,77 +8,79 @@ import SlideImage from "../../../../components/SlideImage/SlideImage";
 import MenuBox from "./MenuBox";
 import {
   useGetDetailBoard,
-  useGetModalComment,
-  usePostModalComment,
+  useInfinityModalComment,
 } from "../../../../hooks/useBoard";
+import {
+  postBoardComment,
+  toggleBookmark,
+} from "../../../../apis/controller/detailStore";
+import { useGetStoreInfo } from "../../../../hooks/useStore";
+import { useRouter } from "next/router";
 import { useInView } from "react-intersection-observer";
+import LoadingSpinner from "./LoadingSpinner";
 
-const PostModal = ({ boardId, storeInfo }: any) => {
+const PostModal = ({ boardId }: any) => {
   const [comment, setComment] = useState<string>("");
   const [onBookmarkState, setOnBookmarkState] = useState<boolean>(false);
   const [menuIconClick, setMenuIconClick] = useState<boolean>(false);
+  const [commentList, setCommentList] = useState<any[]>([]);
+  const [postCommentList, setPostCommentList] = useState<any[]>([]);
+  const [isLoad, setIsLoad] = useState(false);
 
-  const [page, setPage] = useState<number>(1);
-  const [activeIo, setActiveIo] = useState<boolean>(false);
-  const [commentArr, setCommentArr] = useState<Comment[]>([]); // 댓글 목록을 저장하는 상태
+  // 가게 정보 불러오기
+  const router = useRouter();
+  const { data: storeInfo } = useGetStoreInfo({
+    storeId: Number(router.query.store),
+    options: { refetchOnWindowFocus: false },
+  });
 
-  const submit = async (e: any) => {
-    // 댓글 submit
-    await e.preventDefault();
-    // await mutate();
-    // await setCommentArr((prev) => [...prev, comment]);
-    // await setComment("");
-  };
+  // 세부 게시물 불러오기
   const detailPoster = useGetDetailBoard({}, boardId);
 
-  const { data, refetch } = useGetModalComment({
-    page: page || 1,
-    boardId,
-    options: {
-      refetchOnWindowFocus: false,
-    },
-  });
-
-  const { mutate } = usePostModalComment({
-    boardId,
-    comment,
-    accessToken:
-      "bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJybGFlaGRyYnM1ODBAbmF2ZXIuY29tIiwicm9sZXMiOiJNQU5BR0VSIiwiaWF0IjoxNjk1MTMwMTQwLCJleHAiOjE2OTUxMzE5NDB9.DA8MOCZaWdoyPgPCGg9pVPLXtmAvhXalpni2cLvHCxM",
-    options: {
-      refetchOnWindowFocus: false,
-    },
-  });
-
-  const [ref, inView] = useInView();
-
+  // infiniteQuery 모달 댓글 불러오기
+  const { data, fetchNextPage, hasNextPage, isLoading, refetch } =
+    useInfinityModalComment({ boardId });
   useEffect(() => {
     if (data) {
-      setCommentArr((prevArr) => [...prevArr, ...data.content]);
+      const list = data?.pages
+        .map((page) => {
+          return page.result;
+        })
+        .flat();
+      setCommentList(list);
     }
   }, [data]);
 
-  useEffect(() => {
-    if (inView) {
-      setActiveIo(true);
-      refetch();
-    } else {
-      setActiveIo(false);
+  // 모달 댓글 작성하기
+  const submit = async (e: any) => {
+    await e.preventDefault();
+    try {
+      const postComment = await postBoardComment({ boardId, comment });
+      setPostCommentList((prev) => [postComment, ...prev]);
+    } catch (err: any) {
+      if (err.response.status == 403) {
+        alert("로그인을 해주세요.");
+      }
     }
-  }, [inView, refetch]);
+    setComment("");
+  };
+
+  const [ref, inView] = useInView({ threshold: 1 });
 
   useEffect(() => {
-    if (activeIo) {
-      setPage((prev) => prev + 1);
+    if (inView && !isLoading && hasNextPage) {
+      setIsLoad(true);
+      setTimeout(() => {
+        fetchNextPage();
+        setIsLoad(false);
+      }, 1500);
     }
-  }, [activeIo]);
+  }, [inView, isLoading]);
 
   if (!detailPoster) {
     return <></>;
   }
 
-  console.log(commentArr);
-
-  const { name, info, storeImage, address } = storeInfo;
   const { title, content, tags, images } = detailPoster;
 
   return (
@@ -94,10 +96,10 @@ const PostModal = ({ boardId, storeInfo }: any) => {
         <PostInfo>
           <InfoHeader>
             <StoreInfo>
-              <StoreProfile src={storeImage.fileUrl} />
+              <StoreProfile src={storeInfo.storeImage.fileUrl} />
               <div>
-                <StoreName>{name}</StoreName>
-                <SubCategory>{info || "default 값"}</SubCategory>
+                <StoreName>{storeInfo.name}</StoreName>
+                <SubCategory>{storeInfo.info || "default 값"}</SubCategory>
               </div>
             </StoreInfo>
             <MenuIcon
@@ -108,15 +110,20 @@ const PostModal = ({ boardId, storeInfo }: any) => {
               }}
             />
           </InfoHeader>
+
           <InfoContent>
             {menuIconClick && <MenuBox />}
             <TopPosition>
-              <Address>{address}</Address>
+              <Address>{storeInfo.address}</Address>
               <BookmarkDiv>
                 <Bookmark
+                  storeId={boardId}
                   onBookmark={onBookmarkState}
                   size="medium"
-                  onClickBookmark={() => setOnBookmarkState((prev) => !prev)}
+                  onClickBookmark={() => {
+                    toggleBookmark({ boardId });
+                    setOnBookmarkState((prev) => !prev);
+                  }}
                 />
               </BookmarkDiv>
             </TopPosition>
@@ -127,9 +134,10 @@ const PostModal = ({ boardId, storeInfo }: any) => {
                 return <HashTag key={idx}>{item}</HashTag>;
               })}
             </HashTagBox>
+
             <CommentList>
-              {commentArr &&
-                commentArr.map((item: any, idx: number) => {
+              <>
+                {postCommentList.map((item: any, idx: number) => {
                   return (
                     <Comment
                       nickname={item.nickname}
@@ -139,8 +147,25 @@ const PostModal = ({ boardId, storeInfo }: any) => {
                     />
                   );
                 })}
-              <IoDiv ref={ref} />
+              </>
+              {commentList &&
+                commentList.map((item: any, idx: number) => {
+                  return (
+                    <Comment
+                      nickname={item.nickname}
+                      comment={item.comment}
+                      profile={item.profile}
+                      key={idx}
+                    />
+                  );
+                })}
             </CommentList>
+            <IoDiv ref={ref}></IoDiv>
+            {isLoad && (
+              <LoadingDiv>
+                <LoadingSpinner width={20} height={20} borderWidth={2} />
+              </LoadingDiv>
+            )}
           </InfoContent>
 
           <Bottom>
@@ -166,10 +191,6 @@ const PostModal = ({ boardId, storeInfo }: any) => {
 };
 
 export default PostModal;
-
-const IoDiv = styled.div`
-  height: 1px;
-`;
 const Container = styled.div`
   display: flex;
   background-color: #fffdf9;
@@ -309,4 +330,13 @@ const ReservedBtn = styled.div`
     background-color: #ff6f00;
     cursor: pointer;
   }
+`;
+const LoadingDiv = styled.div`
+  margin-top: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+const IoDiv = styled.div`
+  margin-top: 30px;
 `;

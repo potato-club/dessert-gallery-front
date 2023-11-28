@@ -9,6 +9,7 @@ import FeedFollowStore from './FeedFollowStore';
 import FeedRecentGallery from './FeedRecentGallery';
 import FeedPrev from './FeedPrev';
 import FeedGuest from './FeedGuest';
+import { useUserState } from '../../../hooks/useUser';
 
 
 interface FeedSwitcherProps {
@@ -16,14 +17,11 @@ interface FeedSwitcherProps {
   storeListFol: galleryPostValue[];
 }
 
-function FeedSwitcher({ isGuest }: mainComponentsProps) {
+function FeedSwitcher() {
   const [selected, setSelected] = useState<number>(1);
   const { data: recentStores, isLoading: recentStoresLoading, error: recentStoresError } = useGetRecentStores();
   const { data: followBoardList, isLoading: followBoardListLoading, error: followBoardListError } = useGetFollowBoardList();
-  
-
-  console.log("check: ", recentStores, recentStoresLoading, recentStoresError)
-  console.log("check 팔로우한 가게: ", followBoardList, followBoardListLoading, followBoardListError)
+  const {isGuest} = useUserState();
 
   const onClickMovegalleryBoard = () => {
     window.location.href = '/galleryBoard'

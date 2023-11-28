@@ -7,7 +7,7 @@ import {
   getStoreAnnounce,
   getPosterThumnail,
   getStoreReview,
-} from "../../api/detailStore";
+} from "../../../src/apis/controller/detailStore";
 
 export interface StoreProps {
   storeInfo: any;
@@ -33,7 +33,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   const page = Number(context.params?.page) || 1;
   // storeId가 invalid 값일때 갤러리보드로 라우팅
   try {
-    const storeInfo = await getStoreInfo({ storeId });
     const announceData = await getStoreAnnounce({ storeId });
     const posterThumnail = await getPosterThumnail({ storeId });
     // accessToken이 있을때는 팔로우 여부 등등을 판단해야함 (처리 필요)
@@ -44,7 +43,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     return {
       props: {
         dehydratedState: dehydrate(queryClient), // 초기 데이터 캐싱
-        storeInfo,
         announceData,
         posterThumnail,
       },

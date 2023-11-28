@@ -51,12 +51,18 @@ const Review = ({ ...props }: StoreReviewType) => {
           )}
         </Content>
         {infoBtnClick ? (
-          <MoreBtn onClick={() => setInfoBtnClick(false)}>
+          <MoreBtn
+            onClick={() => setInfoBtnClick(false)}
+            infoBtnClick={infoBtnClick}
+          >
             <span>접기</span>
             <UpArrow width="16px" height="7px" />
           </MoreBtn>
         ) : (
-          <MoreBtn onClick={() => setInfoBtnClick(true)}>
+          <MoreBtn
+            onClick={() => setInfoBtnClick(true)}
+            infoBtnClick={infoBtnClick}
+          >
             <span>더보기</span>
             <DownArrow width="16px" height="7px" />
           </MoreBtn>
@@ -91,7 +97,10 @@ const Container = styled.div`
   border-bottom: 2px solid #ff8d00;
   box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.161);
 `;
-const LeftCont = styled.div``;
+const LeftCont = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
 const RightCont = styled.div`
   margin-bottom: 30px;
 `;
@@ -128,6 +137,7 @@ const Content = styled.div<{ infoBtnClick: boolean }>`
 `;
 const Text = styled.p<{ infoBtnClick: boolean }>`
   margin: 17px 0px 11px;
+  padding-left: 5px;
   width: 640px;
   color: #000;
   font-size: 16px;
@@ -153,7 +163,7 @@ const Photo = styled(SlideImage)<{ infoBtnClick: boolean }>`
   font-weight: 700;
   margin-bottom: ${({ infoBtnClick }) => (infoBtnClick ? "26px" : "")};
 `;
-const MoreBtn = styled.button`
+const MoreBtn = styled.button<{ infoBtnClick: boolean }>`
   display: flex;
   width: 82px;
   gap: 15px;
@@ -165,4 +175,6 @@ const MoreBtn = styled.button`
   background-color: inherit;
   align-items: center;
   cursor: pointer;
+  padding: 0px 5px;
+  margin: ${({ infoBtnClick }) => (infoBtnClick ? "20px 0px" : "0px")};
 `;
