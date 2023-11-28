@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import mainGuest from '../../../../public/image/mainGuest.png'
 
 interface componentsProps {
   menu: number;
@@ -88,4 +89,33 @@ export const SummaryText = styled.div`
   font-weight: bold;
   font-family: noto-sans-cjk-kr;
   margin: 33px 0 18px 0;
+`
+
+
+export const Wrap = styled.div`
+  width: 100%;
+  display: flex;
+  margin: 24px;
+  flex-direction: column;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  border: 3px solid #ff6f005a;
+  border-radius: 16px;
+`
+export const LogoImage = styled.div`
+  width: 64px;
+  height: 64px;
+  background-image: url(${mainGuest.src});
+  background-size: cover;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: default;
+`
+
+export const InfoText = styled.div`
+  font-family: noto-sans-cjk-kr;
+  font-size: 24px;
+  margin-top: 16px;
 `
