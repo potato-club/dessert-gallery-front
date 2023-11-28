@@ -22,7 +22,7 @@ function MainPage() {
     <MainWrap>
       <Banner/>
       <PopularStore isGuest={isGuest}/>
-      <FeedSwitcher isGuest={isGuest}/>
+      <FeedSwitcher/>
       <NewReview/>
       <NearbyStore />
       <MoveToMap/>
