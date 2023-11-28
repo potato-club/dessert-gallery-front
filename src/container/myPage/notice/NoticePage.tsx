@@ -158,11 +158,12 @@ const NoticePage = () => {
           >
             <ContentBox detail={noticeInfo.id === detailButton}>
               <NoticeValue>{noticeInfo.value}</NoticeValue>
-              <NoticeTitle>
-                {noticeInfo.id === detailButton
-                  ? noticeInfo.content
-                  : noticeInfo.title}
-              </NoticeTitle>
+              {noticeInfo.id === detailButton ? (
+                <NoticeContent>{noticeInfo.content}</NoticeContent>
+              ) : (
+                <NoticeTitle>{noticeInfo.title}</NoticeTitle>
+              )}
+
               <NoticeDate>{noticeInfo.date}</NoticeDate>
               <OptionBox>
                 <Option onClick={() => handleDetailClick(noticeInfo.id)}>
