@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import Profile from "./components/Profile";
-import Calendar from "./components/MyCalendar";
+import CalendarPage from "./calendarPage";
 import Menu from "./components/Menu";
 import myPageBack from "../../../public/image/myPageBack.png";
 import type { roleMyMenu } from "../../types/componentsProps";
@@ -147,33 +147,31 @@ const MyPage = () => {
   };
 
   return (
-    <PageWrapper>
+    <PageWrapper selectedMenu={selectedMenu}>
       <Menu
         menu={menu.filter((e) => e.selected)[0]}
         onClickMenu={handleMenuClick}
       />
       <Contents>{selectedMenu === 1 && <Profile />}</Contents>
-      <Contents>{selectedMenu === 8 && <Calendar />}</Contents>
+      <Contents>{selectedMenu === 8 && <CalendarPage />}</Contents>
     </PageWrapper>
   );
 };
 
 export default MyPage;
 
-const PageWrapper = styled.div`
-  width: 100vw;
+const PageWrapper = styled.div<{ selectedMenu: number }>`
+  width: 100%;
   height: 100%;
   border-radius: 0 16px 16px 0;
-  background-color: #fcf0e1;
-  background-image: url(${myPageBack.src});
+  background-color: ${({ selectedMenu }) =>
+    selectedMenu !== 8 ? "#fcf0e1" : "#fffdf9"};
+  background-image: ${({ selectedMenu }) =>
+    selectedMenu !== 8 && `url(${myPageBack.src})`};
   background-position: right top;
   background-repeat: no-repeat;
   background-blend-mode: darken;
   display: flex;
 `;
 
-const Contents = styled.div`
-  width: 100%;
-  height: max-content;
-  min-height: 100vh;
-`;
+const Contents = styled.div``;
