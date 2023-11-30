@@ -3,6 +3,8 @@ import Image from "next/image";
 import React from "react";
 import myPageLogo from "../../../../public/image/myPageLogo.png";
 import type { roleMyMenu, myMenu } from "../../../types/componentsProps";
+import Link from "next/link";
+import { useRouter } from "next/router";
 
 interface styleProp {
   fontSize: string;
@@ -12,13 +14,9 @@ interface styleProp {
   cursorStyle?: boolean;
 }
 
-export default function Menu({
-  menu,
-  onClickMenu,
-}: {
-  menu: roleMyMenu;
-  onClickMenu: (role: string, menuId: number) => void;
-}) {
+export default function Menu({ menu }: { menu: roleMyMenu }) {
+  const router = useRouter();
+
   const onClickMoveMain = () => {
     window.location.href = "/";
   };
@@ -59,37 +57,37 @@ export default function Menu({
           </UserInfoWrap>
 
           <UserMenuWrap>
-            {menu.category.map((el: myMenu) => (
-              <CategoryWrap
-                key={`CategoryWrap${el.menuId}`}
-                onClick={() => onClickMenu(menu.role, el.menuId)}
-              >
-                <CategoryLogo key={`CategoryLogo${el.menuId}`} />
-                <Text
-                  cursorStyle={true}
-                  fontColor={el.selected ? `#000000` : `#828282`}
-                  fontSize="18px"
-                  bold={el.selected}
-                >
-                  {el.title}
-                </Text>
-              </CategoryWrap>
+            {menu.category.map((el: myMenu, idx) => (
+              <Link key={`Category${idx}`} href={el.domain}>
+                <CategoryWrap>
+                  <CategoryLogo />
+                  <Text
+                    cursorStyle={true}
+                    fontColor={
+                      el.domain === router.pathname ? `#000000` : `#828282`
+                    }
+                    fontSize="18px"
+                    bold={el.domain === router.pathname}
+                  >
+                    {el.title}
+                  </Text>
+                </CategoryWrap>
+              </Link>
             ))}
           </UserMenuWrap>
         </ColumnBox>
 
         <SiteMenuWrap>
-          {menu.siteDefaultMenu.map((el: myMenu) => (
-            <CategoryWrap
-              key={`SiteMenuWrap${el.menuId}`}
-              onClick={() => onClickMenu(menu.role, el.menuId)}
-            >
-              <CategoryLogo key={`SiteMenuLogo${el.menuId}`} />
+          {menu.siteDefaultMenu.map((el: myMenu, idx) => (
+            <CategoryWrap key={`SiteMenuWrap${idx}`}>
+              <CategoryLogo key={`SiteMenuLogo${idx}`} />
               <Text
                 cursorStyle={true}
-                fontColor={el.selected ? `#000000` : `#828282`}
+                fontColor={
+                  el.domain === router.pathname ? `#000000` : `#828282`
+                }
                 fontSize="18px"
-                bold={el.selected}
+                bold={el.domain === router.pathname}
               >
                 {el.title}
               </Text>
