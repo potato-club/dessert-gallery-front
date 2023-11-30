@@ -21,7 +21,6 @@ export default CalendarPage;
 
 const Container = styled.div`
   display: flex;
-  width: 100%;
   height: 100%;
 `;
 const LeftDiv = styled.div`
