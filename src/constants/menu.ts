@@ -24,7 +24,7 @@ export const menuList = Object.freeze({
   MANAGER: [
     {
       title: "마이페이지",
-      domain: "/myPage/info",
+      domain: "/myPage",
     },
     {
       title: "1:1 채팅",
