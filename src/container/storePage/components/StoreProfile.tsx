@@ -28,7 +28,7 @@ const StoreProfile = () => {
             <InfoContent>
               <StoreName>{data.name}</StoreName>
               <SubTitle>{data.info || "default 값"}</SubTitle>
-              <MainPhrase>{data.introduction}</MainPhrase>
+              <MainPhrase>{data.content}</MainPhrase>
               <Address>{data.address}</Address>
               <StoreNumber>{data.phoneNumber}</StoreNumber>
               <StoreInfo>
