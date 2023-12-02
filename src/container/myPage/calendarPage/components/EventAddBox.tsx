@@ -1,8 +1,7 @@
-import React, { useState } from "react";
+import React from "react";
 import styled from "styled-components";
 
 const EventAddBox = () => {
-  const [isChecked, setIsChecked] = useState<boolean>();
   return (
     <Container>
       <PickColumn>
@@ -13,7 +12,7 @@ const EventAddBox = () => {
       <PickColumn>
         <input type="checkbox" />
         <Title>휴무일 추가하기</Title>
-        <SubText></SubText>
+        <SubText>가게의 쉬는 날을 지정하여 표시합니다</SubText>
       </PickColumn>
       <PickColumn>
         <input type="checkbox" />

@@ -110,7 +110,7 @@ const MenuWrapper = styled.div`
 `;
 
 const MenuHeader = styled.div`
-  width: 100%;
+  width: 330px;
   min-height: 96px;
   display: flex;
   justify-content: center;
