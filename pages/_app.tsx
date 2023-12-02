@@ -4,11 +4,15 @@ import ModalBackground from "../src/components/ModalBackground";
 import { RecoilRoot } from "recoil";
 import { Hydrate, QueryClient, QueryClientProvider } from "react-query";
 import { useEffect, useState } from "react";
-import myPage from "../pages/myPage";
 import Header from "../src/components/Header";
+import { useRouter } from "next/router";
+import MyPageLayout from "../src/container/myPage/components/MyPageLayout";
 
 function MyApp({ Component, pageProps }: AppProps) {
   const queryClient = useState(() => new QueryClient())[0];
+
+  const router = useRouter();
+  const shouldRenderHeader = router.pathname.indexOf("/myPage");
 
   useEffect(() => {
     const script = document.createElement("script");
@@ -27,13 +31,15 @@ function MyApp({ Component, pageProps }: AppProps) {
       <Hydrate state={pageProps}>
         <RecoilRoot>
           <ModalBackground>
-            {Component == myPage ? (
-              <Component {...pageProps} />
-            ) : (
+            {shouldRenderHeader ? (
               <>
                 <Header />
                 <Component {...pageProps} />
               </>
+            ) : (
+              <MyPageLayout>
+                <Component {...pageProps} />
+              </MyPageLayout>
             )}
           </ModalBackground>
         </RecoilRoot>
