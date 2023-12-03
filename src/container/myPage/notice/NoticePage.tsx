@@ -1,9 +1,15 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { IoSearch } from "react-icons/io5";
 import { IoIosArrowDown } from "react-icons/io";
 import { IoIosArrowUp } from "react-icons/io";
 import { HiDotsVertical } from "react-icons/hi";
+import useNoticeList from "../../../hooks/useNoticeList";
+import { NoticeListDto } from "../../../types/apiTypes";
+interface NoticePageProps {
+  isGuest: any;
+}
+
 interface Button {
   isSelected?: boolean;
   detail?: boolean;
@@ -21,19 +27,19 @@ interface NoticeInfo {
   date: string;
 }
 
-const NoticePage = () => {
+const NoticePage: React.FC<NoticePageProps> = ({ isGuest }) => {
   const [selectedButton, setSelectedButton] = useState<number>(0);
   const [detailButton, setDetailButton] = useState<number | null>(null);
+
+  const noticeList = useNoticeList();
 
   const handleValueClick = (buttonIndex: number) => {
     setSelectedButton(buttonIndex);
   };
   const handleDetailClick = (noticeId: number) => {
     if (detailButton === noticeId) {
-      // 같은 아이템을 다시 누르면 상세보기를 닫음
       setDetailButton(null);
     } else {
-      // 다른 아이템을 누르면 해당 아이템의 상세보기를 열고 기존에 열려있던 것은 닫음
       setDetailButton(noticeId);
     }
   };
@@ -43,86 +49,6 @@ const NoticePage = () => {
     { index: 0, label: "전체" },
     { index: 1, label: "공지사항" },
     { index: 2, label: "이벤트" },
-  ];
-  const noticeInfoList: NoticeInfo[] = [
-    {
-      id: 0,
-      value: "공지사항",
-      title: "공지사항의 제목입니다",
-      content:
-        "내용입니다. 어쩌구 저쩌구 조금 기이이일게 적어놓아 볼까요?~??~~~~~~~~~~~~~~~~",
-      date: "2023-11-25",
-    },
-    {
-      id: 1,
-      value: "이벤트",
-      title: "이벤트의 제목입니다",
-      content:
-        "내용입니다. 어쩌구 저쩌구 조금 기이이일게 적어놓아 볼까요?~??~~~~~~~~~~입니다. 어쩌구 저쩌구 조금 기이이일게 적어놓아 볼까요?~??~~~입니다. 어쩌구 저쩌구 조금 기이이일게 적어놓아 볼까요?~??~~~입니다. 어쩌구 저쩌구 조금 기이이일게 적어놓아 볼까요?~??~~~입니다. 어쩌구 저쩌구 조금 기이이일게 적어놓아 볼까요?~??~~~~~입니다. 어쩌구 저쩌구 조금 기이이일게 적어놓아 볼까요?~??~~~입니다. 어쩌구 저쩌구 조금 기이이일게 적어놓아 볼까요?~??~~~~~~~",
-      date: "2023-11-26",
-    },
-    {
-      id: 2,
-      value: "이벤트",
-      title: "이벤트의 제목입니다",
-      content:
-        "내용입니다. 어쩌구 저쩌구 조금 기이이일게 적어놓아 볼까요?~??~~~~~~~~~~~~~~~~",
-      date: "2023-11-26",
-    },
-    {
-      id: 3,
-      value: "공지사항",
-      title: "공지사항의 제목입니다",
-      content:
-        "내용입니다. 어쩌구 저쩌구 조금 기이이일게 적어놓아 볼까요?~??~~~~~~~~~~~~~~~~",
-
-      date: "2023-11-27",
-    },
-    {
-      id: 4,
-      value: "공지사항",
-      title: "공지사항의 제목입니다",
-      content:
-        "내용입니다. 어쩌구 저쩌구 조금 기이이일게 적어놓아 볼까요?~??~~~~~~~~~~~~~~~~",
-
-      date: "2023-11-27",
-    },
-    {
-      id: 6,
-      value: "공지사항",
-      title: "공지사항의 제목입니다",
-      content:
-        "내용입니다. 어쩌구 저쩌구 조금 기이이일게 적어놓아 볼까요?~??~~~~~~~~~~~~~~~~",
-
-      date: "2023-11-27",
-    },
-    {
-      id: 7,
-      value: "공지사항",
-      title: "공지사항의 제목입니다",
-      content:
-        "내용입니다. 어쩌구 저쩌구 조금 기이이일게 적어놓아 볼까요?~??~~~~~~~~~~~~~~~~",
-
-      date: "2023-11-27",
-    },
-    {
-      id: 8,
-      value: "공지사항",
-      title: "공지사항의 제목입니다",
-      content:
-        "내용입니다. 어쩌구 저쩌구 조금 기이이일게 적어놓아 볼까요?~??~~~~~~~~~~~~~~~~",
-
-      date: "2023-11-27",
-    },
-    {
-      id: 9,
-      value: "공지사항",
-      title: "공지사항의 제목입니다",
-      content:
-        "내용입니다. 어쩌구 저쩌구 조금 기이이일게 적어놓아 볼까요?~??~~~~~~~~~~~~~~~~",
-
-      date: "2023-11-27",
-    },
   ];
 
   return (
@@ -151,31 +77,31 @@ const NoticePage = () => {
         </Middle>
       </MenuWrapper>
       <Div>
-        {noticeInfoList.map((noticeInfo, index) => (
+        {noticeList?.map((noticeList) => (
           <ContentsBackground
-            key={index}
-            detail={noticeInfo.id === detailButton}
+            key={noticeList.id}
+            detail={noticeList.id === detailButton}
           >
-            <ContentBox detail={noticeInfo.id === detailButton}>
-              <NoticeValue>{noticeInfo.value}</NoticeValue>
-              {noticeInfo.id === detailButton ? (
-                <NoticeContent>{noticeInfo.content}</NoticeContent>
+            <ContentBox detail={noticeList.id === detailButton}>
+              <NoticeValue>{noticeList.type}</NoticeValue>
+              {noticeList.id === detailButton ? (
+                <NoticeContent>{noticeList.content}</NoticeContent>
               ) : (
-                <NoticeTitle>{noticeInfo.title}</NoticeTitle>
+                <NoticeTitle>{noticeList.title}</NoticeTitle>
               )}
 
-              <NoticeDate>{noticeInfo.date}</NoticeDate>
+              <NoticeDate>{noticeList.createdDate}</NoticeDate>
               <OptionBox>
-                <Option onClick={() => handleDetailClick(noticeInfo.id)}>
-                  {noticeInfo.id === detailButton ? "접기" : "더보기"}
+                <Option onClick={() => handleDetailClick(noticeList.id)}>
+                  {noticeList.id === detailButton ? "접기" : "더보기"}
                 </Option>
-                {noticeInfo.id === detailButton ? (
+                {noticeList.id === detailButton ? (
                   <IoIosArrowUp
-                    onClick={() => handleDetailClick(noticeInfo.id)}
+                    onClick={() => handleDetailClick(noticeList.id)}
                   />
                 ) : (
                   <IoIosArrowDown
-                    onClick={() => handleDetailClick(noticeInfo.id)}
+                    onClick={() => handleDetailClick(noticeList.id)}
                   />
                 )}
                 <HiDotsVertical />
@@ -324,6 +250,8 @@ const NoticeContent = styled.div`
   width: 400px;
   height: 36px;
   font-size: 15px;
+  align-items: center;
+  display: flex;
 `;
 
 const NoticeDate = styled.div`
