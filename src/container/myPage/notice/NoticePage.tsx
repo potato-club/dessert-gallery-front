@@ -27,7 +27,7 @@ interface NoticeInfo {
   date: string;
 }
 
-const NoticePage: React.FC<NoticePageProps> = ({ isGuest }) => {
+const NoticePage = () => {
   const [selectedButton, setSelectedButton] = useState<number>(0);
   const [detailButton, setDetailButton] = useState<number | null>(null);
 
