@@ -1,7 +1,6 @@
 import React from "react";
 import styled from "styled-components";
 import MemoColumn from "./MemoColumn";
-import TodayBackground from "../../../../public/image/TodayBackground.png";
 
 const MemoList = () => {
   return (
