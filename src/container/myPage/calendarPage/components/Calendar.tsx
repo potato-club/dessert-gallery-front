@@ -6,10 +6,11 @@ import dayGridPlugin from "@fullcalendar/daygrid";
 import { Container } from "../../../storePage/components/StoreCalendar";
 import CalendarInfoList from "./CalendarInfoList";
 
-const Calendar = () => {
+const Calendar = ({ ...props }) => {
   const customDayCellContent = (info: any) => {
     return info.dayNumberText.replace("일", "");
   };
+
   return (
     <MyCalContainer>
       <FullCalendar
@@ -27,6 +28,14 @@ const Calendar = () => {
         selectable
         locale="kr"
         dayCellContent={(info: any) => customDayCellContent(info)}
+        datesSet={(args) => {
+          const tenDaysLater =
+            new Date(args.startStr).getTime() + 10 * 24 * 60 * 60 * 1000;
+          props.setDateInfo({
+            year: new Date(tenDaysLater).getFullYear(),
+            month: new Date(tenDaysLater).getMonth() + 1,
+          });
+        }}
       />
       <CalendarInfoList />
     </MyCalContainer>

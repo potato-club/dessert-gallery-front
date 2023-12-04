@@ -10,9 +10,18 @@ import TodoListOpenArrow from "../../../../public/image/TodoListOpenArrow.png";
 import TodoListCloseArrow from "../../../../public/image/TodoListCloseArrow.png";
 import Image from "next/image";
 
+interface DateInfo {
+  year: number | null;
+  month: number | null;
+}
+
 const CalendarPage = () => {
   const [isMove, setIsMove] = useState<boolean>(false);
   const [currentWidth, setCurrentWidth] = useState<number>(0);
+  const [dateInfo, setDateInfo] = useState<DateInfo>({
+    year: null,
+    month: null,
+  });
 
   useEffect(() => {
     setCurrentWidth(window.innerWidth);
@@ -33,7 +42,7 @@ const CalendarPage = () => {
     <Container>
       <LeftDiv>
         <Intro />
-        <Calendar />
+        <Calendar setDateInfo={setDateInfo} />
         <EventAddBox />
       </LeftDiv>
       <RightDiv isMove={isMove} currentWidth={currentWidth}>
@@ -61,7 +70,9 @@ const CalendarPage = () => {
           <Today />
         </InnerContent>
         <InnerContent>
-          <Title>이번 달 메모장</Title>
+          <Title>
+            {dateInfo.year}년 {dateInfo.month}월 메모장
+          </Title>
           <MemoList />
         </InnerContent>
       </RightDiv>
@@ -91,7 +102,7 @@ const LeftDiv = styled.div`
 `;
 const RightDiv = styled.div<{ isMove: boolean; currentWidth: number }>`
   position: relative;
-  z-index: 10;
+  z-index: 1;
   display: flex;
   flex-direction: column;
   gap: 77px;
