@@ -5,14 +5,25 @@ import interactionPlugin from "@fullcalendar/interaction";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import { Container } from "../../../storePage/components/StoreCalendar";
 import CalendarInfoList from "./CalendarInfoList";
+import { useRecoilState } from "recoil";
+import { modalBg } from "../../../../recoil/modalBg/atom";
+import DateModal from "./DateModal";
+import ModalWrapper from "../../../../components/ModalWrapper";
 
 const Calendar = ({ ...props }) => {
+  const [onModal, setOnModal] = useRecoilState(modalBg);
+
   const customDayCellContent = (info: any) => {
     return info.dayNumberText.replace("일", "");
   };
 
   return (
     <MyCalContainer>
+      {onModal && (
+        <ModalWrapper>
+          <DateModal />
+        </ModalWrapper>
+      )}
       <FullCalendar
         plugins={[dayGridPlugin, interactionPlugin]}
         headerToolbar={{
@@ -23,6 +34,7 @@ const Calendar = ({ ...props }) => {
         height={690}
         dateClick={(e: any) => {
           console.log(e);
+          setOnModal(true);
         }}
         editable
         selectable
