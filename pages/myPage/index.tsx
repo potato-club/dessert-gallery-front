@@ -1,12 +1,12 @@
 import React from "react";
-import MyPage from "../../src/container/myPage/MyPage";
+import Profile from "../../src/container/myPage/components/Profile";
 
-const myPage = () => {
+const index = () => {
   return (
     <>
-      <MyPage />
+      <Profile />
     </>
   );
 };
 
-export default myPage;
+export default index;

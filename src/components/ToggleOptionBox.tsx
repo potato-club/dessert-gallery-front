@@ -1,22 +1,30 @@
 import React from "react";
 import styled from "styled-components";
-import { ArrowUp } from "../../../../../public/svg";
+import { ArrowUp } from "../../public/svg";
 
-const MenuBox = () => {
+interface BoxItemType {
+  title: string;
+  onClickHandler: () => void;
+}
+
+const ToggleOptionBox = ({ ...props }) => {
   return (
     <Container>
       <ArrowUp fill="#ffffff" />
       <FunctionBox>
-        <Func>1:1 채팅</Func>
-        <Func>공유하기</Func>
-        <Func>예약하러 가기</Func>
-        <Func>게시판 이동</Func>
+        {props.contents.map((item: BoxItemType, idx: number) => {
+          return (
+            <Func onClick={() => item.onClickHandler()} key={idx}>
+              {item.title}
+            </Func>
+          );
+        })}
       </FunctionBox>
     </Container>
   );
 };
 
-export default MenuBox;
+export default ToggleOptionBox;
 
 const Container = styled.div`
   display: flex;
