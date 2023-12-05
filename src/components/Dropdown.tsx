@@ -30,4 +30,5 @@ const DropdownWrapper = styled.div<{ dropdownState: boolean }>`
   border-radius: 6px;
   left: 50%;
   transform: translate(-50%, 0);
+  font-family: noto-sans-cjk-kr, sans-serif;
 `;
