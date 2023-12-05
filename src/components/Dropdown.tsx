@@ -2,11 +2,19 @@ import React from "react";
 import styled from "styled-components";
 import DropdownMenu from "./DropdownMenu";
 import { loginPageApi } from "../apis/controller/loginPage";
+import { useRouter } from "next/router";
 
 const Dropdown = ({ dropdownState }: { dropdownState: boolean }) => {
+  const router = useRouter();
   return (
     <DropdownWrapper dropdownState={dropdownState}>
-      <DropdownMenu onClickMenu={() => {}}>마이페이지</DropdownMenu>
+      <DropdownMenu
+        onClickMenu={() => {
+          router.push("/myPage");
+        }}
+      >
+        마이페이지
+      </DropdownMenu>
       <DropdownMenu
         onClickMenu={async () => {
           //   const response = await loginPageApi.getLogout();

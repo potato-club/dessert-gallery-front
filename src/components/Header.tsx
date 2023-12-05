@@ -11,9 +11,7 @@ const Header = () => {
 
   const onClickMyPageButton = () => {
     if (getAccessToken() === "") {
-      router.push("login/main");
-    } else {
-      //마이페이지로 라우팅
+      router.push("login");
     }
   };
   const [dropdownState, setDropdownState] = useState(false);
