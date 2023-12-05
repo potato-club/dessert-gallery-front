@@ -62,6 +62,7 @@ const StyledInput = styled.input<{ marginBottom?: number }>`
   border-radius: 50px;
   margin-bottom: ${(props) => props.marginBottom}px;
   box-sizing: border-box;
+  font-family: noto-sans-cjk-kr, sans-serif;
   //Input 컴포넌트 클릭 시 바깥에 생기는 검은 테두리를 없애는 용도
   outline: none;
   ::placeholder {

@@ -26,4 +26,5 @@ const TitleH2 = styled.h2`
   font-weight: bold;
   color: #ff6f00;
   text-shadow: 0 3px 6px #ff8d00;
+  font-family: noto-sans-cjk-kr, sans-serif;
 `;

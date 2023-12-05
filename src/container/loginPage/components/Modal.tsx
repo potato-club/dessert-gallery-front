@@ -141,6 +141,7 @@ const ModalWrapper = styled.div<{ state: boolean }>`
   padding: 0 108px;
   width: 620px;
   height: 360px;
+  font-family: noto-sans-cjk-kr, sans-serif;
 `;
 
 const ExplainDiv = styled.div`
