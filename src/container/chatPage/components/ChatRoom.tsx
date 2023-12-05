@@ -44,7 +44,11 @@ function ChatRoom() {
           timestamp={"2023-11-26T20:15:10.918Z"}
         ></ChatItem>
       </Contents>
-      <Bottom></Bottom>
+      <Bottom>
+        <Textbox placeholder="메세지를 입력해주세요">
+          {/* <SendButton>123</SendButton> */}
+        </Textbox>
+      </Bottom>
     </Wrapper>
   );
 }
@@ -166,6 +170,8 @@ const ButtonDiv = styled.div`
   align-items: center;
   width: 202px;
 `;
+
+// 그림자 버전 버튼
 const Button = styled.button`
   width: 92px;
   height: 24px;
@@ -174,27 +180,12 @@ const Button = styled.button`
   justify-content: center;
   font-size: 9px;
   font-weight: bold;
+  border: none;
   border-radius: 6px;
-  border: 1px solid #dedede;
   background-color: FCF6EE;
+  box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.1);
   cursor: pointer;
 `;
-
-// 그림자 버전 버튼
-// const Button = styled.button`
-//   width: 92px;
-//   height: 24px;
-//   display: flex;
-//   align-items: center;
-//   justify-content: center;
-//   font-size: 9px;
-//   font-weight: bold;
-//   border: none;
-//   border-radius: 6px;
-//   background-color: FCF6EE;
-//   box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.1);
-//   cursor: pointer;
-// `;
 
 const Contents = styled.div`
   @media screen and (min-width: 1920px) {
@@ -221,5 +212,27 @@ const Bottom = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
+  padding: 14px;
+`;
+
+const Textbox = styled.textarea`
+  width: 100%;
+  height: 100%;
+  padding: 19px 21px;
+  border: 2px solid #ff6f00;
+  border-radius: 7px;
+  resize: none;
+  outline: none;
+  font-size: 11px;
+  font-family: noto-sans-cjk-kr, sans-serif;
+  ::placeholder {
+    color: #828282;
+  }
+`;
+
+const SendButton = styled.button`
+  width: 50px;
+  height: 22px;
   background-color: #dedede;
+  border-radius: 7px;
 `;

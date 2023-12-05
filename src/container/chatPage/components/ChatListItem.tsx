@@ -38,6 +38,7 @@ const Wrapper = styled.div`
   display: flex;
   border-bottom: 1px solid #dedede;
   padding: 12.5px 21px;
+  cursor: pointer;
 `;
 
 const Profile = styled.div`
@@ -108,3 +109,4 @@ const TimeStamp = styled.div`
   color: #828282;
   margin-top: 5px;
 `;
+
