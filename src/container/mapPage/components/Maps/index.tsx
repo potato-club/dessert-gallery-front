@@ -93,7 +93,7 @@ const Maps = ({markerData, centerCoord, sidebar, setCenter,  setSearchHere}: pro
           .customoverlay .info {display:block;text-align:center;background:#fff;margin-right:35px;padding:8px 15px;font-size:14px;font-weight:bold;}
           .customoverlay .info .score {display:flex; margin-top:4px; align-items: center}
           .customoverlay .info .score .value {margin-left: 4px; margin-top:2px}
-          .customoverlay:after {content:'';position:absolute;margin-left:-12px;left:50%;bottom:-12px;width:22px;height:12px;}
+          .customoverlay:after {content:'';position:absolute;margin-left:-12px;left:50%;bottom:-12px;width:22px;height:12px;background:url('https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/vertex_white.png')}
         </style>
         <div class="customoverlay"> 
             <a href=""> 
