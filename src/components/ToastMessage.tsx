@@ -2,8 +2,13 @@ import React, {useEffect, useState} from 'react'
 import styled from 'styled-components'
 import type { ToastMessageProps } from '../types/componentsProps'
 
-const ToastMessage = ({messageString, timer, clickEvent=false, eventFunc }:ToastMessageProps) => {
+interface styleProps {
+  wrapType: 'none'|'map'| 'sideBarMap'
+}
+
+const ToastMessage = ({messageString, timer, clickEvent=false, eventFunc, wrapType='none' }:ToastMessageProps) => {
   const [visible, setVisible] = useState(true);
+
 
   useEffect(()=>{
     console.log("Toast")
@@ -11,9 +16,9 @@ const ToastMessage = ({messageString, timer, clickEvent=false, eventFunc }:Toast
   },[timer])
 
   return visible ? (
-    <Wrap>
-      {!clickEvent&&<ToastWrap>{messageString}</ToastWrap>}
-      {clickEvent&&<AbleEventToastWrap onClick={eventFunc}>{messageString}</AbleEventToastWrap>}
+    <Wrap >
+      {!clickEvent&&<ToastWrap wrapType={wrapType}>{messageString}</ToastWrap>}
+      {clickEvent&&<AbleEventToastWrap wrapType={wrapType} onClick={eventFunc}>{messageString}</AbleEventToastWrap>}
 
     </Wrap>
   ):null
@@ -27,7 +32,7 @@ const Wrap = styled.div`
   z-index: 100;
   background-color: white;
 ` 
-const ToastWrap = styled.div`
+const ToastWrap = styled.div<styleProps>`
   position: fixed;
   bottom: 20px;
   left: 45%;
@@ -42,12 +47,25 @@ const ToastWrap = styled.div`
   border-radius: 16px;
   z-index: 100;
   cursor: default;
+
+  /* ${({ wrapType }) => {
+    if (wrapType === 'map') {
+      return `right: calc((100% - 439px) / 2);`;
+    } else if (wrapType === 'sideBarMap') {
+      return `right: calc((100% - 439px - 431px) / 2);`;
+    } else {
+      return `
+        left: 50%; 
+        transform: translateX(-50%);`
+    }
+  }} */
 `
 
-const AbleEventToastWrap = styled.div`
+const AbleEventToastWrap = styled.div<styleProps>`
   position: fixed;
   bottom: 20px;
-  left: 45%;
+  left: 50%; 
+  transform: translateX(-50%);
   width: fit-content;
   height: fit-content;
   padding: 8px 12px;
@@ -59,4 +77,20 @@ const AbleEventToastWrap = styled.div`
   border-radius: 16px;
   z-index: 100;
   cursor: pointer;
+
+  /* ${({ wrapType }) => {
+    if (wrapType === 'map') {
+      console.log('map')
+      return `right: calc((100% - 439px) / 2);`;
+    } else if (wrapType === 'sideBarMap') {
+      console.log('sideBarMap')
+      return `left: calc((100% - 439px - 431px) / 2);`;
+    } else {
+      return `
+      console.log('헹')
+
+        left: 50%; 
+        transform: translateX(-50%);`
+    }
+  }} */
 `

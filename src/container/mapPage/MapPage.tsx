@@ -19,18 +19,18 @@ const MapPage = () => {
     lat: center.lat, 
     lng: center.lng
   })
+  const [searchHere, setSearchHere] = useState<boolean>(false)
 
 
   useEffect(()=>{
-    console.log("mapPage: ", markerData)
-  },[center.lat, center.lng])
+  },[searchHere])
 
 
   return (
     <Container>
       <SideNav />
       <MarketDetailInfo />
-      <Maps centerCoord={center} setCenter={setCenter} sidebar={sidebar}/>
+      <Maps markerData={markerData} centerCoord={center} setCenter={setCenter} sidebar={sidebar} setSearchHere={setSearchHere}/>
     </Container>
   );
 };

@@ -302,6 +302,7 @@ export type ToastMessageProps = {
     timer: number
     clickEvent?: boolean
     eventFunc?: () => void
+    wrapType: 'none'|'map'|'sideBarMap'
 }
 
 export type boardOptionValue = {
