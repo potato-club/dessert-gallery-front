@@ -3,8 +3,9 @@ import styled from "styled-components";
 import WritingModal from "./WrtingModal";
 import { useSetRecoilState, useRecoilValue } from "recoil";
 import { modalBg } from "../../../recoil/modalBg/atom";
-import Layout from "../../../components/ModalBackground";
-import ModalBackground from "../../../components/ModalBackground";
+import { postNoticeApi } from "../../../apis/controller/noticePage";
+import Router from "next/router";
+import { useParams } from "react-router-dom";
 interface ButtonProps {
   btnColor: string;
   fontColor: string;
@@ -13,96 +14,136 @@ interface ButtonProps {
 const WritingPage = () => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
+  const [exposed, setexposed] = useState("true");
+  const [typeKey, setTypeKey] = useState("0");
   const titleChange = (e: any) => setTitle(e.target.value);
   const contentChange = (e: any) => setContent(e.target.value);
   const setModalBgState = useSetRecoilState(modalBg);
-
+  const mainExpotureChange = (e: any) => {
+    setexposed(e.target.value);
+  };
+  const noticeTypeChange = (e: any) => {
+    setTypeKey(e.target.value);
+  };
   const cancelButton = () => {
     setModalBgState(true);
   };
-  return (
-    <Wrapper>
-      <ContentWriteTitle>게시글 작성</ContentWriteTitle>
-      <WritingBox>
-        <TitleWritingBox>
-          <Title>제목</Title>
-          <TitleWriting>
-            <TitleWritingInput
-              placeholder="제목을 입력해주세요"
-              value={title}
-              onChange={titleChange}
-            />
-          </TitleWriting>
-        </TitleWritingBox>
-        <ContentWritingBox>
-          <Content>내용</Content>
-          <ContentWriting>
-            <ContentTextArea
-              placeholder="내용을 입력해주세요"
-              value={content}
-              onChange={contentChange}
-            ></ContentTextArea>
-          </ContentWriting>
-        </ContentWritingBox>
-      </WritingBox>
 
-      <OptionBox>
-        <MainExpotureBox>
-          <MainExpoture>메인 노출</MainExpoture>
-          <Type
-            type="radio"
-            name="mainExpoture"
-            id="expoture"
-            value="true"
-            defaultChecked={true}
-          />
-          <Label htmlFor="expoture" />
-          <LabelDiv>설정함</LabelDiv>
-          <Type
-            type="radio"
-            name="mainExpoture"
-            id="unExporture"
-            value="false"
-          />
-          <Label htmlFor="unExporture" />
-          <LabelDiv>설정안함</LabelDiv>
-        </MainExpotureBox>
-        <InfoTypeBox>
-          <MainExpoture>공지 유형</MainExpoture>
-          <Type
-            type="radio"
-            name="noticeType"
-            id="notice"
-            value="0"
-            defaultChecked={true}
-          />
-          <Label htmlFor="notice" />
-          <LabelDiv>공지사항</LabelDiv>
-          <Type type="radio" name="noticeType" id="event" value="1" />
-          <Label htmlFor="event" />
-          <LabelDiv>이벤트</LabelDiv>
-        </InfoTypeBox>
-      </OptionBox>
-      <ModalBackground>
+  const postData = async () => {
+    await postNoticeApi({ title, content, exposed, typeKey });
+  };
+
+  const handleSubmit = async (e: any) => {
+    e.preventDefault();
+    await postData();
+    setTitle("");
+    setContent("");
+    Router.push("/myPage/notice");
+  };
+
+  return (
+    <Form onSubmit={handleSubmit}>
+      <Wrapper>
+        <ContentWriteTitle>게시글 작성</ContentWriteTitle>
+        <WritingBox>
+          <TitleWritingBox>
+            <Title>제목</Title>
+            <TitleWriting>
+              <TitleWritingInput
+                placeholder="제목을 입력해주세요"
+                value={title}
+                onChange={titleChange}
+                required
+              />
+            </TitleWriting>
+          </TitleWritingBox>
+          <ContentWritingBox>
+            <Content>내용</Content>
+            <ContentWriting>
+              <ContentTextArea
+                placeholder="내용을 입력해주세요"
+                value={content}
+                onChange={contentChange}
+                required
+              ></ContentTextArea>
+            </ContentWriting>
+          </ContentWritingBox>
+        </WritingBox>
+
+        <OptionBox>
+          <MainExpotureBox>
+            <MainExpoture>메인 노출</MainExpoture>
+            <Type
+              type="radio"
+              name="mainExpoture"
+              id="expoture"
+              value="true"
+              defaultChecked={true}
+              onChange={mainExpotureChange}
+            />
+            <Label htmlFor="expoture" />
+            <LabelDiv>설정함</LabelDiv>
+            <Type
+              type="radio"
+              name="mainExpoture"
+              id="unExporture"
+              value="false"
+              onChange={mainExpotureChange}
+            />
+            <Label htmlFor="unExporture" />
+            <LabelDiv>설정안함</LabelDiv>
+          </MainExpotureBox>
+          <InfoTypeBox>
+            <MainExpoture>공지 유형</MainExpoture>
+            <Type
+              type="radio"
+              name="noticeType"
+              id="notice"
+              value="0"
+              defaultChecked={true}
+              onChange={noticeTypeChange}
+            />
+            <Label htmlFor="notice" />
+            <LabelDiv>공지사항</LabelDiv>
+            <Type
+              type="radio"
+              name="noticeType"
+              id="event"
+              value="1"
+              onChange={noticeTypeChange}
+            />
+            <Label htmlFor="event" />
+            <LabelDiv>이벤트</LabelDiv>
+          </InfoTypeBox>
+        </OptionBox>
         {useRecoilValue(modalBg) && (
           <WritingModal setTitle={setTitle} setContent={setContent} />
         )}
-      </ModalBackground>
-      <ButtonBox>
-        <Button typeof="submit" btnColor="#FF8D00" fontColor="black">
-          완료
-        </Button>
-        <Button btnColor="white" fontColor="#FF8D00" onClick={cancelButton}>
-          삭제
-        </Button>
-      </ButtonBox>
-    </Wrapper>
+        <ButtonBox>
+          <Button type="submit" btnColor="#FF8D00" fontColor="black">
+            완료
+          </Button>
+
+          <Button
+            type="button"
+            btnColor="white"
+            fontColor="#FF8D00"
+            onClick={cancelButton}
+          >
+            삭제
+          </Button>
+        </ButtonBox>
+      </Wrapper>
+    </Form>
   );
 };
 
 export default WritingPage;
-
+const Form = styled.form`
+  width: 100%;
+`;
 const Wrapper = styled.div`
+  width: 100%;
   display: flex;
   flex-direction: column;
   row-gap: 50px;
@@ -253,7 +294,7 @@ const ButtonBox = styled.div`
   justify-content: end;
   gap: 36px;
 `;
-const Button = styled.div<ButtonProps>`
+const Button = styled.button<ButtonProps>`
   width: 158px;
   height: 52px;
   font-family: Noto Sans CJK KR;
