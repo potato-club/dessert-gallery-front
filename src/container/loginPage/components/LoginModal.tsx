@@ -53,6 +53,7 @@ const ModalWrapper = styled.div`
   border: 3px solid #ff6f00;
   border-radius: 6px;
   flex-direction: row;
+  font-family: noto-sans-cjk-kr, sans-serif;
 `;
 
 const ModalTextDiv = styled.div`
