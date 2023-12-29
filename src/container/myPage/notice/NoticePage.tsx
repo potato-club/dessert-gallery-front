@@ -1,15 +1,19 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import { IoSearch } from "react-icons/io5";
 import { IoIosArrowDown } from "react-icons/io";
 import { IoIosArrowUp } from "react-icons/io";
 import { HiDotsVertical } from "react-icons/hi";
-import useNoticeList from "../../../hooks/useNotice";
+import useNoticeList from "../../../hooks/useNoticeList";
 import ToggleOptionBox from "../../../components/ToggleOptionBox";
 import Link from "next/link";
-import { deleteNotice } from "../../../apis/controller/noticePage";
-import notice from "../../../../pages/myPage/notice";
+import {
+  addNoticeList,
+  deleteNotice,
+} from "../../../apis/controller/noticePage";
 import Router from "next/router";
+import { useInView } from "react-intersection-observer";
+import { NoticeListDto } from "../../../types/apiTypes";
 
 interface Button {
   isSelected?: boolean;
@@ -32,9 +36,13 @@ const NoticePage = () => {
   const [inputValue, setuinputValue] = useState<string>("");
   const [search, setSearch] = useState<string>("");
 
-  const [isModify, setIsModify] = useState<boolean>(false);
+  const { noticeList, setNoticeList } = useNoticeList(type, search);
 
-  const noticeList = useNoticeList(type, search);
+  let LASTID = noticeList?.[noticeList.length - 1]?.id ?? 0;
+
+  console.log("lastid : ", LASTID);
+
+  const [ref, inView] = useInView({ threshold: 0.5 });
 
   const handleValueClick = (buttonIndex: number) => {
     setType(buttonIndex);
@@ -61,7 +69,7 @@ const NoticePage = () => {
       onClickHandler: () => {
         Router.push({
           pathname: "/myPage/writing",
-          query: { isModify: true, noticeId },
+          query: { isModify: true, id: noticeId },
         });
       },
     },
@@ -81,13 +89,29 @@ const NoticePage = () => {
 
   const handleSubmit = (e: any) => {
     e.preventDefault();
-    if (!inputValue) {
-      alert("검색할 내용을 입력해주세요.");
-    } else {
-      setSearch(inputValue);
-    }
+    setSearch(inputValue);
   };
-  return (
+
+  useEffect(() => {
+    if (inView) {
+      // 무한 스크롤 시 새로운 공지사항 불러오기
+      addNoticeList(type, search, LASTID)
+        .then((newNoticeList) => {
+          // 기존 noticeList와 새로운 noticeList 합치기
+          setNoticeList((prevList) => {
+            // null 체크
+            if (!prevList) return [...newNoticeList];
+
+            // 타입 단언문
+            return [...prevList, ...newNoticeList];
+          });
+        })
+        .catch((error) => {
+          console.error("Error fetching notice list:", error);
+        });
+    }
+  }, [inView]);
+  https: return (
     <Wrapper>
       <MenuWrapper>
         <Header>
@@ -125,7 +149,10 @@ const NoticePage = () => {
             key={noticeList.id}
             detail={noticeList.id === detailButton}
           >
-            <ContentBox detail={noticeList.id === detailButton}>
+            <ContentBox
+              detail={noticeList.id === detailButton}
+              ref={noticeList.id === LASTID ? ref : null}
+            >
               <NoticeValue>{noticeList.type}</NoticeValue>
               {noticeList.id === detailButton ? (
                 <NoticeContent>{noticeList.content}</NoticeContent>
@@ -133,7 +160,9 @@ const NoticePage = () => {
                 <NoticeTitle>{noticeList.title}</NoticeTitle>
               )}
 
-              <NoticeDate>{noticeList.createdDate}</NoticeDate>
+              <NoticeDate>
+                {noticeList.createdDate} /{noticeList.id}
+              </NoticeDate>
               <OptionBox>
                 <Option onClick={() => handleDetailClick(noticeList.id)}>
                   {noticeList.id === detailButton ? "접기" : "더보기"}
