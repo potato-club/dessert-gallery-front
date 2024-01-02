@@ -6,11 +6,6 @@ const EventAddBox = () => {
     <Container>
       <PickColumn>
         <input type="checkbox" />
-        <Title>픽업일 추가하기</Title>
-        <SubText>손님이 디저트를 픽업하는 날을 표시합니다</SubText>
-      </PickColumn>
-      <PickColumn>
-        <input type="checkbox" />
         <Title>휴무일 추가하기</Title>
         <SubText>가게의 쉬는 날을 지정하여 표시합니다</SubText>
       </PickColumn>

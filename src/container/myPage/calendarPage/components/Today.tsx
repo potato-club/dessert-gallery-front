@@ -3,9 +3,11 @@ import styled from "styled-components";
 import TodayBackground from "../../../../../public/image/TodayBackground.png";
 
 const Today = () => {
+  const date = new Date();
+  const today = date.getMonth() + 1 + "/" + date.getDate();
   return (
     <Conatiner>
-      <TextContent>오늘은</TextContent>
+      <TextContent>오늘은 {today}</TextContent>
       <TextContent>정상 영업날 입니다</TextContent>
     </Conatiner>
   );

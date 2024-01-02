@@ -28,14 +28,6 @@ const StoreCalendar = () => {
       />
       <InfoList>
         <InfoSet>
-          <TodayBlock />
-          <Text>오늘</Text>
-        </InfoSet>
-        <InfoSet>
-          <PickupBlock />
-          <Text>픽업</Text>
-        </InfoSet>
-        <InfoSet>
           <RestBlock />
           <Text>휴무</Text>
         </InfoSet>
@@ -65,10 +57,6 @@ const block = css`
   height: 13px;
   border-radius: 100%;
 `;
-const PickupBlock = styled.div`
-  ${block}
-  background-color: #ff6f00;
-`;
 const RestBlock = styled.div`
   ${block}
   background-color: #fdc886;
@@ -76,10 +64,6 @@ const RestBlock = styled.div`
 const EventBlock = styled.div`
   ${block}
   background-color: #fcf0e1;
-`;
-const TodayBlock = styled.div`
-  ${block}
-  background-color: rgba(255, 220, 40, 0.5);
 `;
 const Text = styled.span`
   color: #000;
@@ -96,7 +80,6 @@ export const Container = styled.div`
   box-sizing: border-box;
   border-radius: 20px;
   padding: 12px 30px;
-
   /* fullCalandar header style */
   .fc .fc-toolbar.fc-header-toolbar {
     display: flex;
@@ -154,8 +137,5 @@ export const Container = styled.div`
     justify-content: center;
     align-items: center;
     font-size: 10px;
-  }
-  .fc-daygrid-day-events {
-    display: none;
   }
 `;

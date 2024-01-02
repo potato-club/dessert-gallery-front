@@ -5,14 +5,6 @@ const CalendarInfoList = () => {
   return (
     <InfoList>
       <InfoSet>
-        <TodayBlock />
-        <Text>오늘</Text>
-      </InfoSet>
-      <InfoSet>
-        <PickupBlock />
-        <Text>픽업</Text>
-      </InfoSet>
-      <InfoSet>
         <RestBlock />
         <Text>휴무</Text>
       </InfoSet>
