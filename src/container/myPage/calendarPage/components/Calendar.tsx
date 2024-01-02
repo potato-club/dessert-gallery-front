@@ -48,6 +48,12 @@ const Calendar = ({ ...props }) => {
             month: new Date(tenDaysLater).getMonth() + 1,
           });
         }}
+        events={
+          props.scheduleList &&
+          props.scheduleList.map((item: any) => {
+            return { className: item.type, start: item.date };
+          })
+        }
       />
       <CalendarInfoList />
     </MyCalContainer>
@@ -62,6 +68,7 @@ const MyCalContainer = styled(Container)`
   border-radius: 0px;
   gap: 0px;
   padding: 0px 30px;
+
   /* fullCalandar header style */
   .fc .fc-toolbar.fc-header-toolbar {
     justify-content: center;
@@ -83,5 +90,38 @@ const MyCalContainer = styled(Container)`
   }
   .fc-daygrid-day-frame {
     font-size: 20px;
+  }
+  .fc .fc-daygrid-day.fc-day-today {
+    background-color: transparent;
+  }
+  /* fullcalendar event css */
+  .fc .fc-daygrid-body-unbalanced .fc-daygrid-day-events {
+    position: absolute;
+    z-index: -1;
+  }
+  .fc-daygrid-day-events {
+    height: 76px;
+    overflow-y: hidden;
+  }
+  .HOLIDAY {
+    border-color: transparent;
+    width: 108px;
+    height: 76px;
+    border-radius: 100%;
+    background-color: #fdc886;
+  }
+  .EVENT {
+    border-color: transparent;
+    width: 108px;
+    height: 76px;
+    border-radius: 100%;
+    background-color: #fcf0e1;
+  }
+  .RESERVATION {
+    border-color: transparent;
+    width: 108px;
+    height: 76px;
+    border-radius: 100%;
+    background-color: transparent;
   }
 `;

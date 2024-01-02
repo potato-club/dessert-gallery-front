@@ -9,19 +9,16 @@ import Today from "./components/Today";
 import TodoListOpenArrow from "../../../../public/image/TodoListOpenArrow.png";
 import TodoListCloseArrow from "../../../../public/image/TodoListCloseArrow.png";
 import Image from "next/image";
+import { useGetMyPageCalendar } from "../../../hooks/useSchedule";
 
-interface DateInfo {
-  year: number | null;
-  month: number | null;
+export interface DateInfo {
+  year: number;
+  month: number;
 }
-
 const CalendarPage = () => {
   const [isMove, setIsMove] = useState<boolean>(false);
   const [currentWidth, setCurrentWidth] = useState<number>(0);
-  const [dateInfo, setDateInfo] = useState<DateInfo>({
-    year: null,
-    month: null,
-  });
+  const { dateInfo, setDateInfo, calendarData } = useGetMyPageCalendar();
 
   useEffect(() => {
     setCurrentWidth(window.innerWidth);
@@ -42,7 +39,10 @@ const CalendarPage = () => {
     <Container>
       <LeftDiv>
         <Intro />
-        <Calendar setDateInfo={setDateInfo} />
+        <Calendar
+          setDateInfo={setDateInfo}
+          scheduleList={calendarData?.scheduleList}
+        />
         <EventAddBox />
       </LeftDiv>
       <RightDiv isMove={isMove} currentWidth={currentWidth}>
@@ -73,7 +73,7 @@ const CalendarPage = () => {
           <Title>
             {dateInfo.year}년 {dateInfo.month}월 메모장
           </Title>
-          <MemoList />
+          <MemoList memoList={calendarData?.memoList} />
         </InnerContent>
       </RightDiv>
     </Container>
