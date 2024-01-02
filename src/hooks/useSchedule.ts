@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import { useQuery } from "react-query";
 import { calendarPageApi } from "../apis/controller/myPage";
 import { DateInfo } from "../container/myPage/calendarPage";
 
@@ -14,20 +15,19 @@ interface ScheduleType {
   type: "HOLIDAY" | "EVENT" | "RESERVATION";
 }
 
-export const useGetMyPageCalendar = () => {
+export const useGetSchedule = ({ options }: any) => {
   const [dateInfo, setDateInfo] = useState<DateInfo>({
     year: new Date().getFullYear(),
     month: new Date().getMonth() + 1,
   });
-  const [calendarData, setCalendarData] = useState<MyPageCalendarDataType>();
 
-  useEffect(() => {
-    const fetchCalendarData = async () => {
-      const res = await calendarPageApi.getManagerCalendar(dateInfo);
-      setCalendarData(res);
-    };
-    fetchCalendarData();
-  }, [dateInfo]);
+  const { data: calendarData } = useQuery(
+    ["schedule", dateInfo.year, dateInfo.month],
+    () => calendarPageApi.getManagerCalendar(dateInfo),
+    {
+      ...options,
+    }
+  );
 
   return { dateInfo, setDateInfo, calendarData };
 };

@@ -9,7 +9,7 @@ import Today from "./components/Today";
 import TodoListOpenArrow from "../../../../public/image/TodoListOpenArrow.png";
 import TodoListCloseArrow from "../../../../public/image/TodoListCloseArrow.png";
 import Image from "next/image";
-import { useGetMyPageCalendar } from "../../../hooks/useSchedule";
+import { useGetSchedule } from "../../../hooks/useSchedule";
 
 export interface DateInfo {
   year: number;
@@ -18,7 +18,7 @@ export interface DateInfo {
 const CalendarPage = () => {
   const [isMove, setIsMove] = useState<boolean>(false);
   const [currentWidth, setCurrentWidth] = useState<number>(0);
-  const { dateInfo, setDateInfo, calendarData } = useGetMyPageCalendar();
+  const { dateInfo, setDateInfo, calendarData } = useGetSchedule({});
 
   useEffect(() => {
     setCurrentWidth(window.innerWidth);
