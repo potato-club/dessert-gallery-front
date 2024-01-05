@@ -17,7 +17,7 @@ const useNoticeList = (type: number, keyworld: String) => {
     fetchData();
   }, [type, keyworld]);
 
-  return noticeList;
+  return { noticeList, setNoticeList };
 };
 
 export default useNoticeList;
