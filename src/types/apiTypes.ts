@@ -108,3 +108,10 @@ export interface SliceNoticeListDto {
   pageable: PageableObject;
   empty: boolean;
 }
+
+export interface PostNoticeParam {
+  title: string;
+  content: string;
+  exposed: string;
+  typeKey: string;
+}

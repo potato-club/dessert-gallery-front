@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import Image from "next/image";
 import React from "react";
-// import myPageLogo from "../../../../public/image/myPageLogo.png"
+import myPageLogo from "../../../../public/image/myPageLogo.png";
 import type { roleMyMenu, myMenu } from "../../../types/componentsProps";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -24,13 +24,13 @@ export default function Menu({ menu }: { menu: roleMyMenu }) {
   return (
     <MenuWrapper>
       <MenuHeader onClick={onClickMoveMain}>
-        {/* <Image
-          // src={myPageLogo.src}
+        <Image
+          src={myPageLogo.src}
           alt="myPageLogo"
           layout="fixed"
           height={72}
           width={234}
-        /> */}
+        />
       </MenuHeader>
       <MenuContentsWrap>
         <ColumnBox>
