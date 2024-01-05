@@ -40,8 +40,6 @@ const NoticePage = () => {
 
   let LASTID = noticeList?.[noticeList.length - 1]?.id ?? 0;
 
-  console.log("lastid : ", LASTID);
-
   const [ref, inView] = useInView({ threshold: 0.5 });
 
   const handleValueClick = (buttonIndex: number) => {
@@ -94,15 +92,11 @@ const NoticePage = () => {
 
   useEffect(() => {
     if (inView) {
-      // 무한 스크롤 시 새로운 공지사항 불러오기
       addNoticeList(type, search, LASTID)
         .then((newNoticeList) => {
-          // 기존 noticeList와 새로운 noticeList 합치기
           setNoticeList((prevList) => {
-            // null 체크
             if (!prevList) return [...newNoticeList];
 
-            // 타입 단언문
             return [...prevList, ...newNoticeList];
           });
         })
@@ -110,8 +104,8 @@ const NoticePage = () => {
           console.error("Error fetching notice list:", error);
         });
     }
-  }, [inView]);
-  https: return (
+  }, [inView, search]);
+  return (
     <Wrapper>
       <MenuWrapper>
         <Header>
@@ -155,14 +149,16 @@ const NoticePage = () => {
             >
               <NoticeValue>{noticeList.type}</NoticeValue>
               {noticeList.id === detailButton ? (
-                <NoticeContent>{noticeList.content}</NoticeContent>
+                <NoticeContent>
+                  {noticeList.title}
+
+                  {noticeList.content}
+                </NoticeContent>
               ) : (
                 <NoticeTitle>{noticeList.title}</NoticeTitle>
               )}
 
-              <NoticeDate>
-                {noticeList.createdDate} /{noticeList.id}
-              </NoticeDate>
+              <NoticeDate>{noticeList.createdDate}</NoticeDate>
               <OptionBox>
                 <Option onClick={() => handleDetailClick(noticeList.id)}>
                   {noticeList.id === detailButton ? "접기" : "더보기"}
