@@ -1,30 +1,45 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import WritingModal from "./WrtingModal";
 import { useSetRecoilState, useRecoilValue } from "recoil";
 import { modalBg } from "../../../recoil/modalBg/atom";
 import { postNoticeApi } from "../../../apis/controller/noticePage";
-import Router from "next/router";
-import { useParams } from "react-router-dom";
+import Router, { useRouter } from "next/router";
+import { modifyNoticeApi } from "../../../apis/controller/noticePage";
+import { modifyGetNoticeApi } from "../../../apis/controller/noticePage";
+
 interface ButtonProps {
   btnColor: string;
   fontColor: string;
 }
+interface ModifyData {
+  title: string;
+  content: string;
+  exposed: boolean;
+  typeKey: number;
+}
 
 const WritingPage = () => {
+  const ISMODIFY = useRouter().query.isModify;
+  const ID = parseInt(useRouter().query.id);
+  // 로컬스토리지와 쿼리 파라미터중 어떤 방법을 사용할지 아직 고민중
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [exposed, setexposed] = useState("true");
   const [typeKey, setTypeKey] = useState("0");
+  const [modifyNotice, setModifyNotice] = useState<ModifyData>();
   const titleChange = (e: any) => setTitle(e.target.value);
   const contentChange = (e: any) => setContent(e.target.value);
   const setModalBgState = useSetRecoilState(modalBg);
+
   const mainExpotureChange = (e: any) => {
     setexposed(e.target.value);
   };
+
   const noticeTypeChange = (e: any) => {
     setTypeKey(e.target.value);
   };
+
   const cancelButton = () => {
     setModalBgState(true);
   };
@@ -33,24 +48,45 @@ const WritingPage = () => {
     await postNoticeApi({ title, content, exposed, typeKey });
   };
 
+  const modifyData = async () => {
+    await modifyNoticeApi({ title, content, exposed, typeKey }, ID);
+  };
+
   const handleSubmit = async (e: any) => {
     e.preventDefault();
-    await postData();
+    {
+      ISMODIFY ? await modifyData() : await postData();
+    }
     setTitle("");
     setContent("");
     Router.push("/myPage/notice");
   };
 
+  useEffect(() => {
+    const fetchData = async () => {
+      if (ISMODIFY) {
+        const result = await modifyGetNoticeApi(ID);
+        setModifyNotice(result.data);
+      }
+    };
+
+    fetchData();
+  }, [ID, ISMODIFY]);
+
   return (
     <Form onSubmit={handleSubmit}>
       <Wrapper>
-        <ContentWriteTitle>게시글 작성</ContentWriteTitle>
+        <ContentWriteTitle>
+          {ISMODIFY ? "게시글 수정" : "게시글 작성"}
+        </ContentWriteTitle>
         <WritingBox>
           <TitleWritingBox>
             <Title>제목</Title>
             <TitleWriting>
               <TitleWritingInput
-                placeholder="제목을 입력해주세요"
+                placeholder={
+                  ISMODIFY ? modifyNotice?.title : "제목을 입력해주세요"
+                }
                 value={title}
                 onChange={titleChange}
                 required
@@ -61,7 +97,9 @@ const WritingPage = () => {
             <Content>내용</Content>
             <ContentWriting>
               <ContentTextArea
-                placeholder="내용을 입력해주세요"
+                placeholder={
+                  ISMODIFY ? modifyNotice?.content : "내용을 입력해주세요"
+                }
                 value={content}
                 onChange={contentChange}
                 required
@@ -121,7 +159,7 @@ const WritingPage = () => {
         )}
         <ButtonBox>
           <Button type="submit" btnColor="#FF8D00" fontColor="black">
-            완료
+            {ISMODIFY ? "수정" : "완료"}
           </Button>
 
           <Button
@@ -130,7 +168,7 @@ const WritingPage = () => {
             fontColor="#FF8D00"
             onClick={cancelButton}
           >
-            삭제
+            {ISMODIFY ? "취소" : "삭제"}
           </Button>
         </ButtonBox>
       </Wrapper>
