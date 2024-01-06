@@ -1,8 +1,7 @@
 import { useState } from "react";
-import { useQuery } from "react-query";
+import { useMutation, useQuery, useQueryClient } from "react-query";
 import { calendarPageApi } from "../apis/controller/myPage";
 import { DateInfo } from "../container/myPage/calendarPage";
-
 export interface MyPageCalendarDataType {
   year: number;
   month: number;
@@ -13,6 +12,10 @@ interface ScheduleType {
   id: number;
   date: string;
   type: "HOLIDAY" | "EVENT" | "RESERVATION";
+}
+interface AddEventType {
+  date: string;
+  key: number;
 }
 
 export const useGetSchedule = ({ options }: any) => {
@@ -30,4 +33,50 @@ export const useGetSchedule = ({ options }: any) => {
   );
 
   return { dateInfo, setDateInfo, calendarData };
+};
+
+export const modifyCalendarPage = {
+  useAddSchedule(dateInfo: DateInfo) {
+    const queryClient = useQueryClient();
+    const { mutate: scheduleAddFn } = useMutation(
+      ["schedule", dateInfo.year, dateInfo.month],
+      ({ date, key }: AddEventType) =>
+        calendarPageApi.postCalendarSchedule(date, key),
+      {
+        onSuccess: () => {
+          queryClient.refetchQueries([
+            "schedule",
+            dateInfo.year,
+            dateInfo.month,
+          ]);
+        },
+      }
+    );
+    return { scheduleAddFn };
+  },
+
+  useDeleteSchedule() {},
+
+  useAddMemo(dateInfo: DateInfo) {
+    const queryClient = useQueryClient();
+    const { mutate: memoAddFn } = useMutation(
+      ["schedule", dateInfo.year, dateInfo.month],
+      (content: string) => calendarPageApi.postCalendarMemo(dateInfo, content),
+      {
+        onSuccess: () => {
+          queryClient.invalidateQueries([]);
+          queryClient.refetchQueries([
+            "schedule",
+            dateInfo.year,
+            dateInfo.month,
+          ]);
+        },
+      }
+    );
+    return { memoAddFn };
+  },
+
+  useCheckMemo() {},
+
+  useDeleteMemo() {},
 };
