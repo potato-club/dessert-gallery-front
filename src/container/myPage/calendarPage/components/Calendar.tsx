@@ -83,6 +83,11 @@ const MyCalContainer = styled(Container)`
     padding: 4px;
   }
   /* fullCalandar body style */
+  .fc .fc-scroller-liquid-absolute {
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
   .fc .fc-col-header-cell {
     border-bottom: 3px solid #ff8d00;
     padding: 29px 0px;

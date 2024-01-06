@@ -132,6 +132,11 @@ export const Container = styled.div`
   .fc-theme-standard .fc-scrollgrid {
     border: none;
   }
+  .fc .fc-scroller-harness {
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
   .fc-daygrid-day-frame {
     display: flex;
     justify-content: center;
