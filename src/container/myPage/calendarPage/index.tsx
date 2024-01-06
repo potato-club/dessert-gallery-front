@@ -67,13 +67,13 @@ const CalendarPage = () => {
         </AbsoulteDiv>
         <InnerContent>
           <Title>오늘은 무슨날?</Title>
-          <Today />
+          <Today holiday={calendarData?.holiday} />
         </InnerContent>
         <InnerContent>
           <Title>
             {dateInfo.year}년 {dateInfo.month}월 메모장
           </Title>
-          <MemoList memoList={calendarData?.memoList} />
+          <MemoList memoList={calendarData?.memoList} dateInfo={dateInfo} />
         </InnerContent>
       </RightDiv>
     </Container>
@@ -118,7 +118,7 @@ const RightDiv = styled.div<{ isMove: boolean; currentWidth: number }>`
       : "translateX(0px)"};
 `;
 const InnerContent = styled.div`
-  width: 354px;
+  width: 100%;
   display: flex;
   flex-direction: column;
   gap: 14px;

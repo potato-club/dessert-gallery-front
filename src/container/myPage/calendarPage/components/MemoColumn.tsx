@@ -5,9 +5,7 @@ const MemoColumn = ({ ...props }) => {
   return (
     <Container>
       <input type="checkbox" />
-      <InputContent isSuccess={props.isSuccess}>
-        00님케이크만들기00님케이크만들기만들기
-      </InputContent>
+      <InputContent isSuccess={props.isSuccess}>{props.content}</InputContent>
     </Container>
   );
 };

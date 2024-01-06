@@ -1,21 +1,24 @@
 import React from "react";
 import styled from "styled-components";
 import TodayBackground from "../../../../../public/image/TodayBackground.png";
+import HolidayBackground from "../../../../../public/image/HolidayBackground.png";
 
-const Today = () => {
+const Today = ({ ...props }) => {
   const date = new Date();
   const today = date.getMonth() + 1 + "/" + date.getDate();
   return (
-    <Conatiner>
+    <Conatiner holiday={props.holiday}>
       <TextContent>오늘은 {today}</TextContent>
-      <TextContent>정상 영업날 입니다</TextContent>
+      <TextContent>
+        {props.holiday ? "휴무일 입니다." : "정상 영업날 입니다"}
+      </TextContent>
     </Conatiner>
   );
 };
 
 export default Today;
 
-const Conatiner = styled.div`
+const Conatiner = styled.div<{ holiday: boolean }>`
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -25,13 +28,15 @@ const Conatiner = styled.div`
   height: 166px;
   border: 4px solid #fff;
   border-radius: 20px;
-  background-color: #ff8d00;
-  background-image: url(${TodayBackground.src});
+  color: ${({ holiday }) => (holiday ? "#FF6F00" : "#fffdf9")};
+
+  background-color: ${({ holiday }) => (holiday ? "#FCF6EE" : "#ff8d00")};
+  background-image: ${({ holiday }) =>
+    holiday ? `url(${HolidayBackground.src})` : `url(${TodayBackground.src})`};
   background-position: 100% 0px;
   background-repeat: no-repeat;
 `;
 const TextContent = styled.span`
-  color: #fffdf9;
   font-family: Noto Sans CJK KR;
   font-size: 27px;
   font-weight: 700;
