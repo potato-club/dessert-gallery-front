@@ -64,7 +64,6 @@ export const modifyCalendarPage = {
       (content: string) => calendarPageApi.postCalendarMemo(dateInfo, content),
       {
         onSuccess: () => {
-          queryClient.invalidateQueries([]);
           queryClient.refetchQueries([
             "schedule",
             dateInfo.year,
@@ -76,7 +75,39 @@ export const modifyCalendarPage = {
     return { memoAddFn };
   },
 
-  useCheckMemo() {},
+  useCheckMemo(dateInfo: DateInfo) {
+    const queryClient = useQueryClient();
+    const { mutate: memoCheck } = useMutation(
+      ["schedule", dateInfo.year, dateInfo.month],
+      (memoId: number) => calendarPageApi.putCalendarMemoCheck(memoId),
+      {
+        onSuccess: () => {
+          queryClient.refetchQueries([
+            "schedule",
+            dateInfo.year,
+            dateInfo.month,
+          ]);
+        },
+      }
+    );
+    return { memoCheck };
+  },
 
-  useDeleteMemo() {},
+  useDeleteMemo(dateInfo: DateInfo) {
+    const queryClient = useQueryClient();
+    const { mutate: memoDelete } = useMutation(
+      ["schedule", dateInfo.year, dateInfo.month],
+      (memoId: number) => calendarPageApi.deleteCalendarMemo(memoId),
+      {
+        onSuccess: () => {
+          queryClient.refetchQueries([
+            "schedule",
+            dateInfo.year,
+            dateInfo.month,
+          ]);
+        },
+      }
+    );
+    return { memoDelete };
+  },
 };

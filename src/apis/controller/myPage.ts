@@ -30,4 +30,14 @@ export const calendarPageApi = {
     });
     return res;
   },
+
+  async putCalendarMemoCheck(memoId: number) {
+    const res = await sendApi.put(`/stores/memo?id=${memoId}`);
+    return res;
+  },
+
+  async deleteCalendarMemo(memoId: number) {
+    const res = await sendApi.delete(`/stores/memo?id=${memoId}`);
+    return res;
+  },
 };
