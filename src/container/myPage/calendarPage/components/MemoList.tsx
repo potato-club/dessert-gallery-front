@@ -40,7 +40,9 @@ const MemoList = ({ ...props }) => {
                 return (
                   <MemoColumn
                     key={item.id}
+                    memoId={item.id}
                     isSuccess={item.checked}
+                    dateInfo={props.dateInfo}
                     content={item.content}
                   />
                 );
@@ -53,7 +55,9 @@ const MemoList = ({ ...props }) => {
                 return (
                   <MemoColumn
                     key={item.id}
+                    memoId={item.id}
                     isSuccess={item.checked}
+                    dateInfo={props.dateInfo}
                     content={item.content}
                   />
                 );
@@ -74,8 +78,8 @@ const Container = styled.div`
   height: 626px;
   background-color: #fefbf6;
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
-  overflow: scroll;
   gap: 30px;
+  overflow-y: scroll;
   &::-webkit-scrollbar {
     display: none;
   }
