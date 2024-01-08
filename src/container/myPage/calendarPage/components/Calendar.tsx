@@ -31,7 +31,7 @@ const Calendar = ({ ...props }) => {
           center: "title",
           right: "next",
         }}
-        height={690}
+        height={770}
         dateClick={(e: any) => {
           console.log(e);
           setOnModal(true);
@@ -64,7 +64,7 @@ export default Calendar;
 
 const MyCalContainer = styled(Container)`
   width: 818px;
-  height: 690px;
+  height: auto;
   border-radius: 0px;
   gap: 0px;
   padding: 0px 30px;
@@ -73,7 +73,7 @@ const MyCalContainer = styled(Container)`
   .fc .fc-toolbar.fc-header-toolbar {
     justify-content: center;
     gap: 30px;
-    padding: 16px;
+    padding: 20px 0px 30px;
     border-bottom: 3px solid #ff8d00;
     .fc-toolbar-title {
       font-size: 32px;
@@ -105,27 +105,27 @@ const MyCalContainer = styled(Container)`
     z-index: -1;
   }
   .fc-daygrid-day-events {
-    height: 76px;
+    height: 88px;
     overflow-y: hidden;
   }
   .HOLIDAY {
     border-color: transparent;
-    width: 108px;
-    height: 76px;
+    width: 84px;
+    height: 84px;
     border-radius: 100%;
     background-color: #fdc886;
   }
   .EVENT {
     border-color: transparent;
-    width: 108px;
-    height: 76px;
+    width: 84px;
+    height: 84px;
     border-radius: 100%;
     background-color: #fcf0e1;
   }
   .RESERVATION {
     border-color: transparent;
-    width: 108px;
-    height: 76px;
+    width: 84px;
+    height: 84px;
     border-radius: 100%;
     background-color: transparent;
   }

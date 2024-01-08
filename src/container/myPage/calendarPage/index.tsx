@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { debounce } from "lodash";
 import styled from "styled-components";
 import Calendar from "./components/Calendar";
-import EventAddBox from "./components/EventAddBox";
 import Intro from "./components/Intro";
 import MemoList from "./components/MemoList";
 import Today from "./components/Today";
@@ -37,15 +36,14 @@ const CalendarPage = () => {
 
   return (
     <Container>
-      <LeftDiv>
+      <CalendarDiv>
         <Intro />
         <Calendar
           setDateInfo={setDateInfo}
           scheduleList={calendarData?.scheduleList}
         />
-        <EventAddBox />
-      </LeftDiv>
-      <RightDiv isMove={isMove} currentWidth={currentWidth}>
+      </CalendarDiv>
+      <MovingDiv isMove={isMove} currentWidth={currentWidth}>
         <AbsoulteDiv>
           {isMove ? (
             <Image
@@ -75,7 +73,7 @@ const CalendarPage = () => {
           </Title>
           <MemoList memoList={calendarData?.memoList} dateInfo={dateInfo} />
         </InnerContent>
-      </RightDiv>
+      </MovingDiv>
     </Container>
   );
 };
@@ -87,11 +85,11 @@ const Container = styled.div`
   height: 100%;
   overflow-x: hidden;
 `;
-const LeftDiv = styled.div`
+const CalendarDiv = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  gap: 40px;
   padding: 58px 0px 61px;
   @media (min-width: 1280px) {
     width: calc(818px + (1128 - 818) * ((100vw - 1280px) / (1920 - 1280)));
@@ -100,7 +98,7 @@ const LeftDiv = styled.div`
     width: 1128px;
   }
 `;
-const RightDiv = styled.div<{ isMove: boolean; currentWidth: number }>`
+const MovingDiv = styled.div<{ isMove: boolean; currentWidth: number }>`
   position: relative;
   z-index: 1;
   display: flex;
