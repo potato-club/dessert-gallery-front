@@ -108,3 +108,50 @@ export interface SliceNoticeListDto {
   pageable: PageableObject;
   empty: boolean;
 }
+
+export type mapStoreDetail =
+  {
+    id: number,
+    name: string,
+    info: string,
+    content: string,
+    address: string,
+    phoneNumber: string,
+    storeImage: {
+      fileName: string,
+      fileUrl: string
+    },
+    posts: [
+      {
+        title: string,
+        content: string,
+        thumbnail: {
+          fileName: string,
+          fileUrl: string
+        },
+        createdDate: string
+      }
+    ],
+    reviews: [
+      {
+        userName: string,
+        content: string,
+        score: 0,
+        image: {
+          fileName: string,
+          fileUrl: string
+        },
+        createDate: Date
+      }
+    ],
+    notices: [
+      {
+        id: 0,
+        title: string,
+        content: string,
+        exposed: true,
+        type: string,
+        createdDate: string
+      }
+    ]
+  }

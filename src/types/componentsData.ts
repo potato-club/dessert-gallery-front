@@ -25,7 +25,28 @@ export type locationData = {
   child: string[]
 }
 
+export type coord = {
+  title: string
+  lat: string
+  lng: string
+}
+
+export type locationCoordData = {
+  city: string,
+  child: coord[]
+}
+
+export type selectedLocationCoordData = {
+  location: string,
+  lat: string
+  lng: string
+}
+
 export type selectLocationOptionData = {
   location: locationData,
+  idx: number
+}
+export type selectLocationCoordOptionData = {
+  location: locationCoordData,
   idx: number
 }

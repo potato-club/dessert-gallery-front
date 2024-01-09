@@ -1,19 +1,52 @@
 import React from "react";
 import styled from "styled-components";
 import Rating from "../../../../components/Rating";
+import Image from "next/image";
+import { selectedLocationCoordData } from "../../../../types/componentsData";
 
-const AroundMarketItem = () => {
+interface makerDataProps {
+  latitude: number
+  longitude: number
+  score: number
+  storeAddress: string
+  storeName:string
+  storeId:number
+  content: string
+  fileName: string
+  fileUrl: string
+  searchKeyword:string
+  setCenter: React.Dispatch<React.SetStateAction<selectedLocationCoordData>>
+}
+
+const AroundMarketItem = ({latitude, longitude, score, storeAddress, storeName, storeId, content, fileName, fileUrl,searchKeyword, setCenter}: makerDataProps) => {
+  console.log("why???")
+
+  const onClickHandler = () => {
+    setCenter((prev)=>({
+      ...prev,
+      lat: latitude.toString(),
+      lng: longitude.toString()
+  }))
+    window.location.href = `/map?selected=${storeId}&search=${searchKeyword}?lat=${latitude}?lng=${longitude}`
+  }
   return (
-    <Container>
+    <Container onClick={onClickHandler}>
       <TextInfoDiv>
-        <Name>닐라닐라바닐라</Name>
-        <Address>서울시 강서구 곰달래길 12</Address>
+        <Name>{storeName}</Name>
+        <Address>{storeAddress}</Address>
         <Introduction>
-          퇴사 기념 케이크, <br></br>이제는 퇴사도 축제로구나
+          {content}
         </Introduction>
-        <Rating size="small" ratingValue="5.0" />
+        <Rating size="small" ratingValue={`${score}`} />
       </TextInfoDiv>
-      <ImageDiv></ImageDiv>
+      <ImageDiv>
+        <Image
+          src={fileUrl}
+          alt={fileName}
+          layout="fill"
+          objectFit="cover"
+        />
+      </ImageDiv>
     </Container>
   );
 };
@@ -26,6 +59,7 @@ const Container = styled.li`
   height: 134px;
   background-color: white;
   padding: 21px;
+  cursor: pointer;
 `;
 const TextInfoDiv = styled.div`
   display: flex;
@@ -34,7 +68,8 @@ const TextInfoDiv = styled.div`
   height: 100%;
   margin-right: 45px;
 `;
-const ImageDiv = styled.img`
+const ImageDiv = styled.div`
+  position: relative;
   background-color: black;
   width: 100%;
 `;

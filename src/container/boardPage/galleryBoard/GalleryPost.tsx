@@ -6,7 +6,7 @@ import Rating from '../../../components/Rating'
 import { galleryPostValue, galleryPostSizeValue } from '../../../types/componentsProps'
 
 
-export default function GalleryPost({storeId, height=444, width,location,imgArray,ratingValue,summary,size='big', tagValue='none', bookmark, onBookmark ,title}:galleryPostValue) {
+export default function GalleryPost({storeId, height=444, width,location,imgArray,ratingValue,summary,size='big', tagValue='none', bookmark, onBookmark ,title, margin="48px 0"}:galleryPostValue) {
   let sizeValue:galleryPostSizeValue = {
     titleTextSize: '18px',
     locationTextSize: '12px',
@@ -29,9 +29,11 @@ export default function GalleryPost({storeId, height=444, width,location,imgArra
     window.location.href  = `/galleryBoard/${storeId}`
   }
 
+  console.log("storeID", storeId)
+
 
   return (
-    <GalleryPostWrap width={width} height={height}>
+    <GalleryPostWrap width={width} height={height} margin={margin}>
       <SlideImage storeId={storeId} srcArray={imgArray} width={width} size={size} height={width} bookmark={bookmark} onBookmark={onBookmark} >
         {tagValue !=='none' && size === 'big' && <Tag title={tagValue} width='78px' height='30px' fontSize='12px' clickAble={false}  />}
         {tagValue !=='none' && size === 'medium' && <Tag title={tagValue} width='73px' height='28px' fontSize='11px' clickAble={false}  />}
@@ -44,7 +46,7 @@ export default function GalleryPost({storeId, height=444, width,location,imgArra
           <LocationText size={sizeValue.locationTextSize} >{location}</LocationText>
           <Summary size={size} textSize={sizeValue.summaryTextSize} >{summary}</Summary>
         </TextWrap>
-        <Rating size={sizeValue.ratingSize} ratingValue={ratingValue}/>
+        {ratingValue !== "-1" && <Rating size={sizeValue.ratingSize} ratingValue={ratingValue}/>}
       </InformationWrap>
     
     </GalleryPostWrap>

@@ -3,7 +3,27 @@ import styled from "styled-components";
 import Market from "./Market";
 import { Search } from "../../../../../public/svg";
 import Tag from "../../../../components/Tag";
-const SideNav = () => {
+import { selectedLocationCoordData } from "../../../../types/componentsData";
+
+interface makerDataProps {
+  latitude: number
+  longitude: number
+  score: number
+  storeAddress: string
+  storeName:string
+  storeId:number
+  content: string
+  fileName: string
+  fileUrl: string
+}
+interface props {
+  markerData: makerDataProps[]
+  isSearch: boolean
+  searchKeyword: string
+  setCenter: React.Dispatch<React.SetStateAction<selectedLocationCoordData>>
+}
+
+const SideNav = ({markerData, isSearch, searchKeyword, setCenter}: props) => {
   return (
     <Container>
       <SideHeader>
@@ -12,6 +32,9 @@ const SideNav = () => {
           <SearchInput placeholder="가게를 검색해 주세요."></SearchInput>
         </SearchForm>
         <FilterList>
+          {/**
+           * sort: true 
+           */}
           <Tag
             title="평점순"
             width="62px"
@@ -20,16 +43,11 @@ const SideNav = () => {
             clickAble={true}
             hoverCss={true}
           />
+          {/**
+           * sort: false 
+           */}
           <Tag
-            title="신규순"
-            width="62px"
-            height="25px"
-            fontSize="10px"
-            clickAble={true}
-            hoverCss={true}
-          />
-          <Tag
-            title="영업중"
+            title="팔로워순"
             width="62px"
             height="25px"
             fontSize="10px"
@@ -39,7 +57,7 @@ const SideNav = () => {
         </FilterList>
       </SideHeader>
 
-      <Market />
+      <Market markerData={markerData} searchKeyword={searchKeyword} isSearch={isSearch} setCenter={setCenter}/>
     </Container>
   );
 };

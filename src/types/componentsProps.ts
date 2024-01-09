@@ -282,10 +282,18 @@ export type locationSelectorProps = {
   onChangeLocation: (e: string) => void;
 };
 
+export type locationCoordSelectorProps = {
+    selectedLocation: string
+    onChangeLocation: (str: string, lat: string, lng: string) => void
+}
+
 export type ToastMessageProps = {
-  messageString: string;
-  timer: number;
-};
+    messageString: string
+    timer: number
+    clickEvent?: boolean
+    eventFunc?: () => void
+    wrapType: 'none'|'map'|'sideBarMap'
+}
 
 export type boardOptionValue = {
   orderOption: selectOrder;
