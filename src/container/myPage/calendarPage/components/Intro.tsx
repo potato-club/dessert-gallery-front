@@ -1,11 +1,16 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
+import ExplainModalBox from "./ExplainModalBox";
 
 const Intro = () => {
+  const [onClick, setOnClick] = useState(false);
   return (
     <Container>
       <Title>마이 캘린더 관리</Title>
-      <IntroduceBtn>마이 캘린더란?</IntroduceBtn>
+      <IntroduceBtn onClick={() => setOnClick((prev) => !prev)}>
+        마이 캘린더란?
+      </IntroduceBtn>
+      {onClick && <ExplainModalBox />}
     </Container>
   );
 };
@@ -33,7 +38,6 @@ const IntroduceBtn = styled.button`
   background-color: #fcf6ee;
   border: 1px solid #828282;
   border-radius: 8px;
-
   font-family: Noto Sans CJK KR;
   font-size: 15px;
   font-style: normal;
