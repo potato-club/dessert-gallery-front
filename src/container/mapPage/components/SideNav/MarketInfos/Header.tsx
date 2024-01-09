@@ -1,25 +1,37 @@
 import React from "react";
 import styled from "styled-components";
 import Tag from "../../../../../components/Tag";
+import Image from "next/image";
+import { mapStoreDetail } from "../../../../../types/apiTypes";
 
 // 가게 정보조회 api 들어와야함
-const Header = () => {
+const Header = ({store}:any) => {
+  const url = window.location.href.split('?')[1].split('&')
+  console.log("sssss\n\n", store)
   return (
     <>
       <Container>
-        <ImageSet></ImageSet>
+        <ImageSet >
+          <Image 
+            src={store.storeImage.fileUrl}
+            alt={store.storeImage.fileName} 
+            layout="fill"
+            objectFit="cover"
+          />
+        <Exit href={`/map?selected=-1&${url[1]}`}>X</Exit>
+        </ImageSet>
         <StoreInfo>
-          <Name>닐라닐라 바닐라</Name>
+          <Name>{store.name}</Name>
           <SubTitle>
-            {"가게에 대한 설명을 기재합니다 기재합니다" || "default"}
+            {store.info}
           </SubTitle>
           <ButtonList>
             <Tag
-              title="팔로우"
+              title="가게 상세"
               width="94px"
               height="27px"
               clickAble={true}
-              onClickHandler={() => {}}
+              onClickHandler={() => { window.location.href = `/galleryBoard/${store.id}` }}
               inversion={true}
               hoverCss={true}
               fontSize="10px"
@@ -38,18 +50,19 @@ const Header = () => {
       <InfoList>
         <ListItem>
           <Title>가게 위치</Title>
-          <Text>서울시 강서구 곰달래길 12</Text>
+          <Text>{store.address}</Text>
         </ListItem>
         <ListItem>
           <Title>가게 정보</Title>
           <Text>
-            수제 바닐라 비건 친환경
-            케이크케이크케이크케이크케이크케이크케이크케이크케이크케이크케이크케이크케이크케이크케이크케이크케이크케이크케이크케이크케이크케이크케이크케이크케이크케이크케이크케이크케이크케이크케이크케이크케이크케이크케이크케이크케이크케이크케이크케이크케이크케이크케이크케이크케이크케이크케이크케이크케이크케이크케이크케이크케이크케이크케이크
+            {store.content}
           </Text>
         </ListItem>
         <ListItem>
           <Title>전화 번호</Title>
-          <Text>010-1234-5678</Text>
+          <Text>
+            {store.phoneNumber}
+          </Text>
         </ListItem>
       </InfoList>
     </>
@@ -62,10 +75,30 @@ const Container = styled.div`
   width: 100%;
   box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.161);
 `;
+
+const Exit = styled.a`
+  position: absolute;
+  right: 0;
+
+  margin: 4px;
+  padding: 4px 8px;
+  font-size: 24px;
+  cursor: pointer;
+  
+  color: black; 
+  text-decoration: none;
+  outline: none;
+  a:hover, a:active {
+    text-decoration: none; 
+    color: black; 
+    background-color:#f59000;
+  }
+`
 const ImageSet = styled.div`
   background-color: #fcf0e1;
   width: 100%;
   height: 139px;
+  position: relative;
 `;
 const StoreInfo = styled.div`
   display: flex;

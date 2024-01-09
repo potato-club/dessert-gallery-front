@@ -15,20 +15,28 @@ interface makerDataProps {
   score: number
   storeAddress: string
   storeName:string
+  storeId:number
+  content: string
+  fileName: string
+  fileUrl: string
 }
+
 interface props {
   centerCoord: selectedLocationCoordData
   setCenter: React.Dispatch<React.SetStateAction<selectedLocationCoordData>>
-  sidebar: boolean
-  markerData: makerDataProps[]
+  sidebar: number
+  storeListData: makerDataProps[]
   setSearchHere: React.Dispatch<React.SetStateAction<boolean>>
+  setSelectedStoreId:React.Dispatch<React.SetStateAction<number>>
+  centerCoordRef: React.MutableRefObject<string[]> //삭제 가능
+  searchKeyword: string
 }
 
 interface style {
   sidebar: boolean
 }
 
-const Maps = ({markerData, centerCoord, sidebar, setCenter,  setSearchHere}: props) => {
+const Maps = ({storeListData, centerCoord,centerCoordRef, searchKeyword, setSelectedStoreId, sidebar, setCenter, setSearchHere}: props) => {
   const mapContainer = useRef<HTMLDivElement>(null);
   const [moveMap, setMoveMap] = useState<boolean>(false);
   const [mapUpdate, setMapUpdate] = useState<boolean>(false)
@@ -40,11 +48,11 @@ const Maps = ({markerData, centerCoord, sidebar, setCenter,  setSearchHere}: pro
     setMoveMap(prev=> !prev)
   }
 
-  const onClickToastMessage = () => {
-    console.log('컴포넌트 클릭 - 마커 재검색')
-    setSearchHere(prev => !prev)
-    setMapUpdate(false)
-  }
+  // const onClickToastMessage = () => {
+  //   console.log('컴포넌트 클릭 - 마커 재검색')
+  //   setSearchHere(prev => !prev)
+  //   setMapUpdate(false)
+  // }
 
   const onChangeLocation = (str:string,lat:string, lng:string) => {
     setCenter({
@@ -57,6 +65,22 @@ const Maps = ({markerData, centerCoord, sidebar, setCenter,  setSearchHere}: pro
     setTimeout(()=>{setMapUpdate(false)}, 5000)
     renderedMap.current.setCenter(new (window as any).kakao.maps.LatLng(lat, lng))
   }
+
+  // useEffect(()=>{
+  //   const script = document.createElement("script");
+  //   script.async = true;
+  //   script.src = `//dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.NEXT_PUBLIC_KAKAO_MAPS_API_KEY}&autoload=false`;
+  //   document.head.appendChild(script);
+  //   script.onload = () => {
+  //     (window as any).kakao.maps.load(function() {
+
+  //       if (mapContainer && mapContainer.current) {
+  //         renderedMap.current.setCenter(new (window as any).kakao.maps.LatLng(centerCoord.lat, centerCoord.lng))
+  //       }
+  //     })
+  //   }
+
+  // },[centerCoord.lat, centerCoord.lng])
 
   useEffect(()=>{
 
@@ -75,7 +99,7 @@ const Maps = ({markerData, centerCoord, sidebar, setCenter,  setSearchHere}: pro
       if (renderedMarker.current.length > 0) {
         renderedMarker.current.map((marker: { setMap: (arg0: null) => any; }) => marker.setMap(null));
       }
-      renderedMarker.current = markerData.map((marker: { latitude: number; longitude: number; storeName:string; }) => new (window as any).kakao.maps.Marker({
+      renderedMarker.current = storeListData.map((marker: { latitude: number; longitude: number; storeName:string; }) => new (window as any).kakao.maps.Marker({
         position: new (window as any).kakao.maps.LatLng(marker.latitude, marker.longitude),
       }));
 
@@ -83,7 +107,19 @@ const Maps = ({markerData, centerCoord, sidebar, setCenter,  setSearchHere}: pro
 
       ////////
           //marker overlay 생성
-      renderedOverlay.current = markerData.map((marker: { latitude: number; longitude: number; storeName:string; score:number; storeAddress: string}) =>{ 
+      renderedOverlay.current = storeListData.map((marker: { storeId: number, latitude: number; longitude: number; storeName:string; score:number; storeAddress: string}, idx) =>{ 
+
+
+/**
+ * href="/map?selected=${idx}&search=${searchKeyword}"
+ * onclick="${() => {setSelectedStoreId(idx)}}"
+ * onclick="${sidebar}
+ * id="overlayLink-${idx}"
+ */
+        function sidebar(){
+          console.log(idx, idx,idx,idx,idx)
+          setSelectedStoreId(idx)
+        }
 
         let content = `
         <style>
@@ -96,7 +132,7 @@ const Maps = ({markerData, centerCoord, sidebar, setCenter,  setSearchHere}: pro
           .customoverlay:after {content:'';position:absolute;margin-left:-12px;left:50%;bottom:-12px;width:22px;height:12px;background:url('https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/vertex_white.png')}
         </style>
         <div class="customoverlay"> 
-            <a href=""> 
+            <a href="/map?selected=${marker.storeId}&search=${searchKeyword}?lat${marker.latitude}?lng${marker.longitude}"> 
                 <span class="info" >
                   <div class="overlayTitle">${marker.storeName}</div>
                   <div class="score">
@@ -106,12 +142,15 @@ const Maps = ({markerData, centerCoord, sidebar, setCenter,  setSearchHere}: pro
                 </span>
             </a> 
         </div>`
+        
 
         let overlay = new (window as any).kakao.maps.CustomOverlay({
           content: content,
           map: renderedMap.current,
           position: new (window as any).kakao.maps.LatLng(marker.latitude, marker.longitude),  
         });
+
+        
 
         return overlay;
 
@@ -122,6 +161,7 @@ const Maps = ({markerData, centerCoord, sidebar, setCenter,  setSearchHere}: pro
       renderedMarker.current.forEach((marker: any)=> {
         renderedOverlay.current.forEach((overlay: { setMap: (arg0: any) => void; })=> {
           (window as any).kakao.maps.event.addListener(marker, 'click', function() {
+            console.log('cklcie!!')
             overlay.setMap(renderedMap.current);
           })
         })
@@ -139,10 +179,17 @@ const Maps = ({markerData, centerCoord, sidebar, setCenter,  setSearchHere}: pro
             position: markerPosition
         });
 
+        //useState
+          // let mapOption = {
+          //     center: new (window as any).kakao.maps.LatLng(centerCoord.lat,centerCoord.lng), // 지도의 중심좌표
+          //     level: 5, // 지도의 확대 레벨
+          // };
+
+        //useRef
           let mapOption = {
-              center: new (window as any).kakao.maps.LatLng(centerCoord.lat,centerCoord.lng), // 지도의 중심좌표
-              level: 5, // 지도의 확대 레벨
-          };
+                center: new (window as any).kakao.maps.LatLng(centerCoord.lat,centerCoord.lng), // 지도의 중심좌표
+                level: 5, // 지도의 확대 레벨
+            };
 
           if(renderedMap.current === null){
             // 지도를 생성합니다
@@ -160,6 +207,7 @@ const Maps = ({markerData, centerCoord, sidebar, setCenter,  setSearchHere}: pro
                   lat: map.getCenter().getLat(),
                   lng: map.getCenter().getLng()
                 }))
+                // centerCoordRef.current = [map.getCenter().getLat(), map.getCenter().getLng()]
                 setMapUpdate(true);
                 setTimeout(()=>{setMapUpdate(false)}, 3000)
             });
@@ -168,22 +216,25 @@ const Maps = ({markerData, centerCoord, sidebar, setCenter,  setSearchHere}: pro
             // });
           }
 
-          if(markerData ) {
+          if(storeListData ) {
             setMarker();
           }
           
+          // renderedMap.current.setCenter(new (window as any).kakao.maps.LatLng(centerCoord.lat, centerCoord.lng))
         }
       });
     };
 
+    
 
-  },[centerCoord.location, markerData])
+  },[centerCoord.lat, centerCoord.lng, storeListData])
 
   return (
-    <Container sidebar={sidebar} ref={mapContainer} >
+    <Container sidebar={sidebar !== -1 ? true:false} ref={mapContainer} >
       <LocationSelectorBtn onClick={onClickMoveMap}/>
       {moveMap&& <LocationModal selectedLocation={centerCoord.location} onChangeLocation={onChangeLocation} onClickMoveMap={onClickMoveMap}/>}
-      {mapUpdate&& <ToastMessage wrapType="none" messageString="이 지역에서 다시 검색하기" timer={3000}  clickEvent={true} eventFunc={onClickToastMessage} key="mapUpdateToast"/>}
+      {mapUpdate&& <ToastMessage wrapType="none" messageString="이 지역에서 다시 검색하기" timer={3000}  clickEvent={true} eventFunc={()=>{}} key="mapUpdateToast"/>}
+      {/* {mapUpdate&& <ToastMessage wrapType="none" messageString="이 지역에서 다시 검색하기" timer={3000}  clickEvent={true} eventFunc={onClickToastMessage} key="mapUpdateToast"/>} */}
     </Container>
   );
 };
@@ -196,11 +247,11 @@ const Container = styled.div<style>`
   width: 100%;
   width: calc(100% - 439px);
   height: 100%;
-  ${({sidebar}) => {
+  /* ${({sidebar}) => {
         if(sidebar === true){
             return `width: calc(100% - 439px - 431px);`
         }
-    }};
+    }}; */
 `;
 
 const LocationSelectorBtn = styled.div`

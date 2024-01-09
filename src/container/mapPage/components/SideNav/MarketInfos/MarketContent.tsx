@@ -1,18 +1,53 @@
 import React from "react";
 import styled, { css } from "styled-components";
+import { resGalleryPost } from "../../../../../types/apiTypes";
+import GalleryPost from "../../../../boardPage/galleryBoard/GalleryPost";
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Text } from "../../../../mainPage/components/NearbyStorePost.style";
 
-const MarketContent = () => {
+const MarketContent = ({store}:any) => {
+  console.log("postS!!!!", store)
   return (
     <Container>
       <PostBoard>
         <Title>게시글</Title>
+        <PostBoardContents>
+          {store && store.posts.length > 0 &&
+            store.posts.filter((e: any, idx: number)=> idx<3).map((e:resGalleryPost, idx:number) => (
+                <GalleryPost
+                  key={e.id}
+                  storeId={store.id}
+                  width={96}
+                  height={140}
+                  imgArray={[e.thumbnail.fileUrl]}
+                  location={e.address}
+                  onBookmark={false} 
+                  ratingValue={"-1"}
+                  summary={e.content}
+                  title={e.name}
+                  size='small'
+                  tagValue={Number(e.score) > 4.5 ? "HOT": "none"}
+                  bookmark={false}
+                  margin="8px 20px"
+                  />
+            ))}
+
+            {
+              store && store.posts.length === 0 &&
+              <Text fontSize="16px">아직 등록된 게시글이 없어요!</Text>
+            }
+
+        </PostBoardContents>
       </PostBoard>
-      <RouterBtn>예약하러 가기</RouterBtn>
+      <RouterBtn onClick={() => { window.location.href = `/galleryBoard/${store.id}`}}>예약하러 가기</RouterBtn>
 
       <ReviewBoard>
         <Title>리뷰</Title>
+        <ReviewBoardContents>
+          
+        </ReviewBoardContents>
       </ReviewBoard>
-      <RouterBtn>후기 게시판 보러 가기</RouterBtn>
+      <RouterBtn onClick={() => { window.location.href = `/galleryBoard/${store.id}`}}>후기 게시판 보러 가기</RouterBtn>
 
       {/* <Announce /> */}
     </Container>
@@ -38,9 +73,19 @@ const PostBoard = styled.div`
   ${Content}
   height: 190px;
 `;
+const PostBoardContents = styled.div`
+  display: flex;
+  flex-direction: row;
+  height: 190px;
+  justify-content: center;
+  align-items: center;
+`;
 const ReviewBoard = styled.div`
   ${Content}
   height: 202px;
+`;
+const ReviewBoardContents = styled.div`
+  ${PostBoardContents}
 `;
 const Title = styled.div`
   color: #000;

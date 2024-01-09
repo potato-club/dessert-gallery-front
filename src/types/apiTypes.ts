@@ -2,7 +2,7 @@ export type boardSearchOptionData = {
   page: string,
   address: string,
   searchType: string[],
-  sortType: "RECENT"| "FOLLOWER"| "SCORE",
+  sortType: RECENT| FOLLOWER| SCORE,
   setToast:  React.Dispatch<React.SetStateAction<boolean>>
   setResData: React.Dispatch<React.SetStateAction<resGalleryPost[][]>> 
   resData: resGalleryPost[][]
@@ -12,7 +12,7 @@ export type reviewBoardSearchOptionData = {
   page: string,
   address: string,
   searchType: string[],
-  sortType: "RECENT"| "FOLLOWER"| "SCORE",
+  sortType: RECENT| FOLLOWER| SCORE,
   setToast:  React.Dispatch<React.SetStateAction<boolean>>
   setResData: React.Dispatch<React.SetStateAction<resReviewPost[][]>>
   resData: resReviewPost[][]
@@ -73,3 +73,50 @@ export type nearbyStore = {
   storeAddress: string
   storeName: string
 }
+
+export type mapStoreDetail =
+  {
+    id: number,
+    name: string,
+    info: string,
+    content: string,
+    address: string,
+    phoneNumber: string,
+    storeImage: {
+      fileName: string,
+      fileUrl: string
+    },
+    posts: [
+      {
+        title: string,
+        content: string,
+        thumbnail: {
+          fileName: string,
+          fileUrl: string
+        },
+        createdDate: string
+      }
+    ],
+    reviews: [
+      {
+        userName: string,
+        content: string,
+        score: 0,
+        image: {
+          fileName: string,
+          fileUrl: string
+        },
+        createDate: Date
+      }
+    ],
+    notices: [
+      {
+        id: 0,
+        title: string,
+        content: string,
+        exposed: true,
+        type: string,
+        createdDate: string
+      }
+    ]
+  }

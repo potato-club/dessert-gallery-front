@@ -193,6 +193,10 @@ export type galleryPostValue = {
      * (필수) 이미지 배열 값
      */
     imgArray:string[]
+    /**
+     * (선택) margin 값
+     */
+    margin?:string
 }
 
 
