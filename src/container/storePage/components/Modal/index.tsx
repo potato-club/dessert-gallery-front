@@ -5,7 +5,6 @@ import { MenuIcon } from "../../../../../public/svg";
 import Comment from "./Comment";
 import Bookmark from "../../../../components/SlideImage/Bookmark";
 import SlideImage from "../../../../components/SlideImage/SlideImage";
-import MenuBox from "./MenuBox";
 import {
   useGetDetailBoard,
   useInfinityModalComment,
@@ -18,14 +17,24 @@ import { useGetStoreInfo } from "../../../../hooks/useStore";
 import { useRouter } from "next/router";
 import { useInView } from "react-intersection-observer";
 import LoadingSpinner from "./LoadingSpinner";
+import ToggleOptionBox from "../../../../components/ToggleOptionBox";
 
 const PostModal = ({ boardId }: any) => {
   const [comment, setComment] = useState<string>("");
-  const [onBookmarkState, setOnBookmarkState] = useState<boolean>(false);
   const [menuIconClick, setMenuIconClick] = useState<boolean>(false);
   const [commentList, setCommentList] = useState<any[]>([]);
   const [postCommentList, setPostCommentList] = useState<any[]>([]);
   const [isLoad, setIsLoad] = useState(false);
+  const [onBookmarkState, setOnBookmarkState] = useState<boolean>(false);
+
+  // 세부 게시물 불러오기
+  const { data: detailPoster } = useGetDetailBoard({}, boardId);
+  // bookmark 불리언값에 따른 onBookmarkState 상태 변경
+  useEffect(() => {
+    if (detailPoster) {
+      setOnBookmarkState(detailPoster.bookmark);
+    }
+  }, [detailPoster]);
 
   // 가게 정보 불러오기
   const router = useRouter();
@@ -33,9 +42,6 @@ const PostModal = ({ boardId }: any) => {
     storeId: Number(router.query.store),
     options: { refetchOnWindowFocus: false },
   });
-
-  // 세부 게시물 불러오기
-  const detailPoster = useGetDetailBoard({}, boardId);
 
   // infiniteQuery 모달 댓글 불러오기
   const { data, fetchNextPage, hasNextPage, isLoading, refetch } =
@@ -65,8 +71,8 @@ const PostModal = ({ boardId }: any) => {
     setComment("");
   };
 
+  // infinite scroll 구현
   const [ref, inView] = useInView({ threshold: 1 });
-
   useEffect(() => {
     if (inView && !isLoading && hasNextPage) {
       setIsLoad(true);
@@ -76,6 +82,33 @@ const PostModal = ({ boardId }: any) => {
       }, 1500);
     }
   }, [inView, isLoading]);
+
+  const storePageModalOption = [
+    {
+      title: "1:1 채팅",
+      onClickHandler: () => {
+        console.log(`MenuBox click 1:1 채팅`);
+      },
+    },
+    {
+      title: "공유하기",
+      onClickHandler: () => {
+        console.log(`MenuBox click 공유하기`);
+      },
+    },
+    {
+      title: "예약하러 가기",
+      onClickHandler: () => {
+        console.log(`MenuBox click 예약하러 가기`);
+      },
+    },
+    {
+      title: "게시판 이동",
+      onClickHandler: () => {
+        console.log(`MenuBox click 게시판 이동`);
+      },
+    },
+  ];
 
   if (!detailPoster) {
     return <></>;
@@ -112,7 +145,9 @@ const PostModal = ({ boardId }: any) => {
           </InfoHeader>
 
           <InfoContent>
-            {menuIconClick && <MenuBox />}
+            {menuIconClick && (
+              <ToggleOptionBox contents={storePageModalOption} />
+            )}
             <TopPosition>
               <Address>{storeInfo.address}</Address>
               <BookmarkDiv>
