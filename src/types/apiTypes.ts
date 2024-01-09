@@ -109,6 +109,14 @@ export interface SliceNoticeListDto {
   empty: boolean;
 }
 
+export interface PostNoticeParam {
+  title: string;
+  content: string;
+  exposed: string;
+  typeKey: string;
+}
+
+
 export type mapStoreDetail =
   {
     id: number,

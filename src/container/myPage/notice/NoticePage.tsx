@@ -1,14 +1,19 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import { IoSearch } from "react-icons/io5";
 import { IoIosArrowDown } from "react-icons/io";
 import { IoIosArrowUp } from "react-icons/io";
 import { HiDotsVertical } from "react-icons/hi";
 import useNoticeList from "../../../hooks/useNoticeList";
+import ToggleOptionBox from "../../../components/ToggleOptionBox";
+import Link from "next/link";
+import {
+  addNoticeList,
+  deleteNotice,
+} from "../../../apis/controller/noticePage";
+import Router from "next/router";
+import { useInView } from "react-intersection-observer";
 import { NoticeListDto } from "../../../types/apiTypes";
-interface NoticePageProps {
-  isGuest: any;
-}
 
 interface Button {
   isSelected?: boolean;
@@ -19,23 +24,28 @@ interface ButtonInfo {
   index: number;
   label: string;
 }
-interface NoticeInfo {
-  id: number;
-  value: string;
-  title: string;
-  content: string;
-  date: string;
-}
 
 const NoticePage = () => {
-  const [selectedButton, setSelectedButton] = useState<number>(0);
   const [detailButton, setDetailButton] = useState<number | null>(null);
 
-  const noticeList = useNoticeList();
+  const [type, setType] = useState<number>(2);
+
+  const [noticeId, setnoticeId] = useState<number>(0);
+  const [modal, setModal] = useState<boolean>(false);
+
+  const [inputValue, setuinputValue] = useState<string>("");
+  const [search, setSearch] = useState<string>("");
+
+  const { noticeList, setNoticeList } = useNoticeList(type, search);
+
+  let LASTID = noticeList?.[noticeList.length - 1]?.id ?? 0;
+
+  const [ref, inView] = useInView({ threshold: 0.5 });
 
   const handleValueClick = (buttonIndex: number) => {
-    setSelectedButton(buttonIndex);
+    setType(buttonIndex);
   };
+
   const handleDetailClick = (noticeId: number) => {
     if (detailButton === noticeId) {
       setDetailButton(null);
@@ -46,34 +56,85 @@ const NoticePage = () => {
 
   const buttonInfoList: ButtonInfo[] = [
     // 버튼 기능 목록 추가 할때
-    { index: 0, label: "전체" },
-    { index: 1, label: "공지사항" },
-    { index: 2, label: "이벤트" },
+    { index: 2, label: "전체" },
+    { index: 0, label: "공지사항" },
+    { index: 1, label: "이벤트" },
   ];
 
+  const modalOption = [
+    {
+      title: "수정하기",
+      onClickHandler: () => {
+        Router.push({
+          pathname: "/myPage/writing",
+          query: { isModify: true, id: noticeId },
+        });
+      },
+    },
+    {
+      title: "삭제하기",
+      onClickHandler: async () => {
+        await deleteNotice(noticeId);
+        location.reload();
+      },
+    },
+  ];
+
+  const optionClick = (noticeId: number) => {
+    setModal(!modal);
+    setnoticeId(noticeId);
+  };
+
+  const handleSubmit = (e: any) => {
+    e.preventDefault();
+    setSearch(inputValue);
+  };
+
+  useEffect(() => {
+    if (inView) {
+      addNoticeList(type, search, LASTID)
+        .then((newNoticeList) => {
+          setNoticeList((prevList) => {
+            if (!prevList) return [...newNoticeList];
+
+            return [...prevList, ...newNoticeList];
+          });
+        })
+        .catch((error) => {
+          console.error("Error fetching notice list:", error);
+        });
+    }
+  }, [inView, search]);
   return (
     <Wrapper>
       <MenuWrapper>
         <Header>
           <NoticeBox>공지사항/이벤트 관리</NoticeBox>
-          <WritingBox>게시글 작성</WritingBox>
+          <Link href={"/myPage/writing"}>
+            <WritingBox>게시글 작성</WritingBox>
+          </Link>
         </Header>
         <Middle>
           <NoticeValueBox>
             {buttonInfoList.map((buttonInfoList) => (
               <NoticeButton
                 key={buttonInfoList.index}
-                isSelected={selectedButton === buttonInfoList.index}
+                isSelected={type === buttonInfoList.index}
                 onClick={() => handleValueClick(buttonInfoList.index)}
               >
                 {buttonInfoList.label}
               </NoticeButton>
             ))}
           </NoticeValueBox>
-          <SearchBox>
-            <IoSearch />
-            <SearchInput placeholder="검색어를 입력해 주세요" />
-          </SearchBox>
+          <form onSubmit={handleSubmit}>
+            <SearchBox>
+              <IoSearch />
+              <SearchInput
+                placeholder="검색어를 입력해 주세요"
+                onChange={(e) => setuinputValue(e.target.value)}
+              />
+            </SearchBox>
+          </form>
         </Middle>
       </MenuWrapper>
       <Div>
@@ -82,10 +143,17 @@ const NoticePage = () => {
             key={noticeList.id}
             detail={noticeList.id === detailButton}
           >
-            <ContentBox detail={noticeList.id === detailButton}>
+            <ContentBox
+              detail={noticeList.id === detailButton}
+              ref={noticeList.id === LASTID ? ref : null}
+            >
               <NoticeValue>{noticeList.type}</NoticeValue>
               {noticeList.id === detailButton ? (
-                <NoticeContent>{noticeList.content}</NoticeContent>
+                <NoticeContent>
+                  {noticeList.title}
+
+                  {noticeList.content}
+                </NoticeContent>
               ) : (
                 <NoticeTitle>{noticeList.title}</NoticeTitle>
               )}
@@ -104,7 +172,12 @@ const NoticePage = () => {
                     onClick={() => handleDetailClick(noticeList.id)}
                   />
                 )}
-                <HiDotsVertical />
+                <HiDotsVertical onClick={() => optionClick(noticeList.id)} />
+                {modal && noticeId === noticeList.id ? (
+                  <ModalOptionBox>
+                    <ToggleOptionBox contents={modalOption} />
+                  </ModalOptionBox>
+                ) : null}
               </OptionBox>
             </ContentBox>
           </ContentsBackground>
@@ -116,6 +189,7 @@ const NoticePage = () => {
 
 export default NoticePage;
 const Wrapper = styled.div`
+  width: 100%;
   row-gap: 40px;
   display: flex;
   flex-direction: column;
@@ -267,10 +341,17 @@ const OptionBox = styled.div`
   display: flex;
   height: 36px;
   align-items: center;
+  position: relative;
 `;
 const Option = styled.div`
   font-weight: 700;
   justify-content: center;
   display: flex;
   width: 36.34px;
+`;
+const ModalOptionBox = styled.div`
+  position: absolute;
+  top: 33px;
+  right: -17px;
+  z-index: 1;
 `;
