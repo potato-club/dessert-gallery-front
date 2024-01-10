@@ -50,7 +50,7 @@ const CustomButton = styled.input`
 const Label = styled.label<{ width: number; height: number }>`
   width: ${({ width }) => `${width}px`};
   height: ${({ height }) => `${height}px`};
-  border: 2.5px solid #ff6f00;
+  border: 2px solid #ff6f00;
   cursor: pointer;
   border-radius: 7px;
   background-color: white;

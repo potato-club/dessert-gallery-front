@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import FullCalendar from "@fullcalendar/react";
 import interactionPlugin from "@fullcalendar/interaction";
@@ -12,6 +12,7 @@ import ModalWrapper from "../../../../components/ModalWrapper";
 
 const Calendar = ({ ...props }) => {
   const [onModal, setOnModal] = useRecoilState(modalBg);
+  const [clickDateInfo, setClickDateInfo] = useState<null | string>(null);
 
   const customDayCellContent = (info: any) => {
     return info.dayNumberText.replace("일", "");
@@ -21,7 +22,11 @@ const Calendar = ({ ...props }) => {
     <MyCalContainer>
       {onModal && (
         <ModalWrapper>
-          <DateModal />
+          <DateModal
+            dateInfo={props.dateInfo}
+            clickDateInfo={clickDateInfo}
+            scheduleList={props.scheduleList}
+          />
         </ModalWrapper>
       )}
       <FullCalendar
@@ -35,6 +40,7 @@ const Calendar = ({ ...props }) => {
         dateClick={(e: any) => {
           console.log(e);
           setOnModal(true);
+          setClickDateInfo(e.dateStr);
         }}
         editable
         selectable

@@ -39,6 +39,7 @@ const CalendarPage = () => {
       <CalendarDiv>
         <Intro />
         <Calendar
+          dateInfo={dateInfo}
           setDateInfo={setDateInfo}
           scheduleList={calendarData?.scheduleList}
         />
