@@ -22,6 +22,11 @@ export const calendarPageApi = {
     return res;
   },
 
+  async deleteCalendarSchedule(scheduleId: number) {
+    const res = await sendApi.delete(`/stores/schedule?id=${scheduleId}`);
+    return res;
+  },
+
   async postCalendarMemo({ year, month }: DateInfo, content: string) {
     const res = await sendApi.post(`/stores/memo`, {
       content,

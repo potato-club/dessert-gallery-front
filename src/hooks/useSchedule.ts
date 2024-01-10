@@ -55,7 +55,24 @@ export const modifyCalendarPage = {
     return { scheduleAddFn };
   },
 
-  useDeleteSchedule() {},
+  useDeleteSchedule(dateInfo: DateInfo) {
+    const queryClient = useQueryClient();
+    const { mutate: scheduleDeleteFn } = useMutation(
+      ["schedule", dateInfo.year, dateInfo.month],
+      (scheduleId: number) =>
+        calendarPageApi.deleteCalendarSchedule(scheduleId),
+      {
+        onSuccess: () => {
+          queryClient.refetchQueries([
+            "schedule",
+            dateInfo.year,
+            dateInfo.month,
+          ]);
+        },
+      }
+    );
+    return { scheduleDeleteFn };
+  },
 
   useAddMemo(dateInfo: DateInfo) {
     const queryClient = useQueryClient();
