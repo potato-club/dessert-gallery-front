@@ -4,10 +4,11 @@ import FullCalendar from "@fullcalendar/react";
 import interactionPlugin from "@fullcalendar/interaction";
 import dayGridPlugin from "@fullcalendar/daygrid";
 
-const StoreCalendar = () => {
+const StoreCalendar = ({ ...props }) => {
   const customDayCellContent = (info: any) => {
     return info.dayNumberText.replace("일", "");
   };
+
   return (
     <Container>
       <FullCalendar
@@ -25,6 +26,20 @@ const StoreCalendar = () => {
         selectable
         locale="kr"
         dayCellContent={(info: any) => customDayCellContent(info)}
+        datesSet={(args) => {
+          const tenDaysLater =
+            new Date(args.startStr).getTime() + 10 * 24 * 60 * 60 * 1000;
+          props.setDateInfo({
+            year: new Date(tenDaysLater).getFullYear(),
+            month: new Date(tenDaysLater).getMonth() + 1,
+          });
+        }}
+        events={
+          props.scheduleList &&
+          props.scheduleList.map((item: any) => {
+            return { className: item.type, start: item.date };
+          })
+        }
       />
       <InfoList>
         <InfoSet>

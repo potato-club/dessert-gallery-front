@@ -8,6 +8,7 @@ import Tag from "../../components/Tag";
 import { StoreProps } from "../../../pages/galleryBoard/[store]";
 import { useRecoilValue } from "recoil";
 import { JWTStateAtom } from "../../recoil/login/JWTStateAtom";
+import { useGetScheduleForUser } from "../../hooks/useSchedule";
 
 const StorePage = (props: StoreProps) => {
   const [isGuest, setIsGuest] = useState<boolean>(true);
@@ -22,6 +23,7 @@ const StorePage = (props: StoreProps) => {
   console.log(isGuest);
 
   const [spreadClick, setSpreadClick] = useState<boolean>(false);
+  const { setDateInfo, calendarData } = useGetScheduleForUser({});
 
   const { announceData, posterThumnail, detailPoster } = props;
 
@@ -30,7 +32,10 @@ const StorePage = (props: StoreProps) => {
       <StoreInfo>
         <StoreProfile />
         <CalDiv>
-          <Calender />
+          <Calender
+            scheduleList={calendarData?.scheduleList}
+            setDateInfo={setDateInfo}
+          />
         </CalDiv>
       </StoreInfo>
       {announceData[0] ? (
