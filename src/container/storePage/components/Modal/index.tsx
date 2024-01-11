@@ -135,6 +135,11 @@ const PostModal = ({ boardId }: any) => {
                 <SubCategory>{storeInfo.info || "default 값"}</SubCategory>
               </div>
             </StoreInfo>
+            <BoxPosition>
+              {menuIconClick && (
+                <ToggleOptionBox contents={storePageModalOption} />
+              )}
+            </BoxPosition>
             <MenuIcon
               width="5px"
               height="13px"
@@ -145,22 +150,17 @@ const PostModal = ({ boardId }: any) => {
           </InfoHeader>
 
           <InfoContent>
-            {menuIconClick && (
-              <ToggleOptionBox contents={storePageModalOption} />
-            )}
             <TopPosition>
               <Address>{storeInfo.address}</Address>
-              <BookmarkDiv>
-                <Bookmark
-                  storeId={boardId}
-                  onBookmark={onBookmarkState}
-                  size="medium"
-                  onClickBookmark={() => {
-                    toggleBookmark({ boardId });
-                    setOnBookmarkState((prev) => !prev);
-                  }}
-                />
-              </BookmarkDiv>
+              <Bookmark
+                storeId={boardId}
+                onBookmark={onBookmarkState}
+                size="medium"
+                onClickBookmark={() => {
+                  toggleBookmark({ boardId });
+                  setOnBookmarkState((prev) => !prev);
+                }}
+              />
             </TopPosition>
             <Title>{title}</Title>
             <TextContent>{content}</TextContent>
@@ -262,10 +262,6 @@ const StoreProfile = styled.img`
   height: 65px;
   border-radius: 100%;
   background-color: black;
-`;
-const BookmarkDiv = styled.div`
-  position: relative;
-  top: -10px;
 `;
 const TopPosition = styled.div`
   display: flex;
@@ -374,4 +370,9 @@ const LoadingDiv = styled.div`
 `;
 const IoDiv = styled.div`
   margin-top: 30px;
+`;
+const BoxPosition = styled.div`
+  position: relative;
+  top: 10px;
+  right: 95px;
 `;
