@@ -66,6 +66,7 @@ const EventBlock = styled.div`
   background-color: #fcf0e1;
 `;
 const Text = styled.span`
+  padding-top: 4px;
   color: #000;
   font-size: 6px;
   font-weight: 700;
@@ -101,8 +102,16 @@ export const Container = styled.div`
     background-color: #fcf0e1;
   }
   /* fullCalandar body style */
+  .fc .fc-scroller-liquid-absolute {
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
   .fc .fc-day-other .fc-daygrid-day-top {
     opacity: 0.4;
+  }
+  .fc .fc-daygrid-day.fc-day-today {
+    background-color: transparent;
   }
   .fc-day-sun a {
     color: #ff6f00;
@@ -142,5 +151,44 @@ export const Container = styled.div`
     justify-content: center;
     align-items: center;
     font-size: 10px;
+  }
+  /* fullcalendar event css */
+  .fc .fc-daygrid-body-unbalanced .fc-daygrid-day-events {
+    position: absolute;
+    z-index: -1;
+    display: flex;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    overflow: hidden;
+  }
+  .fc-daygrid-day-bottom {
+    margin: 0;
+  }
+  .fc-daygrid-event-harness {
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+  }
+  .HOLIDAY {
+    border-color: transparent;
+    width: 6px;
+    height: 6px;
+    border-radius: 100%;
+    background-color: #fdc886;
+  }
+  .EVENT {
+    border-color: transparent;
+    width: 6px;
+    height: 6px;
+    border-radius: 100%;
+    background-color: #fcf0e1;
+  }
+  .RESERVATION {
+    border-color: transparent;
+    width: 6px;
+    height: 6px;
+    border-radius: 100%;
+    background-color: #ff6f00;
   }
 `;

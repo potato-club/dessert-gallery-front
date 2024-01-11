@@ -89,11 +89,6 @@ const MyCalContainer = styled(Container)`
     padding: 4px;
   }
   /* fullCalandar body style */
-  .fc .fc-scroller-liquid-absolute {
-    &::-webkit-scrollbar {
-      display: none;
-    }
-  }
   .fc .fc-col-header-cell {
     border-bottom: 3px solid #ff8d00;
     padding: 29px 0px;
@@ -102,37 +97,24 @@ const MyCalContainer = styled(Container)`
   .fc-daygrid-day-frame {
     font-size: 20px;
   }
-  .fc .fc-daygrid-day.fc-day-today {
-    background-color: transparent;
-  }
   /* fullcalendar event css */
   .fc .fc-daygrid-body-unbalanced .fc-daygrid-day-events {
-    position: absolute;
-    z-index: -1;
-  }
-  .fc-daygrid-day-events {
+    width: 88px;
     height: 88px;
-    overflow-y: hidden;
   }
   .HOLIDAY {
-    border-color: transparent;
-    width: 84px;
-    height: 84px;
-    border-radius: 100%;
-    background-color: #fdc886;
+    width: 17px;
+    height: 17px;
   }
   .EVENT {
-    border-color: transparent;
-    width: 84px;
-    height: 84px;
-    border-radius: 100%;
-    background-color: #fcf0e1;
+    width: 17px;
+    height: 17px;
   }
   .RESERVATION {
     border-color: transparent;
-    width: 84px;
-    height: 84px;
+    width: 17px;
+    height: 17px;
     border-radius: 100%;
-    background-color: transparent;
+    background-color: #ff6f00;
   }
 `;
