@@ -3,17 +3,17 @@ import { AUTH_KEY } from "../constants/authkey";
 import { SESSION_KEY } from "../constants/session";
 import sessionStorageService from "../libs/sessionStorageService";
 import authorization from "../libs/httpService";
-import axiosClient from "./axiosInterceptor";
+// import axiosClient from "./axiosInterceptor";
 
 export const sendApi = {
   get: (url: string) => {
     if (sessionStorageService.get(SESSION_KEY) !== null) {
-      return axiosClient.get(
+      return axios.get(
         AUTH_KEY.apiUrl + url,
         authorization(sessionStorageService.get(SESSION_KEY))
       );
     } else {
-      return axiosClient.get(AUTH_KEY.apiUrl + url);
+      return axios.get(AUTH_KEY.apiUrl + url);
     }
   },
 
@@ -22,7 +22,7 @@ export const sendApi = {
   },
 
   post: (url: string, req: object = {}) => {
-    return axiosClient.post(
+    return axios.post(
       AUTH_KEY.apiUrl + url,
       req,
       authorization(sessionStorageService.get(SESSION_KEY))
@@ -30,7 +30,7 @@ export const sendApi = {
   },
 
   put: (url: string, req: object = {}) => {
-    return axiosClient.put(
+    return axios.put(
       AUTH_KEY.apiUrl + url,
       req,
       authorization(sessionStorageService.get(SESSION_KEY))
@@ -38,7 +38,7 @@ export const sendApi = {
   },
 
   delete: (url: string) => {
-    return axiosClient.delete(
+    return axios.delete(
       AUTH_KEY.apiUrl + url,
       authorization(sessionStorageService.get(SESSION_KEY))
     );
