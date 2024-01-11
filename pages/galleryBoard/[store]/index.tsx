@@ -11,7 +11,7 @@ import {
 import { calendarPageApi } from "../../../src/apis/controller/myPage";
 
 export interface StoreProps {
-  storeInfo: any;
+  storeId: number;
   announceData: any;
   posterThumnail: any;
   storeReview: any;
@@ -47,7 +47,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     const month = today.getMonth() + 1;
 
     await queryClient.prefetchQuery(["schedule", year, month], () =>
-      calendarPageApi.getStoreCalendar({ year, month })
+      calendarPageApi.getStoreCalendar(storeId, { year, month })
     );
 
     return {
@@ -55,6 +55,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
         dehydratedState: dehydrate(queryClient), // 초기 데이터 캐싱
         announceData,
         posterThumnail,
+        storeId,
       },
     };
   } catch (error) {

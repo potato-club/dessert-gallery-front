@@ -7,9 +7,9 @@ export const getLoginUserInfo = async () => {
 };
 
 export const calendarPageApi = {
-  async getStoreCalendar({ year, month }: DateInfo) {
+  async getStoreCalendar(storeId: number, { year, month }: DateInfo) {
     const res = await sendApi.get(
-      `/stores/calendar?year=${year}&month=${month}`
+      `/stores/${storeId}/calendar?year=${year}&month=${month}`
     );
     return res.data;
   },

@@ -23,7 +23,7 @@ const StorePage = (props: StoreProps) => {
   console.log(isGuest);
 
   const [spreadClick, setSpreadClick] = useState<boolean>(false);
-  const { setDateInfo, calendarData } = useGetScheduleForUser({});
+  const { setDateInfo, calendarData } = useGetScheduleForUser(props.storeId);
 
   const { announceData, posterThumnail, detailPoster } = props;
 
