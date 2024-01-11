@@ -60,10 +60,11 @@ const MemoColumn = ({ ...props }) => {
 export default MemoColumn;
 const Container = styled.div`
   display: flex;
-  align-items: center;
   gap: 18px;
 `;
 const InputContent = styled.span<{ isSuccess: boolean }>`
+  display: flex;
+  align-items: center;
   width: 230px;
   word-break: break-all;
   color: ${({ isSuccess }) => (isSuccess ? "#828282" : "#000")};
