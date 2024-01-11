@@ -18,6 +18,23 @@ interface AddEventType {
   key: number;
 }
 
+export const useGetScheduleForUser = ({ options }: any) => {
+  const [dateInfo, setDateInfo] = useState<DateInfo>({
+    year: new Date().getFullYear(),
+    month: new Date().getMonth() + 1,
+  });
+
+  const { data: calendarData } = useQuery(
+    ["schedule", dateInfo.year, dateInfo.month],
+    () => calendarPageApi.getStoreCalendar(dateInfo),
+    {
+      ...options,
+    }
+  );
+
+  return { dateInfo, setDateInfo, calendarData };
+};
+
 export const useGetSchedule = ({ options }: any) => {
   const [dateInfo, setDateInfo] = useState<DateInfo>({
     year: new Date().getFullYear(),
