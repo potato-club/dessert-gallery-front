@@ -5,14 +5,16 @@ function ChatListItem({
   roomId,
   customerName,
   thumbnailMessage,
+  onClickItem,
 }: {
   roomId: number;
   customerName: string;
   thumbnailMessage: string;
+  onClickItem: () => void;
 }) {
   return (
-    <Wrapper>
-      <Profile></Profile>
+    <Wrapper onClick={onClickItem}>
+      <Profile />
       <ItemInfoWrapper>
         <InfoLeft>
           <UserName>
@@ -85,6 +87,12 @@ const UserName = styled.div`
   height: 18px;
   font-size: 12px;
   font-weight: bold;
+  @media screen and (min-width: 1920px) {
+    font-size: 14px;
+  }
+  @media screen and (max-width: 1919px) {
+    font-size: 12px;
+  }
 `;
 
 const UserNameHelper = styled.div`
@@ -92,6 +100,12 @@ const UserNameHelper = styled.div`
   font-weight: bold;
   margin: 1px 0 0 2px;
   color: #828282;
+  @media screen and (min-width: 1920px) {
+    font-size: 11px;
+  }
+  @media screen and (max-width: 1919px) {
+    font-size: 9px;
+  }
 `;
 
 const ThumbnailMessage = styled.div`
@@ -99,6 +113,12 @@ const ThumbnailMessage = styled.div`
   height: 15px;
   font-size: 9px;
   color: #828282;
+  @media screen and (min-width: 1920px) {
+    font-size: 11px;
+  }
+  @media screen and (max-width: 1919px) {
+    font-size: 9px;
+  }
 `;
 
 const TimeStamp = styled.div`
@@ -108,5 +128,10 @@ const TimeStamp = styled.div`
   font-size: 9px;
   color: #828282;
   margin-top: 5px;
+  /* @media screen and (min-width: 1920px) {
+    font-size: 11px;
+  }
+  @media screen and (max-width: 1919px) {
+    font-size: 9px;
+  } */
 `;
-

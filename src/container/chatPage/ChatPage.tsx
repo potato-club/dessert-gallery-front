@@ -1,13 +1,17 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import ChatList from "./components/ChatList";
 import ChatRoom from "./components/ChatRoom";
 
 function ChatPage() {
+  const [roomIdState, setRoomIdState] = useState<number>();
+  const getRoomIdState = (id: number) => {
+    setRoomIdState(id);
+  };
   return (
     <Wrapper>
-      <ChatList />
-      <ChatRoom />
+      <ChatList getRoomIdState={getRoomIdState} />
+      <ChatRoom roomIdState={roomIdState} />
     </Wrapper>
   );
 }
