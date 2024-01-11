@@ -2,49 +2,59 @@ import React from "react";
 import styled from "styled-components";
 import ChatItem from "./ChatItem";
 
-function ChatRoom() {
+function ChatRoom({ roomIdState }: { roomIdState?: number }) {
   return (
     <Wrapper>
-      <Header>
-        <HeaderTop>
-          <Profile>
-            <ProfileImage />
-            <UserName>
-              바닐라빈빈
-              <UserNameHelper>님</UserNameHelper>
-            </UserName>
-          </Profile>
-          <OptionButton>
-            {[1, 2, 3].map((index) => (
-              <Dot key={index}></Dot>
-            ))}
-          </OptionButton>
-        </HeaderTop>
-        <HeaderBottom>
-          <Product>
-            <ProductImage />
-            <ProductName>상큼오독 산딸기</ProductName>
-            <ProductPrice>34,000원</ProductPrice>
-          </Product>
-          <ButtonDiv>
-            <Button>예약 확정</Button>
-            <Button>후기 작성</Button>
-          </ButtonDiv>
-        </HeaderBottom>
-      </Header>
-      <Contents>
-        <ChatItem
-          myChat={false}
-          message={"123"}
-          timestamp={"2023-11-26T20:15:10.918Z"}
-        ></ChatItem>
-        <ChatItem
-          myChat={true}
-          message={"123"}
-          timestamp={"2023-11-26T20:15:10.918Z"}
-        ></ChatItem>
-      </Contents>
-      <Bottom></Bottom>
+      {roomIdState === undefined ? (
+        <NoItemAlert>선택된 채팅방이 없습니다.</NoItemAlert>
+      ) : (
+        <>
+          <Header>
+            <HeaderTop>
+              <Profile>
+                <ProfileImage />
+                <UserName>
+                  바닐라빈빈
+                  <UserNameHelper>님</UserNameHelper>
+                </UserName>
+              </Profile>
+              <OptionButton>
+                {[1, 2, 3].map((index) => (
+                  <Dot key={index}></Dot>
+                ))}
+              </OptionButton>
+            </HeaderTop>
+            <HeaderBottom>
+              <Product>
+                <ProductImage />
+                <ProductName>상큼오독 산딸기</ProductName>
+                <ProductPrice>34,000원</ProductPrice>
+              </Product>
+              <ButtonDiv>
+                <Button>예약 확정</Button>
+                <Button>후기 작성</Button>
+              </ButtonDiv>
+            </HeaderBottom>
+          </Header>
+          <Contents>
+            {/* <ChatItem
+              myChat={false}
+              message={`${roomIdState} 번 방의 채팅 내역입니다.`}
+              timestamp={"2023-11-26T20:15:10.918Z"}
+            ></ChatItem> */}
+            <ChatItem
+              myChat={true}
+              message={`${roomIdState} 번 방의 채팅 내역입니다.`}
+              timestamp={"2023-11-26T20:15:10.918Z"}
+            ></ChatItem>
+          </Contents>
+          <Bottom>
+            <Textbox placeholder="메세지를 입력해주세요">
+              {/* <SendButton>123</SendButton> */}
+            </Textbox>
+          </Bottom>
+        </>
+      )}
     </Wrapper>
   );
 }
@@ -63,6 +73,7 @@ const Wrapper = styled.div`
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
+  justify-content: center;
   border-right: 1px solid #dedede;
 `;
 
@@ -166,6 +177,8 @@ const ButtonDiv = styled.div`
   align-items: center;
   width: 202px;
 `;
+
+// 그림자 버전 버튼
 const Button = styled.button`
   width: 92px;
   height: 24px;
@@ -174,27 +187,12 @@ const Button = styled.button`
   justify-content: center;
   font-size: 9px;
   font-weight: bold;
+  border: none;
   border-radius: 6px;
-  border: 1px solid #dedede;
   background-color: FCF6EE;
+  box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.1);
   cursor: pointer;
 `;
-
-// 그림자 버전 버튼
-// const Button = styled.button`
-//   width: 92px;
-//   height: 24px;
-//   display: flex;
-//   align-items: center;
-//   justify-content: center;
-//   font-size: 9px;
-//   font-weight: bold;
-//   border: none;
-//   border-radius: 6px;
-//   background-color: FCF6EE;
-//   box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.1);
-//   cursor: pointer;
-// `;
 
 const Contents = styled.div`
   @media screen and (min-width: 1920px) {
@@ -221,5 +219,35 @@ const Bottom = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
+  padding: 14px;
+`;
+
+const Textbox = styled.textarea`
+  width: 100%;
+  height: 100%;
+  padding: 19px 21px;
+  border: 2px solid #ff6f00;
+  border-radius: 7px;
+  resize: none;
+  outline: none;
+  font-size: 11px;
+  font-family: noto-sans-cjk-kr, sans-serif;
+  ::placeholder {
+    color: #828282;
+  }
+`;
+
+const SendButton = styled.button`
+  width: 50px;
+  height: 22px;
   background-color: #dedede;
+  border-radius: 7px;
+`;
+
+const NoItemAlert = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 25px;
+  color: #a09f9f;
 `;
