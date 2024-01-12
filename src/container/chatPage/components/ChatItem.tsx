@@ -16,10 +16,8 @@ function ChatItem({
         <>
           <Timestamp myChat={myChat}>오전 9:30</Timestamp>
           <Message myChat={myChat}>
-            {`[픽업 완료] 
-        바닐라빈빈님, 상품 잘 받으셨나요? 
-        만족하셨다면 후기를 작성해주세요`}
-            <MessageButton>후기 게시판 보러가기</MessageButton>
+            {message}
+            {/* <MessageButton>후기 게시판 보러가기</MessageButton> */}
           </Message>
           <Profile />
         </>
@@ -27,10 +25,8 @@ function ChatItem({
         <>
           <Profile />
           <Message myChat={myChat}>
-            {`[픽업 완료] 
-        바닐라빈빈님, 상품 잘 받으셨나요? 
-        만족하셨다면 후기를 작성해주세요`}
-            <MessageButton>후기 게시판 보러가기</MessageButton>
+            {message}
+            {/* <MessageButton>후기 게시판 보러가기</MessageButton> */}
           </Message>
           <Timestamp myChat={myChat}>오전 9:30</Timestamp>
         </>

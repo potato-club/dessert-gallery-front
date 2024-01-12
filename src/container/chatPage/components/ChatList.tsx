@@ -3,7 +3,11 @@ import styled from "styled-components";
 import SerchImage from "../../../../public/SVG/myPage/chatPage/searchImage.svg";
 import ChatListItem from "./ChatListItem";
 
-function ChatList() {
+function ChatList({
+  getRoomIdState,
+}: {
+  getRoomIdState: (id: number) => void;
+}) {
   const chatListSample = [
     {
       roomId: 1,
@@ -46,6 +50,7 @@ function ChatList() {
             roomId={item.roomId}
             customerName={item.customerName}
             thumbnailMessage={item.thumbnailMessage}
+            onClickItem={() => getRoomIdState(item.roomId)}
           />
         ))}
       </ListContents>
@@ -94,6 +99,12 @@ const HeaderTitle = styled.div`
   font-size: 20px;
   font-weight: bold;
   margin-top: 3px;
+  @media screen and (min-width: 1920px) {
+    /* font-size: 25px; */
+  }
+  @media screen and (max-width: 1919px) {
+    /* font-size: 20px; */
+  }
 `;
 
 const HowToReservation = styled.button`
@@ -109,6 +120,12 @@ const HowToReservation = styled.button`
   background-color: FCF6EE;
   box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.1);
   cursor: pointer;
+  @media screen and (min-width: 1920px) {
+    font-size: 11px;
+  }
+  @media screen and (max-width: 1919px) {
+    font-size: 10px;
+  }
 `;
 
 const HeaderBottom = styled.div`

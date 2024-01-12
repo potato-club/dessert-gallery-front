@@ -1,18 +1,37 @@
 import React from "react";
 import styled from "styled-components";
 import AroundMarketItem from "./AroundMarketItem";
+import { selectedLocationCoordData } from "../../../../types/componentsData";
 
-const Market = () => {
+interface makerDataProps {
+  latitude: number
+  longitude: number
+  score: number
+  storeAddress: string
+  storeName:string
+  storeId:number
+  content: string
+  fileName: string
+  fileUrl: string
+}
+interface props {
+  markerData: makerDataProps[]
+  isSearch: boolean
+  searchKeyword:string
+  setCenter: React.Dispatch<React.SetStateAction<selectedLocationCoordData>>
+}
+
+const Market = ({markerData, isSearch, searchKeyword, setCenter}: props) => {
   return (
     <Container>
-      <TopSpan>내 근처에 무슨 가게가 있을까요?</TopSpan>
+      {isSearch && <TopSpan>내 근처 검색한 가게 리스트를 볼게요!</TopSpan>}
+      {!isSearch &&<TopSpan>내 근처에 무슨 가게가 있을까요?</TopSpan>}
       <MarketList>
-        <AroundMarketItem />
-        <AroundMarketItem />
-        <AroundMarketItem />
-        <AroundMarketItem />
-        <AroundMarketItem />
-        <AroundMarketItem />
+        {
+          markerData && markerData.map((store: makerDataProps, idx) => (
+            <AroundMarketItem key={idx} {...store} searchKeyword={searchKeyword} setCenter={setCenter}/>
+          ))
+        }
       </MarketList>
     </Container>
   );
