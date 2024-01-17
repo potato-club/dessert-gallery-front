@@ -56,8 +56,15 @@ const Calendar = ({ ...props }) => {
         }}
         events={
           props.scheduleList &&
-          props.scheduleList.map((item: any) => {
-            return { className: item.type, start: item.date };
+          props.scheduleList.flatMap((item: any) => {
+            return [
+              item.event && { className: "event", start: item.date },
+              item.holiday && { className: "holiday", start: item.date },
+              item.reservation && {
+                className: "reservation",
+                start: item.date,
+              },
+            ].filter(Boolean);
           })
         }
       />
@@ -102,15 +109,15 @@ const MyCalContainer = styled(Container)`
     width: 88px;
     height: 88px;
   }
-  .HOLIDAY {
+  .holiday {
     width: 17px;
     height: 17px;
   }
-  .EVENT {
+  .event {
     width: 17px;
     height: 17px;
   }
-  .RESERVATION {
+  .reservation {
     border-color: transparent;
     width: 17px;
     height: 17px;

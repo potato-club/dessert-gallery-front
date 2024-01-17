@@ -36,8 +36,15 @@ const StoreCalendar = ({ ...props }) => {
         }}
         events={
           props.scheduleList &&
-          props.scheduleList.map((item: any) => {
-            return { className: item.type, start: item.date };
+          props.scheduleList.flatMap((item: any) => {
+            return [
+              item.event && { className: "event", start: item.date },
+              item.holiday && { className: "holiday", start: item.date },
+              item.reservation && {
+                className: "reservation",
+                start: item.date,
+              },
+            ].filter(Boolean);
           })
         }
       />
@@ -185,21 +192,21 @@ export const Container = styled.div`
     justify-content: center;
     align-items: flex-end;
   }
-  .HOLIDAY {
+  .holiday {
     border-color: transparent;
     width: 6px;
     height: 6px;
     border-radius: 100%;
     background-color: #fdc886;
   }
-  .EVENT {
+  .event {
     border-color: transparent;
     width: 6px;
     height: 6px;
     border-radius: 100%;
     background-color: #fcf0e1;
   }
-  .RESERVATION {
+  .reservation {
     border-color: transparent;
     width: 6px;
     height: 6px;
