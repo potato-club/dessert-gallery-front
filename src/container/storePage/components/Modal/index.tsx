@@ -38,10 +38,7 @@ const PostModal = ({ boardId }: any) => {
 
   // 가게 정보 불러오기
   const router = useRouter();
-  const { data: storeInfo } = useGetStoreInfo({
-    storeId: Number(router.query.store),
-    options: { refetchOnWindowFocus: false },
-  });
+  const { data: storeInfo } = useGetStoreInfo(Number(router.query.store));
 
   // infiniteQuery 모달 댓글 불러오기
   const { data, fetchNextPage, hasNextPage, isLoading, refetch } =

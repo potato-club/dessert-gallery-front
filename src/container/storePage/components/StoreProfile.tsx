@@ -13,10 +13,7 @@ const StoreProfile = () => {
     router.query.store ? router.query.store.toString() : "0"
   );
 
-  const { data } = useGetStoreInfo({
-    storeId: storeId,
-    options: { refetchOnWindowFocus: false },
-  });
+  const { data } = useGetStoreInfo(storeId);
 
   const { postFollowMutate, putUnFollowMutate } = useFollowAction(storeId);
 

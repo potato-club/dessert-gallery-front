@@ -3,33 +3,25 @@
 
 import sendApi from "../sendApi";
 
-interface GetStoreType {
-  storeId: number;
-}
-export const getStoreInfo = async ({ storeId }: GetStoreType) => {
+export const getStoreInfo = async (storeId: number) => {
   const res = await sendApi.get(`/stores/${storeId}`);
   return res.data;
 };
-// export const getGuestStoreInfo = async ({ storeId }: GetStoreType) => {
-//   const res = await sendApi.guestGet(`/stores/${storeId}`);
 
-//   return res.data;
-// };
-
-export const getStoreAnnounce = async ({ storeId }: GetStoreType) => {
+export const getStoreAnnounce = async (storeId: number) => {
   const res = await sendApi.get(`/notices/stores/${storeId}`);
 
   return res.data;
 };
 
-export const getPosterThumnail = async ({ storeId }: GetStoreType) => {
+export const getPosterList = async (storeId: number) => {
   const res = await sendApi.get(`/boards/stores/${storeId}`);
 
   return res.data;
 };
 
-export const getDetailPoster = async ({ storeId }: GetStoreType) => {
-  const res = await sendApi.get(`/boards/${storeId}`);
+export const getDetailPoster = async (boardId: number) => {
+  const res = await sendApi.get(`/boards/${boardId}`);
   return res.data;
 };
 
@@ -40,7 +32,9 @@ interface GetStoreReview {
 
 export const getStoreReview = async ({ storeId, page }: GetStoreReview) => {
   try {
-    const res = await sendApi.get(`/reviews/stores/${storeId}?page=${page}`);
+    const res = await sendApi.get(
+      `/reviews/stores/${storeId}?page=${page || 1}`
+    );
     return res.data;
   } catch (error: any) {
     throw error;

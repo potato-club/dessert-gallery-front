@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { useSetRecoilState } from "recoil";
 import { modalBg } from "../../../../recoil/modalBg/atom";
 
-const Poster = ({ posterThumnail, setBoardId }: any) => {
+const Poster = ({ posterList, setBoardId }: any) => {
   const modalBgState = useSetRecoilState(modalBg);
 
   const onClick = (boardId: number) => {
@@ -13,13 +13,14 @@ const Poster = ({ posterThumnail, setBoardId }: any) => {
 
   return (
     <Container>
-      {posterThumnail.map((item: any) => (
-        <PostDiv
-          key={item.boardId}
-          src={item.thumbnail.fileUrl}
-          onClick={() => onClick(item.boardId)}
-        ></PostDiv>
-      ))}
+      {posterList &&
+        posterList.map((item: any, idx: number) => (
+          <PostDiv
+            key={idx}
+            src={item.thumbnail.fileUrl}
+            onClick={() => onClick(item.boardId)}
+          ></PostDiv>
+        ))}
     </Container>
   );
 };

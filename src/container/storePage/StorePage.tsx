@@ -9,6 +9,7 @@ import { StoreProps } from "../../../pages/galleryBoard/[store]";
 import { useRecoilValue } from "recoil";
 import { JWTStateAtom } from "../../recoil/login/JWTStateAtom";
 import { useGetScheduleForUser } from "../../hooks/useSchedule";
+import { useGetStoreAnnounce, useGetPosterList } from "../../hooks/useBoard";
 
 const StorePage = (props: StoreProps) => {
   const [isGuest, setIsGuest] = useState<boolean>(true);
@@ -20,13 +21,13 @@ const StorePage = (props: StoreProps) => {
     }
   }, [jwtData]);
 
-  console.log(isGuest);
-
   const [spreadClick, setSpreadClick] = useState<boolean>(false);
   const { setDateInfo, calendarData } = useGetScheduleForUser(props.storeId);
 
-  const { announceData, posterThumnail, detailPoster } = props;
+  const { announceData } = useGetStoreAnnounce({ storeId: props.storeId });
+  const { posterList } = useGetPosterList(props.storeId);
 
+  console.log(posterList);
   return (
     <Container>
       <StoreInfo>
@@ -38,7 +39,7 @@ const StorePage = (props: StoreProps) => {
           />
         </CalDiv>
       </StoreInfo>
-      {announceData[0] ? (
+      {announceData && announceData[0] ? (
         <Announce
           content={announceData[0].content}
           createdDate={announceData[0].createdDate || ""}
@@ -58,14 +59,17 @@ const StorePage = (props: StoreProps) => {
       <AnnounceList>
         {spreadClick && (
           <AbsoluteDiv spreadClick={spreadClick}>
-            {announceData.slice(1).map((item: any, idx: number) => (
-              <Announce
-                key={idx}
-                content={item.content}
-                setSpreadClick={setSpreadClick}
-                createdDate={item.createdDate}
-              />
-            ))}
+            {announceData &&
+              announceData
+                .slice(1)
+                .map((item: any, idx: number) => (
+                  <Announce
+                    key={idx}
+                    content={item.content}
+                    setSpreadClick={setSpreadClick}
+                    createdDate={item.createdDate}
+                  />
+                ))}
             <InnerDiv>
               <FoldBtn
                 title="접기"
@@ -81,10 +85,7 @@ const StorePage = (props: StoreProps) => {
           </AbsoluteDiv>
         )}
       </AnnounceList>
-      <StoreContent
-        posterThumnail={posterThumnail}
-        detailPoster={detailPoster}
-      />
+      <StoreContent posterList={posterList} />
     </Container>
   );
 };
