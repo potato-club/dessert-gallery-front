@@ -132,18 +132,22 @@ const PostModal = ({ boardId }: any) => {
                 <SubCategory>{storeInfo.info || "default 값"}</SubCategory>
               </div>
             </StoreInfo>
-            <BoxPosition>
-              {menuIconClick && (
-                <ToggleOptionBox contents={storePageModalOption} />
-              )}
-            </BoxPosition>
-            <MenuIcon
-              width="5px"
-              height="13px"
-              onClick={() => {
-                setMenuIconClick((prev) => !prev);
-              }}
-            />
+            <div>
+              <BoxPosition>
+                {menuIconClick && (
+                  <ToggleOptionBox contents={storePageModalOption} />
+                )}
+              </BoxPosition>
+              <MenuToggleBtn>
+                <MenuIcon
+                  width="5px"
+                  height="13px"
+                  onClick={() => {
+                    setMenuIconClick((prev) => !prev);
+                  }}
+                />
+              </MenuToggleBtn>
+            </div>
           </InfoHeader>
 
           <InfoContent>
@@ -253,6 +257,11 @@ const StoreInfo = styled.div`
   display: flex;
   align-items: center;
   gap: 21px;
+  width: 100%;
+`;
+const MenuToggleBtn = styled.button`
+  background-color: transparent;
+  border: none;
 `;
 const StoreProfile = styled.img`
   width: 65px;
@@ -310,6 +319,7 @@ const HashTag = styled.div`
 const InfoContent = styled.div`
   display: flex;
   flex-direction: column;
+  min-width: 408px;
   padding: 33px 28px;
   height: 444px;
   overflow-y: scroll;
@@ -370,6 +380,6 @@ const IoDiv = styled.div`
 `;
 const BoxPosition = styled.div`
   position: relative;
-  top: 10px;
-  right: 95px;
+  top: 20px;
+  left: -140px;
 `;
