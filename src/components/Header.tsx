@@ -77,6 +77,7 @@ const Container = styled.header`
   height: 96px;
   min-width: 1280px;
   position: relative;
+  z-index: 10;
 `;
 const BtnList = styled.div`
   display: flex;

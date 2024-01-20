@@ -3,12 +3,25 @@ import {
   getDetailPoster,
   getStoreReview,
   getBoardComment,
+  getPosterList,
 } from "../apis/controller/detailStore";
 
-export const useGetDetailBoard = (options = {}, storeId: number) => {
+export const useGetPosterList = (storeId: number) => {
+  const { data: posterList } = useQuery(
+    ["posterList", storeId],
+    () => getPosterList(storeId),
+    {
+      refetchOnWindowFocus: false,
+    }
+  );
+
+  return { posterList };
+};
+
+export const useGetDetailBoard = (options = {}, boardId: number) => {
   const { data } = useQuery(
-    ["detailBoard", storeId],
-    () => getDetailPoster({ storeId }),
+    ["detailBoard", boardId],
+    () => getDetailPoster(boardId),
     {
       ...options,
     }
@@ -27,6 +40,17 @@ export const useGetReviewList = ({ page, storeId, options }: any) => {
   );
 
   return { data, refetch };
+};
+export const useGetStoreAnnounce = ({ storeId, options }: any) => {
+  const { data: announceData, refetch } = useQuery(
+    ["storeAnnounce", storeId],
+    () => getStoreReview({ storeId }),
+    {
+      ...options,
+    }
+  );
+
+  return { announceData, refetch };
 };
 
 // x

@@ -2,17 +2,22 @@ import React, { useState, useEffect } from "react";
 import { debounce } from "lodash";
 import styled from "styled-components";
 import Calendar from "./components/Calendar";
-import EventAddBox from "./components/EventAddBox";
 import Intro from "./components/Intro";
 import MemoList from "./components/MemoList";
 import Today from "./components/Today";
 import TodoListOpenArrow from "../../../../public/image/TodoListOpenArrow.png";
 import TodoListCloseArrow from "../../../../public/image/TodoListCloseArrow.png";
 import Image from "next/image";
+import { useGetSchedule } from "../../../hooks/useSchedule";
 
+export interface DateInfo {
+  year: number;
+  month: number;
+}
 const CalendarPage = () => {
   const [isMove, setIsMove] = useState<boolean>(false);
   const [currentWidth, setCurrentWidth] = useState<number>(0);
+  const { dateInfo, setDateInfo, calendarData } = useGetSchedule({});
 
   useEffect(() => {
     setCurrentWidth(window.innerWidth);
@@ -31,12 +36,15 @@ const CalendarPage = () => {
 
   return (
     <Container>
-      <LeftDiv>
+      <CalendarDiv>
         <Intro />
-        <Calendar />
-        <EventAddBox />
-      </LeftDiv>
-      <RightDiv isMove={isMove} currentWidth={currentWidth}>
+        <Calendar
+          dateInfo={dateInfo}
+          setDateInfo={setDateInfo}
+          scheduleList={calendarData?.scheduleList}
+        />
+      </CalendarDiv>
+      <MovingDiv isMove={isMove} currentWidth={currentWidth}>
         <AbsoulteDiv>
           {isMove ? (
             <Image
@@ -58,13 +66,15 @@ const CalendarPage = () => {
         </AbsoulteDiv>
         <InnerContent>
           <Title>오늘은 무슨날?</Title>
-          <Today />
+          <Today holiday={calendarData?.holiday} />
         </InnerContent>
         <InnerContent>
-          <Title>이번 달 메모장</Title>
-          <MemoList />
+          <Title>
+            {dateInfo.year}년 {dateInfo.month}월 메모장
+          </Title>
+          <MemoList memoList={calendarData?.memoList} dateInfo={dateInfo} />
         </InnerContent>
-      </RightDiv>
+      </MovingDiv>
     </Container>
   );
 };
@@ -76,11 +86,11 @@ const Container = styled.div`
   height: 100%;
   overflow-x: hidden;
 `;
-const LeftDiv = styled.div`
+const CalendarDiv = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  gap: 40px;
   padding: 58px 0px 61px;
   @media (min-width: 1280px) {
     width: calc(818px + (1128 - 818) * ((100vw - 1280px) / (1920 - 1280)));
@@ -89,9 +99,9 @@ const LeftDiv = styled.div`
     width: 1128px;
   }
 `;
-const RightDiv = styled.div<{ isMove: boolean; currentWidth: number }>`
+const MovingDiv = styled.div<{ isMove: boolean; currentWidth: number }>`
   position: relative;
-  z-index: 10;
+  z-index: 1;
   display: flex;
   flex-direction: column;
   gap: 77px;
@@ -107,7 +117,7 @@ const RightDiv = styled.div<{ isMove: boolean; currentWidth: number }>`
       : "translateX(0px)"};
 `;
 const InnerContent = styled.div`
-  width: 354px;
+  width: 100%;
   display: flex;
   flex-direction: column;
   gap: 14px;

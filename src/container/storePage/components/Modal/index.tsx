@@ -38,10 +38,7 @@ const PostModal = ({ boardId }: any) => {
 
   // 가게 정보 불러오기
   const router = useRouter();
-  const { data: storeInfo } = useGetStoreInfo({
-    storeId: Number(router.query.store),
-    options: { refetchOnWindowFocus: false },
-  });
+  const { data: storeInfo } = useGetStoreInfo(Number(router.query.store));
 
   // infiniteQuery 모달 댓글 불러오기
   const { data, fetchNextPage, hasNextPage, isLoading, refetch } =
@@ -135,32 +132,36 @@ const PostModal = ({ boardId }: any) => {
                 <SubCategory>{storeInfo.info || "default 값"}</SubCategory>
               </div>
             </StoreInfo>
-            <MenuIcon
-              width="5px"
-              height="13px"
-              onClick={() => {
-                setMenuIconClick((prev) => !prev);
-              }}
-            />
+            <div>
+              <BoxPosition>
+                {menuIconClick && (
+                  <ToggleOptionBox contents={storePageModalOption} />
+                )}
+              </BoxPosition>
+              <MenuToggleBtn>
+                <MenuIcon
+                  width="5px"
+                  height="13px"
+                  onClick={() => {
+                    setMenuIconClick((prev) => !prev);
+                  }}
+                />
+              </MenuToggleBtn>
+            </div>
           </InfoHeader>
 
           <InfoContent>
-            {menuIconClick && (
-              <ToggleOptionBox contents={storePageModalOption} />
-            )}
             <TopPosition>
               <Address>{storeInfo.address}</Address>
-              <BookmarkDiv>
-                <Bookmark
-                  storeId={boardId}
-                  onBookmark={onBookmarkState}
-                  size="medium"
-                  onClickBookmark={() => {
-                    toggleBookmark({ boardId });
-                    setOnBookmarkState((prev) => !prev);
-                  }}
-                />
-              </BookmarkDiv>
+              <Bookmark
+                storeId={boardId}
+                onBookmark={onBookmarkState}
+                size="medium"
+                onClickBookmark={() => {
+                  toggleBookmark({ boardId });
+                  setOnBookmarkState((prev) => !prev);
+                }}
+              />
             </TopPosition>
             <Title>{title}</Title>
             <TextContent>{content}</TextContent>
@@ -256,16 +257,17 @@ const StoreInfo = styled.div`
   display: flex;
   align-items: center;
   gap: 21px;
+  width: 100%;
+`;
+const MenuToggleBtn = styled.button`
+  background-color: transparent;
+  border: none;
 `;
 const StoreProfile = styled.img`
   width: 65px;
   height: 65px;
   border-radius: 100%;
   background-color: black;
-`;
-const BookmarkDiv = styled.div`
-  position: relative;
-  top: -10px;
 `;
 const TopPosition = styled.div`
   display: flex;
@@ -317,6 +319,7 @@ const HashTag = styled.div`
 const InfoContent = styled.div`
   display: flex;
   flex-direction: column;
+  min-width: 408px;
   padding: 33px 28px;
   height: 444px;
   overflow-y: scroll;
@@ -374,4 +377,9 @@ const LoadingDiv = styled.div`
 `;
 const IoDiv = styled.div`
   margin-top: 30px;
+`;
+const BoxPosition = styled.div`
+  position: relative;
+  top: 20px;
+  left: -140px;
 `;
