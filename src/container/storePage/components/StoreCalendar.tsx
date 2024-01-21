@@ -4,10 +4,11 @@ import FullCalendar from "@fullcalendar/react";
 import interactionPlugin from "@fullcalendar/interaction";
 import dayGridPlugin from "@fullcalendar/daygrid";
 
-const StoreCalendar = () => {
+const StoreCalendar = ({ ...props }) => {
   const customDayCellContent = (info: any) => {
     return info.dayNumberText.replace("일", "");
   };
+
   return (
     <Container>
       <FullCalendar
@@ -25,16 +26,29 @@ const StoreCalendar = () => {
         selectable
         locale="kr"
         dayCellContent={(info: any) => customDayCellContent(info)}
+        datesSet={(args) => {
+          const tenDaysLater =
+            new Date(args.startStr).getTime() + 10 * 24 * 60 * 60 * 1000;
+          props.setDateInfo({
+            year: new Date(tenDaysLater).getFullYear(),
+            month: new Date(tenDaysLater).getMonth() + 1,
+          });
+        }}
+        events={
+          props.scheduleList &&
+          props.scheduleList.flatMap((item: any) => {
+            return [
+              item.event && { className: "event", start: item.date },
+              item.holiday && { className: "holiday", start: item.date },
+              item.reservation && {
+                className: "reservation",
+                start: item.date,
+              },
+            ].filter(Boolean);
+          })
+        }
       />
       <InfoList>
-        <InfoSet>
-          <TodayBlock />
-          <Text>오늘</Text>
-        </InfoSet>
-        <InfoSet>
-          <PickupBlock />
-          <Text>픽업</Text>
-        </InfoSet>
         <InfoSet>
           <RestBlock />
           <Text>휴무</Text>
@@ -65,10 +79,6 @@ const block = css`
   height: 13px;
   border-radius: 100%;
 `;
-const PickupBlock = styled.div`
-  ${block}
-  background-color: #ff6f00;
-`;
 const RestBlock = styled.div`
   ${block}
   background-color: #fdc886;
@@ -77,11 +87,8 @@ const EventBlock = styled.div`
   ${block}
   background-color: #fcf0e1;
 `;
-const TodayBlock = styled.div`
-  ${block}
-  background-color: rgba(255, 220, 40, 0.5);
-`;
 const Text = styled.span`
+  padding-top: 4px;
   color: #000;
   font-size: 6px;
   font-weight: 700;
@@ -96,7 +103,6 @@ export const Container = styled.div`
   box-sizing: border-box;
   border-radius: 20px;
   padding: 12px 30px;
-
   /* fullCalandar header style */
   .fc .fc-toolbar.fc-header-toolbar {
     display: flex;
@@ -118,8 +124,16 @@ export const Container = styled.div`
     background-color: #fcf0e1;
   }
   /* fullCalandar body style */
+  .fc .fc-scroller-liquid-absolute {
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
   .fc .fc-day-other .fc-daygrid-day-top {
     opacity: 0.4;
+  }
+  .fc .fc-daygrid-day.fc-day-today {
+    background-color: transparent;
   }
   .fc-day-sun a {
     color: #ff6f00;
@@ -149,13 +163,54 @@ export const Container = styled.div`
   .fc-theme-standard .fc-scrollgrid {
     border: none;
   }
+  .fc .fc-scroller-harness {
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
   .fc-daygrid-day-frame {
     display: flex;
     justify-content: center;
     align-items: center;
     font-size: 10px;
   }
-  .fc-daygrid-day-events {
-    display: none;
+  /* fullcalendar event css */
+  .fc .fc-daygrid-body-unbalanced .fc-daygrid-day-events {
+    position: absolute;
+    z-index: -1;
+    display: flex;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    overflow: hidden;
+  }
+  .fc-daygrid-day-bottom {
+    margin: 0;
+  }
+  .fc-daygrid-event-harness {
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+  }
+  .holiday {
+    border-color: transparent;
+    width: 6px;
+    height: 6px;
+    border-radius: 100%;
+    background-color: #fdc886;
+  }
+  .event {
+    border-color: transparent;
+    width: 6px;
+    height: 6px;
+    border-radius: 100%;
+    background-color: #fcf0e1;
+  }
+  .reservation {
+    border-color: transparent;
+    width: 6px;
+    height: 6px;
+    border-radius: 100%;
+    background-color: #ff6f00;
   }
 `;
