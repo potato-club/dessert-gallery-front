@@ -150,9 +150,9 @@ const NoticePage = () => {
               <NoticeValue>{noticeList.type}</NoticeValue>
               {noticeList.id === detailButton ? (
                 <NoticeContent>
-                  {noticeList.title}
-
-                  {noticeList.content}
+                  제목 : {noticeList.title}
+                  <br />
+                  내용 : {noticeList.content}
                 </NoticeContent>
               ) : (
                 <NoticeTitle>{noticeList.title}</NoticeTitle>
