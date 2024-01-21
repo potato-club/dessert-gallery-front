@@ -117,7 +117,7 @@ const MapPage = () => {
     setSearchData(prev => ({
       ...prev,
       sort: sort === undefined ? "": sort,
-      searchKeyword: search=== undefined ? "": search
+      searchKeyword: search=== undefined ? "": search as string
     }))
     setCenter({
       location: "서울 양천구", 
