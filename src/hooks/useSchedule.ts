@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "react-query";
-import { calendarPageApi } from "../apis/controller/myPage";
+import { calendarPageApi } from "../apis/controller/calendarPage";
 import { DateInfo } from "../container/myPage/calendarPage";
 export interface MyPageCalendarDataType {
   year: number;
@@ -52,8 +52,22 @@ export const useGetSchedule = ({ options }: any) => {
   return { dateInfo, setDateInfo, calendarData };
 };
 
+// date는 year-month-day string 형식이어야함
+export const useGetDateModalSchedule = (date: string) => {
+  const [year, month, day] = date.split("-").map((item) => Number(item));
+  const { data: dateModalData, isLoading } = useQuery(
+    ["dateModalSchedule", year, month, day],
+    () => calendarPageApi.getManagerDateModal(year, month, day),
+    {
+      refetchOnWindowFocus: false,
+    }
+  );
+
+  return { dateModalData, isLoading };
+};
+
 export const modifyCalendarPage = {
-  useAddSchedule(dateInfo: DateInfo) {
+  useAddSchedule(dateInfo: DateInfo, date: string) {
     const queryClient = useQueryClient();
     const { mutate: scheduleAddFn } = useMutation(
       ["schedule", dateInfo.year, dateInfo.month],
@@ -61,18 +75,22 @@ export const modifyCalendarPage = {
         calendarPageApi.postCalendarSchedule(date, key),
       {
         onSuccess: () => {
+          const [year, month, day] = date
+            .split("-")
+            .map((item) => Number(item));
           queryClient.refetchQueries([
             "schedule",
             dateInfo.year,
             dateInfo.month,
           ]);
+          queryClient.refetchQueries(["dateModalSchedule", year, month, day]);
         },
       }
     );
     return { scheduleAddFn };
   },
 
-  useDeleteSchedule(dateInfo: DateInfo) {
+  useDeleteSchedule(dateInfo: DateInfo, date: string) {
     const queryClient = useQueryClient();
     const { mutate: scheduleDeleteFn } = useMutation(
       ["schedule", dateInfo.year, dateInfo.month],
@@ -80,11 +98,15 @@ export const modifyCalendarPage = {
         calendarPageApi.deleteCalendarSchedule(scheduleId),
       {
         onSuccess: () => {
+          const [year, month, day] = date
+            .split("-")
+            .map((item) => Number(item));
           queryClient.refetchQueries([
             "schedule",
             dateInfo.year,
             dateInfo.month,
           ]);
+          queryClient.refetchQueries(["dateModalSchedule", year, month, day]);
         },
       }
     );

@@ -6,16 +6,46 @@ import { Keyboard, Pagination, Navigation } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
-import { modifyCalendarPage } from "../../../../hooks/useSchedule";
+import {
+  modifyCalendarPage,
+  useGetDateModalSchedule,
+} from "../../../../hooks/useSchedule";
 
 const DateModal = ({ ...props }) => {
-  console.log(props.clickDateInfo);
-  console.log(props.scheduleList);
-
-  const { scheduleAddFn } = modifyCalendarPage.useAddSchedule(props.dateInfo);
-  const { scheduleDeleteFn } = modifyCalendarPage.useDeleteSchedule(
-    props.dateInfo
+  const { dateModalData, isLoading } = useGetDateModalSchedule(
+    props.clickDateInfo
   );
+  const { scheduleAddFn } = modifyCalendarPage.useAddSchedule(
+    props.dateInfo,
+    props.clickDateInfo
+  );
+  const { scheduleDeleteFn } = modifyCalendarPage.useDeleteSchedule(
+    props.dateInfo,
+    props.clickDateInfo
+  );
+
+  const checking = (eventKeyValue: number) => {
+    switch (eventKeyValue) {
+      case 2:
+        if (dateModalData.holidayId === null)
+          scheduleAddFn({
+            date: props.clickDateInfo,
+            key: 2,
+          });
+        else scheduleDeleteFn(dateModalData.holidayId);
+        break;
+      case 3:
+        if (dateModalData.eventId === null)
+          scheduleAddFn({
+            date: props.clickDateInfo,
+            key: 3,
+          });
+        else scheduleDeleteFn(dateModalData.eventId);
+        break;
+      default:
+        break;
+    }
+  };
 
   return (
     <Container>
@@ -40,50 +70,38 @@ const DateModal = ({ ...props }) => {
         <SwiperSlide>
           <InnerContainer>
             <Title>오늘의 스케쥴</Title>
-            <EventAddBox>
-              <ListColumn>
-                <CheckButton
-                  width={30}
-                  height={30}
-                  type="checkbox"
-                  id={`eventCheckBox1`}
-                  value={1}
-                  defaultchecked={props.isSuccess}
-                  eventFn={(e) => {
-                    scheduleAddFn({ date: props.clickDateInfo, key: 1 });
-                  }}
-                />
-                <EventContent>픽업일 추가하기</EventContent>
-              </ListColumn>
-              <ListColumn>
-                <CheckButton
-                  width={30}
-                  height={30}
-                  type="checkbox"
-                  id={`eventCheckBox2`}
-                  value={2}
-                  defaultchecked={props.isSuccess}
-                  eventFn={(e) => {
-                    scheduleAddFn({ date: props.clickDateInfo, key: 2 });
-                  }}
-                />
-                <EventContent>휴무일 추가하기</EventContent>
-              </ListColumn>
-              <ListColumn>
-                <CheckButton
-                  width={30}
-                  height={30}
-                  type="checkbox"
-                  id={`eventCheckBox3`}
-                  value={3}
-                  defaultchecked={props.isSuccess}
-                  eventFn={(e) => {
-                    scheduleAddFn({ date: props.clickDateInfo, key: 3 });
-                  }}
-                />
-                <EventContent>이벤트 추가하기</EventContent>
-              </ListColumn>
-            </EventAddBox>
+            {!isLoading && (
+              <EventAddBox>
+                <ListColumn>
+                  <CheckButton
+                    width={30}
+                    height={30}
+                    type="checkbox"
+                    id={`eventCheckBox2`}
+                    value={2}
+                    defaultchecked={dateModalData.holidayId !== null}
+                    eventFn={(e) => {
+                      checking(Number(e.target.value));
+                    }}
+                  />
+                  <EventContent>휴무일 추가하기</EventContent>
+                </ListColumn>
+                <ListColumn>
+                  <CheckButton
+                    width={30}
+                    height={30}
+                    type="checkbox"
+                    id={`eventCheckBox3`}
+                    value={3}
+                    defaultchecked={dateModalData.eventId !== null}
+                    eventFn={(e) => {
+                      checking(Number(e.target.value));
+                    }}
+                  />
+                  <EventContent>이벤트 추가하기</EventContent>
+                </ListColumn>
+              </EventAddBox>
+            )}
           </InnerContainer>
         </SwiperSlide>
       </Swiper>
