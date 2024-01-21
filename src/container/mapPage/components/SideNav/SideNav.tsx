@@ -1,10 +1,14 @@
-import React from "react";
+import React, {ChangeEvent, KeyboardEvent, useState} from "react";
 import styled from "styled-components";
 import Market from "./Market";
 import { Search } from "../../../../../public/svg";
 import Tag from "../../../../components/Tag";
 import { selectedLocationCoordData } from "../../../../types/componentsData";
-
+interface searchData {
+  sort: string ,
+  searchKeyword: string,
+  page: number,
+}
 interface makerDataProps {
   latitude: number
   longitude: number
@@ -20,16 +24,57 @@ interface props {
   markerData: makerDataProps[]
   isSearch: boolean
   searchKeyword: string
+  selectedStoreId: number
+  center: selectedLocationCoordData
   setCenter: React.Dispatch<React.SetStateAction<selectedLocationCoordData>>
+  searchData: searchData
+  setSearchData: React.Dispatch<React.SetStateAction<searchData>>
 }
 
-const SideNav = ({markerData, isSearch, searchKeyword, setCenter}: props) => {
+
+
+const SideNav = ({markerData, isSearch, searchData, selectedStoreId, center, setCenter, setSearchData}: props) => {
+  const [searchWord, setSearchWord] = useState<string>(searchData.searchKeyword)
+  console.log("markerData",markerData)
+
+  const onChangeSearchWord = (e:ChangeEvent<HTMLInputElement>) => {
+    setSearchWord(e.target.value)
+    console.log("어째서..?", searchWord)
+  }
+   /**
+   * 검색어 입력 후 enter 키 입력시 동작 함수
+   * @param e : enter key press 여부
+   */
+   const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
+    // 엔터 키가 입력되었을 때 동작할 코드 작성
+    if (e.key === 'Enter') {
+      setSearchData(prev => ({
+        ...prev,
+        searchKeyword: searchWord
+      }))
+    window.location.href = `/map?selected=-1&search=${searchWord}&sort=${searchData.sort}&lat=${center.lat}&lng=${center.lng}`
+    }
+  };
+
+
+  const onChangeSortScore = () => {
+    setSearchData(prev => ({
+      ...prev,
+      sort:"score"
+    }))
+  }
+  const onChangeSortFollow = () => {
+    setSearchData(prev => ({
+      ...prev,
+      sort:"follow"
+    }))
+  }
   return (
     <Container>
       <SideHeader>
         <SearchForm>
           <Search width="16px" height="16px" />
-          <SearchInput placeholder="가게를 검색해 주세요."></SearchInput>
+          <SearchInput type="text" placeholder="가게를 검색해 주세요." value={searchWord} onChange={onChangeSearchWord} onKeyDown={handleKeyDown}></SearchInput>
         </SearchForm>
         <FilterList>
           {/**
@@ -41,7 +86,9 @@ const SideNav = ({markerData, isSearch, searchKeyword, setCenter}: props) => {
             height="25px"
             fontSize="10px"
             clickAble={true}
+            inversion={searchData.sort === "score"}
             hoverCss={true}
+            onClickHandler={onChangeSortScore}
           />
           {/**
            * sort: false 
@@ -52,12 +99,14 @@ const SideNav = ({markerData, isSearch, searchKeyword, setCenter}: props) => {
             height="25px"
             fontSize="10px"
             clickAble={true}
+            inversion={searchData.sort === "follow"}
             hoverCss={true}
+            onClickHandler={onChangeSortFollow}
           />
         </FilterList>
       </SideHeader>
 
-      <Market markerData={markerData} searchKeyword={searchKeyword} isSearch={isSearch} setCenter={setCenter}/>
+      <Market markerData={markerData} searchData={searchData} isSearch={isSearch} setCenter={setCenter}/>
     </Container>
   );
 };
@@ -87,7 +136,7 @@ const SideHeader = styled.div`
   position: relative;
   z-index: 3;
 `;
-const SearchForm = styled.form`
+const SearchForm = styled.div`
   display: flex;
   align-items: center;
   border: 1.5px solid #ff8d00;

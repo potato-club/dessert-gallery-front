@@ -4,6 +4,11 @@ import Rating from "../../../../components/Rating";
 import Image from "next/image";
 import { selectedLocationCoordData } from "../../../../types/componentsData";
 
+interface searchData {
+  sort: string ,
+  searchKeyword: string,
+  page: number,
+}
 interface makerDataProps {
   latitude: number
   longitude: number
@@ -14,11 +19,11 @@ interface makerDataProps {
   content: string
   fileName: string
   fileUrl: string
-  searchKeyword:string
+  searchData:searchData
   setCenter: React.Dispatch<React.SetStateAction<selectedLocationCoordData>>
 }
 
-const AroundMarketItem = ({latitude, longitude, score, storeAddress, storeName, storeId, content, fileName, fileUrl,searchKeyword, setCenter}: makerDataProps) => {
+const AroundMarketItem = ({latitude, longitude, score, storeAddress, storeName, storeId, content, fileName, fileUrl,searchData, setCenter}: makerDataProps) => {
   console.log("why???")
 
   const onClickHandler = () => {
@@ -27,7 +32,7 @@ const AroundMarketItem = ({latitude, longitude, score, storeAddress, storeName, 
       lat: latitude.toString(),
       lng: longitude.toString()
   }))
-    window.location.href = `/map?selected=${storeId}&search=${searchKeyword}?lat=${latitude}?lng=${longitude}`
+    window.location.href = `/map?selected=${storeId}&search=${searchData.searchKeyword}&sort=${searchData.sort}&lat=${latitude}&lng=${longitude}`
   }
   return (
     <Container onClick={onClickHandler}>

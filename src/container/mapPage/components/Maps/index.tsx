@@ -20,7 +20,11 @@ interface makerDataProps {
   fileName: string
   fileUrl: string
 }
-
+interface searchData {
+  sort: string ,
+  searchKeyword: string,
+  page: number,
+}
 interface props {
   centerCoord: selectedLocationCoordData
   setCenter: React.Dispatch<React.SetStateAction<selectedLocationCoordData>>
@@ -29,14 +33,14 @@ interface props {
   setSearchHere: React.Dispatch<React.SetStateAction<boolean>>
   setSelectedStoreId:React.Dispatch<React.SetStateAction<number>>
   centerCoordRef: React.MutableRefObject<string[]> //삭제 가능
-  searchKeyword: string
+  searchData: searchData
 }
 
 interface style {
   sidebar: boolean
 }
 
-const Maps = ({storeListData, centerCoord,centerCoordRef, searchKeyword, setSelectedStoreId, sidebar, setCenter, setSearchHere}: props) => {
+const Maps = ({storeListData, centerCoord,centerCoordRef, searchData, setSelectedStoreId, sidebar, setCenter, setSearchHere}: props) => {
   const mapContainer = useRef<HTMLDivElement>(null);
   const [moveMap, setMoveMap] = useState<boolean>(false);
   const [mapUpdate, setMapUpdate] = useState<boolean>(false)
@@ -81,6 +85,28 @@ const Maps = ({storeListData, centerCoord,centerCoordRef, searchKeyword, setSele
   //   }
 
   // },[centerCoord.lat, centerCoord.lng])
+
+  // useEffect(()=>{
+
+  //   const script = document.createElement("script");
+  //   script.async = true;
+  //   script.src = `//dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.NEXT_PUBLIC_KAKAO_MAPS_API_KEY}&autoload=false`;
+  //   document.head.appendChild(script);
+
+
+
+  //   // 스크립트 로드가 완료되면 메인 컴포넌트 렌더링
+  //   script.onload = () => {
+  //     (window as any).kakao.maps.load(function() {
+
+  //       if (mapContainer && renderedMap.current) {
+  //         renderedMap.current.setCenter(new (window as any).kakao.maps.LatLng(centerCoord.lat, centerCoord.lng))
+  //       };
+  //     })
+
+  //   }
+
+  // },[centerCoordRef.current[0]])
 
   useEffect(()=>{
 
@@ -132,7 +158,7 @@ const Maps = ({storeListData, centerCoord,centerCoordRef, searchKeyword, setSele
           .customoverlay:after {content:'';position:absolute;margin-left:-12px;left:50%;bottom:-12px;width:22px;height:12px;background:url('https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/vertex_white.png')}
         </style>
         <div class="customoverlay"> 
-            <a href="/map?selected=${marker.storeId}&search=${searchKeyword}?lat${marker.latitude}?lng${marker.longitude}"> 
+            <a href="/map?selected=${marker.storeId}&search=${searchData.searchKeyword}&sort=${searchData.sort}&lat${marker.latitude}&lng${marker.longitude}"> 
                 <span class="info" >
                   <div class="overlayTitle">${marker.storeName}</div>
                   <div class="score">
@@ -188,7 +214,7 @@ const Maps = ({storeListData, centerCoord,centerCoordRef, searchKeyword, setSele
         //useRef
           let mapOption = {
                 center: new (window as any).kakao.maps.LatLng(centerCoord.lat,centerCoord.lng), // 지도의 중심좌표
-                level: 5, // 지도의 확대 레벨
+                level: 10, // 지도의 확대 레벨
             };
 
           if(renderedMap.current === null){
@@ -227,7 +253,7 @@ const Maps = ({storeListData, centerCoord,centerCoordRef, searchKeyword, setSele
 
     
 
-  },[centerCoord.lat, centerCoord.lng, storeListData])
+  },[storeListData.length])
 
   return (
     <Container sidebar={sidebar !== -1 ? true:false} ref={mapContainer} >
