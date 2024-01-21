@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { getStoreInfo } from "../apis/controller/postPage";
+import { getStoreInfo, getStorePost } from "../apis/controller/postPage";
 const useGetStoreInfo = () => {
-  const [storeInfo, setStoreInfo] = useState<StoreInfo>(); // 초기 상태를 null로 설정
+  const [storeInfo, setStoreInfo] = useState<StoreInfo>();
 
   useEffect(() => {
     async function fetchStoreInfo() {
@@ -19,7 +19,6 @@ const useGetStoreInfo = () => {
 };
 
 export default useGetStoreInfo;
-
 interface StoreInfo {
   id: number;
   name: string;
@@ -33,4 +32,30 @@ interface StoreInfo {
   };
   postCount: 0;
   reviewCount: 0;
+}
+
+export const useGetStorePost = (storeId: number) => {
+  const [storePost, setStorePost] = useState<StorePost[] | null>(null);
+
+  useEffect(() => {
+    async function fetchStorePost() {
+      try {
+        const fetchedStorePost = await getStorePost(storeId);
+        setStorePost(fetchedStorePost);
+      } catch (error) {}
+    }
+
+    fetchStorePost();
+  }, [storeId]);
+
+  return storePost;
+};
+
+interface StorePost {
+  boardId: number;
+  thumbnail: {
+    fileName: string;
+    fileUrl: string;
+  };
+  createdDate: string;
 }
