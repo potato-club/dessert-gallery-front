@@ -25,8 +25,6 @@ function ReviewBoardContainer() {
   const [resData, setResData] = useState<resReviewPost[][]>([])
   const observerRef = useRef<HTMLDivElement>(null);
 
-  useEffect(()=>{}, [orderOption.eng, optionData.location, optionData.selectSearchWord,pageCount])
-
   const {
     data,
     error,
