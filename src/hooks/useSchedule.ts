@@ -59,6 +59,7 @@ export const useGetDateModalSchedule = (date: string) => {
     ["dateModalSchedule", year, month, day],
     () => calendarPageApi.getManagerDateModal(year, month, day),
     {
+      cacheTime: 0,
       refetchOnWindowFocus: false,
     }
   );
