@@ -193,7 +193,7 @@ export type galleryPostValue = {
   /**
    * (선택)) margin 값
    */
-  margin: string;
+  margin?: string;
 };
 
 /**

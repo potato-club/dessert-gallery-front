@@ -78,29 +78,29 @@ const MapPage = () => {
   // const [loading, setLoading] = useState<boolean>(false);
   const centerCoord = useRef<string[]>(["37.524987", "126.856181"])
 
-   const fetchData = async () => {
-    try {
-      const data = await getMapStoreList({
-        initData: storeListData,
-        lat: center.lat,
-        lng: center.lng,
-        sort: searchData.sort,
-        searchKeyword: searchData.searchKeyword,
-        page: searchData.page,
-        save: setStoreListData
-      });
-
-      console.log("업데이트,!!!!!", data)
-      if(data !== undefined) setStoreListData(data);
-
-      console.log("search", data);
-    } catch (error) {
-      console.error('Error fetching data:', error);
-    }
-  };
-
 
   useEffect(()=>{
+    const fetchData = async () => {
+      try {
+        const data = await getMapStoreList({
+          initData: storeListData,
+          lat: center.lat,
+          lng: center.lng,
+          sort: searchData.sort,
+          searchKeyword: searchData.searchKeyword,
+          page: searchData.page,
+          save: setStoreListData
+        });
+  
+        console.log("업데이트,!!!!!", data)
+        if(data !== undefined) setStoreListData(data);
+  
+        console.log("search", data);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+    
     if(!isReady) return;
     
     const selected = query[selectedStoreQuery]=== undefined ? -1: query[selectedStoreQuery];
@@ -117,7 +117,7 @@ const MapPage = () => {
     setSearchData(prev => ({
       ...prev,
       sort: sort === undefined ? "": sort,
-      searchKeyword: search=== undefined ? "": search
+      searchKeyword: search=== undefined ? "": search as string
     }))
     setCenter({
       location: "서울 양천구", 
@@ -129,7 +129,7 @@ const MapPage = () => {
 
     fetchData();
     console.log("힘듦", storeListData)
-  },[isReady, selectedStoreId, center.lat, center.lng, searchData.searchKeyword])
+  },[isReady, selectedStoreId, center.lat, center.lng, searchData.searchKeyword]);
 
 
   return (
