@@ -8,7 +8,7 @@ import {
   getPosterList,
   getStoreReview,
 } from "../../../src/apis/controller/detailStore";
-import { calendarPageApi } from "../../../src/apis/controller/myPage";
+import { calendarPageApi } from "../../../src/apis/controller/calendarPage";
 
 export interface StoreProps {
   storeId: number;
