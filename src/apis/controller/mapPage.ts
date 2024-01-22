@@ -8,7 +8,7 @@ export const getNearbyCoordMarkerList = async (lat: string, lng: string)=> {
 }
 
 export const getSearchMarkerList = async ({searchKeyword, page, sortType}:{searchKeyword:string, page:number, sortType:boolean}) => {
-    const res = await sendApi.get(`/kakaoMap/search?address=string&keyword=${searchKeyword}&searchType=NAME&page=${page}&sortType=${sortType}`);
+    const res = await sendApi.get(`/kakaoMap/search?keyword=${searchKeyword}&searchType=NAME&page=${page}&sortType=${sortType}`);
     return res.data;
 }
 
