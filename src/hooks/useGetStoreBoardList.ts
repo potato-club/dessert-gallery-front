@@ -1,23 +1,31 @@
 import { useInfiniteQuery } from 'react-query';
+import queryStringLibrary from 'query-string';
 import type { boardSearchOptionData } from '../types/apiTypes';
 import { boardApiList } from '../apis/controller/boardPage';
 
 // 게시판 데이터를 가져오는 비동기 함수
 async function fetchStoreBoardData(req: boardSearchOptionData) {
+  let queryParams: any = {
+    page: req.page,
+  };
 
-  let queryString = `/list/stores?page=${req.page}`;
+  if (req.address.length > 0) {
+    queryParams.address = req.address;
+  }
 
-  //지역
-  queryString += req.address.length > 0 ? `&address=${req.address}` : '';
+  if (req.searchType.length > 0) {
+    queryParams.searchType = req.searchType.join('#');
+  }
 
-  //해시태그 검색어
-  queryString += req.searchType.length > 0 ? `&searchType=${req.searchType.join('#')}` : '';
+  queryParams.sortType = req.sortType;
 
-  //정렬타입
-  queryString += `&sortType=${req.sortType}`;
+  const queryString = queryStringLibrary.stringify(queryParams);
+  let fullQueryString = `/list/stores?${queryString}`;
+
+  console.log('query:', fullQueryString);
 
   try {
-    const { data } = await boardApiList.getBoardList(queryString);
+    const { data } = await boardApiList.getBoardList(fullQueryString);
 
       // pageCount 1, 첫 검색시, 초기화
       if(Number(req.page) === 1 ){
