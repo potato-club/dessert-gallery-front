@@ -17,8 +17,6 @@ function BoardOption({orderOption, setOrderOption,optionData,setOptionData, setP
   const [sorting, setSorting] = useState<boolean>(false)
   
 
-  useEffect(()=>{}, [])
-
   /**
    * 검색어 입력 함수
    */
@@ -35,6 +33,7 @@ function BoardOption({orderOption, setOrderOption,optionData,setOptionData, setP
       selectSearchWord: [],
     })
     setIsSelected(false);
+    setSearchWordList([])
     setPageCount(1);
   }
 
@@ -74,10 +73,12 @@ function BoardOption({orderOption, setOrderOption,optionData,setOptionData, setP
    * 검색어 입력 후 enter 키 입력시 동작 함수
    * @param e : enter key press 여부
    */
-  const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
+  // 여러개의 검색어를 입력할 수 있는 버전
+  const handleKeyUp = (e: KeyboardEvent<HTMLInputElement>) => {
     // 엔터 키가 입력되었을 때 동작할 코드 작성
-    if (e.key === 'Enter') {
+    if (e.key === 'Enter' && searchWord.length !== 0) {
       // 사용자가 입력한 키워드가 겹치지 않으면 배열에 추가
+    console.log('press enter key ', searchWord)
       let data = searchWordList.findIndex((e)=> e === searchWord) === -1 ? searchWordList.concat(searchWord) : searchWordList 
       setOptionData((prev)=>({
         ...prev,
@@ -89,7 +90,6 @@ function BoardOption({orderOption, setOrderOption,optionData,setOptionData, setP
     setPageCount(1)
     }
   };
-
 
   /**
    * 지역 옵션 선택 처리 함수
@@ -129,7 +129,7 @@ function BoardOption({orderOption, setOrderOption,optionData,setOptionData, setP
         <OptionCategoriesButton categoryId={0} selectNumber={selectCategory} onClick={()=>{setSelectCategory(0)}}>픽업 지역 선택</OptionCategoriesButton>
         <OptionCategoriesTextInputLabel>
           <OptionCategoriesSVGImg src='/SVG/galleryBoardPage/Search.svg'/>
-          <OptionCategoriesTextInput type="text" placeholder='해시태그를 검색해보세요' onChange={onChangeSearchWord} onKeyDown={handleKeyDown} value={searchWord} onFocus={()=>{setSelectCategory(2)}}/>
+          <OptionCategoriesTextInput type="text" placeholder='해시태그를 검색해보세요' onChange={onChangeSearchWord} onKeyUp={handleKeyUp} value={searchWord} onFocus={()=>{setSelectCategory(2)}}/>
         </OptionCategoriesTextInputLabel>
       </OptionCategoriesWrap>
       {selectCategory === 0 && <LocationSelector selectedLocation={optionData.location} onChangeLocation={onChangeLocation}/>}

@@ -1,16 +1,12 @@
-import { useQuery, useQueryClient } from "react-query";
+import { useQuery } from "react-query";
 import { getStoreInfo } from "../apis/controller/detailStore";
 
-interface GetStoreInfoType {
-  storeId: number;
-  options?: any;
-}
-export const useGetStoreInfo = ({ options, storeId }: GetStoreInfoType) => {
+export const useGetStoreInfo = (storeId: number) => {
   const { data } = useQuery(
     ["detailBoard", storeId],
-    () => getStoreInfo({ storeId }),
+    () => getStoreInfo(storeId),
     {
-      ...options,
+      refetchOnWindowFocus: false,
     }
   );
 

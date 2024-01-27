@@ -1,9 +1,9 @@
 import React from "react";
-import PostPage from "../../src/container/myPage/post/PostPage";
+import MainPost from "../../src/container/myPage/post/MainPost";
 const post = () => {
   return (
     <>
-      <PostPage />
+      <MainPost />
     </>
   );
 };

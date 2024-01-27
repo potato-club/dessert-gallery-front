@@ -21,7 +21,7 @@ interface ModifyData {
 
 const WritingPage = () => {
   const ISMODIFY = useRouter().query.isModify;
-  const ID = parseInt(useRouter().query.id);
+  const ID = parseInt(useRouter().query.id as string);
   // 로컬스토리지와 쿼리 파라미터중 어떤 방법을 사용할지 아직 고민중
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
