@@ -7,14 +7,12 @@ export const getStoreInfo = async () => {
 
 export const postChatRoom = async (storeId: number) => {
   const response = await sendApi.post(`/mypage/room`, {
-    data: {
-      storeId: storeId,
-    },
+    storeId: storeId,
   });
   return response;
 };
 
 export const getChatRoom = async () => {
   const response = await sendApi.get(`/mypage/room?page=${1}`);
-  return response;
+  return response.data;
 };

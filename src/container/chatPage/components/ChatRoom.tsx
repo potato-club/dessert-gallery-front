@@ -1,8 +1,93 @@
-import React from "react";
+import React, { useRef, useState } from "react";
 import styled from "styled-components";
 import ChatItem from "./ChatItem";
+import SockJS from "sockjs-client";
+import * as StompJs from "@stomp/stompjs";
 
 function ChatRoom({ roomIdState }: { roomIdState?: number }) {
+  const ws = useRef(null);
+
+  const connectHandler = () => {
+    if (window !== undefined) {
+      const client = new StompJs.Client({
+        brokerURL: "wss://api.dessert-gallery.site/ws/chat",
+        // webSocketFactory: () => {
+        //   return new SockJS(
+        //     "https://api.dessert-gallery.site/ws/chat"
+        //   ) as WebSocket;
+        // },
+        debug: function (str) {
+          console.log(str);
+        },
+        reconnectDelay: 5000, //자동 재 연결
+        heartbeatIncoming: 4000,
+        heartbeatOutgoing: 4000,
+      });
+      client.onConnect = function (frame) {
+        console.log("연결성공");
+        client.subscribe("/sub/5", (message) => {
+          console.log(message);
+        });
+        client.publish({
+          destination: "/pub/chat",
+          // skipContentLengthHeader: true,
+          body: JSON.stringify({
+            roomId: 5,
+            message: "테스트",
+            messageType: "CHAT",
+            sender: "최준형카카오",
+          }),
+          // headers: { "content-type": "application/json" },
+        });
+      };
+      client.onWebSocketError = (err) => {
+        console.log("웹소켓 에러");
+        console.log(err);
+      };
+      client.onStompError = function (frame) {
+        console.log("브로커 에러: ", frame.headers["message"]);
+        console.log("추가 정보: " + frame.body);
+      };
+      client.activate();
+    }
+
+    ////////////////////////////////////////////////
+    // const client = new Client({
+    //   // 브로커 url이 http일 경우 ws://
+    //   // 브로커 url이 https일 경우 wss://
+    //   brokerURL: "ws://api.dessert-gallery.site/ws/chat",
+    //   debug: (str: string) => {
+    //     console.log(str);
+    //   },
+    //   reconnectDelay: 5000000, //자동 재연결
+    //   heartbeatIncoming: 4000,
+    //   heartbeatOutgoing: 4000,
+    // });
+    // client.webSocketFactory = () => {
+    //   return new SockJS(
+    //     "https://api.dessert-gallery.site/ws/chat"
+    //   ) as WebSocket;
+    // };
+    // client.activate();
+    // client.onConnect = () => {
+    //   console.log("WebSocket 연결 성공");
+    //   client.publish({
+    //     destination: "pub/5",
+    //     body: JSON.stringify({
+    //       message: "테스트",
+    //       messageType: "CHAT",
+    //       sender: "최준형카카오",
+    //     }),
+    //   });
+    // };
+    // client.onStompError = (frame) => {
+    //   console.error("WebSocket 연결 오류:", frame.headers.message);
+    //   console.error("추가 정보:", frame.body);
+    // };
+    // client.onWebSocketError = (err) => {
+    //   console.error(err);
+    // };
+  };
   return (
     <Wrapper>
       {roomIdState === undefined ? (
@@ -31,7 +116,7 @@ function ChatRoom({ roomIdState }: { roomIdState?: number }) {
                 <ProductPrice>34,000원</ProductPrice>
               </Product>
               <ButtonDiv>
-                <Button>예약 확정</Button>
+                <Button onClick={connectHandler}>예약 확정</Button>
                 <Button>후기 작성</Button>
               </ButtonDiv>
             </HeaderBottom>

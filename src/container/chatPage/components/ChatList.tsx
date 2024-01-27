@@ -3,9 +3,19 @@ import styled from "styled-components";
 import SerchImage from "../../../../public/SVG/myPage/chatPage/searchImage.svg";
 import ChatListItem from "./ChatListItem";
 
+type roomInfoType = {
+  roomId: number;
+  storeName: string;
+  customerName: string;
+  thumbnailMessage: string;
+  messageType: string;
+};
+
 function ChatList({
+  chatRoomList,
   getRoomIdState,
 }: {
+  chatRoomList?: roomInfoType[];
   getRoomIdState: (id: number) => void;
 }) {
   const chatListSample = [
@@ -44,15 +54,16 @@ function ChatList({
         </HeaderBottom>
       </Header>
       <ListContents>
-        {chatListSample.map((item) => (
-          <ChatListItem
-            key={item.roomId}
-            roomId={item.roomId}
-            customerName={item.customerName}
-            thumbnailMessage={item.thumbnailMessage}
-            onClickItem={() => getRoomIdState(item.roomId)}
-          />
-        ))}
+        {chatRoomList &&
+          chatRoomList.map((item) => (
+            <ChatListItem
+              key={item.roomId}
+              roomId={item.roomId}
+              customerName={item.customerName}
+              thumbnailMessage={item.thumbnailMessage}
+              onClickItem={() => getRoomIdState(item.roomId)}
+            />
+          ))}
       </ListContents>
     </Wrapper>
   );
