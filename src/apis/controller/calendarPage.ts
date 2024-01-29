@@ -23,6 +23,11 @@ export const calendarPageApi = {
     return res.data;
   },
 
+  async getIsStoreHoliday() {
+    const res = await sendApi.get(`/stores/closed`);
+    return res.data;
+  },
+
   async postCalendarSchedule(date: string, key: number) {
     const res = await sendApi.post(`/stores/schedule`, {
       date,
