@@ -8,7 +8,10 @@ import Today from "./components/Today";
 import TodoListOpenArrow from "../../../../public/image/TodoListOpenArrow.png";
 import TodoListCloseArrow from "../../../../public/image/TodoListCloseArrow.png";
 import Image from "next/image";
-import { useGetSchedule } from "../../../hooks/useSchedule";
+import {
+  useGetSchedule,
+  useGetIsStoreHoliday,
+} from "../../../hooks/useSchedule";
 
 export interface DateInfo {
   year: number;
@@ -17,7 +20,9 @@ export interface DateInfo {
 const CalendarPage = () => {
   const [isMove, setIsMove] = useState<boolean>(false);
   const [currentWidth, setCurrentWidth] = useState<number>(0);
+
   const { dateInfo, setDateInfo, calendarData } = useGetSchedule({});
+  const { isHoliday } = useGetIsStoreHoliday();
 
   useEffect(() => {
     setCurrentWidth(window.innerWidth);
@@ -66,7 +71,7 @@ const CalendarPage = () => {
         </AbsoulteDiv>
         <InnerContent>
           <Title>오늘은 무슨날?</Title>
-          <Today holiday={calendarData?.holiday} />
+          <Today isHoliday={isHoliday} />
         </InnerContent>
         <InnerContent>
           <Title>

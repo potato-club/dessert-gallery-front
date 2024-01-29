@@ -20,13 +20,6 @@ export default Calendar;
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const queryClient = new QueryClient();
-  const today = new Date();
-  const year = today.getFullYear();
-  const month = today.getMonth() + 1;
-
-  await queryClient.prefetchQuery(["schedule", year, month], () =>
-    calendarPageApi.getManagerCalendar({ year, month })
-  );
 
   return {
     props: {
