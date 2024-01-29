@@ -54,7 +54,7 @@ const MyPageLayout = ({ ...props }) => {
 
   return (
     <PageWrapper isCalendarPage={router.pathname === "/myPage/calendar"}>
-      <Menu menu={menu} />
+      <Menu menu={menu} userInfo={userInfo} />
       {props.children}
     </PageWrapper>
   );

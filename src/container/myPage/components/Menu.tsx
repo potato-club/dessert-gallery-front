@@ -2,9 +2,10 @@ import styled from "styled-components";
 import Image from "next/image";
 import React from "react";
 import myPageLogo from "../../../../public/image/myPageLogo.png";
-import type { roleMyMenu, myMenu } from "../../../types/componentsProps";
+import type { roleMyMenu, myMenu, userInfoI } from "../../../types/componentsProps";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { useLoginUserInfo } from "../../../hooks/useUser";
 
 interface styleProp {
   fontSize: string;
@@ -14,7 +15,7 @@ interface styleProp {
   cursorStyle?: boolean;
 }
 
-export default function Menu({ menu }: { menu: roleMyMenu }) {
+export default function Menu({ menu, userInfo }: { menu: roleMyMenu, userInfo:userInfoI }) {
   const router = useRouter();
 
   const onClickMoveMain = () => {
@@ -43,7 +44,7 @@ export default function Menu({ menu }: { menu: roleMyMenu }) {
                 fontColor="#000000"
                 margin="16px 4px 0 0"
               >
-                바닐라빈빈
+                {userInfo && userInfo.nickname}
               </Text>
               <Text
                 bold

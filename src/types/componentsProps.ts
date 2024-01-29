@@ -371,3 +371,11 @@ export type roleMyMenu = {
   category: myMenu[];
   siteDefaultMenu: myMenu[];
 };
+
+export type userInfoI = {
+  nickname: string,
+  loginType: "NORMAL" | "KAKAO",
+  userRole: "USER" | "MANAGER",
+  fileName: string,
+  fileUrl: string
+}

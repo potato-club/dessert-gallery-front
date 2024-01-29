@@ -1,23 +1,182 @@
-import React from 'react'
-import { Box, Text } from './MyPage.style'
+import React, { ChangeEvent, FormEvent, useState } from 'react'
+import { Box, Text, ProfileForm, TagWrap, TextInput, BtnText, FileInput, ImgBox } from './MyPage.style'
+import Tag from '../../../components/Tag'
+import { useLoginUserInfo } from '../../../hooks/useUser';
+import ManagerProfile from './ManagerProfile';
+import { putUser } from '../../../apis/controller/myPage';
+
+export interface FormData {
+  nickname: string;
+  userRole: string;
+  file: File[];
+  fileName: string;
+  fileUrl: string;
+  url: string;
+}
+
 
 function Profile() {
-  return (
-    <Box width='100%' height='100%' direction='column' justifyContent='flex-start' alignItems='center' padding='64px'>
-      <Box direction='column' >
-        <Text color='#000000' fontSize='20px' fontWeight='bold' margin='0 0 8px 8px'>마이 프로필</Text>
-        {/* 프로필 박스 영역 */}
-        <Box border='2px solid #FF6F00' bgColor='#ffffffab' rounded='24px' padding='56px 32px'>
-          {/* 사진영역 */}
-          <Box direction='column' alignItems='center'>
-            <Box width='200px' height='200px' bgColor='#FDC886'  ></Box>
-            <Text padding='16px 0 0 0' fontSize='26px' fontWeight='bold' color='#FF6F00' cursor='pointer'>사진 변경</Text>
-          </Box>
-          {/* 정보영역 */}
+  const [modifying, setModifying] = useState<Boolean>(false);
+  const { data: userInfo } = useLoginUserInfo();
+  const [formData, setFormData] = useState<FormData>({
+    nickname: '',
+    userRole: 'USER',
+    file: [],
+    fileName: '',
+    fileUrl: '',
+    url: '',
+  });
+
+  const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+  };
+  
+  const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const selectedFile = e.target.files && e.target.files[0];
+    if (selectedFile) {
+      const fileUrl = URL.createObjectURL(selectedFile);
+      setFormData({
+        ...formData,
+        file: [selectedFile],
+        fileName: selectedFile.name,
+        url: fileUrl
+      });
+    }
+  };
+
+  const handleCancle = () => {
+    setFormData({
+      nickname: '',
+      userRole: 'USER',
+      file: [],
+      fileName: '',
+      fileUrl: '',
+      url: '',
+    })
+    setModifying(false)
+  }
+
+  const handleSubmit = async (e: FormEvent) => {
+    e.preventDefault();
+
+    try {
+      // FormData를 서버로 전송하거나 API 호출을 수행할 수 있습니다.
+      const queryParams = {
+        nickname: formData.nickname,
+        userRole: formData.userRole,
+        file: formData.file,
+        fileName: formData.fileName,
+        fileUrl: formData.fileUrl,
+        url: '',
+      };
+
+      const response = await putUser(queryParams)
+
+      console.log("response", response)
+
+      if (response.ok) {
+        const result = await response.json();
+        console.log('Server Response:', result);
+      } else {
+        console.error('Server Error:', response.statusText);
+      }
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  };
+
+  
+  console.log("profile ", userInfo)
+  if(userInfo){
+    return (
+      <Box width='100%' height='100%' direction='column' justifyContent='flex-start' alignItems='center' padding='64px'>
+        
+        <Box direction='column' width='1122px' >
+          <Text color='#000000' fontSize='20px' fontWeight='bold' margin='0 0 8px 8px'>마이 프로필</Text>
+          {
+          modifying ? (
+          <ProfileForm onSubmit={handleSubmit} width='1122px' padding='0'>
+             {/* 프로필 박스 영역 */}
+             <Box border='2px solid #FF6F00' bgColor='#ffffffab' rounded='24px' padding='27px 57px'>
+                {/* 사진영역 */}
+                <Box direction='column' alignItems='center'>
+                  {formData.url !== '' ? 
+                  <ImgBox width='80px' height='80px' imgUrl={formData.url} />
+                : <Box width='80px' height='80px' bgColor='#FDC886'/>}
+                  
+                  <BtnText
+                    htmlFor="file"
+                    padding='16px 0 0 0'
+                    fontSize='12px'
+                    fontWeight='bold'
+                    color='#FF6F00'
+                    cursor='pointer'
+                    >사진 변경</BtnText>
+                  <FileInput
+                    type="file"
+                    id="file"
+                    accept="image/*"
+                    onChange={handleImageChange}/>
+                </Box>
+                {/* 정보영역 */}
+                <Box justifyContent='space-between' height='fit-content' width='100%' alignItems='flex-start'>
+                  <Box  margin='0 0 0 96px' direction='column' width='738px' justifyContent='space-btween'>
+                    <TextInput 
+                      padding='16px 0 0 0'
+                      fontSize='28px'
+                      fontWeight='bold'
+                      type="text"
+                      id="nickname"
+                      name="nickname"
+                      value={formData.nickname}
+                      onChange={handleInputChange}
+                      maxLength={30}
+                      placeholder={`${userInfo.nickname}`}/>
+                  </Box>
+                  <Box direction='column' alignItems='center' height='100%' width='90px'>
+                    {modifying && <TagWrap width='63px' height='27px' title='완료' type='submit'  fontSize='13px'>완료</TagWrap>}
+                    {modifying && <Tag margin='8px 0' width='63px' height='27px' title='취소' onClickHandler={handleCancle} clickAble={true} hoverCss={true} fontSize='13px' />}
+                  </Box>
+                </Box>
+              </Box>
+          </ProfileForm>
+          ):(
+            <>
+                {/* 프로필 박스 영역 */}
+              <Box border='2px solid #FF6F00' bgColor='#ffffffab' rounded='24px' padding='27px 57px'>
+                {/* 사진영역 */}
+                <Box direction='column' alignItems='center'>
+                  <Box width='80px' height='80px' bgColor='#FDC886'  ></Box>
+                  {modifying&&<Text padding='16px 0 0 0' fontSize='12px' fontWeight='bold' color='#FF6F00' cursor='pointer'>사진 변경</Text>}
+                </Box>
+                {/* 정보영역 */}
+                <Box justifyContent='space-between' height='fit-content' width='100%' alignItems='flex-start'>
+                  <Box  margin='0 0 0 96px' direction='column' width='738px' justifyContent='space-btween'>
+                    <Text padding='16px 0 0 0' fontSize='28px' fontWeight='bold' color='#000000' cursor='pointer'>{userInfo.nickname}</Text>
+                    <Box>
+                      <Text padding='16px 0 0 0' fontSize='17px' fontWeight='bold' color='#000000' cursor='pointer'>안녕하세요.</Text>
+                      <Text padding='16px 0 0 8px' fontSize='17px' fontWeight='bold' color='#FF6F00' cursor='pointer'>{userInfo.nickname}</Text>
+                      <Text padding='16px 0 0 0' fontSize='17px' fontWeight='bold' color='#000000' cursor='pointer'>님께서는 현재 </Text>
+                      <Text padding='16px 8px 0 8px' fontSize='17px' fontWeight='bold' color='#FF6F00' cursor='pointer'>{userInfo.userRole === 'MANAGER' ? "사장님" : "고객 "}</Text>
+                      <Text padding='16px 0 0 0' fontSize='17px' fontWeight='bold' color='#000000' cursor='pointer'>계정을 이용 중입니다.</Text>
+                    </Box>
+                  </Box>
+                  <Box direction='column' alignItems='center' height='100%' width='68px'>
+                    <Tag width='63px' height='27px' title='수정' onClickHandler={()=>setModifying(true)} clickAble={true} hoverCss={true} fontSize='13px' />
+                  </Box>
+                </Box>
+              </Box>
+          </>
+          )
+          }
+          
         </Box>
+
+        {userInfo.userRole === 'MANAGER' && <ManagerProfile/>}
       </Box>
-    </Box>
-  )
+    )
+  }
 }
 
 export default Profile
