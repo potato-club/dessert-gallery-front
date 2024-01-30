@@ -19,10 +19,10 @@ function Profile() {
   const [modifying, setModifying] = useState<Boolean>(false);
   const { data: userInfo } = useLoginUserInfo();
   const [formData, setFormData] = useState<FormDataI>({
-    nickname: '',
-    userRole: 'USER',
+    nickname: userInfo && userInfo.nickname ? userInfo.nickname:'',
+    userRole: userInfo && userInfo.userRole ? userInfo.userRole:'',
     file: [],
-    fileName: '',
+    fileName: userInfo && userInfo.fileName ? userInfo.fileName:'',
     fileUrl: userInfo && userInfo.fileUrl ? userInfo.fileUrl:'',
     url: '',
   });
@@ -52,7 +52,7 @@ function Profile() {
       file: [],
       fileName: '',
       fileUrl: userInfo.fileUrl ? userInfo.fileUrl:'',
-      url: '',
+      url: userInfo.fileUrl ? userInfo.fileUrl:'',
     })
     setModifying(false)
   }
@@ -63,11 +63,11 @@ function Profile() {
     try {
       let sendFormData = new FormData();
 
-      sendFormData.append('nickname', formData.nickname);
-      sendFormData.append('userRole', "MANAGER");
+      sendFormData.append('nickname', formData.nickname ? formData.nickname : userInfo.nickname);
+      sendFormData.append('userRole', userInfo.userRole);
       sendFormData.append('file', formData.file[0]);
-      sendFormData.append('fileName', formData.fileName);
-      sendFormData.append('fileUrl', formData.fileUrl);
+      sendFormData.append('fileName', userInfo.fileName);
+      sendFormData.append('fileUrl', userInfo.fileUrl);
 
       const response = await putUser(sendFormData)
 
