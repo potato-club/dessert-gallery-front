@@ -65,34 +65,43 @@ const Container = styled.li`
   background-color: white;
   padding: 21px;
   cursor: pointer;
+  border-radius: 6px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+
 `;
 const TextInfoDiv = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
   height: 100%;
-  margin-right: 45px;
+  margin-right: 24px;
 `;
 const ImageDiv = styled.div`
   position: relative;
   background-color: black;
   width: 100%;
+  border-radius: 4px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
 `;
 const Name = styled.h1`
   color: #000;
-  font-size: 13px;
+  font-size: 16px;
   font-weight: 700;
   line-height: normal;
+  font-family: noto-sans-cjk-kr;
 `;
 const Address = styled.address`
-  color: #000;
-  font-size: 7px;
-  font-weight: 400;
-  line-height: normal;
-`;
-const Introduction = styled.div`
+font-family: noto-sans-cjk-kr;
   color: #000;
   font-size: 8px;
+  font-weight: 400;
+  line-height: normal;
+  margin: 4px 0px 4px;
+`;
+const Introduction = styled.div`
+  font-family: noto-sans-cjk-kr;
+  color: #000;
+  font-size: 9px;
   font-weight: 500;
-  margin: 7px 0px 10px;
+  margin: 0px 0px 10px;
 `;
