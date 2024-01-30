@@ -54,8 +54,8 @@ const EventBlock = styled.div`
 `;
 const Text = styled.span`
   color: #000;
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 700;
   line-height: normal;
-  padding-top: 21px;
+  padding-top: 19px;
 `;

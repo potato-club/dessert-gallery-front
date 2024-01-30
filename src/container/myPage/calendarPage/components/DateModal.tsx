@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import styled from "styled-components";
 import CheckButton from "../../components/CheckButton";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -173,7 +173,6 @@ const Title = styled.span`
   display: flex;
   justify-content: center;
   color: #ff6f00;
-  font-family: Noto Sans CJK KR;
   font-size: 32px;
   font-style: normal;
   font-weight: 700;
@@ -193,7 +192,6 @@ const ListColumn = styled.div`
 `;
 const EventContent = styled.span`
   color: #828282;
-  font-family: Noto Sans CJK KR;
   font-size: 16px;
   font-style: normal;
   font-weight: 700;

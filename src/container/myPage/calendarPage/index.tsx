@@ -129,7 +129,6 @@ const InnerContent = styled.div`
 `;
 const Title = styled.span`
   color: #000;
-  font-family: Noto Sans CJK KR;
   font-size: 20px;
   font-weight: 700;
   line-height: normal;

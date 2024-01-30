@@ -39,7 +39,6 @@ const Conatiner = styled.div<{ isHoliday: boolean }>`
   background-repeat: no-repeat;
 `;
 const TextContent = styled.span`
-  font-family: Noto Sans CJK KR;
   font-size: 27px;
   font-weight: 700;
   line-height: normal;

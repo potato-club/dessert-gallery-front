@@ -108,7 +108,6 @@ const AddBtn = styled.button`
   background-color: #fcf6ee;
   border: 1px solid #828282;
   border-radius: 8px;
-  font-family: Noto Sans CJK KR;
   font-size: 11px;
 `;
 const Content = styled.div`
@@ -125,7 +124,6 @@ const NotWorkingDiv = styled(WorkingDiv)``;
 const SuccessWorkingDiv = styled(WorkingDiv)``;
 const Title = styled.span`
   color: #000;
-  font-family: Noto Sans CJK KR;
   font-size: 18px;
   font-weight: 700;
   margin-bottom: 5px;
