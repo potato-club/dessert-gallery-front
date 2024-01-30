@@ -3,9 +3,9 @@ import { Box, Text, ProfileForm, TagWrap, TextInput, BtnText, FileInput, ImgBox 
 import Tag from '../../../components/Tag'
 import { useLoginUserInfo } from '../../../hooks/useUser';
 import ManagerProfile from './ManagerProfile';
-import { putUser } from '../../../apis/controller/myPage';
+import { putUser } from '../../../apis/controller/profile';
 
-export interface FormData {
+export interface FormDataI {
   nickname: string;
   userRole: string;
   file: File[];
@@ -18,12 +18,12 @@ export interface FormData {
 function Profile() {
   const [modifying, setModifying] = useState<Boolean>(false);
   const { data: userInfo } = useLoginUserInfo();
-  const [formData, setFormData] = useState<FormData>({
+  const [formData, setFormData] = useState<FormDataI>({
     nickname: '',
     userRole: 'USER',
     file: [],
     fileName: '',
-    fileUrl: '',
+    fileUrl: userInfo?.fileUrl,
     url: '',
   });
 
@@ -51,7 +51,7 @@ function Profile() {
       userRole: 'USER',
       file: [],
       fileName: '',
-      fileUrl: '',
+      fileUrl: userInfo.fileUrl ? userInfo.fileUrl:'',
       url: '',
     })
     setModifying(false)
@@ -71,7 +71,15 @@ function Profile() {
         url: '',
       };
 
-      const response = await putUser(queryParams)
+      let sendFormData = new FormData();
+
+      sendFormData.append('nickname', formData.nickname);
+      sendFormData.append('userRole', formData.userRole);
+      sendFormData.append('file', formData.file[0]);
+      sendFormData.append('fileName', formData.fileName);
+      sendFormData.append('fileUrl', formData.fileUrl);
+
+      const response = await putUser(sendFormData)
 
       console.log("response", response)
 
@@ -87,8 +95,10 @@ function Profile() {
   };
 
   
-  console.log("profile ", userInfo)
+  
   if(userInfo){
+    console.log("profile ", userInfo)
+  console.log("profile 2222", userInfo.fileUrl, userInfo.fileUrl === null)
     return (
       <Box width='100%' height='100%' direction='column' justifyContent='flex-start' alignItems='center' padding='64px'>
         
@@ -101,9 +111,7 @@ function Profile() {
              <Box border='2px solid #FF6F00' bgColor='#ffffffab' rounded='24px' padding='27px 57px'>
                 {/* 사진영역 */}
                 <Box direction='column' alignItems='center'>
-                  {formData.url !== '' ? 
-                  <ImgBox width='80px' height='80px' imgUrl={formData.url} />
-                : <Box width='80px' height='80px' bgColor='#FDC886'/>}
+                  <ImgBox width='108px' height='108px' imgUrl={userInfo.fileUrl} />
                   
                   <BtnText
                     htmlFor="file"
@@ -111,7 +119,7 @@ function Profile() {
                     fontSize='12px'
                     fontWeight='bold'
                     color='#FF6F00'
-                    cursor='pointer'
+                    cursor='default'
                     >사진 변경</BtnText>
                   <FileInput
                     type="file"
@@ -147,7 +155,7 @@ function Profile() {
               <Box border='2px solid #FF6F00' bgColor='#ffffffab' rounded='24px' padding='27px 57px'>
                 {/* 사진영역 */}
                 <Box direction='column' alignItems='center'>
-                  <Box width='80px' height='80px' bgColor='#FDC886'  ></Box>
+                <ImgBox width='108px' height='108px' imgUrl={userInfo.fileUrl} />
                   {modifying&&<Text padding='16px 0 0 0' fontSize='12px' fontWeight='bold' color='#FF6F00' cursor='pointer'>사진 변경</Text>}
                 </Box>
                 {/* 정보영역 */}

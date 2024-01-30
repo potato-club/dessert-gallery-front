@@ -129,6 +129,7 @@ export const Box = styled.div<defaultStyleProps>`
 `
 
 export const ImgBox = styled(Box)<imgProps>`
+background-color: #FDC886;
   ${({imgUrl})=>{
     if(imgUrl){
       return `
