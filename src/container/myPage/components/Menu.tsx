@@ -14,6 +14,9 @@ interface styleProp {
   margin?: string;
   cursorStyle?: boolean;
 }
+interface imgProps {
+  imgUrl: string
+}
 
 export default function Menu({ menu, userInfo }: { menu: roleMyMenu, userInfo:userInfoI }) {
   const router = useRouter();
@@ -36,7 +39,7 @@ export default function Menu({ menu, userInfo }: { menu: roleMyMenu, userInfo:us
       <MenuContentsWrap>
         <ColumnBox>
           <UserInfoWrap>
-            <ProfileImage />
+            <ProfileImage imgUrl={userInfo && userInfo.fileUrl ? userInfo.fileUrl: ''} />
             <RowBox>
               <Text
                 bold
@@ -139,10 +142,22 @@ const UserInfoWrap = styled.div`
   justify-content: center;
 `;
 
-const ProfileImage = styled.div`
+const ProfileImage = styled.div<imgProps>`
   width: 140px;
   height: 140px;
   background-color: #fdc886;
+  box-shadow: 0px 1px 1px 1px rgb(0 0 0 / 5%);
+  ${({imgUrl})=>{
+    if(imgUrl){
+      return `
+        background-image: url(${imgUrl});
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-position: center;
+        border: 1px solid lightgray
+      `
+    }
+  }}
 `;
 
 const UserMenuWrap = styled.div`

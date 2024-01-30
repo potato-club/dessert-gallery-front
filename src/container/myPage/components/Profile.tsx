@@ -23,7 +23,7 @@ function Profile() {
     userRole: 'USER',
     file: [],
     fileName: '',
-    fileUrl: userInfo?.fileUrl,
+    fileUrl: userInfo && userInfo.fileUrl ? userInfo.fileUrl:'',
     url: '',
   });
 
@@ -61,20 +61,10 @@ function Profile() {
     e.preventDefault();
 
     try {
-      // FormData를 서버로 전송하거나 API 호출을 수행할 수 있습니다.
-      const queryParams = {
-        nickname: formData.nickname,
-        userRole: formData.userRole,
-        file: formData.file,
-        fileName: formData.fileName,
-        fileUrl: formData.fileUrl,
-        url: '',
-      };
-
       let sendFormData = new FormData();
 
       sendFormData.append('nickname', formData.nickname);
-      sendFormData.append('userRole', formData.userRole);
+      sendFormData.append('userRole', "MANAGER");
       sendFormData.append('file', formData.file[0]);
       sendFormData.append('fileName', formData.fileName);
       sendFormData.append('fileUrl', formData.fileUrl);
@@ -83,9 +73,9 @@ function Profile() {
 
       console.log("response", response)
 
-      if (response.ok) {
-        const result = await response.json();
-        console.log('Server Response:', result);
+      if (response) {
+        alert('내 정보 업데이트')
+        window.location.href = '/myPage'
       } else {
         console.error('Server Error:', response.statusText);
       }
@@ -108,10 +98,10 @@ function Profile() {
           modifying ? (
           <ProfileForm onSubmit={handleSubmit} width='1122px' padding='0'>
              {/* 프로필 박스 영역 */}
-             <Box border='2px solid #FF6F00' bgColor='#ffffffab' rounded='24px' padding='27px 57px'>
+             <Box border='2px solid #FF6F00' bgColor='#ffffffab' rounded='24px' padding='27px 43px'>
                 {/* 사진영역 */}
                 <Box direction='column' alignItems='center'>
-                  <ImgBox width='108px' height='108px' imgUrl={userInfo.fileUrl} />
+                  <ImgBox width='108px' height='108px' imgUrl={formData.url} />
                   
                   <BtnText
                     htmlFor="file"

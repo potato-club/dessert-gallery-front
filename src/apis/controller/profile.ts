@@ -8,10 +8,22 @@ export const propfileApiList = {
       try {
         const res = (await sendApi.get('/stores')).data;
         return {res};
-    } catch (error) {
-        return 'noneStore'
-    }
+        } catch (error) {
+          return {res:'noneStore'}
+      }
     },
+      putUpdateStoreProfile: async ({sendFormData,id}: {sendFormData: FormData, id:number}) => {
+      try {
+        return (await sendApi.put(`/stores/${id}`, sendFormData)).data;
+        } catch (error) {
+      }
+    },
+    PostCreateStore: async (sendFormData: FormData) => {
+    try {
+      return (await sendApi.post(`/stores`, sendFormData)).data;
+      } catch (error) {
+    }
+  },
   } 
 
 

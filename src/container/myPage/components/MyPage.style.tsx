@@ -173,6 +173,7 @@ export const ProfileForm = styled.form<defaultStyleProps>`
 export const TextInput = styled.input<defaultStyleProps>`
   border: none;
   background-color: #ffffffab;
+  width: 700px;
   font-family: noto-sans-cjk-kr;
   font-size: ${({fontSize}) => fontSize};
   font-weight: ${({fontWeight}) => fontWeight};
