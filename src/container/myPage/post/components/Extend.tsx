@@ -44,9 +44,10 @@ const Extend = ({ postTitle, content, onChange }: ExtendProps) => {
             }
           />
         </ProfileBox>
-        <ProfileName>
-          {storeInfo?.name} / {storeInfo?.info}
-        </ProfileName>
+        <div>
+          <ProfileName>{storeInfo?.name}</ProfileName>
+          <ProfileInfo>{storeInfo?.info}</ProfileInfo>
+        </div>
       </InfoBox>
 
       <Caption
@@ -68,6 +69,7 @@ const AddWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  font-family: "Noto Sans CJK KR";
 `;
 
 const InfoBox = styled.div`
@@ -92,8 +94,13 @@ const ProfileBox = styled.div`
 
 const ProfileName = styled.div`
   height: 18px;
-  font-size: 14px;
+  font-size: 21px;
   display: flex;
   align-items: center;
   font-weight: 600;
+`;
+const ProfileInfo = styled.div`
+  color: #ff6f00;
+  font-size: 15px;
+  font-weight: 500;
 `;
