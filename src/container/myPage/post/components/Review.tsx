@@ -1,8 +1,9 @@
 import React from "react";
 import styled from "styled-components";
+import ReviewList from "../../../../components/ReviewList";
 
 const Review = () => {
-  return <BodyWrapper>adf</BodyWrapper>;
+  return <ReviewList />;
 };
 
 export default Review;
