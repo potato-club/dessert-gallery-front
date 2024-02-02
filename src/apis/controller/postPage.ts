@@ -1,3 +1,4 @@
+import { getBoardComment } from "./detailStore";
 import sendApi from "../sendApi";
 
 export const getStoreInfo = async () => {
@@ -37,11 +38,21 @@ export const postStorePost = async (
 };
 
 export const getStorePost = async (storeId: number) => {
-  const res = await sendApi.get(`/boards/stores/${storeId}`);
-  return res.data;
+  const res = await sendApi.get(`/boards/stores/${storeId}?last=17`);
+  return res.data.content;
 };
 
 export const getDetailPost = async (postId: number) => {
   const res = await sendApi.get(`/boards/${postId}`);
   return res.data;
+};
+
+export const deletePost = async (postId: number) => {
+  const res = await sendApi.delete(`/boards/${postId}`);
+  return res;
+};
+
+export const getDetailPostComment = async (postId: number) => {
+  const res = await sendApi.get(`/comments/${postId}?1`);
+  return res.data.content;
 };
