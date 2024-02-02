@@ -67,6 +67,18 @@ export const useGetDateModalSchedule = (date: string) => {
   return { dateModalData, isLoading };
 };
 
+export const useGetIsStoreHoliday = () => {
+  const { data: isHoliday } = useQuery(
+    ["storeHoliday"],
+    () => calendarPageApi.getIsStoreHoliday(),
+    {
+      refetchOnWindowFocus: false,
+    }
+  );
+
+  return { isHoliday };
+};
+
 export const modifyCalendarPage = {
   useAddSchedule(dateInfo: DateInfo, date: string) {
     const queryClient = useQueryClient();
