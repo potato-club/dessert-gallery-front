@@ -2,7 +2,7 @@ import React from "react";
 import CalendarPage from "../../src/container/myPage/calendarPage";
 import { GetServerSideProps } from "next";
 import { QueryClient, dehydrate } from "react-query";
-import { calendarPageApi } from "../../src/apis/controller/myPage";
+import { calendarPageApi } from "../../src/apis/controller/calendarPage";
 
 export interface MyPageSsrProps {
   params: string;

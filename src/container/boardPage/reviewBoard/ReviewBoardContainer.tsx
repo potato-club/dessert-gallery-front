@@ -25,8 +25,6 @@ function ReviewBoardContainer() {
   const [resData, setResData] = useState<resReviewPost[][]>([])
   const observerRef = useRef<HTMLDivElement>(null);
 
-  useEffect(()=>{}, [orderOption.eng, optionData.location, optionData.selectSearchWord,pageCount])
-
   const {
     data,
     error,
@@ -78,10 +76,10 @@ function ReviewBoardContainer() {
     <Wrapper>
         <BoardTop title='후기 게시판' decription='다양한 가게의 후기를 볼 수 있는 가게 게시판입니다.' imgSrc={BoardBanner.src}/>
         <BoardOption orderOption={orderOption} setOrderOption={setOrderOption} optionData={optionData} setOptionData={setOptionData} setPageCount={setPageCount} />
-        {status === "loading" && <ToastMessage messageString='불러오는 중...' timer={5000}/>}
+        {status === "loading" && <ToastMessage wrapType={'map'} messageString='불러오는 중...' timer={5000} />}
         {status === "error" && <p>error</p>}
         {status === "success" && resData.length !== 0 && <Contents data={resData} />}
-        {status === "success" && toast && <ToastMessage messageString='더이상 불러올 리뷰 정보가 없습니다.' timer={5000}/>}
+        {status === "success" && toast && <ToastMessage wrapType={'map'} messageString='더이상 불러올 리뷰 정보가 없습니다.' timer={5000}/>}
         <Bottom observerRef={observerRef}/>
     </Wrapper>
   )

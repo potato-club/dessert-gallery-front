@@ -2,7 +2,11 @@ import React from "react";
 import styled from "styled-components";
 import AroundMarketItem from "./AroundMarketItem";
 import { selectedLocationCoordData } from "../../../../types/componentsData";
-
+interface searchData {
+  sort: string ,
+  searchKeyword: string,
+  page: number,
+}
 interface makerDataProps {
   latitude: number
   longitude: number
@@ -17,11 +21,12 @@ interface makerDataProps {
 interface props {
   markerData: makerDataProps[]
   isSearch: boolean
-  searchKeyword:string
+  searchData:searchData
   setCenter: React.Dispatch<React.SetStateAction<selectedLocationCoordData>>
 }
 
-const Market = ({markerData, isSearch, searchKeyword, setCenter}: props) => {
+const Market = ({markerData, searchData, setCenter}: props) => {
+  const isSearch = searchData.searchKeyword ? true: false;
   return (
     <Container>
       {isSearch && <TopSpan>내 근처 검색한 가게 리스트를 볼게요!</TopSpan>}
@@ -29,7 +34,7 @@ const Market = ({markerData, isSearch, searchKeyword, setCenter}: props) => {
       <MarketList>
         {
           markerData && markerData.map((store: makerDataProps, idx) => (
-            <AroundMarketItem key={idx} {...store} searchKeyword={searchKeyword} setCenter={setCenter}/>
+            <AroundMarketItem key={idx} {...store} searchData={searchData} setCenter={setCenter}/>
           ))
         }
       </MarketList>

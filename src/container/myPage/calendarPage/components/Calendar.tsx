@@ -22,11 +22,13 @@ const Calendar = ({ ...props }) => {
     <MyCalContainer>
       {onModal && (
         <ModalWrapper>
-          <DateModal
-            dateInfo={props.dateInfo}
-            clickDateInfo={clickDateInfo}
-            scheduleList={props.scheduleList}
-          />
+          {clickDateInfo && (
+            <DateModal
+              dateInfo={props.dateInfo}
+              clickDateInfo={clickDateInfo}
+              scheduleList={props.scheduleList}
+            />
+          )}
         </ModalWrapper>
       )}
       <FullCalendar
@@ -38,7 +40,6 @@ const Calendar = ({ ...props }) => {
         }}
         height={770}
         dateClick={(e: any) => {
-          console.log(e);
           setOnModal(true);
           setClickDateInfo(e.dateStr);
         }}
