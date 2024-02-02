@@ -27,15 +27,11 @@ interface ButtonInfo {
 
 const NoticePage = () => {
   const [detailButton, setDetailButton] = useState<number | null>(null);
-
   const [type, setType] = useState<number>(2);
-
   const [noticeId, setnoticeId] = useState<number>(0);
   const [modal, setModal] = useState<boolean>(false);
-
   const [inputValue, setuinputValue] = useState<string>("");
   const [search, setSearch] = useState<string>("");
-
   const { noticeList, setNoticeList } = useNoticeList(type, search);
 
   let LASTID = noticeList?.[noticeList.length - 1]?.id ?? 0;
@@ -352,6 +348,6 @@ const Option = styled.div`
 const ModalOptionBox = styled.div`
   position: absolute;
   top: 33px;
-  right: -17px;
+  right: 163px;
   z-index: 1;
 `;
