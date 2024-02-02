@@ -7,7 +7,6 @@ import { useEscKey } from "../../../hooks/useEscKey";
 import defaultImage from "../../../../public/image/defaultPhoto.png";
 import Post from "./components/Post";
 import Review from "./components/Review";
-import PostDetail from "./components/PostDetail";
 
 interface CustomComponentProps {
   isSelected: boolean;
