@@ -97,6 +97,7 @@ export const modifyCalendarPage = {
             dateInfo.month,
           ]);
           queryClient.refetchQueries(["dateModalSchedule", year, month, day]);
+          queryClient.refetchQueries(["storeHoliday"]);
         },
       }
     );
