@@ -68,7 +68,6 @@ const InputContent = styled.span<{ isSuccess: boolean }>`
   width: 230px;
   word-break: break-all;
   color: ${({ isSuccess }) => (isSuccess ? "#828282" : "#000")};
-  font-family: Noto Sans CJK KR;
   font-size: 16px;
   font-weight: 700;
 `;

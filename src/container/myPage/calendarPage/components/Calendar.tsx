@@ -91,6 +91,7 @@ const MyCalContainer = styled(Container)`
     border-bottom: 3px solid #ff8d00;
     .fc-toolbar-title {
       font-size: 32px;
+      font-weight: 600;
     }
   }
   .fc .fc-button {
