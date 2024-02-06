@@ -1,13 +1,21 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import Header from "./Header";
 import MarketContent from "./MarketContent";
+import { useGetStoreDetail } from "../../../../../hooks/useGetMapStoreList";
 
-const MarketDetailInfo = () => {
+const MarketDetailInfo =  ({storeId}: { storeId: number }) => {
+  console.log("dpdld Wmt", storeId)
+  const {data: storeDetailData} = useGetStoreDetail({
+    storeId: storeId
+  });
+
+  console.log("당신이 선택한 바로 그 가게0", storeDetailData)
   return (
     <Container>
-      <Header />
-      <MarketContent />
+      {storeDetailData && <Header store={storeDetailData} />}
+      {storeDetailData && <MarketContent store={storeDetailData} />}
+      
     </Container>
   );
 };

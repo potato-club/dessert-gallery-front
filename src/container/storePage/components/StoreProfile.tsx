@@ -4,6 +4,7 @@ import styled, { css } from "styled-components";
 import Tag from "../../../components/Tag";
 import { useFollowAction } from "../../../hooks/useFollowAction";
 import { useGetStoreInfo } from "../../../hooks/useStore";
+import { postChatRoom } from "../../../apis/controller/chatPage";
 
 const StoreProfile = () => {
   const router = useRouter();
@@ -12,10 +13,7 @@ const StoreProfile = () => {
     router.query.store ? router.query.store.toString() : "0"
   );
 
-  const { data } = useGetStoreInfo({
-    storeId: storeId,
-    options: { refetchOnWindowFocus: false },
-  });
+  const { data } = useGetStoreInfo(storeId);
 
   const { postFollowMutate, putUnFollowMutate } = useFollowAction(storeId);
 
@@ -77,6 +75,12 @@ const StoreProfile = () => {
                   width="136px"
                   height="30px"
                   fontSize="12px"
+                  onClickHandler={() => {
+                    console.log(storeId);
+                    // 현재 에러뜨는데 현호형이 변경사항 푸시하면 괜찮아진다고 함
+                    // postChatRoom(storeId);
+                    router.push("/myPage/chat");
+                  }}
                 />
               </BtnList>
             </InfoContent>

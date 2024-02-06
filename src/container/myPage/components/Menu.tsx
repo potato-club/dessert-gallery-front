@@ -2,9 +2,10 @@ import styled from "styled-components";
 import Image from "next/image";
 import React from "react";
 import myPageLogo from "../../../../public/image/myPageLogo.png";
-import type { roleMyMenu, myMenu } from "../../../types/componentsProps";
+import type { roleMyMenu, myMenu, userInfoI } from "../../../types/componentsProps";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { useLoginUserInfo } from "../../../hooks/useUser";
 
 interface styleProp {
   fontSize: string;
@@ -13,8 +14,11 @@ interface styleProp {
   margin?: string;
   cursorStyle?: boolean;
 }
+interface imgProps {
+  imgUrl: string
+}
 
-export default function Menu({ menu }: { menu: roleMyMenu }) {
+export default function Menu({ menu, userInfo }: { menu: roleMyMenu, userInfo:userInfoI }) {
   const router = useRouter();
 
   const onClickMoveMain = () => {
@@ -35,7 +39,7 @@ export default function Menu({ menu }: { menu: roleMyMenu }) {
       <MenuContentsWrap>
         <ColumnBox>
           <UserInfoWrap>
-            <ProfileImage />
+            <ProfileImage imgUrl={userInfo && userInfo.fileUrl ? userInfo.fileUrl: ''} />
             <RowBox>
               <Text
                 bold
@@ -43,7 +47,7 @@ export default function Menu({ menu }: { menu: roleMyMenu }) {
                 fontColor="#000000"
                 margin="16px 4px 0 0"
               >
-                바닐라빈빈
+                {userInfo && userInfo.nickname}
               </Text>
               <Text
                 bold
@@ -138,10 +142,22 @@ const UserInfoWrap = styled.div`
   justify-content: center;
 `;
 
-const ProfileImage = styled.div`
+const ProfileImage = styled.div<imgProps>`
   width: 140px;
   height: 140px;
   background-color: #fdc886;
+  box-shadow: 0px 1px 1px 1px rgb(0 0 0 / 5%);
+  ${({imgUrl})=>{
+    if(imgUrl){
+      return `
+        background-image: url(${imgUrl});
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-position: center;
+        border: 1px solid lightgray
+      `
+    }
+  }}
 `;
 
 const UserMenuWrap = styled.div`

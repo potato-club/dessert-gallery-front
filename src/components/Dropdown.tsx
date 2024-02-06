@@ -1,16 +1,59 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import DropdownMenu from "./DropdownMenu";
-import { loginPageApi } from "../apis/controller/loginPage";
+import { useRouter } from "next/router";
+import { useTokenService } from "../hooks/useTokenService";
+import LoginModal from "../container/loginPage/components/LoginModal";
+import axios from "axios";
 
 const Dropdown = ({ dropdownState }: { dropdownState: boolean }) => {
+  const { getAccessToken, getRefreshToken, setToken } = useTokenService();
+  const router = useRouter();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalMessage, setModalMessage] = useState("");
+
+  const fetchLogout = async () => {
+    const accessToekn = getAccessToken();
+    const refreshToken = getRefreshToken();
+
+    const response = await axios.get(
+      "https://api.dessert-gallery.site/users/logout",
+      {
+        headers: {
+          Authorization: accessToekn,
+          RefreshToken: refreshToken,
+        },
+      }
+    );
+    console.log(response);
+    return response;
+  };
+
   return (
     <DropdownWrapper dropdownState={dropdownState}>
-      <DropdownMenu onClickMenu={() => {}}>마이페이지</DropdownMenu>
+      <LoginModal
+        isOpen={isModalOpen}
+        onClickClose={() => setIsModalOpen(false)}
+        onClickConfirm={() => {
+          router.reload();
+        }}
+      >
+        {modalMessage}
+      </LoginModal>
       <DropdownMenu
-        onClickMenu={async () => {
-          //   const response = await loginPageApi.getLogout();
-          //   console.log(response);
+        onClickMenu={() => {
+          router.push("/myPage");
+        }}
+      >
+        마이페이지
+      </DropdownMenu>
+      <DropdownMenu
+        onClickMenu={() => {
+          const response = fetchLogout();
+          console.log(response);
+          setToken("", "");
+          setModalMessage("로그아웃 되었습니다.");
+          setIsModalOpen(true);
         }}
       >
         로그아웃
@@ -30,4 +73,5 @@ const DropdownWrapper = styled.div<{ dropdownState: boolean }>`
   border-radius: 6px;
   left: 50%;
   transform: translate(-50%, 0);
+  font-family: noto-sans-cjk-kr, sans-serif;
 `;

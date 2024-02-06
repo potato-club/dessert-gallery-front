@@ -1,19 +1,57 @@
 import React from "react";
 import styled from "styled-components";
 import Rating from "../../../../components/Rating";
+import Image from "next/image";
+import { selectedLocationCoordData } from "../../../../types/componentsData";
 
-const AroundMarketItem = () => {
+interface searchData {
+  sort: string ,
+  searchKeyword: string,
+  page: number,
+}
+interface makerDataProps {
+  latitude: number
+  longitude: number
+  score: number
+  storeAddress: string
+  storeName:string
+  storeId:number
+  content: string
+  fileName: string
+  fileUrl: string
+  searchData:searchData
+  setCenter: React.Dispatch<React.SetStateAction<selectedLocationCoordData>>
+}
+
+const AroundMarketItem = ({latitude, longitude, score, storeAddress, storeName, storeId, content, fileName, fileUrl,searchData, setCenter}: makerDataProps) => {
+  console.log("why???")
+
+  const onClickHandler = () => {
+    setCenter((prev)=>({
+      ...prev,
+      lat: latitude.toString(),
+      lng: longitude.toString()
+  }))
+    window.location.href = `/map?selected=${storeId}&search=${searchData.searchKeyword}&sort=${searchData.sort}&lat=${latitude}&lng=${longitude}`
+  }
   return (
-    <Container>
+    <Container onClick={onClickHandler}>
       <TextInfoDiv>
-        <Name>닐라닐라바닐라</Name>
-        <Address>서울시 강서구 곰달래길 12</Address>
+        <Name>{storeName}</Name>
+        <Address>{storeAddress}</Address>
         <Introduction>
-          퇴사 기념 케이크, <br></br>이제는 퇴사도 축제로구나
+          {content}
         </Introduction>
-        <Rating size="small" ratingValue="5.0" />
+        <Rating size="small" ratingValue={`${score}`} />
       </TextInfoDiv>
-      <ImageDiv></ImageDiv>
+      <ImageDiv>
+        <Image
+          src={fileUrl}
+          alt={fileName}
+          layout="fill"
+          objectFit="cover"
+        />
+      </ImageDiv>
     </Container>
   );
 };
@@ -26,33 +64,44 @@ const Container = styled.li`
   height: 134px;
   background-color: white;
   padding: 21px;
+  cursor: pointer;
+  border-radius: 6px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+
 `;
 const TextInfoDiv = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
   height: 100%;
-  margin-right: 45px;
+  margin-right: 24px;
 `;
-const ImageDiv = styled.img`
+const ImageDiv = styled.div`
+  position: relative;
   background-color: black;
   width: 100%;
+  border-radius: 4px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
 `;
 const Name = styled.h1`
   color: #000;
-  font-size: 13px;
+  font-size: 16px;
   font-weight: 700;
   line-height: normal;
+  font-family: noto-sans-cjk-kr;
 `;
 const Address = styled.address`
-  color: #000;
-  font-size: 7px;
-  font-weight: 400;
-  line-height: normal;
-`;
-const Introduction = styled.div`
+font-family: noto-sans-cjk-kr;
   color: #000;
   font-size: 8px;
+  font-weight: 400;
+  line-height: normal;
+  margin: 4px 0px 4px;
+`;
+const Introduction = styled.div`
+  font-family: noto-sans-cjk-kr;
+  color: #000;
+  font-size: 9px;
   font-weight: 500;
-  margin: 7px 0px 10px;
+  margin: 0px 0px 10px;
 `;

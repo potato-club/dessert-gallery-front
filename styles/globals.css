@@ -1,11 +1,18 @@
 @import "reset.css";
 
+@font-face {
+  font-family: "NotoSansKR";
+  src: url("../public/fonts/NotoSans-KR.ttf") format("truetype");
+}
+@font-face {
+  font-family: "NotoSans";
+  src: url("../public/fonts/NotoSans-EN.ttf") format("truetype");
+}
+
 html,
 body {
   padding: 0;
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
 }
 
 a {
@@ -15,4 +22,5 @@ a {
 
 * {
   box-sizing: border-box;
+  font-family: "NotoSansKR", "NotoSans";
 }

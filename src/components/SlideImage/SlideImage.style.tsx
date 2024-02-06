@@ -5,6 +5,7 @@ interface componentProps {
     height: number
     hoverCss?: 'show' | 'hoverShow' | 'none'
     position?: 'right' | 'left'
+    borderRadius? : boolean
 }
 
 const Wrapper = styled.div<componentProps>`
@@ -12,6 +13,7 @@ const Wrapper = styled.div<componentProps>`
     height: ${({height}) => `${height}px`};
     background-color: #FDC886;
     position: relative;
+    
     
     ${({ hoverCss }) =>
       hoverCss === "hoverShow"
@@ -30,6 +32,11 @@ const Wrapper = styled.div<componentProps>`
     -moz-user-drag: none;
     -o-user-drag: none;
     user-select: none;
+
+    ${({ borderRadius }) =>
+        borderRadius && `border-radius: 8px 8px 0 0`
+        
+    }
 `
 
 const BookmarkOnWrap = styled.img`

@@ -47,11 +47,13 @@ export const TextLogo = styled.div`
 
 export const PostWrap = styled.div`
   width: 70%;
-  display: flex;
   margin: 24px;
-  flex-direction: row;
+  display: grid;
+  grid-template-columns: repeat(3, auto); /* 각 열의 너비를 설정 */
+  justify-content: start;
+  margin: 0 auto;
   flex-wrap: wrap;
-  justify-content: space-between;
+  gap: 44px 94px; /* 그리드 아이템 간의 간격 설정 */
 `
 
 export const Text = styled.div<componentsProps>`

@@ -11,9 +11,7 @@ const Header = () => {
 
   const onClickMyPageButton = () => {
     if (getAccessToken() === "") {
-      router.push("login/main");
-    } else {
-      //마이페이지로 라우팅
+      router.push("login");
     }
   };
   const [dropdownState, setDropdownState] = useState(false);
@@ -79,6 +77,7 @@ const Container = styled.header`
   height: 96px;
   min-width: 1280px;
   position: relative;
+  z-index: 10;
 `;
 const BtnList = styled.div`
   display: flex;
