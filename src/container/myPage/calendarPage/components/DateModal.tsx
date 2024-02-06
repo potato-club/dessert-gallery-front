@@ -24,7 +24,9 @@ const DateModal = ({ ...props }) => {
     props.dateInfo,
     props.clickDateInfo
   );
-  console.log(dateModalData);
+  const { reservationCheckFn } = modifyCalendarPage.useCheckReservation(
+    props.clickDateInfo
+  );
 
   const checking = (eventKeyValue: number) => {
     switch (eventKeyValue) {
@@ -76,12 +78,8 @@ const DateModal = ({ ...props }) => {
                       scheduleId={item.id}
                       content={`${item.dateTime} ${item.client}`}
                       isSuccess={item.checked}
-                      deleteFn={() => {
-                        console.log("delete schedule : " + item.id);
-                      }}
-                      checkFn={() => {
-                        console.log("check schedule : " + item.id);
-                      }}
+                      deleteFn={scheduleDeleteFn}
+                      checkFn={reservationCheckFn}
                     />
                   );
                 })}
