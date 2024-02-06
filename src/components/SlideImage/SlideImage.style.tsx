@@ -106,7 +106,9 @@ const BottomCenterComponent = styled.div`
     justify-content: center;
 `
 
-const ImageWrap = styled.div`
+const ImageWrap = styled.div<componentProps>`
+    width: ${({width})=> `${width}px`};
+    height: ${({height})=> `${height}px`};
     z-index: 0;
 `;
 
