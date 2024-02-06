@@ -9,19 +9,19 @@ const ExplainModalBox = () => {
         <ArrowUp fill="#ffffff" />
         <SpanDiv>
           <span>
-            <StrongText>[휴무일]</StrongText> 과
-            <StrongText>[이벤트]</StrongText> 를 체크하여 마이 캘린더를 관리해
-            보세요
+            <StrongText>[캘린더 날짜]</StrongText> 를 체크하여 마이 캘린더를
+            관리해 보세요.
           </span>
-          <span>자신의 가게 페이지에 휴무, 이벤트날을 표기할 수 있습니다</span>
+          <span>자신의 가게의 스케쥴을 설정할 수 있습니다.</span>
+          <br />
           <span>
-            우측의 <StrongText>[메모장]</StrongText> 을 통해 자신의 할 일을
-            리스트로 만들 수 있습니다
+            우측의 <StrongText>[메모장]</StrongText> 을 통해 자신의 할 일을 만들
+            수 있습니다.
           </span>
-          <LastSpan>
-            또한 <StrongText>[캘린더 날짜]</StrongText> 를 클릭하여 그 날의 손님
-            리스트를 확인해 보세요
-          </LastSpan>
+          <span>
+            마이 캘린더를 통해 가게의 <StrongText>[스케쥴]</StrongText>을
+            효율적으로 관리해보세요!
+          </span>
         </SpanDiv>
       </TextModal>
     </Container>
@@ -63,7 +63,4 @@ const SpanDiv = styled.div`
 `;
 const StrongText = styled.span`
   color: #ff6f00;
-`;
-const LastSpan = styled.span`
-  margin-top: 21px;
 `;
