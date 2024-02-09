@@ -6,91 +6,78 @@ import { DownArrow, UpArrow } from "../../../../public/svg";
 /**
  * props 종류
  * title
+ * type
  * createdDate
  * spreadClick, setSpreadClick
  */
 const Announce = ({
+  title,
   content,
   spreadClick,
   setSpreadClick,
   isFirst,
   createdDate,
+  type,
 }: any) => {
   const [infoBtnClick, setInfoBtnClick] = useState<boolean>(false);
   return (
-    <Container>
-      {infoBtnClick ? (
-        <InnerCont>
-          <LeftCont>
-            <Tag title="공지사항" width="112px" height="32px" fontSize="13px" />
-            <TextContent infoBtnClick={infoBtnClick} spreadClick={spreadClick}>
-              {content}
-            </TextContent>
-          </LeftCont>
-          <RightCont>
-            <Time>{createdDate}</Time>
+    <Container infoBtnClick={infoBtnClick}>
+      <InnerCont>
+        <LeftCont>
+          <Tag title={type} width="112px" height="32px" fontSize="13px" />
+          <Title infoBtnClick={infoBtnClick} spreadClick={spreadClick}>
+            {title}
+          </Title>
+        </LeftCont>
+        <RightCont>
+          <Time>{createdDate}</Time>
+          {infoBtnClick ? (
             <MoreBtn onClick={() => setInfoBtnClick(false)}>
               <span>접기</span>
               <UpArrow width="16px" height="7px" />
             </MoreBtn>
-            {isFirst && !spreadClick && (
-              <FoldBtn
-                title="전체보기"
-                width="106px"
-                height="32px"
-                fontSize="13px"
-                clickAble={true}
-                inversion={true}
-                hoverCss={true}
-                onClickHandler={() => setSpreadClick(true)}
-              />
-            )}
-          </RightCont>
-        </InnerCont>
-      ) : (
-        <InnerCont>
-          <LeftCont>
-            <Tag title="공지사항" width="112px" height="32px" fontSize="13px" />
-            <TextContent infoBtnClick={infoBtnClick} spreadClick={spreadClick}>
-              {content}
-            </TextContent>
-          </LeftCont>
-          <RightCont>
-            <Time>{createdDate}</Time>
+          ) : (
             <MoreBtn onClick={() => setInfoBtnClick(true)}>
               <span>더보기</span>
               <DownArrow width="16px" height="7px" />
             </MoreBtn>
-            {isFirst && !spreadClick && (
-              <FoldBtn
-                title="전체보기"
-                width="106px"
-                height="32px"
-                fontSize="13px"
-                clickAble={true}
-                inversion={true}
-                hoverCss={true}
-                onClickHandler={() => setSpreadClick(true)}
-              />
-            )}
-          </RightCont>
-        </InnerCont>
-      )}
+          )}
+          {isFirst && !spreadClick && (
+            <FoldBtn
+              title="전체보기"
+              width="106px"
+              height="32px"
+              fontSize="13px"
+              clickAble={true}
+              inversion={true}
+              hoverCss={true}
+              onClickHandler={() => setSpreadClick(true)}
+            />
+          )}
+        </RightCont>
+      </InnerCont>
+      <Content infoBtnClick={infoBtnClick}>
+        <Text>{content}</Text>
+      </Content>
     </Container>
   );
 };
 
 export default Announce;
 
-const Container = styled.div`
+const Container = styled.div<{
+  infoBtnClick: boolean;
+}>`
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   background-color: #fffdf9;
   border-top: 3px solid #fdc886;
   border-bottom: 3px solid #fdc886;
-  width: 100%;
   padding: 23px 0;
+  width: 100%;
+  height: ${({ infoBtnClick }) => (infoBtnClick ? "auto" : "84px")};
 `;
 const InnerCont = styled.div`
   display: flex;
@@ -101,7 +88,7 @@ const LeftCont = styled.div`
   display: flex;
   gap: 55px;
 `;
-const TextContent = styled.span<{
+const Title = styled.span<{
   infoBtnClick: boolean;
   spreadClick: boolean;
 }>`
@@ -109,7 +96,7 @@ const TextContent = styled.span<{
   width: ${({ spreadClick }) => (spreadClick ? "630px" : "510px")};
   color: #000;
   font-size: 15px;
-  font-weight: 700;
+  font-weight: 900;
   line-height: 200%;
   overflow: ${({ infoBtnClick }) => (infoBtnClick ? "none" : "hidden")};
   white-space: ${({ infoBtnClick }) => (infoBtnClick ? "normal" : "nowrap")};
@@ -130,7 +117,7 @@ const Time = styled.span`
 `;
 const MoreBtn = styled.button`
   display: flex;
-  width: 82px;
+  justify-content: center;
   gap: 15px;
   color: #ff6f00;
   font-size: 15px;
@@ -140,5 +127,19 @@ const MoreBtn = styled.button`
   background-color: inherit;
   align-items: center;
   cursor: pointer;
+  span {
+    min-width: 42px;
+  }
 `;
 const FoldBtn = styled(Tag)``;
+const Content = styled.div<{ infoBtnClick: boolean }>`
+  display: ${({ infoBtnClick }) => (infoBtnClick ? "flex" : "none")};
+  justify-content: space-between;
+  width: 1100px;
+  padding-left: 167px;
+`;
+const Text = styled.pre`
+  min-width: 510px;
+  font-size: 15px;
+  line-height: 200%;
+`;

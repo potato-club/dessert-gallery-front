@@ -14,8 +14,8 @@ export const getStoreAnnounce = async (storeId: number) => {
   return res.data;
 };
 
-export const getPosterList = async (storeId: number) => {
-  const res = await sendApi.get(`/boards/stores/${storeId}`);
+export const getPosterList = async (storeId: number, page: number) => {
+  const res = await sendApi.get(`/boards/stores/${storeId}?page=${page}`);
 
   return res.data;
 };
