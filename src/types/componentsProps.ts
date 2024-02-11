@@ -288,8 +288,7 @@ export type locationSelectorProps = {
 };
 
 export type locationCoordSelectorProps = {
-    selectedLocation: string
-    onChangeLocation: (str: string, lat: string, lng: string) => void
+    onChangeLocation: (lat: string, lng: string) => void
 }
 
 export type ToastMessageProps = {

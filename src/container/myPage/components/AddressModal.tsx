@@ -1,24 +1,24 @@
 import React from 'react'
-import styled from 'styled-components';
-import LocationSelector from './LocationSelector';
+import styled from 'styled-components'
 
 interface props {
-  onChangeLocation: (lat: string, lng: string) => void
-  onClickMoveMap: ()=>void
+  onClickInputAddress: ()=>void
 }
-export default function LocationModal({onChangeLocation, onClickMoveMap}:props) {
+
+function AddressModal({onClickInputAddress}: props) {
   return (
     <ModalContainer>
         <ModalContent>
           <ModalHeader>
-            <Text>지역 이동</Text>
-            <OutBtn onClick={onClickMoveMap}>X</OutBtn>
+            <Text>주소 선택</Text>
+            <OutBtn onClick={onClickInputAddress}>X</OutBtn>
           </ModalHeader>
-          <LocationSelector onChangeLocation={onChangeLocation}/>
         </ModalContent>
       </ModalContainer>
   )
 }
+
+export default AddressModal
 
 const ModalContainer = styled.div`
   width: 100vw;
@@ -73,4 +73,3 @@ const OutBtn = styled.div`
   margin: 0 24px;
   cursor: pointer;
 `
-

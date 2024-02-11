@@ -1,8 +1,10 @@
 import React from "react";
 import styled from "styled-components";
+import { useRecoilValue } from 'recoil';
 import Rating from "../../../../components/Rating";
 import Image from "next/image";
 import { selectedLocationCoordData } from "../../../../types/componentsData";
+import { selectedStoreState } from "../../../../recoil/map/selectedStoreStateAtom";
 
 interface searchData {
   sort: string ,
@@ -23,7 +25,13 @@ interface makerDataProps {
   setCenter: React.Dispatch<React.SetStateAction<selectedLocationCoordData>>
 }
 
+interface style{
+  isSelected: boolean
+}
+
+
 const AroundMarketItem = ({latitude, longitude, score, storeAddress, storeName, storeId, content, fileName, fileUrl,searchData, setCenter}: makerDataProps) => {
+  const selectedStoreId = useRecoilValue(selectedStoreState);
   const onClickHandler = () => {
     setCenter((prev)=>({
       ...prev,
@@ -33,7 +41,7 @@ const AroundMarketItem = ({latitude, longitude, score, storeAddress, storeName, 
     window.location.href = `/map?selected=${storeId}&search=${searchData.searchKeyword}&sort=${searchData.sort}&lat=${latitude}&lng=${longitude}`
   }
   return (
-    <Container onClick={onClickHandler}>
+    <Container isSelected={selectedStoreId===storeId} onClick={onClickHandler}>
       <TextInfoDiv>
         <Name>{storeName}</Name>
         <Address>{storeAddress}</Address>
@@ -56,15 +64,21 @@ const AroundMarketItem = ({latitude, longitude, score, storeAddress, storeName, 
 
 export default AroundMarketItem;
 
-const Container = styled.li`
+const Container = styled.li<style>`
   display: flex;
   width: 100%;
   height: 134px;
   background-color: white;
   padding: 21px;
   cursor: pointer;
-  border-radius: 6px;
+  border-radius: 6px;  
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+
+  ${({isSelected}) => {
+        if(isSelected){
+            return `border: 2px solid #ff6f00;`
+        }
+  }};
 
 `;
 const TextInfoDiv = styled.div`
