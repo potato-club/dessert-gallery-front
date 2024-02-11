@@ -27,8 +27,9 @@ export interface updateStoreI {
   address: string,
   phoneNumber: string,
   image: File[],
-  storeId: number
-  url: string
+  storeId: number,
+  removeOriginImage: boolean,
+  url: string | null
 }
 
 export default function ManagerProfile() {
@@ -42,8 +43,10 @@ export default function ManagerProfile() {
     info: '',
     phoneNumber: '',
     storeId: -1,
-    url: ''
+    removeOriginImage: false,
+    url: null
   })
+  const [imgUrl, setImgUrl] = useState<string>('');
 
   useEffect(()=>{
     const getStoreProfile = async ()=> {
@@ -58,6 +61,7 @@ export default function ManagerProfile() {
           info: response.res.info,
           phoneNumber: response.res.phoneNumber,
           storeId: response.res.id,
+          removeOriginImage: false,
           url: response.res.fileUrl
         })
       } catch (error) {
@@ -72,6 +76,17 @@ export default function ManagerProfile() {
     setModiStoreValue({ ...modiStoreValue, [name]: value });
   };
 
+  const handleImageDelete = () => {
+    console.log("modiStoreValue: ", modiStoreValue.url)
+      setModiStoreValue({
+        ...modiStoreValue,
+        image: [],
+        url: '',
+        removeOriginImage: true,
+      });
+      alert('사진이 삭제되었습니다.')
+  };
+
   const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
     const selectedFile = e.target.files && e.target.files[0];
     if (selectedFile) {
@@ -79,7 +94,8 @@ export default function ManagerProfile() {
       setModiStoreValue({
         ...modiStoreValue,
         image: [selectedFile],
-        url: fileUrl
+        url: fileUrl,
+        removeOriginImage: false,
       });
     }
   };
@@ -93,7 +109,8 @@ export default function ManagerProfile() {
       info: storeInfo.res.info,
       phoneNumber: storeInfo.res.phoneNumber,
       storeId: storeInfo.res.id,
-      url: storeInfo.res.fileUrl
+      removeOriginImage: false,
+      url: storeInfo.res.storeImage?.fileUrl
     })
     setInputMode(false)
   }
@@ -112,6 +129,7 @@ export default function ManagerProfile() {
         content: modiStoreValue.content,
         address: modiStoreValue.address,
         phoneNumber: modiStoreValue.phoneNumber,
+        removeOriginImage: modiStoreValue.removeOriginImage
       };
     
       sendFormData.append(
@@ -119,11 +137,11 @@ export default function ManagerProfile() {
         new Blob([JSON.stringify(updateDto)], { type: "application/json" })
       );
     
-      sendFormData.append("image", modiStoreValue.image[0]);
+      if(!modiStoreValue.removeOriginImage && modiStoreValue.image.length !== 0){
+        sendFormData.append("image", modiStoreValue.image[0]);
+      }
 
-      
       const response = await propfileApiList.putUpdateStoreProfile({sendFormData, id: modiStoreValue.storeId})
-
 
       if (response) {
         alert('수정 완료')
@@ -270,7 +288,12 @@ export default function ManagerProfile() {
             <Box border='2px solid #FF6F00' bgColor='#ffffffab' rounded='24px' padding='27px 57px'>
               <Box width='100%' justifyContent='center' height='fit-content'>
               <Box direction='column' alignItems='center'>
-                <ImgBox width='160px' height='160px' bgColor='#FDC886' imgUrl={modiStoreValue.url} />
+                {
+                  modiStoreValue.url === null || modiStoreValue.url === undefined
+                    ? <ImgBox width='160px' height='160px' bgColor='#FDC886' imgUrl={storeInfo.res.storeImage?storeInfo.res.storeImage.fileUrl:''} />
+                    : <ImgBox width='160px' height='160px' bgColor='#FDC886' imgUrl={modiStoreValue.url} />
+                }
+                
                 <BtnText
                     htmlFor="file"
                     padding='16px 0 0 0'
@@ -279,6 +302,14 @@ export default function ManagerProfile() {
                     color='#FF6F00'
                     cursor='pointer'
                     >사진 변경</BtnText>
+                <Text
+                    padding='16px 0 0 0'
+                    fontSize='24px'
+                    fontWeight='bold'
+                    color='#FF6F00'
+                    cursor='pointer'
+                    onClick={handleImageDelete}
+                    >사진 삭제</Text>
                 <FileInput
                     type="file"
                     id="file"
@@ -427,7 +458,7 @@ export default function ManagerProfile() {
               <Box border='2px solid #FF6F00' bgColor='#ffffffab' rounded='24px' padding='27px 57px'>
                 <Box width='100%' justifyContent='center' height='fit-content'>
                 <Box direction='column' alignItems='center'>
-                  <ImgBox width='160px' height='160px' bgColor='#FDC886' imgUrl={modiStoreValue.url} />
+                  <ImgBox width='160px' height='160px' bgColor='#FDC886' imgUrl={modiStoreValue.url !== null ? modiStoreValue.url: ''} />
                   <BtnText
                       htmlFor="file"
                       padding='16px 0 0 0'
