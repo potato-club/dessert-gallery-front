@@ -37,9 +37,8 @@ export type locationCoordData = {
 }
 
 export type selectedLocationCoordData = {
-  location: string,
-  lat: string
-  lng: string
+  lat: string;
+  lng: string;
 }
 
 export type selectLocationOptionData = {
@@ -49,4 +48,10 @@ export type selectLocationOptionData = {
 export type selectLocationCoordOptionData = {
   location: locationCoordData,
   idx: number
+}
+
+export type searchData = {
+  sort: string ,
+  searchKeyword: string,
+  page: number,
 }
