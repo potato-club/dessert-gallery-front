@@ -6,7 +6,7 @@ import ReviewList from "../../../components/ReviewList";
 import { useRecoilValue } from "recoil";
 import { modalBg } from "../../../recoil/modalBg/atom";
 
-const StoreContent = ({ posterList }: any) => {
+const StoreContent = ({ storeId }: any) => {
   const [optionNum, setOptionNum] = useState<number>(1);
   const [boardId, setBoardId] = useState<number>(1);
   const onModal = useRecoilValue(modalBg);
@@ -35,7 +35,7 @@ const StoreContent = ({ posterList }: any) => {
       {onModal && <PostModal boardId={boardId} />}
 
       {optionNum == 1 ? (
-        <Poster posterList={posterList} setBoardId={setBoardId} />
+        <Poster storeId={storeId} setBoardId={setBoardId} />
       ) : (
         <ReviewList />
       )}
