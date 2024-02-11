@@ -97,6 +97,7 @@ export const modifyCalendarPage = {
             dateInfo.month,
           ]);
           queryClient.refetchQueries(["dateModalSchedule", year, month, day]);
+          queryClient.refetchQueries(["storeHoliday"]);
         },
       }
     );
@@ -124,6 +125,23 @@ export const modifyCalendarPage = {
       }
     );
     return { scheduleDeleteFn };
+  },
+
+  useCheckReservation(date: string) {
+    const queryClient = useQueryClient();
+    const [year, month, day] = date.split("-").map((item) => Number(item));
+
+    const { mutate: reservationCheckFn } = useMutation(
+      ["dateModalSchedule", year, month, day],
+      (reservationId: number) =>
+        calendarPageApi.putCheckReservation(reservationId),
+      {
+        onSuccess: () => {
+          queryClient.refetchQueries(["dateModalSchedule", year, month, day]);
+        },
+      }
+    );
+    return { reservationCheckFn };
   },
 
   useAddMemo(dateInfo: DateInfo) {

@@ -41,6 +41,11 @@ export const calendarPageApi = {
     return res;
   },
 
+  async putCheckReservation(reservationId: number) {
+    const res = await sendApi.put(`/stores/schedule?id=${reservationId}`);
+    return res;
+  },
+
   async postCalendarMemo({ year, month }: DateInfo, content: string) {
     const res = await sendApi.post(`/stores/memo`, {
       content,

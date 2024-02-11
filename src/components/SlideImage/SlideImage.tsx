@@ -77,14 +77,17 @@ function SlideImage({storeId, srcArray, width=304, height=304, moveBtnType='none
         bookmark && storeId && <Bookmark storeId={storeId} onBookmark={onBookmarkState} size={size} onClickBookmark={onClickBookmark} absolute={true}/>
       }
       </MoveWrap>
-      <ImageWrap>
-        <Image
-        src={srcArray[imgCnt]}
-        width={width}
-        height={height}
-        objectFit="cover"
-        alt="Picture of the author"
-        />
+      <ImageWrap width={width} height={height} >
+        {
+          srcArray[imgCnt] !== null &&<Image
+          src={srcArray[imgCnt]}
+          width={width}
+          height={height}
+          objectFit="cover"
+          alt="Picture of the author"
+          />
+        }
+        
       </ImageWrap>
       <BottomComponent>
         {children}

@@ -60,7 +60,6 @@ export default function ManagerProfile() {
           storeId: response.res.id,
           url: response.res.fileUrl
         })
-        console.log("manager!!!!!, ", response)
       } catch (error) {
         
       }
@@ -71,7 +70,6 @@ export default function ManagerProfile() {
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setModiStoreValue({ ...modiStoreValue, [name]: value });
-    console.log("수정중~!", modiStoreValue)
   };
 
   const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -123,10 +121,9 @@ export default function ManagerProfile() {
     
       sendFormData.append("image", modiStoreValue.image[0]);
 
-
+      
       const response = await propfileApiList.putUpdateStoreProfile({sendFormData, id: modiStoreValue.storeId})
 
-      console.log("response", response)
 
       if (response) {
         alert('수정 완료')
@@ -174,7 +171,6 @@ export default function ManagerProfile() {
   
         const response = await propfileApiList.PostCreateStore(sendFormData)
   
-        console.log("response", response)
   
         if (response) {
           alert('가게 생성 완료')
@@ -186,31 +182,6 @@ export default function ManagerProfile() {
         console.error('Error:', error);
       }
     }
-
-    // try {
-    //   // FormData를 서버로 전송하거나 API 호출을 수행할 수 있습니다.
-
-    //   let sendFormData = new FormData();
-
-    //   sendFormData.append('nickname', formData.nickname);
-    //   sendFormData.append('userRole', formData.userRole);
-    //   sendFormData.append('file', formData.file[0]);
-    //   sendFormData.append('fileName', formData.fileName);
-    //   sendFormData.append('fileUrl', formData.fileUrl);
-
-    //   const response = await putUser(sendFormData)
-
-    //   console.log("response", response)
-
-    //   if (response.ok) {
-    //     const result = await response.json();
-    //     console.log('Server Response:', result);
-    //   } else {
-    //     console.error('Server Error:', response.statusText);
-    //   }
-    // } catch (error) {
-    //   console.error('Error:', error);
-    // }
   };
 
   if(storeInfo !== null &&storeInfo.res!=='noneStore'&&!inputMode){
@@ -227,7 +198,7 @@ export default function ManagerProfile() {
           <Box border='2px solid #FF6F00' bgColor='#ffffffab' rounded='24px' padding='27px 57px'>
             <Box width='100%' justifyContent='center' height='fit-content'>
             <Box direction='column' alignItems='center'>
-              <ImgBox width='160px' height='160px' bgColor='#FDC886' imgUrl={storeInfo.res.storeImage.fileUrl} />
+              <ImgBox width='160px' height='160px' bgColor='#FDC886' imgUrl={storeInfo.res.storeImage !== null ? storeInfo.res.storeImage.fileUrl : ''} />
             </Box>
             </Box>
           </Box>

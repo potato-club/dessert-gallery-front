@@ -24,8 +24,6 @@ interface makerDataProps {
 }
 
 const AroundMarketItem = ({latitude, longitude, score, storeAddress, storeName, storeId, content, fileName, fileUrl,searchData, setCenter}: makerDataProps) => {
-  console.log("why???")
-
   const onClickHandler = () => {
     setCenter((prev)=>({
       ...prev,
@@ -45,12 +43,12 @@ const AroundMarketItem = ({latitude, longitude, score, storeAddress, storeName, 
         <Rating size="small" ratingValue={`${score}`} />
       </TextInfoDiv>
       <ImageDiv>
-        <Image
+        {fileUrl !== null &&<Image
           src={fileUrl}
           alt={fileName}
           layout="fill"
           objectFit="cover"
-        />
+        />}
       </ImageDiv>
     </Container>
   );
@@ -78,7 +76,7 @@ const TextInfoDiv = styled.div`
 `;
 const ImageDiv = styled.div`
   position: relative;
-  background-color: black;
+  background-color: #ff6f00;
   width: 100%;
   border-radius: 4px;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
