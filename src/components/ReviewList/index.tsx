@@ -1,8 +1,8 @@
 import { useRouter } from "next/router";
 import React, { useEffect } from "react";
-import styled, { css } from "styled-components";
+import styled from "styled-components";
 import { useGetReviewList } from "../../hooks/useBoard";
-import { usePagenate } from "../../hooks/usePagenate";
+import PagingBox from "./PagingBox";
 import Review, { StoreReviewType } from "./Review";
 
 const ReviewList = () => {
@@ -20,16 +20,6 @@ const ReviewList = () => {
     refetch();
   }, [router.query.page, refetch]);
 
-  const {
-    currentPage,
-    handlePageChange,
-    pages,
-    handleNextGroup,
-    handlePrevGroup,
-    lastPageGroup,
-    pageGroups,
-  } = usePagenate({ apiData: data });
-
   return (
     <Container>
       {data &&
@@ -45,25 +35,7 @@ const ReviewList = () => {
             />
           );
         })}
-      <Pagenation>
-        {pageGroups !== 0 && (
-          <PrevBtn onClick={() => handlePrevGroup(pageGroups)}>{"<"}</PrevBtn>
-        )}
-        {pages.map((pageNum) => (
-          <PageNum
-            onClick={() => {
-              handlePageChange(pageNum);
-            }}
-            isFocus={pageNum == (currentPage || 1)}
-            key={pageNum}
-          >
-            {pageNum}
-          </PageNum>
-        ))}
-        {pageGroups !== lastPageGroup && (
-          <NextBtn onClick={() => handleNextGroup(pageGroups)}>{">"}</NextBtn>
-        )}
-      </Pagenation>
+      <PagingBox data={data} />
     </Container>
   );
 };
@@ -76,26 +48,4 @@ const Container = styled.div`
   flex-direction: column;
   gap: 37px;
   margin-top: 53px;
-`;
-const Pagenation = styled.div`
-  display: flex;
-  gap: 10px;
-`;
-const button = css`
-  border: none;
-  background-color: white;
-  cursor: pointer;
-`;
-const PrevBtn = styled.button`
-  ${button}
-`;
-const NextBtn = styled.button`
-  ${button}
-`;
-const PageNum = styled.button<{ isFocus: boolean }>`
-  ${button}
-  color: ${({ isFocus }) => (isFocus ? "#000" : "#828282")};
-  font-size: 18px;
-  font-weight: 700;
-  line-height: normal;
 `;

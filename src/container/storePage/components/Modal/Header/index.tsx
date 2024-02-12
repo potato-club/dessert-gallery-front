@@ -48,14 +48,12 @@ const index = ({ storeInfo }: StoreInfoType) => {
         <BoxPosition>
           {menuIconClick && <ToggleOptionBox contents={storePageModalOption} />}
         </BoxPosition>
-        <MenuToggleBtn>
-          <MenuIcon
-            width="5px"
-            height="13px"
-            onClick={() => {
-              setMenuIconClick((prev) => !prev);
-            }}
-          />
+        <MenuToggleBtn
+          onClick={() => {
+            setMenuIconClick((prev) => !prev);
+          }}
+        >
+          <MenuIcon width="5px" height="13px" />
         </MenuToggleBtn>
       </div>
     </Container>
@@ -73,9 +71,6 @@ const Container = styled.div`
   padding: 20px 29px;
   width: 100%;
   border-bottom: 2px solid #fdc886;
-  svg {
-    cursor: pointer;
-  }
 `;
 const StoreInfo = styled.div`
   display: flex;
@@ -85,7 +80,10 @@ const StoreInfo = styled.div`
 `;
 const MenuToggleBtn = styled.button`
   background-color: transparent;
+  padding: 0px;
+  width: 17px;
   border: none;
+  cursor: pointer;
 `;
 const StoreProfile = styled.img`
   width: 65px;
