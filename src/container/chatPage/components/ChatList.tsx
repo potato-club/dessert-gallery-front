@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import SerchImage from "../../../../public/SVG/myPage/chatPage/searchImage.svg";
 import ChatListItem from "./ChatListItem";
+import { userInfoType } from "../ChatPage";
 
 type roomInfoType = {
   roomId: number;
@@ -14,31 +15,14 @@ type roomInfoType = {
 function ChatList({
   chatRoomList,
   getRoomIdState,
+  getPartnerNameState,
+  userInfo,
 }: {
   chatRoomList?: roomInfoType[];
   getRoomIdState: (id: number) => void;
+  getPartnerNameState: (partnerName: string) => void;
+  userInfo?: userInfoType;
 }) {
-  const chatListSample = [
-    {
-      roomId: 1,
-      storeName: "테스트 가게1",
-      customerName: "테스트 고객1",
-      thumbnailMessage: "테스트 메세지1입니다.",
-    },
-    {
-      roomId: 2,
-      storeName: "테스트 가게2",
-      customerName: "테스트 고객2",
-      thumbnailMessage: "테스트 메세지2입니다.",
-    },
-    {
-      roomId: 3,
-      storeName: "테스트 가게3",
-      customerName: "테스트 고객3",
-      thumbnailMessage: "테스트 메세지3입니다.",
-    },
-  ];
-
   return (
     <Wrapper>
       <Header>
@@ -55,13 +39,24 @@ function ChatList({
       </Header>
       <ListContents>
         {chatRoomList &&
-          chatRoomList.map((item) => (
+          chatRoomList.map((item, index) => (
             <ChatListItem
-              key={item.roomId}
+              key={index}
               roomId={item.roomId}
-              customerName={item.customerName}
+              name={
+                userInfo?.userRole === "MANAGER"
+                  ? item.customerName
+                  : item.storeName
+              }
               thumbnailMessage={item.thumbnailMessage}
-              onClickItem={() => getRoomIdState(item.roomId)}
+              onClickItem={() => {
+                getRoomIdState(item.roomId);
+                getPartnerNameState(
+                  userInfo?.userRole === "MANAGER"
+                    ? item.customerName
+                    : item.storeName
+                );
+              }}
             />
           ))}
       </ListContents>

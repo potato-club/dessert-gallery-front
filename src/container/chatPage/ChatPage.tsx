@@ -2,8 +2,14 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import ChatList from "./components/ChatList";
 import ChatRoom from "./components/ChatRoom";
-import { getChatRoom, getStoreInfo } from "../../apis/controller/chatPage";
+import { getChatRoom, getUserInfo } from "../../apis/controller/chatPage";
 import { loginPageApi } from "../../apis/controller/loginPage";
+
+export type userInfoType = {
+  nickname: string;
+  loginType: "NORMAL" | "KAKAO";
+  userRole: "USER" | "MANAGER";
+};
 
 type roomInfoType = {
   roomId: number;
@@ -19,21 +25,41 @@ function ChatPage() {
     setRoomIdState(id);
   };
   const [chatRoomList, setChatRoomList] = useState<roomInfoType[]>();
+  const [userInfoState, setUserInfoState] = useState<userInfoType>();
+  const [partnerNameState, setPartnerNameState] = useState<string>();
+
+  const fetchChatRoom = async () => {
+    const chatRoom = await getChatRoom();
+    console.log(chatRoom);
+    setChatRoomList(chatRoom);
+  };
+
+  const fetchUserInfo = async () => {
+    const userInfo = await getUserInfo();
+    console.log(userInfo);
+
+    setUserInfoState(userInfo);
+  };
+
+  const getPartnerNameState = (partnerName: string) => {
+    setPartnerNameState(partnerName);
+  };
 
   useEffect(() => {
-    const fetchChatRoom = async () => {
-      const chatRoom = await getChatRoom();
-      console.log(chatRoom);
-      setChatRoomList(chatRoom);
-    };
     fetchChatRoom();
+    fetchUserInfo();
   }, []);
 
   return (
     <Layout>
       <Wrapper>
-        <ChatList chatRoomList={chatRoomList} getRoomIdState={getRoomIdState} />
-        <ChatRoom roomIdState={roomIdState} />
+        <ChatList
+          chatRoomList={chatRoomList}
+          getRoomIdState={getRoomIdState}
+          getPartnerNameState={getPartnerNameState}
+          userInfo={userInfoState}
+        />
+        <ChatRoom roomIdState={roomIdState} userInfo={userInfoState} partnerName={partnerNameState} />
       </Wrapper>
     </Layout>
   );
