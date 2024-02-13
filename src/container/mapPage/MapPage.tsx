@@ -52,8 +52,8 @@ const MapPage = () => {
       });
 
       if(data !== undefined) {
-        setStoreListData(data);
         storeListDataPrev.current=data;
+        setStoreListData(storeListDataPrev.current);
       }
 
     } catch (error) {
@@ -74,36 +74,36 @@ const MapPage = () => {
     renderedMap.current.setCenter(new (window as any).kakao.maps.LatLng(lat, lng))
   }
 
-  useEffect(()=>{
-    console.log("page 업데이트", searchData.page)
-    fetchData(center.lat, center.lng,searchData.sort, searchData.searchKeyword);
-  },[searchData.page])
-
-
-  // 도메인 해석 및 링크 업데이트
+  // 도메인 해석 및 링크 업데이트 / page 업데이트 
   useEffect(()=>{
     if(!isReady) return;
     
-    const selected = query['selected']=== undefined ? -1: query['selected'];
-    const search = query[`search`] === undefined ? '': query[`search`];
-    const sort = query[`sort`] === undefined ? '':query[`sort`] ;
-    const lat = query['lat'] === undefined ? "37.524987": query['lat'] ;
-    const lng = query['lng'] === undefined ? "126.856181": query['lng'] ;
-    
-    setSelectedStoreId(Number(selected));
-    setSearchData(prev => ({
-      ...prev,
-      sort: typeof sort === "string" ? sort: sort.join(),
-      searchKeyword: search=== undefined ? "": search as string
-    }))
+    if(searchData.page !== 1){
+      fetchData(center.lat, center.lng,searchData.sort, searchData.searchKeyword);
+    }
+    else{
+      const selected = query['selected']=== undefined ? -1: query['selected'];
+      const search = query[`search`] === undefined ? '': query[`search`];
+      const sort = query[`sort`] === undefined ? '':query[`sort`] ;
+      const lat = query['lat'] === undefined ? "37.524987": query['lat'] ;
+      const lng = query['lng'] === undefined ? "126.856181": query['lng'] ;
+      
+      setSelectedStoreId(Number(selected));
+      setSearchData(prev => ({
+        ...prev,
+        sort: typeof sort === "string" ? sort: sort.join(),
+        searchKeyword: search=== undefined ? "": search as string
+      }))
 
-      setCenter({
-      lat: typeof lat === 'string'? lat: lat.join(),
-      lng: typeof lng === 'string'? lng: lng.join(),
-    })
-    
-    fetchData(typeof lat === 'string'? lat: lat.join(), typeof lng === 'string'? lng: lng.join(), typeof sort === "string" ? sort: sort.join(), typeof search === 'string'? search: search.join());
-  },[isReady]);
+        setCenter({
+        lat: typeof lat === 'string'? lat: lat.join(),
+        lng: typeof lng === 'string'? lng: lng.join(),
+      })
+
+
+      fetchData(typeof lat === 'string'? lat: lat.join(), typeof lng === 'string'? lng: lng.join(), typeof sort === "string" ? sort: sort.join(), typeof search === 'string'? search: search.join());
+    }
+  },[isReady, searchData.page]);
 
   /** 지도 정보 업데이트 */
   useEffect(()=>{

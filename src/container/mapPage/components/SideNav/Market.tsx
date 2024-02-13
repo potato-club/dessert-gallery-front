@@ -30,13 +30,14 @@ interface props {
 const Market = ({markerData, setCenter}: props) => {
   const [searchData, setSearchData] = useRecoilState(searchState);
   const isSearch = searchData.searchKeyword ? true: false;
-  const [ref, inView] = useInView({ threshold: 0.5 });
-
-  useEffect(() => {
-    if(inView) {
-      setSearchData((prev)=>({...prev, page: prev.page+1}))
-    }
-  }, [inView]);
+  const [ref, inView] = useInView({ 
+    threshold: 1,
+    onChange: (inView) => {
+      if(inView){
+        setSearchData((prev)=>({...prev, page: prev.page+1}))
+      }
+    } 
+  });
   
   return (
     <Container>
@@ -48,8 +49,9 @@ const Market = ({markerData, setCenter}: props) => {
             <AroundMarketItem key={idx} {...store} searchData={searchData} setCenter={setCenter}/>
           ))
         }
-        <ObserverWrap ref={searchData.searchKeyword !== '' || searchData.sort !=='' ?ref: null}/>
+        
       </MarketList>
+      {markerData.length !== 0 && <ObserverWrap ref={searchData.searchKeyword !== '' || searchData.sort !=='' ?ref: null}/>}
     </Container>
   );
 };
