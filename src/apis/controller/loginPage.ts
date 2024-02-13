@@ -51,6 +51,10 @@ export const loginPageApi = {
     );
   },
 
+  getTokenCheck: async () => {
+    return await sendApi.get("/users/check");
+  },
+
   getReissue: async () => {
     return await sendApi.get("/users/reissue");
   },
