@@ -4,7 +4,7 @@ import { useState } from 'react';
 import DotIndicator from './DotIndicator';
 import Bookmark from './Bookmark';
 import { RightMoveButtonIcon, LeftMoveButtonIcon } from '../../../public/svg';
-import { Wrapper, ImageWrap, RightMoveButton, LeftMoveButton,MoveWrap,MoveAllbutton, BottomComponent, BottomCenterComponent } from './SlideImage.style';
+import { Wrapper, ImageWrap, RightMoveButton, LeftMoveButton,MoveWrap,MoveAllbutton, SvgWrap, BottomComponent, BottomCenterComponent } from './SlideImage.style';
 import followAction from '../../utils/followAction';
 
 function SlideImage({storeId, srcArray, width=304, height=304, moveBtnType='none', size='big', dotIndicator=false, bookmark=false, onBookmark=false, borderRadius=false, children=<></>}:slideImageValue) {
@@ -47,11 +47,14 @@ function SlideImage({storeId, srcArray, width=304, height=304, moveBtnType='none
           imgCnt !== 0 && <MoveAllbutton width={width} height={height} onClick={onClickMoveLeft}/>
         ) : (
           imgCnt !== 0 && (
-                            <LeftMoveButton hoverCss={moveBtnType} width={width} height={height} onClick={onClickMoveLeft}>
-                              <LeftMoveButtonIcon 
-                                width={`${width / 16}px`}
-                                height={`${height / 16}px`}
-                              />
+                            <LeftMoveButton  hoverCss={moveBtnType} width={width} height={height} onClick={onClickMoveLeft}>
+                              <SvgWrap>
+                                <LeftMoveButtonIcon 
+                                  width={`${width / 30}px`}
+                                  height={`${height / 30}px`}
+                                  style={{ filter: 'drop-shadow(30px 10px 4px #4444dd)' }}
+                                />
+                              </SvgWrap>
                             </LeftMoveButton>
                           )
         )
@@ -63,10 +66,13 @@ function SlideImage({storeId, srcArray, width=304, height=304, moveBtnType='none
           ):(
             imgCnt !== maxImgCnt && (
                                       <RightMoveButton hoverCss={moveBtnType} width={width} height={height} onClick={onClickMoveRight}>
-                                        <RightMoveButtonIcon 
-                                          width={`${width / 16}px`}
-                                          height={`${height / 16}px`}
+                                        <SvgWrap>
+                                        <RightMoveButtonIcon
+                                          className='buttonShadow' 
+                                          width={`${width / 30}px`}
+                                          height={`${height / 30}px`}
                                         />
+                                        </SvgWrap>
                                       </RightMoveButton>
                                     )
           )
