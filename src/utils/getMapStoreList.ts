@@ -35,7 +35,7 @@ export const getMapStoreList = async ({ initData, lat,lng,page,searchKeyword,sor
           if(response.length !==0){
             return initData.concat(response)
           }else{
-        return initData;
+            return initData;
           }
         }
         return response
