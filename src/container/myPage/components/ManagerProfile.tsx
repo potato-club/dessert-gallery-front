@@ -2,6 +2,9 @@ import React, { ChangeEvent, FormEvent, useEffect, useState } from 'react'
 import { Box, Text, ImgBox, ProfileForm, FileInput, BtnText, TextInput } from './MyPage.style'
 import { propfileApiList } from '../../../apis/controller/profile';
 import Tag from '../../../components/Tag'
+import AddressModal from './AddressModal';
+import { useRecoilState} from "recoil";
+import { modalBg } from '../../../recoil/modalBg/atom';
 
 // export interface storeImageI {
 //   fileName: string,
@@ -35,6 +38,7 @@ export interface updateStoreI {
 export default function ManagerProfile() {
   const [storeInfo, setStoreInfo] = useState<any>(null)
   const [inputMode, setInputMode] = useState<boolean>(false);
+  const [modalBgState, setModalBgState] = useRecoilState(modalBg);
   const [modiStoreValue, setModiStoreValue] = useState<updateStoreI>({
     name: '',
     address: '',
@@ -46,7 +50,10 @@ export default function ManagerProfile() {
     removeOriginImage: false,
     url: null
   })
-  const [imgUrl, setImgUrl] = useState<string>('');
+
+  const onClickInputAddress = () => {
+    setModalBgState(prev=>!prev);
+  };
 
   useEffect(()=>{
     const getStoreProfile = async ()=> {
@@ -327,7 +334,7 @@ export default function ManagerProfile() {
               <Box width='100%' alignItems='center' justifyContent='space-between'>
                 <Box  margin='24px 0'>
                   <Text fontSize='17px' fontWeight='bold' color='#000000'>가게 이름</Text>
-                  <TextInput fontSize='14px' fontWeight='bold' color='#000000' padding='0 64px' type="text" id="name" name="name" value={modiStoreValue.name} onChange={handleInputChange} placeholder={`${storeInfo.res.name}`}/>
+                  <TextInput  fontSize='14px' fontWeight='bold' color='#000000' padding='0 64px' type="text" id="name" name="name" value={modiStoreValue.name} onChange={handleInputChange} placeholder={`${storeInfo.res.name}`}/>
                 </Box>
               </Box>
               <Box width='100%' alignItems='center' justifyContent='space-between'>
@@ -346,21 +353,24 @@ export default function ManagerProfile() {
             {/* 프로필 박스 영역 */}
             <Box direction='column' border='2px solid #FF6F00' bgColor='#ffffffab' rounded='24px' padding='0 57px'>
               <Box width='100%' alignItems='center' justifyContent='space-between'>
-                <Box  margin='24px 0'>
+                <Box alignItems='center' margin='24px 0'>
                   <Text fontSize='17px' fontWeight='bold' color='#000000'>가게 정보</Text>
                   <TextInput fontSize='14px' fontWeight='bold' color='#000000' padding='0 64px' type="text" id="info" name="info" value={modiStoreValue.info} onChange={handleInputChange} placeholder={`${storeInfo.res.info}`}/>
-
                 </Box>
               </Box>
               <Box width='100%' alignItems='center' justifyContent='space-between'>
-                <Box  margin='24px 0'>
+                <Box alignItems='center' margin='24px 0'>
                   <Text fontSize='17px' fontWeight='bold' color='#000000'>가게 위치</Text>
-                  <TextInput fontSize='14px' fontWeight='bold' color='#000000' padding='0 64px' type="text" id="address" name="address" value={modiStoreValue.address} onChange={handleInputChange} placeholder={`${storeInfo.res.address}`}/>
+                  <Box width='90%'>
+                    <TextInput disabled fontSize='14px' fontWeight='bold' color='#000000' padding='0 64px' type="text" id="address" name="address" value={modiStoreValue.address} onChange={handleInputChange} placeholder={`${storeInfo.res.address}`}/>
+                    <Tag onClickHandler={onClickInputAddress} clickAble={true} hoverCss={true} fontSize='16px' height='32px' width='120px' title='주소 입력'/>
+                    {modalBgState && <AddressModal onClickInputAddress={onClickInputAddress}/>}
+                  </Box>
                 </Box>
               </Box>
   
               <Box width='100%' alignItems='center' justifyContent='space-between'>
-                <Box  margin='24px 0'>
+                <Box alignItems='center' margin='24px 0'>
                   <Text fontSize='17px' fontWeight='bold' color='#000000'>가게 설명</Text>
                   <TextInput fontSize='14px' fontWeight='bold' color='#000000' padding='0 64px' type="text" id="content" name="content" value={modiStoreValue.content} onChange={handleInputChange} placeholder={`${storeInfo.res.content}`}/>
                 </Box>
