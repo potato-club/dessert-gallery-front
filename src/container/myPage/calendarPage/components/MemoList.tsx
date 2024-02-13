@@ -1,30 +1,74 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import MemoColumn from "./MemoColumn";
-import TodayBackground from "../../../../public/image/TodayBackground.png";
+import { modifyCalendarPage } from "../../../../hooks/useSchedule";
+import ScheduleCheckColoumn from "./ScheduleCheckColumn";
 
-const MemoList = () => {
+interface memoListItemType {
+  checked: boolean;
+  content: string;
+  id: number;
+}
+
+const MemoList = ({ ...props }) => {
+  const [memoInput, setMemoInput] = useState<string>("");
+  const { memoAddFn } = modifyCalendarPage.useAddMemo(props.dateInfo);
+  const { memoCheck } = modifyCalendarPage.useCheckMemo(props.dateInfo);
+  const { memoDelete } = modifyCalendarPage.useDeleteMemo(props.dateInfo);
+
+  const submitMemo = (e: any) => {
+    e.preventDefault();
+    memoAddFn(memoInput);
+    setMemoInput("");
+  };
+
   return (
     <Container>
-      <InputForm>
-        <input placeholder="자유롭게 메모를 입력해 주세요!" />
-        <AddBtn>추가</AddBtn>
+      <InputForm onSubmit={(e) => submitMemo(e)}>
+        <input
+          placeholder="자유롭게 메모를 입력해 주세요!"
+          onChange={(e) => setMemoInput(e.target.value)}
+          value={memoInput}
+        />
+        <AddBtn type="submit" onSubmit={(e) => submitMemo(e)}>
+          추가
+        </AddBtn>
       </InputForm>
-      <Content>
-        <NotWorkingDiv>
-          <MemoColumn isSuccess={false} />
-          <MemoColumn isSuccess={false} />
-          <MemoColumn isSuccess={false} />
-          <MemoColumn isSuccess={false} />
-        </NotWorkingDiv>
-        <SuccessWorkingDiv>
-          <Title>완료한 목록</Title>
-          <MemoColumn isSuccess={true} />
-          <MemoColumn isSuccess={true} />
-          <MemoColumn isSuccess={true} />
-          <MemoColumn isSuccess={true} />
-        </SuccessWorkingDiv>
-      </Content>
+      {props.memoList && (
+        <Content>
+          <NotWorkingDiv>
+            <Title>미완료 목록</Title>
+            {props.memoList.map((item: memoListItemType) => {
+              if (!item.checked)
+                return (
+                  <ScheduleCheckColoumn
+                    key={item.id}
+                    scheduleId={item.id}
+                    isSuccess={item.checked}
+                    content={item.content}
+                    deleteFn={memoDelete}
+                    checkFn={memoCheck}
+                  />
+                );
+            })}
+          </NotWorkingDiv>
+          <SuccessWorkingDiv>
+            <Title>완료 목록</Title>
+            {props.memoList.map((item: memoListItemType) => {
+              if (item.checked)
+                return (
+                  <ScheduleCheckColoumn
+                    key={item.id}
+                    scheduleId={item.id}
+                    isSuccess={item.checked}
+                    content={item.content}
+                    deleteFn={memoDelete}
+                    checkFn={memoCheck}
+                  />
+                );
+            })}
+          </SuccessWorkingDiv>
+        </Content>
+      )}
     </Container>
   );
 };
@@ -34,13 +78,15 @@ export default MemoList;
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
   padding: 42px 27px;
-  width: 354px;
   height: 626px;
   background-color: #fefbf6;
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
-  overflow: scroll;
+  gap: 30px;
+  overflow-y: scroll;
+  &::-webkit-scrollbar {
+    display: none;
+  }
 `;
 const InputForm = styled.form`
   display: flex;
@@ -54,6 +100,7 @@ const InputForm = styled.form`
     outline: none;
     border-bottom: 2px solid #828282;
     padding-bottom: 5px;
+    background-color: transparent;
   }
 `;
 const AddBtn = styled.button`
@@ -65,7 +112,6 @@ const AddBtn = styled.button`
   background-color: #fcf6ee;
   border: 1px solid #828282;
   border-radius: 8px;
-  font-family: Noto Sans CJK KR;
   font-size: 11px;
 `;
 const Content = styled.div`
@@ -82,7 +128,6 @@ const NotWorkingDiv = styled(WorkingDiv)``;
 const SuccessWorkingDiv = styled(WorkingDiv)``;
 const Title = styled.span`
   color: #000;
-  font-family: Noto Sans CJK KR;
   font-size: 18px;
   font-weight: 700;
   margin-bottom: 5px;

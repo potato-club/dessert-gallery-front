@@ -1,8 +1,15 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import styled from "styled-components";
+import { useRecoilState } from "recoil";
 import AroundMarketItem from "./AroundMarketItem";
+import { useInView } from "react-intersection-observer";
 import { selectedLocationCoordData } from "../../../../types/componentsData";
-
+import { searchState } from "../../../../recoil/map/searchStateAtom";
+interface searchData {
+  sort: string ,
+  searchKeyword: string,
+  page: number,
+}
 interface makerDataProps {
   latitude: number
   longitude: number
@@ -17,11 +24,21 @@ interface makerDataProps {
 interface props {
   markerData: makerDataProps[]
   isSearch: boolean
-  searchKeyword:string
   setCenter: React.Dispatch<React.SetStateAction<selectedLocationCoordData>>
 }
 
-const Market = ({markerData, isSearch, searchKeyword, setCenter}: props) => {
+const Market = ({markerData, setCenter}: props) => {
+  const [searchData, setSearchData] = useRecoilState(searchState);
+  const isSearch = searchData.searchKeyword ? true: false;
+  const [ref, inView] = useInView({ 
+    threshold: 1,
+    onChange: (inView) => {
+      if(inView){
+        setSearchData((prev)=>({...prev, page: prev.page+1}))
+      }
+    } 
+  });
+  
   return (
     <Container>
       {isSearch && <TopSpan>내 근처 검색한 가게 리스트를 볼게요!</TopSpan>}
@@ -29,10 +46,12 @@ const Market = ({markerData, isSearch, searchKeyword, setCenter}: props) => {
       <MarketList>
         {
           markerData && markerData.map((store: makerDataProps, idx) => (
-            <AroundMarketItem key={idx} {...store} searchKeyword={searchKeyword} setCenter={setCenter}/>
+            <AroundMarketItem key={idx} {...store} searchData={searchData} setCenter={setCenter}/>
           ))
         }
+        
       </MarketList>
+      {markerData.length !== 0 && <ObserverWrap ref={searchData.searchKeyword !== '' || searchData.sort !=='' ?ref: null}/>}
     </Container>
   );
 };
@@ -68,3 +87,7 @@ const MarketList = styled.ul`
   padding-left: 0px;
   gap: 24px;
 `;
+
+const ObserverWrap = styled.div`
+  height: 80px;
+`

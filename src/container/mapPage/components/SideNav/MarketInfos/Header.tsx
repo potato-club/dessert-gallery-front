@@ -7,7 +7,6 @@ import { mapStoreDetail } from "../../../../../types/apiTypes";
 // 가게 정보조회 api 들어와야함
 const Header = ({store}:any) => {
   const url = window.location.href.split('?')[1].split('&')
-  console.log("sssss\n\n", store)
   return (
     <>
       <Container>

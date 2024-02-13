@@ -4,10 +4,10 @@ import { useState } from 'react';
 import DotIndicator from './DotIndicator';
 import Bookmark from './Bookmark';
 import { RightMoveButtonIcon, LeftMoveButtonIcon } from '../../../public/svg';
-import { Wrapper, ImageWrap, RightMoveButton, LeftMoveButton,MoveWrap,MoveAllbutton, BottomComponent, BottomCenterComponent } from './SlideImage.style';
+import { Wrapper, ImageWrap, RightMoveButton, LeftMoveButton,MoveWrap,MoveAllbutton, SvgWrap, BottomComponent, BottomCenterComponent } from './SlideImage.style';
 import followAction from '../../utils/followAction';
 
-function SlideImage({storeId, srcArray, width=304, height=304, moveBtnType='none', size='big', dotIndicator=false, bookmark=false, onBookmark=false, children=<></>}:slideImageValue) {
+function SlideImage({storeId, srcArray, width=304, height=304, moveBtnType='none', size='big', dotIndicator=false, bookmark=false, onBookmark=false, borderRadius=false, children=<></>}:slideImageValue) {
   const [imgCnt, setImgCnt] = useState<number>(0);
   const [onBookmarkState, setOnBookmarkState] = useState<boolean>(onBookmark);
   const maxImgCnt = srcArray.length -1;
@@ -40,18 +40,21 @@ function SlideImage({storeId, srcArray, width=304, height=304, moveBtnType='none
   }
 
   return (
-    <Wrapper hoverCss={moveBtnType} width={width} height={height}>
+    <Wrapper borderRadius={borderRadius} hoverCss={moveBtnType} width={width} height={height}>
       <MoveWrap>
       {
         moveBtnType==='none' ? (
           imgCnt !== 0 && <MoveAllbutton width={width} height={height} onClick={onClickMoveLeft}/>
         ) : (
           imgCnt !== 0 && (
-                            <LeftMoveButton hoverCss={moveBtnType} width={width} height={height} onClick={onClickMoveLeft}>
-                              <LeftMoveButtonIcon 
-                                width={`${width / 16}px`}
-                                height={`${height / 16}px`}
-                              />
+                            <LeftMoveButton  hoverCss={moveBtnType} width={width} height={height} onClick={onClickMoveLeft}>
+                              <SvgWrap>
+                                <LeftMoveButtonIcon 
+                                  width={`${width / 30}px`}
+                                  height={`${height / 30}px`}
+                                  style={{ filter: 'drop-shadow(30px 10px 4px #4444dd)' }}
+                                />
+                              </SvgWrap>
                             </LeftMoveButton>
                           )
         )
@@ -63,10 +66,13 @@ function SlideImage({storeId, srcArray, width=304, height=304, moveBtnType='none
           ):(
             imgCnt !== maxImgCnt && (
                                       <RightMoveButton hoverCss={moveBtnType} width={width} height={height} onClick={onClickMoveRight}>
-                                        <RightMoveButtonIcon 
-                                          width={`${width / 16}px`}
-                                          height={`${height / 16}px`}
+                                        <SvgWrap>
+                                        <RightMoveButtonIcon
+                                          className='buttonShadow' 
+                                          width={`${width / 30}px`}
+                                          height={`${height / 30}px`}
                                         />
+                                        </SvgWrap>
                                       </RightMoveButton>
                                     )
           )
@@ -77,14 +83,17 @@ function SlideImage({storeId, srcArray, width=304, height=304, moveBtnType='none
         bookmark && storeId && <Bookmark storeId={storeId} onBookmark={onBookmarkState} size={size} onClickBookmark={onClickBookmark} absolute={true}/>
       }
       </MoveWrap>
-      <ImageWrap>
-        <Image
-        src={srcArray[imgCnt]}
-        width={width}
-        height={height}
-        objectFit="cover"
-        alt="Picture of the author"
-        />
+      <ImageWrap width={width} height={height} >
+        {
+          srcArray[imgCnt] !== null &&<Image
+          src={srcArray[imgCnt]}
+          width={width}
+          height={height}
+          objectFit="cover"
+          alt="Picture of the author"
+          />
+        }
+        
       </ImageWrap>
       <BottomComponent>
         {children}

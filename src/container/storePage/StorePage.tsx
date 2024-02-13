@@ -8,6 +8,9 @@ import Tag from "../../components/Tag";
 import { StoreProps } from "../../../pages/galleryBoard/[store]";
 import { useRecoilValue } from "recoil";
 import { JWTStateAtom } from "../../recoil/login/JWTStateAtom";
+import { useGetScheduleForUser } from "../../hooks/useSchedule";
+import { useGetStoreAnnounce } from "../../hooks/useBoard";
+import { BoardBottom } from "../../../public/image";
 
 const StorePage = (props: StoreProps) => {
   const [isGuest, setIsGuest] = useState<boolean>(true);
@@ -19,22 +22,26 @@ const StorePage = (props: StoreProps) => {
     }
   }, [jwtData]);
 
-  console.log(isGuest);
-
   const [spreadClick, setSpreadClick] = useState<boolean>(false);
+  const { setDateInfo, calendarData } = useGetScheduleForUser(props.storeId);
 
-  const { announceData, posterThumnail, detailPoster } = props;
-
+  const { announceData } = useGetStoreAnnounce({ storeId: props.storeId });
+  console.log(announceData);
   return (
     <Container>
       <StoreInfo>
         <StoreProfile />
         <CalDiv>
-          <Calender />
+          <Calender
+            scheduleList={calendarData?.scheduleList}
+            setDateInfo={setDateInfo}
+          />
         </CalDiv>
       </StoreInfo>
-      {announceData[0] ? (
+      {announceData && announceData[0] ? (
         <Announce
+          type={announceData[0].type}
+          title={announceData[0].title}
           content={announceData[0].content}
           createdDate={announceData[0].createdDate || ""}
           spreadClick={spreadClick}
@@ -45,22 +52,29 @@ const StorePage = (props: StoreProps) => {
         <Announce
           content="등록된 공지사항이 없습니다."
           createdDate=""
+          type="없음"
           spreadClick={spreadClick}
+          title="등록된 공지사항이 없습니다."
           setSpreadClick={setSpreadClick}
           isFirst={true}
         />
       )}
       <AnnounceList>
         {spreadClick && (
-          <AbsoluteDiv spreadClick={spreadClick}>
-            {announceData.slice(1).map((item: any, idx: number) => (
-              <Announce
-                key={idx}
-                content={item.content}
-                setSpreadClick={setSpreadClick}
-                createdDate={item.createdDate}
-              />
-            ))}
+          <SpreadAnnounce spreadClick={spreadClick}>
+            {announceData &&
+              announceData
+                .slice(1)
+                .map((item: any, idx: number) => (
+                  <Announce
+                    key={idx}
+                    type={item.type}
+                    content={item.content}
+                    title={item.title}
+                    setSpreadClick={setSpreadClick}
+                    createdDate={item.createdDate}
+                  />
+                ))}
             <InnerDiv>
               <FoldBtn
                 title="접기"
@@ -73,13 +87,11 @@ const StorePage = (props: StoreProps) => {
                 onClickHandler={() => setSpreadClick(false)}
               />
             </InnerDiv>
-          </AbsoluteDiv>
+          </SpreadAnnounce>
         )}
       </AnnounceList>
-      <StoreContent
-        posterThumnail={posterThumnail}
-        detailPoster={detailPoster}
-      />
+      <StoreContent storeId={props.storeId} />
+      <BottomWrap imgSrc={BoardBottom.src} />
     </Container>
   );
 };
@@ -114,7 +126,7 @@ const AnnounceList = styled.div`
   width: 100%;
   gap: 16px;
 `;
-const AbsoluteDiv = styled.div<{ spreadClick: boolean }>`
+const SpreadAnnounce = styled.div<{ spreadClick: boolean }>`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -135,3 +147,9 @@ const InnerDiv = styled.div`
   margin: 8px 0px 24px;
 `;
 const FoldBtn = styled(Tag)``;
+const BottomWrap = styled.div<{ imgSrc: string }>`
+  width: 100%;
+  height: 495px;
+  margin-top: 64px;
+  background-image: ${({ imgSrc }) => `url('${imgSrc}')`};
+`;

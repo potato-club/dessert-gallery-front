@@ -95,6 +95,7 @@ export type slideImageValue = {
    * (선택: 북마크옵션 활성화시 필수)스크랩한 게시물인지
    */
   onBookmark?: boolean;
+  borderRadius?:boolean;
   /**
    * (선택)태그 등의 컴포넌트를 표현시
    */
@@ -189,6 +190,10 @@ export type galleryPostValue = {
    * (필수) 이미지 배열 값
    */
   imgArray: string[];
+  /**
+   * (선택)) margin 값
+   */
+  margin?: string;
 };
 
 /**
@@ -283,8 +288,7 @@ export type locationSelectorProps = {
 };
 
 export type locationCoordSelectorProps = {
-    selectedLocation: string
-    onChangeLocation: (str: string, lat: string, lng: string) => void
+    onChangeLocation: (lat: string, lng: string) => void
 }
 
 export type ToastMessageProps = {
@@ -366,3 +370,11 @@ export type roleMyMenu = {
   category: myMenu[];
   siteDefaultMenu: myMenu[];
 };
+
+export type userInfoI = {
+  nickname: string,
+  loginType: "NORMAL" | "KAKAO",
+  userRole: "USER" | "MANAGER",
+  fileName: string,
+  fileUrl: string
+}

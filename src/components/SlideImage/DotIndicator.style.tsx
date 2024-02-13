@@ -15,5 +15,6 @@ export const FalseDot = styled.div`
     height: 6px;
     border-radius: 50%;
     margin: 0 2px;
-    border: 1px solid white;
+    background-color: white;
+    opacity: .4;
 `

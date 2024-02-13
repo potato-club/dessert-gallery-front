@@ -13,10 +13,7 @@ const StoreProfile = () => {
     router.query.store ? router.query.store.toString() : "0"
   );
 
-  const { data } = useGetStoreInfo({
-    storeId: storeId,
-    options: { refetchOnWindowFocus: false },
-  });
+  const { data } = useGetStoreInfo(storeId);
 
   const { postFollowMutate, putUnFollowMutate } = useFollowAction(storeId);
 
@@ -29,7 +26,7 @@ const StoreProfile = () => {
             <InfoContent>
               <StoreName>{data.name}</StoreName>
               <SubTitle>{data.info || "default 값"}</SubTitle>
-              <MainPhrase>{data.introduction}</MainPhrase>
+              <MainPhrase>{data.content}</MainPhrase>
               <Address>{data.address}</Address>
               <StoreNumber>{data.phoneNumber}</StoreNumber>
               <StoreInfo>

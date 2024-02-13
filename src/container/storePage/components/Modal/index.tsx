@@ -1,61 +1,23 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import ModalWrapper from "../../../../components/ModalWrapper";
-import { MenuIcon } from "../../../../../public/svg";
-import Comment from "./Comment";
-import Bookmark from "../../../../components/SlideImage/Bookmark";
 import SlideImage from "../../../../components/SlideImage/SlideImage";
-import {
-  useGetDetailBoard,
-  useInfinityModalComment,
-} from "../../../../hooks/useBoard";
-import {
-  postBoardComment,
-  toggleBookmark,
-} from "../../../../apis/controller/detailStore";
+import { useGetDetailBoard } from "../../../../hooks/useBoard";
+import { postBoardComment } from "../../../../apis/controller/detailStore";
 import { useGetStoreInfo } from "../../../../hooks/useStore";
 import { useRouter } from "next/router";
-import { useInView } from "react-intersection-observer";
-import LoadingSpinner from "./LoadingSpinner";
-import ToggleOptionBox from "../../../../components/ToggleOptionBox";
-
-const PostModal = ({ boardId }: any) => {
+import InfoHeader from "./Header";
+import InfoContent from "./Contents";
+const PostModal = ({ boardId }: { boardId: number }) => {
   const [comment, setComment] = useState<string>("");
-  const [menuIconClick, setMenuIconClick] = useState<boolean>(false);
-  const [commentList, setCommentList] = useState<any[]>([]);
   const [postCommentList, setPostCommentList] = useState<any[]>([]);
-  const [isLoad, setIsLoad] = useState(false);
-  const [onBookmarkState, setOnBookmarkState] = useState<boolean>(false);
-
-  // 세부 게시물 불러오기
-  const { data: detailPoster } = useGetDetailBoard({}, boardId);
-  // bookmark 불리언값에 따른 onBookmarkState 상태 변경
-  useEffect(() => {
-    if (detailPoster) {
-      setOnBookmarkState(detailPoster.bookmark);
-    }
-  }, [detailPoster]);
 
   // 가게 정보 불러오기
   const router = useRouter();
-  const { data: storeInfo } = useGetStoreInfo({
-    storeId: Number(router.query.store),
-    options: { refetchOnWindowFocus: false },
-  });
+  const { data: storeInfo } = useGetStoreInfo(Number(router.query.store));
 
-  // infiniteQuery 모달 댓글 불러오기
-  const { data, fetchNextPage, hasNextPage, isLoading, refetch } =
-    useInfinityModalComment({ boardId });
-  useEffect(() => {
-    if (data) {
-      const list = data?.pages
-        .map((page) => {
-          return page.result;
-        })
-        .flat();
-      setCommentList(list);
-    }
-  }, [data]);
+  // 세부 게시물 불러오기
+  const { data: detailPoster } = useGetDetailBoard({}, boardId);
 
   // 모달 댓글 작성하기
   const submit = async (e: any) => {
@@ -70,139 +32,26 @@ const PostModal = ({ boardId }: any) => {
     }
     setComment("");
   };
-
-  // infinite scroll 구현
-  const [ref, inView] = useInView({ threshold: 1 });
-  useEffect(() => {
-    if (inView && !isLoading && hasNextPage) {
-      setIsLoad(true);
-      setTimeout(() => {
-        fetchNextPage();
-        setIsLoad(false);
-      }, 1500);
-    }
-  }, [inView, isLoading]);
-
-  const storePageModalOption = [
-    {
-      title: "1:1 채팅",
-      onClickHandler: () => {
-        console.log(`MenuBox click 1:1 채팅`);
-      },
-    },
-    {
-      title: "공유하기",
-      onClickHandler: () => {
-        console.log(`MenuBox click 공유하기`);
-      },
-    },
-    {
-      title: "예약하러 가기",
-      onClickHandler: () => {
-        console.log(`MenuBox click 예약하러 가기`);
-      },
-    },
-    {
-      title: "게시판 이동",
-      onClickHandler: () => {
-        console.log(`MenuBox click 게시판 이동`);
-      },
-    },
-  ];
-
-  if (!detailPoster) {
-    return <></>;
-  }
-
-  const { title, content, tags, images } = detailPoster;
-
   return (
     <ModalWrapper>
       <Container>
-        <SlideImage
-          srcArray={images.map((item: any) => {
-            return item.fileUrl;
-          })}
-          width={692}
-          height={692}
-        />
+        {detailPoster && (
+          <SlideImage
+            srcArray={detailPoster.images.map((item: any) => {
+              return item.fileUrl;
+            })}
+            width={692}
+            height={692}
+          />
+        )}
         <PostInfo>
-          <InfoHeader>
-            <StoreInfo>
-              <StoreProfile src={storeInfo.storeImage.fileUrl} />
-              <div>
-                <StoreName>{storeInfo.name}</StoreName>
-                <SubCategory>{storeInfo.info || "default 값"}</SubCategory>
-              </div>
-            </StoreInfo>
-            <MenuIcon
-              width="5px"
-              height="13px"
-              onClick={() => {
-                setMenuIconClick((prev) => !prev);
-              }}
-            />
-          </InfoHeader>
-
-          <InfoContent>
-            {menuIconClick && (
-              <ToggleOptionBox contents={storePageModalOption} />
-            )}
-            <TopPosition>
-              <Address>{storeInfo.address}</Address>
-              <BookmarkDiv>
-                <Bookmark
-                  storeId={boardId}
-                  onBookmark={onBookmarkState}
-                  size="medium"
-                  onClickBookmark={() => {
-                    toggleBookmark({ boardId });
-                    setOnBookmarkState((prev) => !prev);
-                  }}
-                />
-              </BookmarkDiv>
-            </TopPosition>
-            <Title>{title}</Title>
-            <TextContent>{content}</TextContent>
-            <HashTagBox>
-              {tags.map((item: string, idx: number) => {
-                return <HashTag key={idx}>{item}</HashTag>;
-              })}
-            </HashTagBox>
-
-            <CommentList>
-              <>
-                {postCommentList.map((item: any, idx: number) => {
-                  return (
-                    <Comment
-                      nickname={item.nickname}
-                      comment={item.comment}
-                      profile={item.profile}
-                      key={idx}
-                    />
-                  );
-                })}
-              </>
-              {commentList &&
-                commentList.map((item: any, idx: number) => {
-                  return (
-                    <Comment
-                      nickname={item.nickname}
-                      comment={item.comment}
-                      profile={item.profile}
-                      key={idx}
-                    />
-                  );
-                })}
-            </CommentList>
-            <IoDiv ref={ref}></IoDiv>
-            {isLoad && (
-              <LoadingDiv>
-                <LoadingSpinner width={20} height={20} borderWidth={2} />
-              </LoadingDiv>
-            )}
-          </InfoContent>
-
+          <InfoHeader storeInfo={storeInfo} />
+          <InfoContent
+            address={storeInfo?.address}
+            boardId={boardId}
+            detailPoster={detailPoster}
+            postCommentList={postCommentList}
+          />
           <Bottom>
             <InputWrapper onSubmit={submit}>
               <InputBox
@@ -239,96 +88,7 @@ const PostInfo = styled.div`
   justify-content: center;
   align-items: center;
 `;
-const InfoHeader = styled.div`
-  position: sticky;
-  top: 0;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 20px 29px;
-  width: 100%;
-  border-bottom: 2px solid #fdc886;
-  svg {
-    cursor: pointer;
-  }
-`;
-const StoreInfo = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 21px;
-`;
-const StoreProfile = styled.img`
-  width: 65px;
-  height: 65px;
-  border-radius: 100%;
-  background-color: black;
-`;
-const BookmarkDiv = styled.div`
-  position: relative;
-  top: -10px;
-`;
-const TopPosition = styled.div`
-  display: flex;
-  justify-content: space-between;
-`;
-const StoreName = styled.div`
-  color: #000;
-  font-size: 18px;
-  font-weight: 700;
-  line-height: normal;
-`;
-const SubCategory = styled.div`
-  color: #ff6f00;
-  font-size: 13px;
-  font-weight: 700;
-  line-height: normal;
-`;
 
-const Address = styled.div`
-  color: #828282;
-  font-size: 15px;
-  font-weight: 700;
-  max-width: 300px;
-`;
-const Title = styled.div`
-  color: #000;
-  font-size: 24px;
-  font-weight: 700;
-  margin: 9px 0px 17px 0px;
-  max-width: 300px;
-`;
-const TextContent = styled.div`
-  color: #000;
-  font-size: 15px;
-  font-weight: 500;
-`;
-const HashTagBox = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  gap: 17px;
-  margin: 18px 0px 29px 0px;
-`;
-const HashTag = styled.div`
-  color: #ff6f00;
-  font-size: 14px;
-  font-weight: 700;
-  line-height: normal;
-`;
-const InfoContent = styled.div`
-  display: flex;
-  flex-direction: column;
-  padding: 33px 28px;
-  height: 444px;
-  overflow-y: scroll;
-  ::-webkit-scrollbar {
-    display: none;
-  }
-`;
-const CommentList = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-`;
 const Bottom = styled.div`
   display: flex;
   flex-direction: column;
@@ -365,13 +125,4 @@ const ReservedBtn = styled.div`
     background-color: #ff6f00;
     cursor: pointer;
   }
-`;
-const LoadingDiv = styled.div`
-  margin-top: 10px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
-const IoDiv = styled.div`
-  margin-top: 30px;
 `;
