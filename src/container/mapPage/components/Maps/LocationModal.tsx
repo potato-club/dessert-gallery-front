@@ -3,11 +3,10 @@ import styled from 'styled-components';
 import LocationSelector from './LocationSelector';
 
 interface props {
-  selectedLocation: string
-  onChangeLocation: (str: string, lat: string, lng: string) => void
+  onChangeLocation: (lat: string, lng: string) => void
   onClickMoveMap: ()=>void
 }
-export default function LocationModal({selectedLocation,onChangeLocation, onClickMoveMap}:props) {
+export default function LocationModal({onChangeLocation, onClickMoveMap}:props) {
   return (
     <ModalContainer>
         <ModalContent>
@@ -15,7 +14,7 @@ export default function LocationModal({selectedLocation,onChangeLocation, onClic
             <Text>지역 이동</Text>
             <OutBtn onClick={onClickMoveMap}>X</OutBtn>
           </ModalHeader>
-          <LocationSelector selectedLocation={selectedLocation} onChangeLocation={onChangeLocation}/>
+          <LocationSelector onChangeLocation={onChangeLocation}/>
         </ModalContent>
       </ModalContainer>
   )

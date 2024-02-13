@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import MemoColumn from "./MemoColumn";
 import { modifyCalendarPage } from "../../../../hooks/useSchedule";
+import ScheduleCheckColoumn from "./ScheduleCheckColumn";
 
 interface memoListItemType {
   checked: boolean;
@@ -12,6 +12,8 @@ interface memoListItemType {
 const MemoList = ({ ...props }) => {
   const [memoInput, setMemoInput] = useState<string>("");
   const { memoAddFn } = modifyCalendarPage.useAddMemo(props.dateInfo);
+  const { memoCheck } = modifyCalendarPage.useCheckMemo(props.dateInfo);
+  const { memoDelete } = modifyCalendarPage.useDeleteMemo(props.dateInfo);
 
   const submitMemo = (e: any) => {
     e.preventDefault();
@@ -38,12 +40,13 @@ const MemoList = ({ ...props }) => {
             {props.memoList.map((item: memoListItemType) => {
               if (!item.checked)
                 return (
-                  <MemoColumn
+                  <ScheduleCheckColoumn
                     key={item.id}
-                    memoId={item.id}
+                    scheduleId={item.id}
                     isSuccess={item.checked}
-                    dateInfo={props.dateInfo}
                     content={item.content}
+                    deleteFn={memoDelete}
+                    checkFn={memoCheck}
                   />
                 );
             })}
@@ -53,12 +56,13 @@ const MemoList = ({ ...props }) => {
             {props.memoList.map((item: memoListItemType) => {
               if (item.checked)
                 return (
-                  <MemoColumn
+                  <ScheduleCheckColoumn
                     key={item.id}
-                    memoId={item.id}
+                    scheduleId={item.id}
                     isSuccess={item.checked}
-                    dateInfo={props.dateInfo}
                     content={item.content}
+                    deleteFn={memoDelete}
+                    checkFn={memoCheck}
                   />
                 );
             })}
@@ -108,7 +112,6 @@ const AddBtn = styled.button`
   background-color: #fcf6ee;
   border: 1px solid #828282;
   border-radius: 8px;
-  font-family: Noto Sans CJK KR;
   font-size: 11px;
 `;
 const Content = styled.div`
@@ -125,7 +128,6 @@ const NotWorkingDiv = styled(WorkingDiv)``;
 const SuccessWorkingDiv = styled(WorkingDiv)``;
 const Title = styled.span`
   color: #000;
-  font-family: Noto Sans CJK KR;
   font-size: 18px;
   font-weight: 700;
   margin-bottom: 5px;

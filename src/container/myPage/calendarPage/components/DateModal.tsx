@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import styled from "styled-components";
 import CheckButton from "../../components/CheckButton";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -10,6 +10,7 @@ import {
   modifyCalendarPage,
   useGetDateModalSchedule,
 } from "../../../../hooks/useSchedule";
+import ScheduleCheckColumn from "./ScheduleCheckColumn";
 
 const DateModal = ({ ...props }) => {
   const { dateModalData, isLoading } = useGetDateModalSchedule(
@@ -21,6 +22,9 @@ const DateModal = ({ ...props }) => {
   );
   const { scheduleDeleteFn } = modifyCalendarPage.useDeleteSchedule(
     props.dateInfo,
+    props.clickDateInfo
+  );
+  const { reservationCheckFn } = modifyCalendarPage.useCheckReservation(
     props.clickDateInfo
   );
 
@@ -65,6 +69,21 @@ const DateModal = ({ ...props }) => {
         <SwiperSlide>
           <InnerContainer>
             <Title>{props.clickDateInfo}</Title>
+            <ClientList>
+              {dateModalData &&
+                dateModalData.responseDto.map((item: any) => {
+                  return (
+                    <ScheduleCheckColumn
+                      key={item.id}
+                      scheduleId={item.id}
+                      content={`${item.dateTime} ${item.client}`}
+                      isSuccess={item.checked}
+                      deleteFn={scheduleDeleteFn}
+                      checkFn={reservationCheckFn}
+                    />
+                  );
+                })}
+            </ClientList>
           </InnerContainer>
         </SwiperSlide>
         <SwiperSlide>
@@ -125,6 +144,7 @@ const Container = styled.div`
     border-top-right-radius: 16px;
     border-top-left-radius: 16px;
     background-color: white;
+    border-radius: 30px;
   }
   /* 스와이퍼 버튼 스타일링 */
   .swiper-button-next,
@@ -173,11 +193,8 @@ const Title = styled.span`
   display: flex;
   justify-content: center;
   color: #ff6f00;
-  font-family: Noto Sans CJK KR;
   font-size: 32px;
-  font-style: normal;
   font-weight: 700;
-  line-height: normal;
 `;
 const EventAddBox = styled.div`
   display: flex;
@@ -193,9 +210,19 @@ const ListColumn = styled.div`
 `;
 const EventContent = styled.span`
   color: #828282;
-  font-family: Noto Sans CJK KR;
   font-size: 16px;
   font-style: normal;
   font-weight: 700;
   line-height: normal;
+`;
+const ClientList = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 25px 0px;
+  height: 350px;
+  overflow-y: scroll;
+  &::-webkit-scrollbar {
+    display: none;
+  }
 `;

@@ -1,9 +1,14 @@
-import React, {ChangeEvent, KeyboardEvent, useState} from "react";
+import React, {ChangeEvent, KeyboardEvent, useEffect, useState} from "react";
 import styled from "styled-components";
+import { useRecoilState, useRecoilValue } from "recoil";
 import Market from "./Market";
 import { Search } from "../../../../../public/svg";
 import Tag from "../../../../components/Tag";
 import { selectedLocationCoordData } from "../../../../types/componentsData";
+import { searchState } from "../../../../recoil/map/searchStateAtom";
+import { selectedStoreState } from "../../../../recoil/map/selectedStoreStateAtom";
+
+
 interface searchData {
   sort: string ,
   searchKeyword: string,
@@ -22,24 +27,25 @@ interface makerDataProps {
 }
 interface props {
   markerData: makerDataProps[]
-  isSearch: boolean
-  searchKeyword: string
   selectedStoreId: number
   center: selectedLocationCoordData
   setCenter: React.Dispatch<React.SetStateAction<selectedLocationCoordData>>
-  searchData: searchData
-  setSearchData: React.Dispatch<React.SetStateAction<searchData>>
+  setSelectedStoreId: React.Dispatch<React.SetStateAction<number>>
 }
 
 
 
-const SideNav = ({markerData, isSearch, searchData, selectedStoreId, center, setCenter, setSearchData}: props) => {
-  const [searchWord, setSearchWord] = useState<string>(searchData.searchKeyword)
-  console.log("markerData",markerData)
+const SideNav = ({markerData, center, setCenter}: props) => {
+  const [searchData, setSearchData] = useRecoilState(searchState);
+  const [searchWord, setSearchWord] = useState<string>('')
+  const selectedStoreId = useRecoilValue(selectedStoreState);
+
+  useEffect(() => {
+    setSearchWord(searchData.searchKeyword);
+  }, [searchData.searchKeyword]);
 
   const onChangeSearchWord = (e:ChangeEvent<HTMLInputElement>) => {
     setSearchWord(e.target.value)
-    console.log("어째서..?", searchWord)
   }
    /**
    * 검색어 입력 후 enter 키 입력시 동작 함수
@@ -62,12 +68,15 @@ const SideNav = ({markerData, isSearch, searchData, selectedStoreId, center, set
       ...prev,
       sort:"score"
     }))
+    window.location.href = `/map?selected=${selectedStoreId}&search=${searchWord}&sort=score&lat=${center.lat}&lng=${center.lng}`
+
   }
   const onChangeSortFollow = () => {
     setSearchData(prev => ({
       ...prev,
       sort:"follow"
     }))
+    window.location.href = `/map?selected=${selectedStoreId}&search=${searchWord}&sort=follow&lat=${center.lat}&lng=${center.lng}`
   }
   return (
     <Container>
@@ -106,7 +115,7 @@ const SideNav = ({markerData, isSearch, searchData, selectedStoreId, center, set
         </FilterList>
       </SideHeader>
 
-      <Market markerData={markerData} searchData={searchData} isSearch={isSearch} setCenter={setCenter}/>
+      <Market markerData={markerData} isSearch={searchData.searchKeyword!== ''} setCenter={setCenter}/>
     </Container>
   );
 };
@@ -140,6 +149,8 @@ const SearchForm = styled.div`
   display: flex;
   align-items: center;
   border: 1.5px solid #ff8d00;
+  box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.161);
+  border-radius: 4px;
   background-color: white;
   padding: 11px 14px;
 `;

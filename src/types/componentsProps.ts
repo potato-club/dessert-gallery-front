@@ -288,8 +288,7 @@ export type locationSelectorProps = {
 };
 
 export type locationCoordSelectorProps = {
-    selectedLocation: string
-    onChangeLocation: (str: string, lat: string, lng: string) => void
+    onChangeLocation: (lat: string, lng: string) => void
 }
 
 export type ToastMessageProps = {
@@ -371,3 +370,11 @@ export type roleMyMenu = {
   category: myMenu[];
   siteDefaultMenu: myMenu[];
 };
+
+export type userInfoI = {
+  nickname: string,
+  loginType: "NORMAL" | "KAKAO",
+  userRole: "USER" | "MANAGER",
+  fileName: string,
+  fileUrl: string
+}

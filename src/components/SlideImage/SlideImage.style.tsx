@@ -66,14 +66,25 @@ const MoveButton = styled.div<componentProps>`
     position: absolute;
     top: 50%;
     z-index: 15;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: ${({ width }) => `${width/18}px`};
+    height: ${({ height }) => `${height/18}px`};
     ${({ hoverCss }) =>
       hoverCss === "hoverShow"
         ? `display: none;`
         : ''
       }
     border-radius: 50%;
-    background-color: #d3d3d363;
-    padding: 4px;
+    background: rgba(255, 255, 255, 0.65);
+    box-shadow: 0px 0px 6px 1px #6d6d6d3e;
+`
+
+const SvgWrap = styled.div`
+    path {
+  filter: drop-shadow(0 0 0.25rem #333333ac);
+}
 `
 
 
@@ -106,8 +117,10 @@ const BottomCenterComponent = styled.div`
     justify-content: center;
 `
 
-const ImageWrap = styled.div`
+const ImageWrap = styled.div<componentProps>`
+    width: ${({width})=> `${width}px`};
+    height: ${({height})=> `${height}px`};
     z-index: 0;
 `;
 
-export { Wrapper, BookmarkOnWrap, BookmarkOffWrap, ImageWrap, RightMoveButton, LeftMoveButton, MoveWrap,MoveAllbutton, BottomComponent, BottomCenterComponent};
+export { Wrapper, BookmarkOnWrap, BookmarkOffWrap, ImageWrap, RightMoveButton, LeftMoveButton,SvgWrap, MoveWrap,MoveAllbutton, BottomComponent, BottomCenterComponent};

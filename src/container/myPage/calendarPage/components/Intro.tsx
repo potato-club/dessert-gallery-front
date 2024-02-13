@@ -25,7 +25,6 @@ const Container = styled.div`
 `;
 const Title = styled.span`
   color: #000;
-  font-family: Noto Sans CJK KR;
   font-size: 20px;
   font-style: normal;
   font-weight: 700;
@@ -38,9 +37,6 @@ const IntroduceBtn = styled.button`
   background-color: #fcf6ee;
   border: 1px solid #828282;
   border-radius: 8px;
-  font-family: Noto Sans CJK KR;
   font-size: 15px;
-  font-style: normal;
   font-weight: 500;
-  line-height: normal;
 `;

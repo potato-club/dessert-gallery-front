@@ -4,18 +4,34 @@ import {
   getStoreReview,
   getBoardComment,
   getPosterList,
+  getStoreAnnounce,
 } from "../apis/controller/detailStore";
 
-export const useGetPosterList = (storeId: number) => {
-  const { data: posterList } = useQuery(
-    ["posterList", storeId],
-    () => getPosterList(storeId),
-    {
-      refetchOnWindowFocus: false,
-    }
-  );
+export const useGetInfinityPosterList = (storeId: number) => {
+  const fetchPoster = async ({ pageParam = 1 }) => {
+    const result = await getPosterList(storeId, pageParam);
+    return {
+      result: result.content,
+      nextPage: pageParam + 1,
+      isLast: result.last,
+    };
+  };
 
-  return { posterList };
+  const {
+    data: posterList,
+    fetchNextPage,
+    hasNextPage,
+    isLoading,
+    refetch,
+  } = useInfiniteQuery(["posterList", storeId], fetchPoster, {
+    getNextPageParam: (lastPage) => {
+      if (!lastPage.isLast) return lastPage.nextPage;
+      return undefined;
+    },
+    refetchOnWindowFocus: false,
+    retry: 1,
+  });
+  return { posterList, fetchNextPage, hasNextPage, isLoading, refetch };
 };
 
 export const useGetDetailBoard = (options = {}, boardId: number) => {
@@ -44,7 +60,7 @@ export const useGetReviewList = ({ page, storeId, options }: any) => {
 export const useGetStoreAnnounce = ({ storeId, options }: any) => {
   const { data: announceData, refetch } = useQuery(
     ["storeAnnounce", storeId],
-    () => getStoreReview({ storeId }),
+    () => getStoreAnnounce(storeId),
     {
       ...options,
     }
@@ -52,8 +68,6 @@ export const useGetStoreAnnounce = ({ storeId, options }: any) => {
 
   return { announceData, refetch };
 };
-
-// x
 
 export const useInfinityModalComment = ({ boardId }: any) => {
   const fetchModalComment = async ({ pageParam = 1 }) => {

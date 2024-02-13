@@ -23,6 +23,11 @@ export const calendarPageApi = {
     return res.data;
   },
 
+  async getIsStoreHoliday() {
+    const res = await sendApi.get(`/stores/closed`);
+    return res.data;
+  },
+
   async postCalendarSchedule(date: string, key: number) {
     const res = await sendApi.post(`/stores/schedule`, {
       date,
@@ -33,6 +38,11 @@ export const calendarPageApi = {
 
   async deleteCalendarSchedule(scheduleId: number) {
     const res = await sendApi.delete(`/stores/schedule?id=${scheduleId}`);
+    return res;
+  },
+
+  async putCheckReservation(reservationId: number) {
+    const res = await sendApi.put(`/stores/schedule?id=${reservationId}`);
     return res;
   },
 

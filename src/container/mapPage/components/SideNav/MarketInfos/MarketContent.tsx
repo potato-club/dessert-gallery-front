@@ -8,7 +8,6 @@ import Announce from "./Announce";
 import Review from "./Review";
 
 const MarketContent = ({store}:any) => {
-  console.log("postS!!!!", store)
   return (
     <Container>
       <PostBoard>

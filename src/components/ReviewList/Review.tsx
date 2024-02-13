@@ -165,7 +165,6 @@ const Photo = styled(SlideImage)<{ infoBtnClick: boolean }>`
 `;
 const MoreBtn = styled.button<{ infoBtnClick: boolean }>`
   display: flex;
-  width: 82px;
   gap: 15px;
   color: #ff6f00;
   font-size: 15px;
