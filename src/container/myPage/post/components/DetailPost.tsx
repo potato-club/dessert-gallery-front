@@ -11,6 +11,7 @@ import ThreeDot from "../../../../../public/SVG/myPage/postPage/ThreeDot.svg";
 import { deletePost } from "../../../../apis/controller/postPage";
 import ToggleOptionBox from "../../../../components/ToggleOptionBox";
 import EditPostModal from "./EditPostModal";
+import SlideImage from "../../../../components/SlideImage/SlideImage";
 
 interface DetailPostProps {
   postId: number;
@@ -38,16 +39,25 @@ const DetailPost = ({ postId }: DetailPostProps) => {
     },
   ];
 
+  const onCancelClick = () => {
+    setPutModalState(false);
+  };
+
   return (
     <Background>
       <CloseBtn />
       <Wrapper>
         <ImageBox>
-          <Image
-            src={detailPost?.images[0].fileUrl as string}
+          <SlideImage
+            srcArray={
+              detailPost?.images
+                ? detailPost.images.map((image) => image.fileUrl)
+                : []
+            }
             width={750}
             height={800}
-            alt=""
+            dotIndicator={true}
+            moveBtnType="show"
           />
         </ImageBox>
         <InfoWrapper>
@@ -68,12 +78,13 @@ const DetailPost = ({ postId }: DetailPostProps) => {
               <Name> {storeInfo?.name}</Name>
               <Content>{storeInfo?.content}</Content>
             </NameBox>
-            {modalState && (
-              <ModalOptionBox>
-                <ToggleOptionBox contents={modalOption} />
-              </ModalOptionBox>
-            )}
+
             <SvgBox onClick={() => setModalState(!modalState)}>
+              {modalState && (
+                <ModalOptionBox>
+                  <ToggleOptionBox contents={modalOption} />
+                </ModalOptionBox>
+              )}
               <ThreeDot />
             </SvgBox>
           </InfoBox>
@@ -95,7 +106,14 @@ const DetailPost = ({ postId }: DetailPostProps) => {
             <ModifyBtn onClick={() => setPutModalState(true)}>
               수정하기
             </ModifyBtn>
-            {putModalState && <EditPostModal />}
+            {putModalState && (
+              <EditPostModal
+                onCancelClick={onCancelClick}
+                detailPost={detailPost}
+                storeInfo={storeInfo}
+                postId={postId}
+              />
+            )}
           </ModifyBox>
         </InfoWrapper>
       </Wrapper>
@@ -253,9 +271,9 @@ const ModifyBtn = styled.button`
 `;
 
 const ModalOptionBox = styled.div`
-  position: absolute;
-  top: 110px;
-  right: 549px;
+  position: relative;
+  top: 20px;
+  right: 150px;
   z-index: 1;
 `;
 
