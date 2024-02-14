@@ -1,4 +1,3 @@
-import { title } from "process";
 import React, { useState } from "react";
 import styled from "styled-components";
 
@@ -14,10 +13,19 @@ const Caption: React.FC<CaptionProps> = ({
   amount,
 }) => {
   const MAX_CHARACTERS = 2200;
+  const [inputHashTag, setInputHashTag] = useState("");
+  const [hashTags, setHashTags] = useState<string[]>([]);
 
-  const handleContentChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    const value = e.target.value;
-    contentChange(value);
+  const addHashTag = (e: any) => {
+    e.preventDefault();
+    if (inputHashTag.trim() !== "") {
+      setHashTags((prevHashTags) => [...prevHashTags, inputHashTag.trim()]);
+      setInputHashTag("");
+    }
+  };
+
+  const changeHashTagInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setInputHashTag(e.target.value);
   };
 
   const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -25,23 +33,9 @@ const Caption: React.FC<CaptionProps> = ({
     titleChange(value);
   };
 
-  const [hashtags, setHashtags] = useState<string[]>([]);
-  const [tagValue, setTagValue] = useState<string>("");
-
-  const handleHashTagChange = (e: any) => {
+  const handleContentChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const value = e.target.value;
-    const words = value.split(" ");
-    setTagValue(value);
-    const newHashtags: string[] = [];
-
-    words.forEach((word: string) => {
-      if (/#/.test(word)) {
-        newHashtags.push(word);
-      }
-    });
-
-    setHashtags(newHashtags);
-    e.target.value = "";
+    contentChange(value);
   };
 
   return (
@@ -63,17 +57,18 @@ const Caption: React.FC<CaptionProps> = ({
         </AmountSpan>
       </AmountBox>
       <TagBox>
-        <TagTitle>#와 단어를 쓰고 엔터를 누르면 해시태그가 됩니다</TagTitle>
         <TagDiv>
-          {hashtags.map((hashtag) => (
-            <span key={hashtag}>{hashtag}</span>
+          {hashTags.map((tag, index) => (
+            <Tag key={index}>#{tag}</Tag>
           ))}
         </TagDiv>
-        <HashTag
-          value={tagValue}
-          placeholder={"해시태그!"}
-          onChange={handleHashTagChange}
-        />
+        <form onSubmit={addHashTag}>
+          <TagInput
+            placeholder="태그를 입력 후 엔터를 눌러주세요"
+            onChange={changeHashTagInput}
+            value={inputHashTag}
+          />
+        </form>
       </TagBox>
     </>
   );
@@ -126,25 +121,23 @@ const AmountSpan = styled.span`
 `;
 const TagBox = styled.div`
   width: 90%;
-  height: 150px;
+  height: 100px;
   display: flex;
   flex-direction: column;
   gap: 20px;
 `;
-const TagTitle = styled.div`
-  width: 100%;
-  height: 20px;
-  font-size: 15px;
-  color: #c5c5c5;
-`;
-const HashTag = styled.input`
-  width: 90%;
-  border: none;
-  outline: none;
-  color: #c5c5c5;
-  resize: none;
-`;
 const TagDiv = styled.div`
   width: 100%;
-  height: 100px;
+  border: 1px solid black;
+  display: flex;
+  gap: 5px;
+`;
+const TagInput = styled.input`
+  width: 100%;
+  border: 1px solid black;
+`;
+
+const Tag = styled.div`
+  border: 1px solid black;
+  padding: 5px 10px;
 `;
