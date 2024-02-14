@@ -1,48 +1,61 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, ChangeEvent } from "react";
 import styled, { css, keyframes } from "styled-components";
 import ArrowImage from "../../../../../public/SVG/myPage/postPage/arrowImage.svg";
 import Extend from "./Extend";
 import { postStorePost } from "../../../../apis/controller/postPage";
-
 interface EditModalProps {
   images: File[];
   handleClose: () => void;
   handleDone: any;
+  handleImagesChange: (e: ChangeEvent<HTMLInputElement>) => void;
 }
 
 const EditModal: React.FC<EditModalProps> = ({
   images,
   handleClose,
   handleDone,
+  handleImagesChange,
 }) => {
-  const [previewImages, setPreviewImages] = useState<string[] | null>(null);
+  const [previewImages, setPreviewImages] = useState<string[]>([]);
   const imageContainerRef = useRef<HTMLDivElement>(null);
   const imageRef = useRef<HTMLImageElement>(null);
   const [expanded, setExpanded] = useState(false);
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleExtendChange = (newTitle: string, newContent: string) => {
     setTitle(newTitle);
     setContent(newContent);
   };
-
   useEffect(() => {
     if (images) {
       const reader = new FileReader();
       const previewImagesArray: string[] = [];
 
-      images.forEach((image) => {
-        reader.onloadend = (e) => {
-          previewImagesArray.push(e.target?.result as string);
-          if (previewImagesArray.length === images.length) {
-            setPreviewImages(previewImagesArray);
-          }
-        };
-        reader.readAsDataURL(image);
-      });
+      reader.onloadend = (e) => {
+        previewImagesArray.push(e.target?.result as string);
+        if (previewImagesArray.length === images.length) {
+          setPreviewImages(previewImagesArray);
+        } else {
+          loadNextImage();
+        }
+      };
+
+      const loadNextImage = (index = 0) => {
+        if (index < images.length) {
+          reader.readAsDataURL(images[index]);
+        }
+      };
+
+      loadNextImage();
     }
   }, [images]);
+
+  const handleMultiImageBtnClick = () => {
+    fileInputRef.current?.click();
+  };
+
   const nextClick = () => {
     if (expanded) {
     } else {
@@ -60,7 +73,6 @@ const EditModal: React.FC<EditModalProps> = ({
 
   const postClick = () => {
     postStorePost(title, content, images);
-    alert("게시글 작성이 완료 되었습니다");
     handleDone();
   };
 
@@ -81,18 +93,27 @@ const EditModal: React.FC<EditModalProps> = ({
           </NextContainer>
         </TopContainer>
         <MainContent>
-          {previewImages ? (
-            <ImageContainer ref={imageContainerRef}>
-              {previewImages.map((previewImage, index) => (
-                <ImageViewer
-                  ref={imageRef}
-                  key={index}
-                  src={previewImage}
-                  alt="미리보기 이미지"
-                />
-              ))}
-            </ImageContainer>
-          ) : null}
+          <ImageContainer ref={imageContainerRef}>
+            {previewImages.map((previewImage, index) => (
+              <ImageViewer
+                ref={imageRef}
+                key={index}
+                src={previewImage}
+                alt="미리보기 이미지"
+              />
+            ))}
+            <MultiImageBtn onClick={handleMultiImageBtnClick}>
+              추가
+            </MultiImageBtn>
+            <input
+              type="file"
+              accept="image/*"
+              multiple
+              style={{ display: "none" }}
+              ref={fileInputRef}
+              onChange={handleImagesChange}
+            />
+          </ImageContainer>
           <CaptionContainer expanded={expanded}>
             <Extend
               postTitle={title}
@@ -157,14 +178,6 @@ const DeleteBox = styled.div`
   display: flex;
   cursor: pointer;
 `;
-const Delete = styled.div`
-  width: 24px;
-  height: 24px;
-  padding: 8px;
-  &:hover {
-    cursor: pointer;
-  }
-`;
 
 const TitleContainer = styled.div`
   width: 407px;
@@ -224,4 +237,20 @@ const CaptionContainer = styled.div<{ expanded: boolean }>`
     css`
       display: none;
     `}
+`;
+
+const MultiImageBtn = styled.div`
+  width: 50px;
+  height: 50px;
+  bottom: 50px;
+  left: 50px;
+  font-size: 20px;
+  font-weight: 600;
+  border: 2px solid red;
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: red;
 `;
