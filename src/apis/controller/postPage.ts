@@ -30,15 +30,16 @@ export const postStorePost = async (
 
   try {
     const res = await sendApi.post(`/boards`, formData);
+    alert("게시글 작성이 완료 되었습니다");
     return res;
   } catch (error: any) {
-    console.error("Error in postStorePost:", error.response.data);
+    console.error("Error in postStorePost:");
     throw error;
   }
 };
 
 export const getStorePost = async (storeId: number) => {
-  const res = await sendApi.get(`/boards/stores/${storeId}?last=17`);
+  const res = await sendApi.get(`/boards/stores/${storeId}?last=100`);
   return res.data.content;
 };
 
@@ -55,4 +56,39 @@ export const deletePost = async (postId: number) => {
 export const getDetailPostComment = async (postId: number) => {
   const res = await sendApi.get(`/comments/${postId}?1`);
   return res.data.content;
+};
+
+export const putStorePost = async (
+  postId: number,
+  title: string,
+  content: string,
+  deleteFiles: []
+  // images?: File[]
+) => {
+  const formData = new FormData();
+
+  const updateDto = {
+    title: title,
+    content: content,
+    tags: "#asd",
+    deleteFiles: deleteFiles,
+  };
+
+  formData.append(
+    "updateDto",
+    new Blob([JSON.stringify(updateDto)], { type: "application/json" })
+  );
+
+  // images?.forEach((image) => {
+  //   formData.append("images", image);
+  // });
+
+  try {
+    const res = await sendApi.put(`/boards/${postId}`, formData);
+    alert("게시글 수정이 완료 되었습니다");
+    return res;
+  } catch (error: any) {
+    console.error("알 수 없는 에러");
+    throw error;
+  }
 };
