@@ -16,6 +16,7 @@ const Extend = ({ postTitle, content, onChange }: ExtendProps) => {
   const [caption, setCaption] = useState<string>("");
   const [title, setTitle] = useState<string>("");
   const storeInfo = useGetStoreInfo();
+  const hashtags: never[] = [];
 
   const handleCaptionChange = (value: string) => {
     const currentAmount = value.length;
@@ -44,7 +45,7 @@ const Extend = ({ postTitle, content, onChange }: ExtendProps) => {
             }
           />
         </ProfileBox>
-        <div>
+        <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
           <ProfileName>{storeInfo?.name}</ProfileName>
           <ProfileInfo>{storeInfo?.info}</ProfileInfo>
         </div>
