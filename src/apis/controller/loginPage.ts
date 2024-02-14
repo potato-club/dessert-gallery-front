@@ -1,19 +1,20 @@
 import sendApi from "../sendApi";
+import axios from "axios";
 
 export const loginPageApi = {
   postLogin: async (loginData: { email: string; password?: string }) => {
-    return await sendApi.post(`/users/login`, {
+    return await axios.post(`https://api.dessert-gallery.site/users/login`, {
       email: loginData.email,
       password: loginData.password,
     });
   },
   getKakaoLogin: async (code: string) => {
-    return await sendApi.get(`/users/login/kakao?code=${code}`);
+    return await axios.get(
+      `https://api.dessert-gallery.site/users/login/kakao?code=${code}`
+    );
   },
   getDuplicationNickname: async (nickname: string) => {
-    return await sendApi.get(
-      `/users/duplication/nickname?nickname=${nickname}`
-    );
+    return await axios.get(`/users/duplication/nickname?nickname=${nickname}`);
   },
   postSignup: async (signupData: {
     email?: string;
@@ -22,7 +23,10 @@ export const loginPageApi = {
     nickname: string;
     password: string;
   }) => {
-    return await sendApi.post(`/users/signup`, signupData);
+    return await axios.post(
+      `https://api.dessert-gallery.site/users/signup`,
+      signupData
+    );
   },
 
   // 아래 2개의 코드는 현재의 sendApi 코드로는 불가능한 것으로 보이므로 일단 보류
@@ -52,10 +56,10 @@ export const loginPageApi = {
   },
 
   getTokenCheck: async () => {
-    return await sendApi.get("/users/check");
+    return await axios.get("https://api.dessert-gallery.site/users/check");
   },
 
   getReissue: async () => {
-    return await sendApi.get("/users/reissue");
+    return await axios.get("https://api.dessert-gallery.site/users/reissue");
   },
 };

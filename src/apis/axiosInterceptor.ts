@@ -1,8 +1,6 @@
 import axios from "axios";
 import sessionStorageService from "../libs/sessionStorageService";
 import { SESSION_KEY } from "../constants/session";
-import sendApi from "./sendApi";
-import { loginPageApi } from "./controller/loginPage";
 
 const axiosClient = axios.create();
 
@@ -13,37 +11,38 @@ axiosClient.interceptors.request.use(
 
     if (accessToken !== "") {
       console.log(123);
-      // const tokenResponse = await axios.get(
-      //   "https://api.dessert-gallery.site/users/check",
-      //   {
-      //     headers: {
-      //       Authorization: accessToken,
-      //     },
-      //   }
-      // );
-      // console.log(tokenResponse);
-
-      // //   if (accessToken.tokenResponse.data.responseCode === 4002) {
-      //   console.log("토큰 만료");
-      // const reissueResponse: any = await axios.get(
-      //   "https://api.dessert-gallery.site/users/reissue",
-      //   {
-      //     headers: {
-      //       refreshToken: refreshToken,
-      //     },
-      //   }
-      // );
-      // console.log(reissueResponse);
-
-      // if (reissueResponse.status === 200) {
-      //   console.log(sessionStorageService.get(SESSION_KEY, "accessToken"));
-      //   sessionStorageService.set(
-      //     "accessToken",
-      //     reissueResponse.headers.get("Authorization")
-      //   );
-      //   console.log(sessionStorageService.get(SESSION_KEY, "accessToken"));
-      // }
-      //   }
+      try {
+        const tokenResponse: any = await axios.get(
+          "https://api.dessert-gallery.site/users/check",
+          {
+            headers: {
+              Authorization: accessToken,
+            },
+          }
+        );
+        console.log(tokenResponse);
+        console.log(tokenResponse.response);
+      } catch (error: any) {
+        if (error.response.data.code === 4002) {
+          console.log("토큰 만료");
+          const reissueResponse: any = await axios.get(
+            "https://api.dessert-gallery.site/users/reissue",
+            { headers: { refreshToken: refreshToken } }
+          );
+          console.log(reissueResponse);
+          if (reissueResponse.status === 200) {
+            sessionStorageService.set(
+              SESSION_KEY,
+              JSON.stringify({
+                JWTDataState: {
+                  accessToken: reissueResponse.headers.get("Authorization"),
+                  refreshToken: reissueResponse.headers.get("Refreshtoken"),
+                },
+              })
+            );
+          }
+        }
+      }
     }
 
     return config;
