@@ -1,6 +1,6 @@
-import React, { ChangeEvent, useState } from 'react'
+import React, { ChangeEvent, useState, KeyboardEvent, useRef, useEffect } from 'react'
 import styled from 'styled-components'
-import {Box, TextInput } from './MyPage.style'
+import {Box, Text } from './MyPage.style'
 import axios from 'axios'
 import { useInView } from 'react-intersection-observer'
 
@@ -15,10 +15,11 @@ interface props {
 }
 
 function AddressModal({onClickInputAddress}: props) {
-  const key = process.env.NEXT_PUBLIC_JUSO_ADDRESS_API_KEY
   const [searchWord, setSearchWord] = useState<string>('')
   // const [pageCnt, setPageCnt] = useState<number>(0)
   const [addrData, setAddrData] = useState<any[]>([])
+  const focusRef = useRef<HTMLDivElement>(null)
+  const [isSearch, setIsSearch] = useState<boolean>(false)
   const [common, setCommon] = useState<commonI>({
     countPerPage: 20,
     currentPage: -1,
@@ -29,33 +30,31 @@ function AddressModal({onClickInputAddress}: props) {
     onChange: (inView) => {
       if(inView){
         if(common.totalCount>common.countPerPage * common.currentPage){
-          console.log("옵져버 발동!")
           searchAddress();
         }else{
-          console.log("더 받아올 데이터가 없어요.")
         }
       }
     } 
   });
 
-  console.log('key', key, typeof key)
-  console.log('key----', 'U01TX0FVVEgyMDI0MDIxMzIwMjkyODExNDUxNDI=', typeof 'U01TX0FVVEgyMDI0MDIxMzIwMjkyODExNDUxNDI=')
+  useEffect(()=>{
+    if(focusRef.current){
+      focusRef.current.scrollTop = 0;
+    }
+  },[isSearch])
+  
 
+  /**
+   * 무한스크롤
+   */
   const searchAddress = async () => {
-
     if(searchWord !== ''){
       try {
         // const res = await axios.get(`https://business.juso.go.kr/addrlink/addrLinkApi.do?confmKey=${'U01TX0FVVEgyMDI0MDIxMzIwMjkyODExNDUxNDI='}&currentPage=${pageCnt}&countPerPage=10&keyword=${searchWord}&resultType=json`);
         const res = await axios.get(`https://business.juso.go.kr/addrlink/addrLinkApi.do?confmKey=${process.env.NEXT_PUBLIC_JUSO_ADDRESS_API_KEY}&currentPage=${common.currentPage+1}&countPerPage=20&keyword=${searchWord}&resultType=json`);
         if (res.data.results.common.errorCode === "0") {
-          console.log("검색성공!", res.data.results.common)
-          console.log("검색성공!", res.data.results.juso)
-          if(common.currentPage !== 0){
-            let tmp = addrData.concat(res.data.results.juso);
-            setAddrData(tmp);
-          }else{
-            setAddrData(res.data.results.juso);
-          }
+          let tmp = addrData.concat(res.data.results.juso);
+          setAddrData(tmp);
           setCommon({
             countPerPage: Number(res.data.results.common.countPerPage),
             currentPage: Number(res.data.results.common.currentPage),
@@ -67,30 +66,77 @@ function AddressModal({onClickInputAddress}: props) {
       }
     }
   };
+
+  /**
+   * 새로운 검색
+   */
+  const searchAddressButton = async () => {
+    if(searchWord !== ''){
+      try {
+        // const res = await axios.get(`https://business.juso.go.kr/addrlink/addrLinkApi.do?confmKey=${'U01TX0FVVEgyMDI0MDIxMzIwMjkyODExNDUxNDI='}&currentPage=${pageCnt}&countPerPage=10&keyword=${searchWord}&resultType=json`);
+        const res = await axios.get(`https://business.juso.go.kr/addrlink/addrLinkApi.do?confmKey=${process.env.NEXT_PUBLIC_JUSO_ADDRESS_API_KEY}&currentPage=0&countPerPage=20&keyword=${searchWord}&resultType=json`);
+        if (res.data.results.common.errorCode === "0") {
+          setAddrData(res.data.results.juso);
+          setCommon({
+            countPerPage: Number(res.data.results.common.countPerPage),
+            currentPage: Number(res.data.results.common.currentPage),
+            totalCount: Number(res.data.results.common.totalCount)
+          })
+          setIsSearch(prev=>!prev)
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    }
+  };
   
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     setSearchWord(e.target.value);
+    
+    console.log("search word", searchWord)
   };
 
   const onClickGetAddress = () => {
-    searchAddress();
+    searchAddressButton();
   }
+
+   /**
+   * 검색어 입력 후 enter 키 입력시 동작 함수
+   * @param e : enter key press 여부
+   */
+   const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
+    // 엔터 키가 입력되었을 때 동작할 코드 작성
+    if (e.key === 'Enter') {
+      searchAddressButton()
+    }
+  };
+
   
   return (
         <ModalContent>
           <ModalHeader>
-            <Text>주소 선택</Text>
+            <HeaderText>주소 선택</HeaderText>
             <OutBtn onClick={onClickInputAddress}>X</OutBtn>
           </ModalHeader>
           <ModalContents>
             <SearchBox>
-              <InputText type='text' onChange={handleInputChange} value={searchWord}/>
+              <InputText type='text' onChange={handleInputChange} value={searchWord} onKeyDown={handleKeyDown}/>
               <InputButton onClick={onClickGetAddress}>검색</InputButton>
             </SearchBox>
-            <AddressWrap>
+            <AddressWrap ref={focusRef}>
             {
-              addrData && addrData.map((juso)=>(
-                <AddressItem>{juso.roadAddr}</AddressItem>
+              addrData && addrData.map((juso, idx)=>(
+                <AddressItem key={`juso.zipNo-${idx}`}>
+                  <Text color='red' margin='0 0 8px' fontSize='20px' >{juso.zipNo}</Text>
+                  <Box>
+                    <AddressTag>도로명</AddressTag>
+                    <Text color='black' margin='0 0 8px' fontSize='16px' >{juso.roadAddr}</Text>
+                  </Box>
+                  <Box>
+                    <AddressTag>지번</AddressTag>
+                    <Text color='black' fontSize='16px' >{juso.jibunAddr}</Text>
+                  </Box>
+                </AddressItem>
               ))
             }
             <Box ref={addrData.length >0&& common.currentPage!==-1 ? ref : null}/>
@@ -132,7 +178,7 @@ const ModalHeader = styled.div`
   align-items: center;
 `
 
-const Text = styled.div`
+const HeaderText = styled.div`
   font-size: 28px;
   color: white;
   font-family: noto-sans-cjk-kr;
@@ -150,7 +196,7 @@ const OutBtn = styled.div`
 
 const ModalContents = styled.div`
   width: 100%;
-  height:100%;
+  height:calc(100% - 48px);
 `
 
 const SearchBox = styled.div`
@@ -194,6 +240,12 @@ const AddressWrap = styled.div`
   height: 100%;
   padding: 4px;
   background-color: #eee;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+
   overflow-y: scroll;
   scrollbar-width: thin;
   scrollbar-color: #f5964d white;
@@ -210,6 +262,28 @@ const AddressWrap = styled.div`
 `
 
 const AddressItem = styled.div`
-  width: 100%;
-  height: 20%
+  width: 97%;
+  height: 20%;
+  margin: 8px 0;
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: start;
+  background-color: white;
+  border-radius: 4px;
+  border: 2px solid #dadada;
+  cursor: pointer;
 `
+
+const AddressTag = styled.div`
+  font-size: 12px;
+  height: 16px;
+  width: 48px;
+  margin-right: 8px;
+  font-family: noto-sans-cjk-kr;
+  border-radius: 4px;
+  border: 1px solid #e89a3e;
+  color: #e89a3e;
+`
+
