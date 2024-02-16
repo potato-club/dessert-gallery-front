@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { calendarPageApi } from "../apis/controller/calendarPage";
-import { DateInfo } from "../container/myPage/calendarPage";
+import { DateInfo } from "../container/myPage/calendar";
 export interface MyPageCalendarDataType {
   year: number;
   month: number;
