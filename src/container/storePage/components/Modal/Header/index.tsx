@@ -14,17 +14,64 @@ interface StoreInfoType {
     info: string;
     address: string;
   };
+  detailPoster: {
+    content: string;
+    images: any;
+    tags: string[];
+    title: string;
+  };
+  boardId: number;
 }
-const index = ({ storeInfo }: StoreInfoType) => {
+const index = ({ storeInfo, detailPoster, boardId }: StoreInfoType) => {
   const [menuIconClick, setMenuIconClick] = useState<boolean>(false);
 
   const router = useRouter();
   const modalBgState = useSetRecoilState(modalBg);
+
+  const kakaoButton = () => {
+    if (window.Kakao) {
+      const kakao = window.Kakao;
+
+      if (!kakao.isInitialized()) {
+        kakao.init(process.env.NEXT_PUBLIC_SHARE_KEY);
+      }
+
+      const templateArgs = detailPoster.images.reduce(
+        (acc: any, img: any, idx: any) => {
+          if (idx >= 3) {
+            acc.EXTRA_NUM =
+              detailPoster.images.length - 3 > 4
+                ? 3
+                : detailPoster.images.length - 3;
+          } else {
+            acc[`BOARD_URL${idx + 1}`] = img.fileUrl;
+          }
+          return acc;
+        },
+        {
+          REGI_WEB_DOMAIN: `http://localhost:3000`,
+          REDIRECT_PATH: `galleryBoard/${storeInfo.id}`,
+          PROFILE_IMG: storeInfo.storeImage.fileUrl,
+          BOARD_HASHTAG: detailPoster.tags.join(" "),
+          BOARD_TITLE: detailPoster.title,
+          STORE_NAME: storeInfo.name,
+          COMMENT_COUNT: 100,
+          VIEW_COUNT: 100,
+        }
+      );
+
+      console.log(templateArgs);
+      kakao.Share.sendCustom({
+        templateId: 104258,
+        templateArgs: templateArgs,
+      });
+    }
+  };
   const storePageModalOption = [
     {
-      title: "공유하기",
+      title: "카카오 공유하기",
       onClickHandler: () => {
-        console.log(`MenuBox click 공유하기`);
+        kakaoButton();
       },
     },
     {

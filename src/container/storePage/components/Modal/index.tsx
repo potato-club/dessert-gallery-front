@@ -42,10 +42,16 @@ const PostModal = ({ boardId }: { boardId: number }) => {
             })}
             width={692}
             height={692}
+            moveBtnType="show"
+            dotIndicator={true}
           />
         )}
         <PostInfo>
-          <InfoHeader storeInfo={storeInfo} />
+          <InfoHeader
+            storeInfo={storeInfo}
+            detailPoster={detailPoster}
+            boardId={boardId}
+          />
           <InfoContent
             address={storeInfo?.address}
             boardId={boardId}
