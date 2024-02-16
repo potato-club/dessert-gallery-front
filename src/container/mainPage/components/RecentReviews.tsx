@@ -5,6 +5,7 @@ import Rating from '../../../components/Rating'
 import type { recentReviewListProps} from '../../../types/componentsProps'
 import Tag from '../../../components/Tag'
 import Image from 'next/image'
+import defaultPhoto from '../../../../public/image/defaultPhoto.png'
 
 
 
@@ -30,7 +31,7 @@ function RecentReviews({height,width,imgSrc,reviewList,storeId,address,title}: r
             </StoreInfo>
             <Tag height='18px' width='73px' title='더보기' clickAble={true} hoverCss={true} fontSize='7px' key={storeId} onClickHandler={onClickMoreButton} />
           </StoreInfo>
-          <Image width={72} height={72} src={imgSrc}/>
+          <Image width={72} height={72} src={imgSrc === null? defaultPhoto:imgSrc}/>
         </StoreWrap>
       </InformationWrap>
     </ReviewPostWrap>
