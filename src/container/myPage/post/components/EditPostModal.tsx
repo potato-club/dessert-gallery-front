@@ -18,7 +18,19 @@ const EditPostModal = ({
 
   const [title, setTitle] = useState(`${detailPost.title}`);
   const [content, setContent] = useState(`${detailPost.content}`);
+  const [imageSrc, setImageSrc] = useState(
+    detailPost.images.map((image: any) => image.fileUrl)
+  );
+
   let deleteFiles: any = [];
+
+  const handleDeleteImage = (index: number) => {
+    // 이미지 배열에서 해당 이미지를 제외한 새로운 배열 생성
+    const updatedImageSrc = imageSrc.filter((_: any, i: any) => i !== index);
+    // 새로운 이미지 배열로 상태 업데이트
+    setImageSrc(updatedImageSrc);
+    console.log(index);
+  };
 
   const postClick = () => {
     putStorePost(postId, title, content, deleteFiles);
@@ -44,22 +56,14 @@ const EditPostModal = ({
         </TopContainer>
         <InfoWarpper>
           <ImageBox>
-            {/* <Image
-              width={527}
-              height={527}
-              src={detailPost.images[0].fileUrl}
-              alt={detailPost.images[0].fileName}
-            /> */}
             <SlideImage
-              srcArray={
-                detailPost?.images
-                  ? detailPost.images.map((image: any) => image.fileUrl)
-                  : []
-              }
+              srcArray={imageSrc}
               width={527}
               height={527}
               dotIndicator={true}
               moveBtnType="show"
+              deleteBtn={true}
+              onDeleteImage={handleDeleteImage}
             />
           </ImageBox>
           <AddWrapper>
@@ -220,11 +224,4 @@ const ProfileInfo = styled.div`
   color: #ff6f00;
   font-size: 15px;
   font-weight: 500;
-`;
-
-const DeleteBtn = styled.button`
-  position: absolute;
-  width: 20px;
-  height: 20px;
-  background-color: red;
 `;
