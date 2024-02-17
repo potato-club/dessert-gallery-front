@@ -21,14 +21,15 @@ const EditPostModal = ({
   const [imageSrc, setImageSrc] = useState(
     detailPost.images.map((image: any) => image.fileUrl)
   );
+  // 삭제 이미지 확인을 위한 데이터
   const [imageSrcSend, setImageSrcSend] = useState(detailPost.images.map((image: { fileUrl: any; fileName: any; }) => (
     {
      fileUrl: image.fileUrl,
      fileName: image.fileName
    })
  ));
-
-  let deleteFiles: any = [];
+  //백엔드에 보낼 지울 데이터
+  let [deleteFiles, setDeleteFiles] = useState<any>([]);
 
   const handleDeleteImage = (index: string) => {
     console.log("imageSrc",imageSrc)
@@ -37,13 +38,17 @@ const EditPostModal = ({
     // 새로운 이미지 배열로 상태 업데이트
     setImageSrc(updatedImageSrc);
 
+    //삭제 이미지 확인
     const updateImageSrcSend = imageSrcSend.filter((e: { fileUrl: string; }) => e.fileUrl === index);
 
     console.log("지운 친구들: ",updateImageSrcSend)
 
+    //백엔드에 보낼 삭제 이미지 데이터 정리
+    let temp = deleteFiles.concat(updateImageSrcSend)
+    setDeleteFiles(temp);
     
 
-    console.log("지운 거 저장: ", deleteFiles.push(updateImageSrcSend), deleteFiles)
+    console.log("지운 거 저장: ", deleteFiles)
 
     console.log(index);
   };
