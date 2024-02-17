@@ -5,6 +5,7 @@ import Rating from "../../../../components/Rating";
 import Image from "next/image";
 import { selectedLocationCoordData } from "../../../../types/componentsData";
 import { selectedStoreState } from "../../../../recoil/map/selectedStoreStateAtom";
+import defaultPotho from '../../../../../public/image/defaultPhoto.png'
 
 interface searchData {
   sort: string ,
@@ -51,12 +52,12 @@ const AroundMarketItem = ({latitude, longitude, score, storeAddress, storeName, 
         <Rating size="small" ratingValue={`${score}`} />
       </TextInfoDiv>
       <ImageDiv>
-        {fileUrl !== null &&<Image
-          src={fileUrl}
-          alt={fileName}
+        <Image
+          src={fileUrl !== null ? fileUrl : defaultPotho}
+          alt={fileName !== null ? fileName : ''}
           layout="fill"
           objectFit="cover"
-        />}
+        />
       </ImageDiv>
     </Container>
   );

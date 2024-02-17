@@ -34,6 +34,7 @@ export default function GalleryPost({storeId, height=444, width,location,imgArra
 
   return (
     <GalleryPostWrap width={width} height={height} margin={margin}>
+      
       <SlideImage storeId={storeId} srcArray={imgArray} width={width} size={size} height={width} bookmark={bookmark} onBookmark={onBookmark} >
         {tagValue !=='none' && size === 'big' && <Tag title={tagValue} width='78px' height='30px' fontSize='12px' clickAble={false}  />}
         {tagValue !=='none' && size === 'medium' && <Tag title={tagValue} width='73px' height='28px' fontSize='11px' clickAble={false}  />}

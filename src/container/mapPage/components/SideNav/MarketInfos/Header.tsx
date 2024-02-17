@@ -3,20 +3,23 @@ import styled from "styled-components";
 import Tag from "../../../../../components/Tag";
 import Image from "next/image";
 import { mapStoreDetail } from "../../../../../types/apiTypes";
+import defaultPotho from '../../../../../../public/image/defaultPhoto.png'
 
 // 가게 정보조회 api 들어와야함
 const Header = ({store}:any) => {
   const url = window.location.href.split('?')[1].split('&')
+  console.log("defaultPotho", defaultPotho)
   return (
     <>
       <Container>
         <ImageSet >
           <Image 
-            src={store.storeImage.fileUrl}
-            alt={store.storeImage.fileName} 
-            layout="fill"
-            objectFit="cover"
-          />
+              src={store.storeImage !== null ? store.storeImage.fileUrl : defaultPotho}
+              alt={store.storeImage !== null ? store.storeImage.fileName : defaultPotho} 
+              layout="fill"
+              objectFit="cover"
+            />
+          
         <Exit href={`/map?selected=-1&${url[1]}`}>X</Exit>
         </ImageSet>
         <StoreInfo>
