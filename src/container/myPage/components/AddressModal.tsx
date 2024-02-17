@@ -12,9 +12,11 @@ interface commonI {
 
 interface props {
   onClickInputAddress: ()=>void
+  onChangeAddress: (addressString: string) => void
+  setInputAddress: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-function AddressModal({onClickInputAddress}: props) {
+function AddressModal({onClickInputAddress, onChangeAddress, setInputAddress}: props) {
   const [searchWord, setSearchWord] = useState<string>('')
   // const [pageCnt, setPageCnt] = useState<number>(0)
   const [addrData, setAddrData] = useState<any[]>([])
@@ -36,6 +38,12 @@ function AddressModal({onClickInputAddress}: props) {
       }
     } 
   });
+
+  const onClickAddress = (e: string) => {
+    onChangeAddress(e);
+    onClickInputAddress();
+    setInputAddress(true);
+  }
 
   useEffect(()=>{
     if(focusRef.current){
@@ -126,7 +134,7 @@ function AddressModal({onClickInputAddress}: props) {
             <AddressWrap ref={focusRef}>
             {
               addrData && addrData.map((juso, idx)=>(
-                <AddressItem key={`juso.zipNo-${idx}`}>
+                <AddressItem onClick={()=>onClickAddress(juso.roadAddr)} key={`juso.zipNo-${idx}`}>
                   <Text color='red' margin='0 0 8px' fontSize='20px' >{juso.zipNo}</Text>
                   <Box>
                     <AddressTag>도로명</AddressTag>

@@ -50,10 +50,15 @@ export default function ManagerProfile() {
     removeOriginImage: false,
     url: null
   })
+  const [inputAddress, setInputAddress] = useState<boolean>(false);
+  const [detailedAddress, setDetailedAddress] = useState<string>('');
 
   const onClickInputAddress = () => {
     setModalBgState(prev=>!prev);
+    setDetailedAddress('')
   };
+
+  
 
   useEffect(()=>{
     const getStoreProfile = async ()=> {
@@ -82,6 +87,17 @@ export default function ManagerProfile() {
     const { name, value } = e.target;
     setModiStoreValue({ ...modiStoreValue, [name]: value });
   };
+
+  const handleAddressDetailChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setDetailedAddress(e.target.value);
+  };
+
+  const onChangeAddress = (addressString: string) => {
+    setModiStoreValue((prev: updateStoreI) => ({
+    ...prev,
+    address: addressString
+  }));
+};
 
   const handleImageDelete = () => {
     console.log("modiStoreValue: ", modiStoreValue.url)
@@ -134,7 +150,7 @@ export default function ManagerProfile() {
         name: modiStoreValue.name,
         info: modiStoreValue.info,
         content: modiStoreValue.content,
-        address: modiStoreValue.address,
+        address: modiStoreValue.address + detailedAddress,
         phoneNumber: modiStoreValue.phoneNumber,
         removeOriginImage: modiStoreValue.removeOriginImage
       };
@@ -359,12 +375,15 @@ export default function ManagerProfile() {
                 </Box>
               </Box>
               <Box width='100%' alignItems='center' justifyContent='space-between'>
-                <Box alignItems='center' margin='24px 0'>
+                <Box justifyContent='flex-start' margin='24px 0 16px 0' >
                   <Text fontSize='17px' fontWeight='bold' color='#000000'>가게 위치</Text>
                   <Box width='90%'>
-                    <TextInput disabled fontSize='14px' fontWeight='bold' color='#000000' padding='0 64px' type="text" id="address" name="address" value={modiStoreValue.address} onChange={handleInputChange} placeholder={`${storeInfo.res.address}`}/>
+                    <Box direction='column'>
+                      <TextInput disabled fontSize='14px' fontWeight='bold' color='#000000' padding='0 64px' type="text" id="address" name="address" value={modiStoreValue.address} onChange={handleInputChange} placeholder={`${storeInfo.res.address}`}/>
+                      {inputAddress && <TextInput fontSize='14px' margin='8px 0 0 0' fontWeight='bold' color='#000000' padding='0 64px' type="text" id="address" name="address" value={detailedAddress} onChange={handleAddressDetailChange} placeholder='상세 주소 입력'/>}
+                    </Box>                    
                     <Tag onClickHandler={onClickInputAddress} clickAble={true} hoverCss={true} fontSize='16px' height='32px' width='120px' title='주소 입력'/>
-                    {modalBgState && <AddressModal onClickInputAddress={onClickInputAddress}/>}
+                    {modalBgState && <AddressModal setInputAddress={setInputAddress} onChangeAddress={onChangeAddress} onClickInputAddress={onClickInputAddress}/>}
                   </Box>
                 </Box>
               </Box>
@@ -522,7 +541,14 @@ export default function ManagerProfile() {
                 <Box width='100%' alignItems='center' justifyContent='space-between'>
                   <Box  margin='24px 0'>
                     <Text fontSize='17px' fontWeight='bold' color='#000000'>가게 위치</Text>
-                    <TextInput fontSize='14px' fontWeight='bold' color='#000000' padding='0 64px' type="text" id="address" name="address" value={modiStoreValue.address} onChange={handleInputChange} placeholder={`가게 위치를 기재합니다`}/>
+                    <Box width='90%'>
+                    <Box direction='column'>
+                      <TextInput disabled fontSize='14px' fontWeight='bold' color='#000000' padding='0 64px' type="text" id="address" name="address" value={modiStoreValue.address} onChange={handleInputChange} placeholder='가게 위치를 기재합니다.'/>
+                      {inputAddress && <TextInput fontSize='14px' margin='8px 0 0 0' fontWeight='bold' color='#000000' padding='0 64px' type="text" id="address" name="address" value={detailedAddress} onChange={handleAddressDetailChange} placeholder='상세 주소 입력'/>}
+                    </Box>                    
+                    <Tag onClickHandler={onClickInputAddress} clickAble={true} hoverCss={true} fontSize='16px' height='32px' width='120px' title='주소 입력'/>
+                    {modalBgState && <AddressModal setInputAddress={setInputAddress} onChangeAddress={onChangeAddress} onClickInputAddress={onClickInputAddress}/>}
+                  </Box>
                   </Box>
                 </Box>
     
