@@ -21,14 +21,30 @@ const EditPostModal = ({
   const [imageSrc, setImageSrc] = useState(
     detailPost.images.map((image: any) => image.fileUrl)
   );
+  const [imageSrcSend, setImageSrcSend] = useState(detailPost.images.map((image: { fileUrl: any; fileName: any; }) => (
+    {
+     fileUrl: image.fileUrl,
+     fileName: image.fileName
+   })
+ ));
 
   let deleteFiles: any = [];
 
-  const handleDeleteImage = (index: number) => {
+  const handleDeleteImage = (index: string) => {
+    console.log("imageSrc",imageSrc)
     // 이미지 배열에서 해당 이미지를 제외한 새로운 배열 생성
-    const updatedImageSrc = imageSrc.filter((_: any, i: any) => i !== index);
+    const updatedImageSrc = imageSrc.filter((e: string) => e !== index);
     // 새로운 이미지 배열로 상태 업데이트
     setImageSrc(updatedImageSrc);
+
+    const updateImageSrcSend = imageSrcSend.filter((e: { fileUrl: string; }) => e.fileUrl === index);
+
+    console.log("지운 친구들: ",updateImageSrcSend)
+
+    
+
+    console.log("지운 거 저장: ", deleteFiles.push(updateImageSrcSend), deleteFiles)
+
     console.log(index);
   };
 

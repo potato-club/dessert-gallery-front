@@ -38,7 +38,7 @@ function SlideImage({
   const [onBookmarkState, setOnBookmarkState] = useState<boolean>(onBookmark);
   const maxImgCnt = srcArray.length - 1;
 
-  const onClickDeleteImage = (index: number) => {
+  const onClickDeleteImage = (index: string) => {
     if (onDeleteImage) {
       onDeleteImage(index);
     }
@@ -153,10 +153,10 @@ function SlideImage({
           />
         )}
       </ImageWrap> */}
-      {srcArray.map((image, index) => (
+      {srcArray[imgCnt] !== null &&srcArray.map((image, index) => (
         <ImageWrap key={index} width={width} height={height}>
           {deleteBtn && (
-            <DeleteBtn onClick={() => onClickDeleteImage(index)}>
+            <DeleteBtn onClick={() => onClickDeleteImage(srcArray[imgCnt])}>
               삭제
             </DeleteBtn>
           )}
@@ -166,7 +166,6 @@ function SlideImage({
             height={height}
             objectFit="cover"
             alt={`Image ${index}`}
-            onClick={() => onClickDeleteImage(index)} // 이미지 클릭 시 삭제 함수 호출
           />
         </ImageWrap>
       ))}
