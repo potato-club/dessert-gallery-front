@@ -112,6 +112,7 @@ export const Container = styled.div`
     border-bottom: 2px solid #fdc886;
     .fc-toolbar-title {
       font-size: 25px;
+      padding-bottom: 3px;
       color: #ff6f00;
     }
   }
