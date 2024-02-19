@@ -11,7 +11,7 @@ export type userInfoType = {
   userRole: "USER" | "MANAGER";
 };
 
-type roomInfoType = {
+export type roomInfoType = {
   roomId: number;
   storeName: string;
   customerName: string;

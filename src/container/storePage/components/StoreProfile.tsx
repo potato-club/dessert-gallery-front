@@ -1,10 +1,11 @@
 import { useRouter } from "next/router";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled, { css } from "styled-components";
 import Tag from "../../../components/Tag";
 import { useFollowAction } from "../../../hooks/useFollowAction";
 import { useGetStoreInfo } from "../../../hooks/useStore";
-import { postChatRoom } from "../../../apis/controller/chatPage";
+import { getChatRoom, postChatRoom } from "../../../apis/controller/chatPage";
+import { roomInfoType } from "../../myPage/chatPage/ChatPage";
 
 const StoreProfile = () => {
   const router = useRouter();
@@ -16,6 +17,23 @@ const StoreProfile = () => {
   const { data } = useGetStoreInfo(storeId);
 
   const { postFollowMutate, putUnFollowMutate } = useFollowAction(storeId);
+
+  const [isChatRoomExist, setIsChatRoomExist] = useState<boolean>(false);
+
+  const checkChatRoom = async () => {
+    const chatRoom = await getChatRoom();
+    console.log(chatRoom);
+    chatRoom.map((item: roomInfoType, index: number) => {
+      if (data && data.name === item.storeName) {
+        console.log("방이 존재합니다.", index);
+        setIsChatRoomExist(true);
+      }
+    });
+  };
+
+  useEffect(() => {
+    checkChatRoom();
+  }, [data]);
 
   return (
     <Container>
@@ -77,8 +95,7 @@ const StoreProfile = () => {
                   fontSize="12px"
                   onClickHandler={() => {
                     console.log(storeId);
-                    // 현재 에러뜨는데 현호형이 변경사항 푸시하면 괜찮아진다고 함
-                    // postChatRoom(storeId);
+                    postChatRoom(storeId);
                     router.push("/myPage/chat");
                   }}
                 />
