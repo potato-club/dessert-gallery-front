@@ -1,5 +1,5 @@
 import React from "react";
-import ChatPage from "../../src/container/chatPage/ChatPage";
+import ChatPage from "../../src/container/myPage/chatPage/ChatPage";
 
 const Chat = () => {
   return (

@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import SerchImage from "../../../../public/SVG/myPage/chatPage/searchImage.svg";
+import SerchImage from "../../../../../public/SVG/myPage/chatPage/searchImage.svg";
 import ChatListItem from "./ChatListItem";
 import { userInfoType } from "../ChatPage";
 

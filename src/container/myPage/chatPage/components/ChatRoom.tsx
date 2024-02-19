@@ -3,8 +3,8 @@ import styled from "styled-components";
 import ChatItem from "./ChatItem";
 import SockJS from "sockjs-client";
 import * as StompJs from "@stomp/stompjs";
-import { useTokenService } from "../../../hooks/useTokenService";
-import { getChatHistory } from "../../../apis/controller/chatPage";
+import { useTokenService } from "../../../../hooks/useTokenService";
+import { getChatHistory } from "../../../../apis/controller/chatPage";
 import { userInfoType } from "../ChatPage";
 
 function ChatRoom({
