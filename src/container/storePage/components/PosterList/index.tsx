@@ -1,16 +1,23 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { useSetRecoilState } from "recoil";
 import { modalBg } from "../../../../recoil/modalBg/atom";
 import { useGetInfinityPosterList } from "../../../../hooks/useBoard";
 import LoadingSpinner from "../Modal/LoadingSpinner";
 import { useInfinityScrollLoading } from "../../../../hooks/useInfinityScroll";
+import { useRouter } from "next/router";
 
 const Poster = ({ storeId, setBoardId }: any) => {
+  const router = useRouter();
+
   const modalBgState = useSetRecoilState(modalBg);
+
   const onClick = (boardId: number) => {
     modalBgState(true);
     setBoardId(boardId);
+    router.push(`/galleryBoard/${storeId}?boardId=${boardId}`, undefined, {
+      shallow: true,
+    });
   };
 
   const { posterList, isLoading, hasNextPage, fetchNextPage } =
