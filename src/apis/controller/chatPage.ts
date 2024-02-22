@@ -11,6 +11,8 @@ export const getUserInfo = async () => {
 };
 
 export const postChatRoom = async (storeId: number) => {
+  console.log("postChatRoom");
+
   const response = await sendApi.post(`/mypage/room`, {
     storeId: storeId,
   });

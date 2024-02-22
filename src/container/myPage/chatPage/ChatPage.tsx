@@ -20,10 +20,6 @@ export type roomInfoType = {
 };
 
 function ChatPage() {
-  const [roomIdState, setRoomIdState] = useState<number>();
-  const getRoomIdState = (id: number) => {
-    setRoomIdState(id);
-  };
   const [chatRoomList, setChatRoomList] = useState<roomInfoType[]>();
   const [userInfoState, setUserInfoState] = useState<userInfoType>();
   const [partnerNameState, setPartnerNameState] = useState<string>();
@@ -55,15 +51,10 @@ function ChatPage() {
       <Wrapper>
         <ChatList
           chatRoomList={chatRoomList}
-          getRoomIdState={getRoomIdState}
           getPartnerNameState={getPartnerNameState}
           userInfo={userInfoState}
         />
-        <ChatRoom
-          roomIdState={roomIdState}
-          userInfo={userInfoState}
-          partnerName={partnerNameState}
-        />
+        <ChatRoom userInfo={userInfoState} partnerName={partnerNameState} />
       </Wrapper>
     </Layout>
   );

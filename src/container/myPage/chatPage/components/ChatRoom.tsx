@@ -6,16 +6,17 @@ import * as StompJs from "@stomp/stompjs";
 import { useTokenService } from "../../../../hooks/useTokenService";
 import { getChatHistory } from "../../../../apis/controller/chatPage";
 import { userInfoType } from "../ChatPage";
+import { useRoomIdState } from "../../../../recoil/chat/roomIdStateAtom";
 
 function ChatRoom({
-  roomIdState,
   userInfo,
   partnerName,
 }: {
-  roomIdState?: number;
   userInfo?: userInfoType;
   partnerName?: string;
 }) {
+  const [roomIdState, setRoomIdState] = useRoomIdState();
+
   const { getAccessToken } = useTokenService();
   const client = new StompJs.Client({
     brokerURL: "wss://api.dessert-gallery.site/ws/chat/websocket",

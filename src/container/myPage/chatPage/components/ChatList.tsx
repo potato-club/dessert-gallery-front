@@ -3,6 +3,7 @@ import styled from "styled-components";
 import SerchImage from "../../../../../public/SVG/myPage/chatPage/searchImage.svg";
 import ChatListItem from "./ChatListItem";
 import { userInfoType } from "../ChatPage";
+import { useRoomIdState } from "../../../../recoil/chat/roomIdStateAtom";
 
 type roomInfoType = {
   roomId: number;
@@ -14,15 +15,15 @@ type roomInfoType = {
 
 function ChatList({
   chatRoomList,
-  getRoomIdState,
   getPartnerNameState,
   userInfo,
 }: {
   chatRoomList?: roomInfoType[];
-  getRoomIdState: (id: number) => void;
   getPartnerNameState: (partnerName: string) => void;
   userInfo?: userInfoType;
 }) {
+  const [roomIdState, setRoomIdState] = useRoomIdState();
+
   return (
     <Wrapper>
       <Header>
@@ -50,7 +51,7 @@ function ChatList({
               }
               thumbnailMessage={item.thumbnailMessage}
               onClickItem={() => {
-                getRoomIdState(item.roomId);
+                setRoomIdState(item.roomId);
                 getPartnerNameState(
                   userInfo?.userRole === "MANAGER"
                     ? item.customerName

@@ -6,6 +6,7 @@ import { useFollowAction } from "../../../hooks/useFollowAction";
 import { useGetStoreInfo } from "../../../hooks/useStore";
 import { getChatRoom, postChatRoom } from "../../../apis/controller/chatPage";
 import { roomInfoType } from "../../myPage/chatPage/ChatPage";
+import { useRoomIdState } from "../../../recoil/chat/roomIdStateAtom";
 
 const StoreProfile = () => {
   const router = useRouter();
@@ -18,20 +19,26 @@ const StoreProfile = () => {
 
   const { postFollowMutate, putUnFollowMutate } = useFollowAction(storeId);
 
-  const [isChatRoomExist, setIsChatRoomExist] = useState<boolean>(false);
+  const [isChatRoomExist, setIsChatRoomExist] = useState<{
+    exist: boolean;
+    roomId: number;
+  }>({ exist: false, roomId: 0 });
+
+  const [roomIdState, setRoomIdState] = useRoomIdState();
 
   const checkChatRoom = async () => {
     const chatRoom = await getChatRoom();
     console.log(chatRoom);
-    chatRoom.map((item: roomInfoType, index: number) => {
+    chatRoom.map((item: roomInfoType) => {
       if (data && data.name === item.storeName) {
-        console.log("방이 존재합니다.", index);
-        setIsChatRoomExist(true);
+        console.log("방이 존재합니다.", item.roomId);
+        setIsChatRoomExist({ exist: true, roomId: item.roomId });
       }
     });
   };
 
   useEffect(() => {
+    setRoomIdState(0);
     checkChatRoom();
   }, [data]);
 
@@ -94,9 +101,14 @@ const StoreProfile = () => {
                   height="30px"
                   fontSize="12px"
                   onClickHandler={() => {
-                    console.log(storeId);
-                    postChatRoom(storeId);
-                    router.push("/myPage/chat");
+                    if (isChatRoomExist.exist) {
+                      setRoomIdState(isChatRoomExist.roomId);
+                      router.push("/myPage/chat");
+                    } else {
+                      console.log(storeId);
+                      postChatRoom(storeId);
+                      router.push("/myPage/chat");
+                    }
                   }}
                 />
               </BtnList>
