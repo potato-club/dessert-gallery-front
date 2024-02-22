@@ -3,12 +3,12 @@ import styled from "styled-components";
 
 function ChatListItem({
   roomId,
-  customerName,
+  name,
   thumbnailMessage,
   onClickItem,
 }: {
   roomId: number;
-  customerName: string;
+  name: string;
   thumbnailMessage: string;
   onClickItem: () => void;
 }) {
@@ -18,7 +18,7 @@ function ChatListItem({
       <ItemInfoWrapper>
         <InfoLeft>
           <UserName>
-            {customerName}
+            {name}
             <UserNameHelper>님</UserNameHelper>
           </UserName>
           <ThumbnailMessage>{thumbnailMessage}</ThumbnailMessage>

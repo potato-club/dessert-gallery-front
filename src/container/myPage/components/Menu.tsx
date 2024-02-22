@@ -26,92 +26,102 @@ export default function Menu({ menu, userInfo }: { menu: roleMyMenu, userInfo:us
   };
 
   return (
-    <MenuWrapper>
-      <MenuHeader onClick={onClickMoveMain}>
-        <Image
-          src={myPageLogo.src}
-          alt="myPageLogo"
-          layout="fixed"
-          height={72}
-          width={234}
-        />
-      </MenuHeader>
-      <MenuContentsWrap>
-        <ColumnBox>
-          <UserInfoWrap>
-            <ProfileImage imgUrl={userInfo && userInfo.fileUrl ? userInfo.fileUrl: ''} />
-            <RowBox>
-              <Text
-                bold
-                fontSize="20px"
-                fontColor="#000000"
-                margin="16px 4px 0 0"
-              >
-                {userInfo && userInfo.nickname}
-              </Text>
-              <Text
-                bold
-                fontSize="18px"
-                fontColor="#828282"
-                margin="16px 0 0 0"
-              >
-                님
-              </Text>
-            </RowBox>
-          </UserInfoWrap>
-
-          <UserMenuWrap>
-            {menu.category.map((el: myMenu, idx) => (
-              <Link key={`Category${idx}`} href={el.domain}>
-                <CategoryWrap>
-                  <CategoryLogo />
-                  <Text
-                    cursorStyle={true}
-                    fontColor={
-                      el.domain === router.pathname ? `#000000` : `#828282`
-                    }
-                    fontSize="18px"
-                    bold={el.domain === router.pathname}
-                  >
-                    {el.title}
-                  </Text>
-                </CategoryWrap>
-              </Link>
+    <Box>
+      <MenuWrapper>
+        <MenuHeader onClick={onClickMoveMain}>
+          <Image
+            src={myPageLogo.src}
+            alt="myPageLogo"
+            layout="fixed"
+            height={72}
+            width={234}
+          />
+        </MenuHeader>
+        <MenuContentsWrap>
+          <ColumnBox>
+            <UserInfoWrap>
+              <ProfileImage imgUrl={userInfo && userInfo.fileUrl ? userInfo.fileUrl: ''} />
+              <RowBox>
+                <Text
+                  bold
+                  fontSize="20px"
+                  fontColor="#000000"
+                  margin="16px 4px 0 0"
+                >
+                  {userInfo && userInfo.nickname}
+                </Text>
+                <Text
+                  bold
+                  fontSize="18px"
+                  fontColor="#828282"
+                  margin="16px 0 0 0"
+                >
+                  님
+                </Text>
+              </RowBox>
+            </UserInfoWrap>
+    
+            <UserMenuWrap>
+              {menu.category.map((el: myMenu, idx) => (
+                <Link key={`Category${idx}`} href={el.domain}>
+                  <CategoryWrap>
+                    <CategoryLogo />
+                    <Text
+                      cursorStyle={true}
+                      fontColor={
+                        el.domain === router.pathname ? `#000000` : `#828282`
+                      }
+                      fontSize="18px"
+                      bold={el.domain === router.pathname}
+                    >
+                      {el.title}
+                    </Text>
+                  </CategoryWrap>
+                </Link>
+              ))}
+            </UserMenuWrap>
+          </ColumnBox>
+                    
+          <SiteMenuWrap>
+            {menu.siteDefaultMenu.map((el: myMenu, idx) => (
+              <CategoryWrap key={`SiteMenuWrap${idx}`}>
+                <CategoryLogo key={`SiteMenuLogo${idx}`} />
+                <Text
+                  cursorStyle={true}
+                  fontColor={
+                    el.domain === router.pathname ? `#000000` : `#828282`
+                  }
+                  fontSize="18px"
+                  bold={el.domain === router.pathname}
+                >
+                  {el.title}
+                </Text>
+              </CategoryWrap>
             ))}
-          </UserMenuWrap>
-        </ColumnBox>
-
-        <SiteMenuWrap>
-          {menu.siteDefaultMenu.map((el: myMenu, idx) => (
-            <CategoryWrap key={`SiteMenuWrap${idx}`}>
-              <CategoryLogo key={`SiteMenuLogo${idx}`} />
-              <Text
-                cursorStyle={true}
-                fontColor={
-                  el.domain === router.pathname ? `#000000` : `#828282`
-                }
-                fontSize="18px"
-                bold={el.domain === router.pathname}
-              >
-                {el.title}
-              </Text>
-            </CategoryWrap>
-          ))}
-        </SiteMenuWrap>
-      </MenuContentsWrap>
-    </MenuWrapper>
+          </SiteMenuWrap>
+        </MenuContentsWrap>
+      </MenuWrapper>
+    </Box>
   );
 }
 
 const MenuWrapper = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
   width: 330px;
-  height: auto;
+  height: 100vh;
   border-radius: 0 24px 24px 0;
   display: flex;
   flex-direction: column;
   background-color: #fffffff1;
   box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.377);
 `;
+
+const Box = styled.div`
+  width: 330px;
+  height: 100vh;
+`
 
 const MenuHeader = styled.div`
   width: 330px;
@@ -133,6 +143,12 @@ const MenuContentsWrap = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
+  overflow-y: auto;
+  
+  scrollbar-width: none;
+  ::-webkit-scrollbar {
+    display: none;
+  }
 `;
 
 const UserInfoWrap = styled.div`
