@@ -1,8 +1,7 @@
 import React, { useState } from "react";
-import styled from "styled-components";
-import ToggleOptionBox from "../../../../components/ToggleOptionBox";
+import styled, { css } from "styled-components";
 import CheckButton from "../../components/CheckButton";
-import ToggleIcon from "/public/svg/common/MenuIcon.svg";
+import DeleteIcon from "/public/svg/common/deleteIcon.svg";
 
 interface ScheduleCheckColumnProps {
   scheduleId: number;
@@ -13,59 +12,58 @@ interface ScheduleCheckColumnProps {
 }
 
 const ScheduleCheckColumn = ({ ...props }: ScheduleCheckColumnProps) => {
-  const [isHover, setIsHover] = useState(false);
-  const [isToggle, setIsToggle] = useState(false);
-
-  const contents = [
-    {
-      title: "삭제하기",
-      onClickHandler: () => {
-        setIsHover(false);
-        props.deleteFn(props.scheduleId);
-      },
-    },
-  ];
+  const [onWarning, setOnWarning] = useState(false);
 
   return (
     <Container>
-      <CheckButton
-        width={30}
-        height={30}
-        type="checkbox"
-        id={`scheduleId${props.scheduleId}`}
-        value={props.scheduleId}
-        defaultchecked={props.isSuccess}
-        eventFn={(e) => {
-          props.checkFn(props.scheduleId);
-        }}
-      />
-      <InputContent isSuccess={props.isSuccess}>{props.content}</InputContent>
-      <ToggleButton
-        onFocus={() => {
-          console.log("onfocus");
-          setIsHover(true);
-        }}
-        onBlur={() => {
-          console.log("blur");
-          setIsToggle(false);
-          setIsHover(false);
-        }}
-        onClick={() => {
-          console.log("onClick");
-          setIsToggle((prev) => !prev);
-          setIsHover(true);
-        }}
-      >
-        <ToggleIcon width={4} height={15} />
-        <ToggleBoxDiv>
-          {isHover && isToggle && (
-            <ToggleOptionBox
-              scheduleId={props.scheduleId}
-              contents={contents}
-            />
-          )}
-        </ToggleBoxDiv>
-      </ToggleButton>
+      {onWarning ? (
+        <WarningDiv>
+          <span>
+            <strong>정말로</strong>
+            삭제 하시겠습니까?
+          </span>
+          <BtnList>
+            <CancelBtn
+              onClick={() => {
+                setOnWarning(false);
+              }}
+            >
+              취소
+            </CancelBtn>
+            <DeleteBtn
+              onClick={() => {
+                props.deleteFn(props.scheduleId);
+              }}
+            >
+              삭제
+            </DeleteBtn>
+          </BtnList>
+        </WarningDiv>
+      ) : (
+        <>
+          <CheckButton
+            width={30}
+            height={30}
+            type="checkbox"
+            id={`scheduleId${props.scheduleId}`}
+            value={props.scheduleId}
+            defaultchecked={props.isSuccess}
+            eventFn={(e) => {
+              props.checkFn(props.scheduleId);
+            }}
+          />
+          <InputContent isSuccess={props.isSuccess}>
+            {props.content}
+          </InputContent>
+          <ToggleButton
+            onClick={() => {
+              setOnWarning(true);
+            }}
+          >
+            <DeleteIcon width={18} height={20} />
+          </ToggleButton>
+        </>
+      )}
     </Container>
   );
 };
@@ -85,14 +83,44 @@ const InputContent = styled.span<{ isSuccess: boolean }>`
   font-size: 16px;
   font-weight: 700;
 `;
-const ToggleBoxDiv = styled.div`
-  position: relative;
-  left: -147px;
-`;
 const ToggleButton = styled.button`
-  width: 20px;
-  height: 20px;
   border: none;
   background-color: transparent;
   cursor: pointer;
+  svg {
+    color: #ff6f00;
+  }
+`;
+const WarningDiv = styled.div`
+  width: 300px;
+  height: 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  strong {
+    color: red;
+  }
+`;
+const BtnList = styled.div`
+  display: flex;
+  gap: 10px;
+`;
+const btnstyle = css`
+  padding: 2px 4px;
+  background-color: transparent;
+  border: 1px solid #0000001a;
+  border-radius: 10px;
+  transition: all ease-in-out 100ms;
+  font-size: 13px;
+  &:hover {
+    box-shadow: 0px 0px 0px 4px #0000000d;
+    cursor: pointer;
+  }
+`;
+const DeleteBtn = styled.button`
+  ${btnstyle}
+  background-color: #EC6968;
+`;
+const CancelBtn = styled.button`
+  ${btnstyle}
 `;
