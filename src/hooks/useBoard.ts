@@ -102,7 +102,7 @@ export const StorePageOnModal = (storeId: number) => {
   const modalBgState = useSetRecoilState(modalBg);
 
   useEffect(() => {
-    if (router) setBoardId(Number(router.query.boardId));
+    if (router.query.boardId) setBoardId(Number(router.query.boardId));
     if (Number(router.query.boardId) == boardId) {
       setOnModal(true);
       modalBgState(true);
