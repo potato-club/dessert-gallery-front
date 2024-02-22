@@ -1,5 +1,5 @@
 import React from "react";
-import CalendarPage from "../../src/container/myPage/calendarPage";
+import CalendarPage from "../../src/container/myPage/calendar";
 import { GetServerSideProps } from "next";
 import { QueryClient, dehydrate } from "react-query";
 import { calendarPageApi } from "../../src/apis/controller/calendarPage";

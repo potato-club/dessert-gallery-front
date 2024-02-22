@@ -106,7 +106,9 @@ const Container = styled.div`
   background-color: #fffdf9;
 `;
 const InnerContainer = styled.div`
-  padding: 44px 36px 39px;
+  display: flex;
+  align-items: center;
+  padding: 0px 36px;
 `;
 const InfoContent = styled.div`
   display: flex;

@@ -1,4 +1,4 @@
-import { DateInfo } from "../../container/myPage/calendarPage";
+import { DateInfo } from "../../container/myPage/calendar";
 import sendApi from "../sendApi";
 
 export const calendarPageApi = {

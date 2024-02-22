@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import Tag from "../../../components/Tag";
-import { DownArrow, UpArrow } from "../../../../public/svg";
+import Tag from "../../../../components/Tag";
+import { DownArrow, UpArrow } from "../../../../../public/svg";
 
 /**
  * props 종류
@@ -10,7 +10,7 @@ import { DownArrow, UpArrow } from "../../../../public/svg";
  * createdDate
  * spreadClick, setSpreadClick
  */
-const Announce = ({
+const AnnounceItem = ({
   title,
   content,
   spreadClick,
@@ -63,7 +63,7 @@ const Announce = ({
   );
 };
 
-export default Announce;
+export default AnnounceItem;
 
 const Container = styled.div<{
   infoBtnClick: boolean;

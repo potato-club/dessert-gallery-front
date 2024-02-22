@@ -19,6 +19,8 @@ interface StoreInfoType {
     images: any;
     tags: string[];
     title: string;
+    viewCount: number;
+    commentCount: number;
   };
   boardId: number;
 }
@@ -50,13 +52,13 @@ const index = ({ storeInfo, detailPoster, boardId }: StoreInfoType) => {
         },
         {
           REGI_WEB_DOMAIN: `http://localhost:3000`,
-          REDIRECT_PATH: `galleryBoard/${storeInfo.id}`,
+          REDIRECT_PATH: `galleryBoard/${storeInfo.id}?boardId=${boardId}`,
           PROFILE_IMG: storeInfo.storeImage.fileUrl,
           BOARD_HASHTAG: detailPoster.tags.join(" "),
           BOARD_TITLE: detailPoster.title,
           STORE_NAME: storeInfo.name,
-          COMMENT_COUNT: 100,
-          VIEW_COUNT: 100,
+          COMMENT_COUNT: detailPoster.commentCount,
+          VIEW_COUNT: detailPoster.viewCount,
         }
       );
 
