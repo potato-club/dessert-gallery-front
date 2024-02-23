@@ -24,7 +24,7 @@ interface StoreInfoType {
   };
   boardId: number;
 }
-const index = ({ storeInfo, detailPoster, boardId }: StoreInfoType) => {
+const ModalHeader = ({ storeInfo, detailPoster, boardId }: StoreInfoType) => {
   const [menuIconClick, setMenuIconClick] = useState<boolean>(false);
 
   const router = useRouter();
@@ -109,7 +109,7 @@ const index = ({ storeInfo, detailPoster, boardId }: StoreInfoType) => {
   );
 };
 
-export default index;
+export default ModalHeader;
 
 const Container = styled.div`
   position: sticky;
