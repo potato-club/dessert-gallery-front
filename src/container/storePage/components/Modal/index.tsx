@@ -7,6 +7,7 @@ import { postBoardComment } from "../../../../apis/controller/detailStore";
 import { useGetStoreInfo } from "../../../../hooks/useStore";
 import InfoHeader from "./Header";
 import InfoContent from "./Contents";
+import LoadingSpinner from "./LoadingSpinner";
 
 const PostModal = ({ storeId, boardId }: any) => {
   const [comment, setComment] = useState<string>("");
@@ -16,7 +17,7 @@ const PostModal = ({ storeId, boardId }: any) => {
   const { data: storeInfo } = useGetStoreInfo(storeId);
 
   // 세부 게시물 불러오기
-  const { data: detailPoster } = useGetDetailBoard({}, boardId);
+  const { data: detailPoster } = useGetDetailBoard(boardId);
 
   // 모달 댓글 작성하기
   const submit = async (e: any) => {
@@ -34,7 +35,7 @@ const PostModal = ({ storeId, boardId }: any) => {
   return (
     <ModalWrapper>
       <Container>
-        {detailPoster && (
+        {detailPoster ? (
           <SlideImage
             srcArray={detailPoster.images.map((item: any) => {
               return item.fileUrl;
@@ -44,6 +45,10 @@ const PostModal = ({ storeId, boardId }: any) => {
             moveBtnType="show"
             dotIndicator={true}
           />
+        ) : (
+          <LoadingDiv>
+            <LoadingSpinner width={50} height={50} borderWidth={3} />
+          </LoadingDiv>
         )}
         <PostInfo>
           <InfoHeader
@@ -130,4 +135,10 @@ const ReservedBtn = styled.div`
     background-color: #ff6f00;
     cursor: pointer;
   }
+`;
+const LoadingDiv = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
 `;
