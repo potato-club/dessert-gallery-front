@@ -3,10 +3,10 @@ import styled, { css } from "styled-components";
 import PosterList from "./PosterList";
 import PostModal from "./Modal";
 import ReviewList from "../../../components/ReviewList";
-import { StorePageOnModal } from "../../../hooks/useBoard";
+import { storePageOnModal } from "../../../hooks/useBoard";
 
 const StoreContent = ({ storeId }: any) => {
-  const { boardId, setBoardId, onModal, onModalBg } = StorePageOnModal(storeId);
+  const { boardId, setBoardId, onModal, onModalBg } = storePageOnModal(storeId);
 
   const [optionNum, setOptionNum] = useState<number>(1);
   const optionClick = (num: number) => {

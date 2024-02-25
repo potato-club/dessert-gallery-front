@@ -86,13 +86,16 @@ const ModalHeader = ({ storeInfo, detailPoster, boardId }: StoreInfoType) => {
   ];
   return (
     <Container>
-      <StoreInfo>
-        <StoreProfile src={storeInfo.storeImage.fileUrl} />
-        <div>
-          <StoreName>{storeInfo.name}</StoreName>
-          <SubCategory>{storeInfo.info || "default 값"}</SubCategory>
-        </div>
-      </StoreInfo>
+      {storeInfo && (
+        <StoreInfo>
+          <StoreProfile src={storeInfo.storeImage.fileUrl} />
+          <div>
+            <StoreName>{storeInfo.name}</StoreName>
+            <SubCategory>{storeInfo.info || "default 값"}</SubCategory>
+          </div>
+        </StoreInfo>
+      )}
+
       <div>
         <BoxPosition>
           {menuIconClick && <ToggleOptionBox contents={storePageModalOption} />}
