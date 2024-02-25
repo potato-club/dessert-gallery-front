@@ -24,7 +24,7 @@ interface StoreInfoType {
   };
   boardId: number;
 }
-const index = ({ storeInfo, detailPoster, boardId }: StoreInfoType) => {
+const ModalHeader = ({ storeInfo, detailPoster, boardId }: StoreInfoType) => {
   const [menuIconClick, setMenuIconClick] = useState<boolean>(false);
 
   const router = useRouter();
@@ -86,13 +86,16 @@ const index = ({ storeInfo, detailPoster, boardId }: StoreInfoType) => {
   ];
   return (
     <Container>
-      <StoreInfo>
-        <StoreProfile src={storeInfo.storeImage.fileUrl} />
-        <div>
-          <StoreName>{storeInfo.name}</StoreName>
-          <SubCategory>{storeInfo.info || "default 값"}</SubCategory>
-        </div>
-      </StoreInfo>
+      {storeInfo && (
+        <StoreInfo>
+          <StoreProfile src={storeInfo.storeImage.fileUrl} />
+          <div>
+            <StoreName>{storeInfo.name}</StoreName>
+            <SubCategory>{storeInfo.info || "default 값"}</SubCategory>
+          </div>
+        </StoreInfo>
+      )}
+
       <div>
         <BoxPosition>
           {menuIconClick && <ToggleOptionBox contents={storePageModalOption} />}
@@ -109,7 +112,7 @@ const index = ({ storeInfo, detailPoster, boardId }: StoreInfoType) => {
   );
 };
 
-export default index;
+export default ModalHeader;
 
 const Container = styled.div`
   position: sticky;

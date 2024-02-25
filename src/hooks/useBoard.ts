@@ -38,12 +38,12 @@ export const useGetInfinityPosterList = (storeId: number) => {
   return { posterList, fetchNextPage, hasNextPage, isLoading, refetch };
 };
 
-export const useGetDetailBoard = (options = {}, boardId: number) => {
+export const useGetDetailBoard = (boardId: number) => {
   const { data } = useQuery(
     ["detailBoard", boardId],
     () => getDetailPoster(boardId),
     {
-      ...options,
+      refetchOnWindowFocus: false,
     }
   );
 
@@ -95,7 +95,7 @@ export const useInfinityModalComment = ({ boardId }: any) => {
   return { data, fetchNextPage, hasNextPage, isLoading, refetch };
 };
 
-export const StorePageOnModal = (storeId: number) => {
+export const storePageOnModal = (storeId: number) => {
   const router = useRouter();
   const [boardId, setBoardId] = useState<number>(0);
   const [onModal, setOnModal] = useState<boolean>(false);

@@ -3,7 +3,7 @@ import { getStoreInfo } from "../apis/controller/detailStore";
 
 export const useGetStoreInfo = (storeId: number) => {
   const { data } = useQuery(
-    ["detailBoard", storeId],
+    ["storeInfo", storeId],
     () => getStoreInfo(storeId),
     {
       refetchOnWindowFocus: false,
