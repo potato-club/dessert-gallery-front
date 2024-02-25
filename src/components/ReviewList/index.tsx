@@ -21,22 +21,27 @@ const ReviewList = () => {
   }, [router.query.page, refetch]);
 
   return (
-    <Container>
-      {data &&
-        data.content.map((item: StoreReviewType, idx: number) => {
-          return (
-            <Review
-              key={idx}
-              userName={item.userName}
-              content={item.content}
-              score={item.score}
-              images={item.images}
-              createDate={item.createDate}
-            />
-          );
-        })}
-      <PagingBox data={data} />
-    </Container>
+    <>
+      {data && data.content.length ? (
+        <Container>
+          {data.content.map((item: StoreReviewType, idx: number) => {
+            return (
+              <Review
+                key={idx}
+                userName={item.userName}
+                content={item.content}
+                score={item.score}
+                images={item.images}
+                createDate={item.createDate}
+              />
+            );
+          })}
+          <PagingBox data={data} />
+        </Container>
+      ) : (
+        <NoneReview>등록된 리뷰가 없습니다.</NoneReview>
+      )}
+    </>
   );
 };
 
@@ -48,4 +53,10 @@ const Container = styled.div`
   flex-direction: column;
   gap: 37px;
   margin-top: 53px;
+`;
+const NoneReview = styled.div`
+  display: flex;
+  justify-content: center;
+  margin: 50px 0px;
+  font-weight: 500;
 `;
