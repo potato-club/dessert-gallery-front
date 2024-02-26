@@ -8,10 +8,16 @@ import { useGetStoreInfo } from "../../../../hooks/useStore";
 import InfoHeader from "./Header";
 import InfoContent from "./Contents";
 import LoadingSpinner from "./LoadingSpinner";
+import { useSetRecoilState } from "recoil";
+import { modalBg } from "../../../../recoil/modalBg/atom";
+import { postChatRoom } from "../../../../apis/controller/chatPage";
+import { useUserState } from "../../../../hooks/useUser";
 
 const PostModal = ({ storeId, boardId }: any) => {
   const [comment, setComment] = useState<string>("");
   const [postCommentList, setPostCommentList] = useState<any[]>([]);
+  const setModalBgState = useSetRecoilState(modalBg);
+  const {isGuest} = useUserState();
 
   // 가게 정보 불러오기
   const { data: storeInfo } = useGetStoreInfo(storeId);
@@ -72,7 +78,17 @@ const PostModal = ({ storeId, boardId }: any) => {
             </InputWrapper>
             <ReservedBtn
               onClick={() => {
-                console.log("예약하러가는 라우팅");
+                console.log(storeInfo.id);
+                if(!isGuest){
+                  // 채팅페이지로 이동 전 모달 백그라운드 제거
+                  setModalBgState(false);
+                  // 현재 반영된 사항인지 알 수 없어 주석 처리
+                  // postChatRoom(storeInfo.id);
+                  window.location.href = "/myPage/chat";
+                }else{
+                  alert('로그인 후 이용해주세요.')
+                  window.location.href = "/login";
+                }
               }}
             >
               예약하러 가기

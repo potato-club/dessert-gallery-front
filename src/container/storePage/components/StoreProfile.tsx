@@ -5,9 +5,12 @@ import Tag from "../../../components/Tag";
 import { useFollowAction } from "../../../hooks/useFollowAction";
 import { useGetStoreInfo } from "../../../hooks/useStore";
 import { postChatRoom } from "../../../apis/controller/chatPage";
+import { useUserState } from "../../../hooks/useUser";
 
 const StoreProfile = () => {
   const router = useRouter();
+
+  const {isGuest} = useUserState();
 
   const storeId = parseInt(
     router.query.store ? router.query.store.toString() : "0"
@@ -77,9 +80,15 @@ const StoreProfile = () => {
                   fontSize="12px"
                   onClickHandler={() => {
                     console.log(storeId);
-                    // 현재 에러뜨는데 현호형이 변경사항 푸시하면 괜찮아진다고 함
-                    // postChatRoom(storeId);
-                    router.push("/myPage/chat");
+                    if(!isGuest){
+                      // 채팅페이지로 이동 전 모달 백그라운드 제거
+                      // 현재 반영된 사항인지 알 수 없어 주석 처리
+                      // postChatRoom(storeId);
+                      window.location.href = "/myPage/chat";
+                    }else{
+                      alert('로그인 후 이용해주세요.')
+                      window.location.href = "/login";
+                    }
                   }}
                 />
               </BtnList>
