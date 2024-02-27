@@ -7,6 +7,7 @@ import { useTokenService } from "../../../../hooks/useTokenService";
 import { getChatHistory } from "../../../../apis/controller/chatPage";
 import { userInfoType } from "../ChatPage";
 import { useRoomInfoState } from "../../../../recoil/chat/roomInfoStateAtom";
+import { deleteChatRoom } from "../../../../apis/controller/chatPage";
 
 function ChatRoom({
   userInfo,
@@ -98,7 +99,9 @@ function ChatRoom({
                   <PartnerNameHelper>님</PartnerNameHelper>
                 </PartnerName>
               </Profile>
-              <OptionButton>
+              <OptionButton
+                onClick={() => deleteChatRoom(roomInfoState.roomId)}
+              >
                 {[1, 2, 3].map((index) => (
                   <Dot key={index}></Dot>
                 ))}
