@@ -192,14 +192,25 @@ const PartnerName = styled.div`
   align-items: center;
   margin-left: 13px;
   height: 21px;
-  font-size: 14px;
   font-weight: bold;
+  @media screen and (min-width: 1920px) {
+    font-size: 18px;
+  }
+  @media screen and (max-width: 1919px) {
+    font-size: 14px;
+  }
 `;
 
 const PartnerNameHelper = styled.div`
   font-size: 10px;
   color: #828282;
   margin-left: 4px;
+  @media screen and (min-width: 1920px) {
+    font-size: 13px;
+  }
+  @media screen and (max-width: 1919px) {
+    font-size: 10px;
+  }
 `;
 
 const OptionButton = styled.button`
@@ -235,46 +246,59 @@ const Product = styled.div`
   align-items: center;
 `;
 
-const ProductImage = styled.div`
-  width: 28px;
-  height: 28px;
-  background-color: #fcf0e1;
-`;
+// const ProductImage = styled.div`
+//   width: 28px;
+//   height: 28px;
+//   background-color: #fcf0e1;
+// `;
 
-const ProductName = styled.div`
-  height: 15px;
-  max-width: 156px;
-  font-size: 10px;
-  margin: 0 10px;
-`;
+// const ProductName = styled.div`
+//   height: 15px;
+//   max-width: 156px;
+//   font-size: 10px;
+//   margin: 0 10px;
+// `;
 
-const ProductPrice = styled.div`
-  height: 15px;
-  font-size: 10px;
-  font-weight: bold;
-`;
+// const ProductPrice = styled.div`
+//   height: 15px;
+//   font-size: 10px;
+//   font-weight: bold;
+// `;
 
 const ButtonDiv = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  width: 202px;
+
+  @media screen and (min-width: 1920px) {
+    width: 269px;
+  }
+  @media screen and (max-width: 1919px) {
+    width: 202px;
+  }
 `;
 
 // 그림자 버전 버튼
 const Button = styled.button`
-  width: 92px;
-  height: 24px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 9px;
   font-weight: bold;
   border: none;
   border-radius: 6px;
   background-color: FCF6EE;
   box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.1);
   cursor: pointer;
+  @media screen and (min-width: 1920px) {
+    width: 122px;
+    height: 32px;
+    font-size: 12px;
+  }
+  @media screen and (max-width: 1919px) {
+    width: 92px;
+    height: 24px;
+    font-size: 9px;
+  }
 `;
 
 const Contents = styled.div`
@@ -305,26 +329,61 @@ const Bottom = styled.div`
   padding: 14px;
 `;
 
+const TextboxDiv = styled.div`
+  display: flex;
+  width: 100%;
+  height: 100%;
+  border: 2px solid #ff6f00;
+  padding: 10px 15px;
+  border-radius: 7px;
+`;
+
 const Textbox = styled.textarea`
   width: 100%;
   height: 100%;
-  padding: 19px 21px;
-  border: 2px solid #ff6f00;
+  border: none;
   border-radius: 7px;
   resize: none;
   outline: none;
-  font-size: 11px;
   font-family: noto-sans-cjk-kr, sans-serif;
   ::placeholder {
     color: #828282;
   }
+  @media screen and (min-width: 1920px) {
+    font-size: 14px;
+  }
+  @media screen and (max-width: 1919px) {
+    font-size: 11px;
+  }
+`;
+
+const SendButtonDiv = styled.div`
+  display: flex;
+  align-items: flex-end;
 `;
 
 const SendButton = styled.button`
-  width: 50px;
-  height: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   background-color: #dedede;
   border-radius: 7px;
+  margin-left: 15px;
+  border: none;
+  background-color: FCF6EE;
+  box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.1);
+  font-family: noto-sans-cjk-kr, sans-serif;
+  cursor: pointer;
+  @media screen and (min-width: 1920px) {
+    width: 67px;
+    height: 29px;
+    font-size: 12px;
+  }
+  @media screen and (max-width: 1919px) {
+    width: 50px;
+    height: 22px;
+    font-size: 9px;
+  }
 `;
 
 const NoItemAlert = styled.div`

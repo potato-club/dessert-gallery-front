@@ -50,18 +50,38 @@ const Profile = styled.div`
   border-radius: 50px;
   background-color: #fdc886;
   margin: 0 14px;
+
+  @media screen and (min-width: 1920px) {
+    width: 63px;
+    height: 63px;
+  }
+  @media screen and (max-width: 1919px) {
+    width: 47px;
+    height: 47px;
+  }
 `;
 
 const Message = styled.div<{ myChat: boolean }>`
   display: flex;
   flex-direction: column;
-  width: 196px;
-  padding: 7px 14px;
-  margin: 19px 0 15px 0;
+
   background-color: ${(props) => (props.myChat ? "#FDC886" : "#FCF0E1")};
-  font-size: 10px;
+  font-family: noto-sans-cjk-kr, sans-serif;
   border-radius: ${(props) =>
     props.myChat ? "15px 0 15px 15px" : "0 15px 15px 15px"};
+
+  @media screen and (min-width: 1920px) {
+    max-width: 261px;
+    font-size: 13px;
+    padding: 9px 18.5px;
+    margin: 25.5px 0 20px 0;
+  }
+  @media screen and (max-width: 1919px) {
+    max-width: 196px;
+    font-size: 10px;
+    padding: 7px 14px;
+    margin: 19px 0 15px 0;
+  }
 `;
 
 const MessageButton = styled.button`
@@ -87,4 +107,10 @@ const Timestamp = styled.div<{ myChat: boolean }>`
   margin: ${(props) => (props.myChat ? "0 9px 11px 0" : "0 0 11px 9px")};
   color: #828282;
   font-size: 9px;
+  @media screen and (min-width: 1920px) {
+    font-size: 12px;
+  }
+  @media screen and (max-width: 1919px) {
+    font-size: 9px;
+  }
 `;
