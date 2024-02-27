@@ -4,9 +4,13 @@ import styled, { css } from "styled-components";
 import Tag from "../../../components/Tag";
 import { useFollowAction } from "../../../hooks/useFollowAction";
 import { useGetStoreInfo } from "../../../hooks/useStore";
-import { getChatRoom, postChatRoom } from "../../../apis/controller/chatPage";
+import {
+  getChatRoom,
+  postChatRoom,
+  getUserInfo,
+} from "../../../apis/controller/chatPage";
 import { roomInfoType } from "../../myPage/chatPage/ChatPage";
-import { useRoomIdState } from "../../../recoil/chat/roomIdStateAtom";
+import { useRoomInfoState } from "../../../recoil/chat/roomInfoStateAtom";
 
 const StoreProfile = () => {
   const router = useRouter();
@@ -22,23 +26,31 @@ const StoreProfile = () => {
   const [isChatRoomExist, setIsChatRoomExist] = useState<{
     exist: boolean;
     roomId: number;
-  }>({ exist: false, roomId: 0 });
+    partnerName: string;
+  }>({ exist: false, roomId: 0, partnerName: "" });
 
-  const [roomIdState, setRoomIdState] = useRoomIdState();
+  const [roomInfoState, setRoomInfoState] = useRoomInfoState();
 
   const checkChatRoom = async () => {
     const chatRoom = await getChatRoom();
+    const userInfo = await getUserInfo();
     console.log(chatRoom);
     chatRoom.map((item: roomInfoType) => {
       if (data && data.name === item.storeName) {
         console.log("방이 존재합니다.", item.roomId);
-        setIsChatRoomExist({ exist: true, roomId: item.roomId });
+        const partnerName =
+          userInfo?.userRole === "MANAGER" ? item.customerName : item.storeName;
+        setIsChatRoomExist({
+          exist: true,
+          roomId: item.roomId,
+          partnerName: partnerName,
+        });
       }
     });
   };
 
   useEffect(() => {
-    setRoomIdState(0);
+    setRoomInfoState({ roomId: 0, partnerName: "" });
     checkChatRoom();
   }, [data]);
 
@@ -102,7 +114,10 @@ const StoreProfile = () => {
                   fontSize="12px"
                   onClickHandler={() => {
                     if (isChatRoomExist.exist) {
-                      setRoomIdState(isChatRoomExist.roomId);
+                      setRoomInfoState({
+                        roomId: isChatRoomExist.roomId,
+                        partnerName: isChatRoomExist.partnerName,
+                      });
                       router.push("/myPage/chat");
                     } else {
                       console.log(storeId);

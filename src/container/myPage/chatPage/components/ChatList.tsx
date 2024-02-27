@@ -3,7 +3,7 @@ import styled from "styled-components";
 import SerchImage from "../../../../../public/SVG/myPage/chatPage/searchImage.svg";
 import ChatListItem from "./ChatListItem";
 import { userInfoType } from "../ChatPage";
-import { useRoomIdState } from "../../../../recoil/chat/roomIdStateAtom";
+import { useRoomInfoState } from "../../../../recoil/chat/roomInfoStateAtom";
 
 type roomInfoType = {
   roomId: number;
@@ -15,14 +15,12 @@ type roomInfoType = {
 
 function ChatList({
   chatRoomList,
-  getPartnerNameState,
   userInfo,
 }: {
   chatRoomList?: roomInfoType[];
-  getPartnerNameState: (partnerName: string) => void;
   userInfo?: userInfoType;
 }) {
-  const [roomIdState, setRoomIdState] = useRoomIdState();
+  const [roomInfoState, setRoomInfoState] = useRoomInfoState();
 
   return (
     <Wrapper>
@@ -51,12 +49,13 @@ function ChatList({
               }
               thumbnailMessage={item.thumbnailMessage}
               onClickItem={() => {
-                setRoomIdState(item.roomId);
-                getPartnerNameState(
-                  userInfo?.userRole === "MANAGER"
-                    ? item.customerName
-                    : item.storeName
-                );
+                setRoomInfoState({
+                  roomId: item.roomId,
+                  partnerName:
+                    userInfo?.userRole === "MANAGER"
+                      ? item.customerName
+                      : item.storeName,
+                });
               }}
             />
           ))}

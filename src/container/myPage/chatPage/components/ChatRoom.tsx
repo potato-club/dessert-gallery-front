@@ -6,7 +6,7 @@ import * as StompJs from "@stomp/stompjs";
 import { useTokenService } from "../../../../hooks/useTokenService";
 import { getChatHistory } from "../../../../apis/controller/chatPage";
 import { userInfoType } from "../ChatPage";
-import { useRoomIdState } from "../../../../recoil/chat/roomIdStateAtom";
+import { useRoomInfoState } from "../../../../recoil/chat/roomInfoStateAtom";
 
 function ChatRoom({
   userInfo,
@@ -17,6 +17,7 @@ function ChatRoom({
 }) {
   const [roomIdState, setRoomIdState] = useRoomIdState();
 
+  const [roomInfoState, setRoomInfoState] = useRoomInfoState();
   const { getAccessToken } = useTokenService();
   const client = new StompJs.Client({
     brokerURL: "wss://api.dessert-gallery.site/ws/chat/websocket",
@@ -59,8 +60,8 @@ function ChatRoom({
       destination: "/pub/chat",
       // skipContentLengthHeader: true,
       body: JSON.stringify({
-        roomId: roomIdState,
         message: "테스트 메세지",
+        roomId: roomInfoState.roomId,
         messageType: "CHAT",
         sender: "최준형카카오",
       }),
@@ -74,18 +75,17 @@ function ChatRoom({
   };
 
   useEffect(() => {
-    console.log(roomIdState);
+    console.log(roomInfoState.roomId);
     messageCheckHandler();
     connectHandler();
     return () => {
-      console.log(roomIdState);
       client.deactivate();
     };
-  }, [roomIdState]);
+  }, [roomInfoState]);
 
   return (
     <Wrapper>
-      {roomIdState === undefined ? (
+      {roomInfoState.roomId === 0 ? (
         <NoItemAlert>선택된 채팅방이 없습니다.</NoItemAlert>
       ) : (
         <>
@@ -93,10 +93,10 @@ function ChatRoom({
             <HeaderTop>
               <Profile>
                 <ProfileImage />
-                <UserName>
-                  {partnerName}
-                  <UserNameHelper>님</UserNameHelper>
-                </UserName>
+                <PartnerName>
+                  {roomInfoState.partnerName}
+                  <PartnerNameHelper>님</PartnerNameHelper>
+                </PartnerName>
               </Profile>
               <OptionButton>
                 {[1, 2, 3].map((index) => (
@@ -184,7 +184,7 @@ const ProfileImage = styled.div`
   border-radius: 50px;
 `;
 
-const UserName = styled.div`
+const PartnerName = styled.div`
   display: flex;
   align-items: center;
   margin-left: 13px;
@@ -193,7 +193,7 @@ const UserName = styled.div`
   font-weight: bold;
 `;
 
-const UserNameHelper = styled.div`
+const PartnerNameHelper = styled.div`
   font-size: 10px;
   color: #828282;
   margin-left: 4px;

@@ -22,7 +22,6 @@ export type roomInfoType = {
 function ChatPage() {
   const [chatRoomList, setChatRoomList] = useState<roomInfoType[]>();
   const [userInfoState, setUserInfoState] = useState<userInfoType>();
-  const [partnerNameState, setPartnerNameState] = useState<string>();
 
   const fetchChatRoom = async () => {
     const chatRoom = await getChatRoom();
@@ -37,9 +36,6 @@ function ChatPage() {
     setUserInfoState(userInfo);
   };
 
-  const getPartnerNameState = (partnerName: string) => {
-    setPartnerNameState(partnerName);
-  };
 
   useEffect(() => {
     fetchChatRoom();
@@ -51,10 +47,9 @@ function ChatPage() {
       <Wrapper>
         <ChatList
           chatRoomList={chatRoomList}
-          getPartnerNameState={getPartnerNameState}
           userInfo={userInfoState}
         />
-        <ChatRoom userInfo={userInfoState} partnerName={partnerNameState} />
+        <ChatRoom userInfo={userInfoState}  />
       </Wrapper>
     </Layout>
   );
