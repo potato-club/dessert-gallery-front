@@ -20,44 +20,47 @@ function ChatRoom({
 
   const [roomInfoState, setRoomInfoState] = useRoomInfoState();
   const { getAccessToken } = useTokenService();
-  const client = new StompJs.Client({
-    brokerURL: "wss://api.dessert-gallery.site/ws/chat/websocket",
-    debug: function (str) {
-      console.log(str);
-    },
-    // webSocketFactory: () => {
-    //   return new SockJS(
-    //     "https://api.dessert-gallery.site/ws/chat"
-    //   ) as WebSocket;
-    // },
-    connectHeaders: { Authorization: getAccessToken() },
-    reconnectDelay: 5000, //자동 재연결
-    heartbeatIncoming: 4000,
-    heartbeatOutgoing: 4000,
-  });
-  client.onConnect = function (frame) {
-    client.subscribe(`/sub/${roomIdState}`, (message) => {
-      console.log(message);
-    });
-    console.log("연결성공");
-  };
-  client.onWebSocketError = (err) => {
-    console.log("웹소켓 에러");
-    console.log(err);
-  };
-  client.onStompError = function (frame) {
-    console.log("브로커 에러: ", frame.headers["message"]);
-    console.log("추가 정보: " + frame.body);
-  };
+
+  const clientRef = useRef<any>({});
 
   const connectHandler = () => {
     if (window !== undefined) {
-      client.activate();
+      clientRef.current = new StompJs.Client({
+        brokerURL: "wss://api.dessert-gallery.site/ws/chat/websocket",
+        debug: function (str) {
+          console.log(str);
+        },
+        // webSocketFactory: () => {
+        //   return new SockJS(
+        //     "https://api.dessert-gallery.site/ws/chat"
+        //   ) as WebSocket;
+        // },
+        connectHeaders: { Authorization: getAccessToken() },
+        reconnectDelay: 5000, //자동 재연결
+        heartbeatIncoming: 4000,
+        heartbeatOutgoing: 4000,
+      });
+      clientRef.current.onConnect = function (frame: any) {
+        clientRef.current.subscribe(
+          `/sub/${roomInfoState.roomId}`,
+          messageCheckHandler
+        );
+        console.log("연결성공", frame);
+      };
+      clientRef.current.onWebSocketError = (err: any) => {
+        console.log("웹소켓 에러");
+        console.log(err);
+      };
+      clientRef.current.onStompError = function (frame: any) {
+        console.log("브로커 에러: ", frame.headers["message"]);
+        console.log("추가 정보: " + frame.body);
+      };
+      clientRef.current.activate();
     }
   };
 
-  const messageHandler = () => {
-    client.publish({
+  const messageHandler = (message: string) => {
+    clientRef.current.publish({
       destination: "/pub/chat",
       // skipContentLengthHeader: true,
       body: JSON.stringify({
@@ -80,7 +83,7 @@ function ChatRoom({
     messageCheckHandler();
     connectHandler();
     return () => {
-      client.deactivate();
+      clientRef.current.deactivate();
     };
   }, [roomInfoState]);
 
