@@ -8,20 +8,26 @@ import { getChatHistory } from "../../../../apis/controller/chatPage";
 import { userInfoType } from "../ChatPage";
 import { useRoomInfoState } from "../../../../recoil/chat/roomInfoStateAtom";
 import { deleteChatRoom } from "../../../../apis/controller/chatPage";
+import { useForm } from "react-hook-form";
 
-function ChatRoom({
-  userInfo,
-  partnerName,
-}: {
-  userInfo?: userInfoType;
-  partnerName?: string;
-}) {
-  const [roomIdState, setRoomIdState] = useRoomIdState();
+type messageObjectType = {
+  roomId: number;
+  sender: string;
+  message: string;
+  messageType: string;
+  dateTime: string;
+};
 
+function ChatRoom({ userInfo }: { userInfo?: userInfoType }) {
   const [roomInfoState, setRoomInfoState] = useRoomInfoState();
+  const [chatHistoryState, setChatHistoryState] = useState<messageObjectType[]>(
+    []
+  );
   const { getAccessToken } = useTokenService();
 
   const clientRef = useRef<any>({});
+
+  const { register, getValues, setValue, reset } = useForm();
 
   const connectHandler = () => {
     if (window !== undefined) {
@@ -64,18 +70,34 @@ function ChatRoom({
       destination: "/pub/chat",
       // skipContentLengthHeader: true,
       body: JSON.stringify({
-        message: "테스트 메세지",
         roomId: roomInfoState.roomId,
+        message: message,
         messageType: "CHAT",
-        sender: "최준형카카오",
+        sender: userInfo?.nickname,
       }),
       headers: { Authorization: getAccessToken() },
     });
   };
 
+  const messageReceiveHandler = (messageResponse: any) => {
+    const messageBody: messageObjectType = JSON.parse(messageResponse.body);
+    const { roomId, sender, message, messageType, dateTime } = messageBody;
+    const newChat = {
+      roomId,
+      sender,
+      message,
+      messageType,
+      dateTime,
+    };
+    console.log(newChat);
+
+    setChatHistoryState([...chatHistoryState, newChat]);
+  };
+
   const messageCheckHandler = async () => {
-    const chatHistory = await getChatHistory(5);
+    const chatHistory = await getChatHistory(roomInfoState.roomId);
     console.log(chatHistory);
+    setChatHistoryState(chatHistory);
   };
 
   useEffect(() => {
@@ -112,32 +134,49 @@ function ChatRoom({
             </HeaderTop>
             <HeaderBottom>
               <Product>
-                <ProductImage />
+                {/* <ProductImage />
                 <ProductName>상큼오독 산딸기</ProductName>
-                <ProductPrice>34,000원</ProductPrice>
+                <ProductPrice>34,000원</ProductPrice> */}
               </Product>
               <ButtonDiv>
                 <Button onClick={() => {}}>예약 확정</Button>
-                <Button onClick={messageHandler}>후기 작성</Button>
+                <Button>후기 작성</Button>
               </ButtonDiv>
             </HeaderBottom>
           </Header>
           <Contents>
-            {/* <ChatItem
-              myChat={false}
-              message={`${roomIdState} 번 방의 채팅 내역입니다.`}
-              timestamp={"2023-11-26T20:15:10.918Z"}
-            ></ChatItem> */}
-            <ChatItem
-              myChat={true}
-              message={`${roomIdState} 번 방의 채팅 내역입니다.`}
-              timestamp={"2023-11-26T20:15:10.918Z"}
-            ></ChatItem>
+            {chatHistoryState.map((item: any, index) => (
+              <ChatItem
+                key={index}
+                myChat={userInfo?.nickname === item.sender}
+                message={item.message}
+                timestamp={"2023-11-26T20:15:10.918Z"}
+              ></ChatItem>
+            ))}
           </Contents>
           <Bottom>
-            <Textbox placeholder="메세지를 입력해주세요">
-              {/* <SendButton>123</SendButton> */}
-            </Textbox>
+            <TextboxDiv>
+              <Textbox
+                placeholder="메세지를 입력해주세요"
+                onKeyDown={(event) => {
+                  if (event.key === "Enter") {
+                    messageHandler(getValues("message"));
+                    setValue("message", "");
+                  }
+                }}
+                {...register("message")}
+              ></Textbox>
+              <SendButtonDiv>
+                <SendButton
+                  onClick={() => {
+                    messageHandler(getValues("message"));
+                    setValue("message", "");
+                  }}
+                >
+                  전송
+                </SendButton>
+              </SendButtonDiv>
+            </TextboxDiv>
           </Bottom>
         </>
       )}
