@@ -5,19 +5,19 @@ import SlideImage from "../../../../components/SlideImage/SlideImage";
 import { useGetDetailBoard } from "../../../../hooks/useBoard";
 import { postBoardComment } from "../../../../apis/controller/detailStore";
 import { useGetStoreInfo } from "../../../../hooks/useStore";
-import { useRouter } from "next/router";
 import InfoHeader from "./Header";
 import InfoContent from "./Contents";
-const PostModal = ({ boardId }: { boardId: number }) => {
+import LoadingSpinner from "./LoadingSpinner";
+
+const PostModal = ({ storeId, boardId }: any) => {
   const [comment, setComment] = useState<string>("");
   const [postCommentList, setPostCommentList] = useState<any[]>([]);
 
   // 가게 정보 불러오기
-  const router = useRouter();
-  const { data: storeInfo } = useGetStoreInfo(Number(router.query.store));
+  const { data: storeInfo } = useGetStoreInfo(storeId);
 
   // 세부 게시물 불러오기
-  const { data: detailPoster } = useGetDetailBoard({}, boardId);
+  const { data: detailPoster } = useGetDetailBoard(boardId);
 
   // 모달 댓글 작성하기
   const submit = async (e: any) => {
@@ -35,17 +35,27 @@ const PostModal = ({ boardId }: { boardId: number }) => {
   return (
     <ModalWrapper>
       <Container>
-        {detailPoster && (
+        {detailPoster ? (
           <SlideImage
             srcArray={detailPoster.images.map((item: any) => {
               return item.fileUrl;
             })}
             width={692}
             height={692}
+            moveBtnType="show"
+            dotIndicator={true}
           />
+        ) : (
+          <LoadingDiv>
+            <LoadingSpinner width={50} height={50} borderWidth={3} />
+          </LoadingDiv>
         )}
         <PostInfo>
-          <InfoHeader storeInfo={storeInfo} />
+          <InfoHeader
+            storeInfo={storeInfo}
+            detailPoster={detailPoster}
+            boardId={boardId}
+          />
           <InfoContent
             address={storeInfo?.address}
             boardId={boardId}
@@ -125,4 +135,10 @@ const ReservedBtn = styled.div`
     background-color: #ff6f00;
     cursor: pointer;
   }
+`;
+const LoadingDiv = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
 `;

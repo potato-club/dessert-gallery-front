@@ -14,17 +14,66 @@ interface StoreInfoType {
     info: string;
     address: string;
   };
+  detailPoster: {
+    content: string;
+    images: any;
+    tags: string[];
+    title: string;
+    viewCount: number;
+    commentCount: number;
+  };
+  boardId: number;
 }
-const index = ({ storeInfo }: StoreInfoType) => {
+const ModalHeader = ({ storeInfo, detailPoster, boardId }: StoreInfoType) => {
   const [menuIconClick, setMenuIconClick] = useState<boolean>(false);
 
   const router = useRouter();
   const modalBgState = useSetRecoilState(modalBg);
+
+  const kakaoButton = () => {
+    if (window.Kakao) {
+      const kakao = window.Kakao;
+
+      if (!kakao.isInitialized()) {
+        kakao.init(process.env.NEXT_PUBLIC_SHARE_KEY);
+      }
+
+      const templateArgs = detailPoster.images.reduce(
+        (acc: any, img: any, idx: any) => {
+          if (idx >= 3) {
+            acc.EXTRA_NUM =
+              detailPoster.images.length - 3 > 4
+                ? 3
+                : detailPoster.images.length - 3;
+          } else {
+            acc[`BOARD_URL${idx + 1}`] = img.fileUrl;
+          }
+          return acc;
+        },
+        {
+          REGI_WEB_DOMAIN: `http://localhost:3000`,
+          REDIRECT_PATH: `galleryBoard/${storeInfo.id}?boardId=${boardId}`,
+          PROFILE_IMG: storeInfo.storeImage.fileUrl,
+          BOARD_HASHTAG: detailPoster.tags.join(" "),
+          BOARD_TITLE: detailPoster.title,
+          STORE_NAME: storeInfo.name,
+          COMMENT_COUNT: detailPoster.commentCount,
+          VIEW_COUNT: detailPoster.viewCount,
+        }
+      );
+
+      console.log(templateArgs);
+      kakao.Share.sendCustom({
+        templateId: 104258,
+        templateArgs: templateArgs,
+      });
+    }
+  };
   const storePageModalOption = [
     {
-      title: "공유하기",
+      title: "카카오 공유하기",
       onClickHandler: () => {
-        console.log(`MenuBox click 공유하기`);
+        kakaoButton();
       },
     },
     {
@@ -37,32 +86,33 @@ const index = ({ storeInfo }: StoreInfoType) => {
   ];
   return (
     <Container>
-      <StoreInfo>
-        <StoreProfile src={storeInfo.storeImage.fileUrl} />
-        <div>
-          <StoreName>{storeInfo.name}</StoreName>
-          <SubCategory>{storeInfo.info || "default 값"}</SubCategory>
-        </div>
-      </StoreInfo>
+      {storeInfo && (
+        <StoreInfo>
+          <StoreProfile src={storeInfo.storeImage.fileUrl} />
+          <div>
+            <StoreName>{storeInfo.name}</StoreName>
+            <SubCategory>{storeInfo.info || "default 값"}</SubCategory>
+          </div>
+        </StoreInfo>
+      )}
+
       <div>
         <BoxPosition>
           {menuIconClick && <ToggleOptionBox contents={storePageModalOption} />}
         </BoxPosition>
-        <MenuToggleBtn>
-          <MenuIcon
-            width="5px"
-            height="13px"
-            onClick={() => {
-              setMenuIconClick((prev) => !prev);
-            }}
-          />
+        <MenuToggleBtn
+          onClick={() => {
+            setMenuIconClick((prev) => !prev);
+          }}
+        >
+          <MenuIcon width="5px" height="13px" />
         </MenuToggleBtn>
       </div>
     </Container>
   );
 };
 
-export default index;
+export default ModalHeader;
 
 const Container = styled.div`
   position: sticky;
@@ -73,9 +123,6 @@ const Container = styled.div`
   padding: 20px 29px;
   width: 100%;
   border-bottom: 2px solid #fdc886;
-  svg {
-    cursor: pointer;
-  }
 `;
 const StoreInfo = styled.div`
   display: flex;
@@ -85,7 +132,10 @@ const StoreInfo = styled.div`
 `;
 const MenuToggleBtn = styled.button`
   background-color: transparent;
+  padding: 0px;
+  width: 17px;
   border: none;
+  cursor: pointer;
 `;
 const StoreProfile = styled.img`
   width: 65px;

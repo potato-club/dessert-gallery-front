@@ -46,15 +46,18 @@ const FunctionBox = styled.div`
   width: 212px;
   border-radius: 10px;
 `;
-const Func = styled.div`
+
+const Func = styled.button`
+  width: 212px;
   font-size: 15px;
-  padding: 23px 65px;
+  padding: 23px 0px;
   color: #828282;
   font-weight: 500;
   line-height: normal;
+  background-color: transparent;
+  border: transparent;
   &:hover {
     color: #000;
     font-weight: 700;
-    cursor: pointer;
   }
 `;

@@ -43,6 +43,12 @@ class MyDocument extends Document {
             defer
             src={`//dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.NEXT_PUBLIC_KAKAO_MAPS_API_KEY}&autoload=false`}
           />
+          <script
+            type="text/javascript"
+            async
+            defer
+            src="https://t1.kakaocdn.net/kakao_js_sdk/2.6.0/kakao.min.js"
+          />
 
           <script
             dangerouslySetInnerHTML={{

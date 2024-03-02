@@ -8,6 +8,12 @@ import Header from "../src/components/Header";
 import { useRouter } from "next/router";
 import MyPageLayout from "../src/container/myPage/components/MyPageLayout";
 
+declare global {
+  interface Window {
+    Kakao: any;
+  }
+}
+
 function MyApp({ Component, pageProps }: AppProps) {
   const queryClient = useState(() => new QueryClient())[0];
 
