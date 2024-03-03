@@ -95,13 +95,18 @@ function ChatRoom({ userInfo }: { userInfo?: userInfoType }) {
   };
 
   const messageCheckHandler = async () => {
-    const chatHistory = await getChatHistory(roomInfoState.roomId);
-    console.log(chatHistory);
-    setChatHistoryState(chatHistory);
+    if (roomInfoState.roomId !== 0) {
+      const chatHistory = await getChatHistory(roomInfoState.roomId);
+      console.log("채팅 목록", chatHistory.chatList);
+      console.log("이전 채팅 날짜", chatHistory.lastDatetime);
+      setChatHistoryState(chatHistory.chatList);
+    }
   };
 
   useEffect(() => {
     console.log(roomInfoState.roomId);
+    console.log(roomInfoState);
+
     messageCheckHandler();
     connectHandler();
     return () => {
@@ -111,7 +116,7 @@ function ChatRoom({ userInfo }: { userInfo?: userInfoType }) {
 
   return (
     <Wrapper>
-      {roomInfoState.roomId !== 0 ? (
+      {roomInfoState.roomId === 0 ? (
         <NoItemAlert>선택된 채팅방이 없습니다.</NoItemAlert>
       ) : (
         <>
@@ -125,7 +130,7 @@ function ChatRoom({ userInfo }: { userInfo?: userInfoType }) {
                 </PartnerName>
               </Profile>
               <OptionButton
-                onClick={() => deleteChatRoom(roomInfoState.roomId)}
+              // onClick={() => deleteChatRoom(roomInfoState.roomId)}
               >
                 {[1, 2, 3].map((index) => (
                   <Dot key={index}></Dot>
@@ -145,7 +150,7 @@ function ChatRoom({ userInfo }: { userInfo?: userInfoType }) {
             </HeaderBottom>
           </Header>
           <Contents>
-            {chatHistoryState.map((item: any, index) => (
+            {chatHistoryState?.map((item: any, index) => (
               <ChatItem
                 key={index}
                 myChat={userInfo?.nickname === item.sender}

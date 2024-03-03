@@ -23,11 +23,11 @@ function ChatPage() {
   const [chatRoomList, setChatRoomList] = useState<roomInfoType[]>();
   const [userInfoState, setUserInfoState] = useState<userInfoType>();
 
-  // const fetchChatRoom = async () => {
-  //   const chatRoom = await getChatRoom();
-  //   console.log(chatRoom);
-  //   setChatRoomList(chatRoom);
-  // };
+  const fetchChatRoom = async () => {
+    const chatRoom = await getChatRoom();
+    console.log(chatRoom);
+    setChatRoomList(chatRoom.chatList);
+  };
 
   const fetchUserInfo = async () => {
     const userInfo = await getUserInfo();
@@ -37,7 +37,7 @@ function ChatPage() {
   };
 
   useEffect(() => {
-    // fetchChatRoom();
+    fetchChatRoom();
     fetchUserInfo();
   }, []);
 

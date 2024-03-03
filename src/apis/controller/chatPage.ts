@@ -25,7 +25,14 @@ export const getChatRoom = async () => {
 };
 
 export const getChatHistory = async (roomId: number) => {
-  const response = await sendApi.get(`/mypage/room/${roomId}`);
+  var today = new Date();
+
+  var year = today.getFullYear();
+  var month = ("0" + (today.getMonth() + 1)).slice(-2);
+  var day = ("0" + today.getDate()).slice(-2);
+
+  var dateTime = year + "-" + month + "-" + day;
+  const response = await sendApi.get(`/mypage/room/${roomId}?time=${dateTime}`);
   return response.data;
 };
 

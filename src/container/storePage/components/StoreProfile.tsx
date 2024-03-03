@@ -32,31 +32,33 @@ const StoreProfile = () => {
   const [roomInfoState, setRoomInfoState] = useRoomInfoState();
 
   const checkChatRoom = async () => {
-    // const chatRoom = await getChatRoom();
+    const chatRoom = await getChatRoom();
     const userInfo = await getUserInfo();
-    // console.log(chatRoom);
+    console.log(chatRoom);
 
-    // console.log(chatRoom.chatList);
-    // console.log(chatRoom.maxpage);
-    // if (chatRoom.chatList) {
-    //   chatRoom.map((item: roomInfoType) => {
-    //     if (data && data.name === item.storeName) {
-    //       console.log("방이 존재합니다.", item.roomId);
-    //       const partnerName =
-    //         userInfo?.userRole === "MANAGER"
-    //           ? item.customerName
-    //           : item.storeName;
-    //       setIsChatRoomExist({
-    //         exist: true,
-    //         roomId: item.roomId,
-    //         partnerName: partnerName,
-    //       });
-    //     }
-    //   });
-    // }
+    console.log(chatRoom.chatList);
+    console.log(chatRoom.maxpage);
+    if (chatRoom.chatList) {
+      chatRoom.chatList.map((item: roomInfoType) => {
+        if (data && data.name === item.storeName) {
+          console.log("방이 존재합니다.", item.roomId);
+          const partnerName =
+            userInfo?.userRole === "MANAGER"
+              ? item.customerName
+              : item.storeName;
+          setIsChatRoomExist({
+            exist: true,
+            roomId: item.roomId,
+            partnerName: partnerName,
+          });
+        }
+      });
+    }
   };
 
   useEffect(() => {
+    console.log(storeId);
+
     setRoomInfoState({ roomId: 0, partnerName: "" });
     checkChatRoom();
   }, [data]);
