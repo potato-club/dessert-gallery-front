@@ -111,7 +111,7 @@ function ChatRoom({ userInfo }: { userInfo?: userInfoType }) {
 
   return (
     <Wrapper>
-      {roomInfoState.roomId === 0 ? (
+      {roomInfoState.roomId !== 0 ? (
         <NoItemAlert>선택된 채팅방이 없습니다.</NoItemAlert>
       ) : (
         <>
