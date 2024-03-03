@@ -1,24 +1,20 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import ModalWrapper from "../../../../components/ModalWrapper";
 import SlideImage from "../../../../components/SlideImage/SlideImage";
 import { useGetDetailBoard } from "../../../../hooks/useBoard";
 import { postBoardComment } from "../../../../apis/controller/detailStore";
-import { useGetStoreInfo } from "../../../../hooks/useStore";
 import InfoHeader from "./Header";
 import InfoContent from "./Contents";
 import LoadingSpinner from "./LoadingSpinner";
 
-const PostModal = ({ storeId, boardId }: any) => {
+const PostModal = ({ boardId }: any) => {
   const [comment, setComment] = useState<string>("");
   const [postCommentList, setPostCommentList] = useState<any[]>([]);
-
-  // 가게 정보 불러오기
-  const { data: storeInfo } = useGetStoreInfo(storeId);
-
   // 세부 게시물 불러오기
   const { data: detailPoster } = useGetDetailBoard(boardId);
 
+  console.log(detailPoster);
   // 모달 댓글 작성하기
   const submit = async (e: any) => {
     await e.preventDefault();
@@ -52,12 +48,12 @@ const PostModal = ({ storeId, boardId }: any) => {
         )}
         <PostInfo>
           <InfoHeader
-            storeInfo={storeInfo}
+            storeInfo={detailPoster?.storeInfo}
             detailPoster={detailPoster}
             boardId={boardId}
           />
           <InfoContent
-            address={storeInfo?.address}
+            address={detailPoster?.storeInfo.address}
             boardId={boardId}
             detailPoster={detailPoster}
             postCommentList={postCommentList}
