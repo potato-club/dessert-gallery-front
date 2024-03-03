@@ -35,13 +35,13 @@ const BookmarkList = () => {
               />
             );
           })}
+        <IoDiv ref={ref}></IoDiv>
+        {isLoad && (
+          <LoadingDiv>
+            <LoadingSpinner width={40} height={40} borderWidth={2} />
+          </LoadingDiv>
+        )}
       </ItemList>
-      <IoDiv ref={ref}></IoDiv>
-      {isLoad && (
-        <LoadingDiv>
-          <LoadingSpinner width={40} height={40} borderWidth={2} />
-        </LoadingDiv>
-      )}
     </Container>
   );
 };
