@@ -25,7 +25,7 @@ const AnnounceList = ({ storeId }: any) => {
         <AnnounceItem
           content="등록된 공지사항이 없습니다."
           createdDate=""
-          type="없음"
+          type="공지사항"
           spreadClick={spreadClick}
           title="등록된 공지사항이 없습니다."
           setSpreadClick={setSpreadClick}

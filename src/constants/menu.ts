@@ -42,10 +42,6 @@ export const menuList = Object.freeze({
       title: "게시물 관리",
       domain: "/myPage/post",
     },
-    {
-      title: "팔로우 관리",
-      domain: "/myPage/follow",
-    },
   ],
   default: [
     {

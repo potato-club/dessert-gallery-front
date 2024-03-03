@@ -1,40 +1,39 @@
 import React from "react";
 import styled from "styled-components";
-import { useInfinityMyBookmark } from "../../../../hooks/useUser";
-import BookmarkItem from "./BookmarkItem";
-import { useInfinityScrollLoading } from "../../../../hooks/useInfinityScroll";
+import FollowItem from "./FollowItem";
 import LoadingSpinner from "../../../storePage/components/Modal/LoadingSpinner";
+import { useInfinityGetFollow } from "../../../../hooks/useFollowAction";
+import { useInfinityScrollLoading } from "../../../../hooks/useInfinityScroll";
 
-interface BookmarkListType {
-  boardId: number;
-  thumbnail: any;
-  createData: string;
+interface FollowListType {
+  storeId: number;
+  storeName: string;
+  fileName: string;
+  fileUrl: string;
 }
 
-const BookmarkList = () => {
-  const { data, isLoading, hasNextPage, fetchNextPage } =
-    useInfinityMyBookmark();
-
+const FollowList = () => {
+  const { data, fetchNextPage, hasNextPage, isLoading, refetch } =
+    useInfinityGetFollow();
   const { pageList, isLoad, ref } = useInfinityScrollLoading({
     data: data,
     isLoading,
     hasNextPage,
     fetchNextPage,
   });
-  console.log(pageList);
+
   return (
     <Container>
       <ItemList>
         {pageList &&
-          pageList.map((item: BookmarkListType) => {
-            return (
-              <BookmarkItem
-                key={item.boardId}
-                boardId={item.boardId}
-                thumbnail={item.thumbnail}
-              />
-            );
-          })}
+          pageList.map((item: FollowListType) => (
+            <FollowItem
+              key={item.storeId}
+              storeName={item.storeName}
+              fileUrl={item.fileUrl}
+              storeId={item.storeId}
+            />
+          ))}
         <IoDiv ref={ref}></IoDiv>
         {isLoad && (
           <LoadingDiv>
@@ -46,7 +45,7 @@ const BookmarkList = () => {
   );
 };
 
-export default BookmarkList;
+export default FollowList;
 
 const Container = styled.div`
   display: flex;
@@ -59,9 +58,7 @@ const Container = styled.div`
     width: 520px;
   }
 `;
-const IoDiv = styled.div`
-  margin-top: 30px;
-`;
+const IoDiv = styled.div``;
 const LoadingDiv = styled.div`
   width: 100%;
   margin-top: 10px;
@@ -71,7 +68,10 @@ const LoadingDiv = styled.div`
 `;
 const ItemList = styled.div`
   display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 40px;
+  flex-direction: column;
+  max-height: 580px;
+  overflow-y: scroll;
+  &::-webkit-scrollbar {
+    display: none;
+  }
 `;

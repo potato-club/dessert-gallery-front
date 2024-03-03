@@ -51,7 +51,7 @@ export const useGetDetailBoard = (boardId: number) => {
 };
 
 export const useGetReviewList = ({ page, storeId, options }: any) => {
-  const { data, refetch } = useQuery(
+  const { data, refetch, isLoading } = useQuery(
     ["review", storeId],
     () => getStoreReview({ storeId, page }),
     {
@@ -59,7 +59,7 @@ export const useGetReviewList = ({ page, storeId, options }: any) => {
     }
   );
 
-  return { data, refetch };
+  return { data, refetch, isLoading };
 };
 export const useGetStoreAnnounce = ({ storeId, options }: any) => {
   const { data: announceData, refetch } = useQuery(

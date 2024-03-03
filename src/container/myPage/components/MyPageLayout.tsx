@@ -47,7 +47,7 @@ const MyPageLayout = ({ ...props }) => {
       if (onlyManager.includes(router.pathname)) router.push("/myPage");
     }
     if (userInfo && userInfo.userRole === "MANAGER") {
-      const onlyUser = ["/myPage/review", "/myPage/bookmark"];
+      const onlyUser = ["/myPage/review", "/myPage/bookmark", "/myPage/follow"];
       if (onlyUser.includes(router.pathname)) router.push("/myPage");
     }
   }, [userInfo, router]);
