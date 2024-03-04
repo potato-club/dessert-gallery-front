@@ -1,21 +1,20 @@
 import React from "react";
 import styled from "styled-components";
-import { useInfinityMyBookmark } from "../../../../hooks/useUser";
-import BookmarkItem from "./BookmarkItem";
+import { useInfinityGetBlockedList } from "../../../../hooks/useFollowAction";
 import { useInfinityScrollLoading } from "../../../../hooks/useInfinityScroll";
 import LoadingSpinner from "../../../storePage/components/Modal/LoadingSpinner";
 import NoneListBox from "../../components/NoneListBox";
+import BlockedItem from "./BlockedItem";
 
-interface BookmarkListType {
-  boardId: number;
-  thumbnail: any;
-  createData: string;
+interface BlockedListType {
+  userName: string;
+  fileName: string;
+  fileUrl: string;
 }
 
-const BookmarkList = () => {
-  const { data, isLoading, hasNextPage, fetchNextPage } =
-    useInfinityMyBookmark();
-
+const BlockedList = () => {
+  const { data, fetchNextPage, hasNextPage, isLoading, refetch } =
+    useInfinityGetBlockedList();
   const { pageList, isLoad, ref } = useInfinityScrollLoading({
     data: data,
     isLoading,
@@ -27,17 +26,15 @@ const BookmarkList = () => {
     <Container>
       <ItemList>
         {pageList && pageList.length ? (
-          pageList.map((item: BookmarkListType) => {
-            return (
-              <BookmarkItem
-                key={item.boardId}
-                boardId={item.boardId}
-                thumbnail={item.thumbnail}
-              />
-            );
-          })
+          pageList.map((item: BlockedListType) => (
+            <BlockedItem
+              key={item.userName}
+              userName={item.userName}
+              fileUrl={item.fileUrl}
+            />
+          ))
         ) : (
-          <NoneListBox content="북마크한 게시물이 없습니다." />
+          <NoneListBox content="차단된 계정이 없습니다." />
         )}
         <IoDiv ref={ref}></IoDiv>
         {isLoad && (
@@ -50,7 +47,7 @@ const BookmarkList = () => {
   );
 };
 
-export default BookmarkList;
+export default BlockedList;
 
 const Container = styled.div`
   display: flex;
@@ -63,9 +60,7 @@ const Container = styled.div`
     width: 520px;
   }
 `;
-const IoDiv = styled.div`
-  margin-top: 30px;
-`;
+const IoDiv = styled.div``;
 const LoadingDiv = styled.div`
   width: 100%;
   margin-top: 10px;
@@ -75,7 +70,10 @@ const LoadingDiv = styled.div`
 `;
 const ItemList = styled.div`
   display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 40px;
+  flex-direction: column;
+  max-height: 580px;
+  overflow-y: scroll;
+  &::-webkit-scrollbar {
+    display: none;
+  }
 `;

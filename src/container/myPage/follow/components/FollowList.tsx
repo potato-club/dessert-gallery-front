@@ -4,6 +4,7 @@ import FollowItem from "./FollowItem";
 import LoadingSpinner from "../../../storePage/components/Modal/LoadingSpinner";
 import { useInfinityGetFollow } from "../../../../hooks/useFollowAction";
 import { useInfinityScrollLoading } from "../../../../hooks/useInfinityScroll";
+import NoneListBox from "../../components/NoneListBox";
 
 interface FollowListType {
   storeId: number;
@@ -25,7 +26,7 @@ const FollowList = () => {
   return (
     <Container>
       <ItemList>
-        {pageList &&
+        {pageList && pageList.length ? (
           pageList.map((item: FollowListType) => (
             <FollowItem
               key={item.storeId}
@@ -33,7 +34,10 @@ const FollowList = () => {
               fileUrl={item.fileUrl}
               storeId={item.storeId}
             />
-          ))}
+          ))
+        ) : (
+          <NoneListBox content="팔로우한 가게가 없습니다." />
+        )}
         <IoDiv ref={ref}></IoDiv>
         {isLoad && (
           <LoadingDiv>

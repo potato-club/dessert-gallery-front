@@ -42,6 +42,10 @@ export const menuList = Object.freeze({
       title: "게시물 관리",
       domain: "/myPage/post",
     },
+    {
+      title: "차단된 계정",
+      domain: "/myPage/blocked",
+    },
   ],
   default: [
     {
