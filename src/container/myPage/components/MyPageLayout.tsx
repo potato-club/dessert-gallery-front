@@ -43,6 +43,7 @@ const MyPageLayout = ({ ...props }) => {
         "/myPage/calendar",
         "/myPage/notice",
         "/myPage/post",
+        "/myPage/blocked",
       ];
       if (onlyManager.includes(router.pathname)) router.push("/myPage");
     }
