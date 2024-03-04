@@ -130,7 +130,7 @@ function ChatRoom({ userInfo }: { userInfo?: userInfoType }) {
                 </PartnerName>
               </Profile>
               <OptionButton
-              // onClick={() => deleteChatRoom(roomInfoState.roomId)}
+                onClick={() => deleteChatRoom(roomInfoState.roomId)}
               >
                 {[1, 2, 3].map((index) => (
                   <Dot key={index}></Dot>
