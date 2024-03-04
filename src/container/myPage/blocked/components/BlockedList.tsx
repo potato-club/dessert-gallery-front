@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { useInfinityGetBlockedList } from "../../../../hooks/useFollowAction";
 import { useInfinityScrollLoading } from "../../../../hooks/useInfinityScroll";
 import LoadingSpinner from "../../../storePage/components/Modal/LoadingSpinner";
+import NoneListBox from "../../components/NoneListBox";
 import BlockedItem from "./BlockedItem";
 
 interface BlockedListType {
@@ -24,14 +25,17 @@ const BlockedList = () => {
   return (
     <Container>
       <ItemList>
-        {pageList &&
+        {pageList && pageList.length ? (
           pageList.map((item: BlockedListType) => (
             <BlockedItem
               key={item.userName}
               userName={item.userName}
               fileUrl={item.fileUrl}
             />
-          ))}
+          ))
+        ) : (
+          <NoneListBox content="차단된 계정이 없습니다." />
+        )}
         <IoDiv ref={ref}></IoDiv>
         {isLoad && (
           <LoadingDiv>

@@ -4,6 +4,7 @@ import { useInfinityMyBookmark } from "../../../../hooks/useUser";
 import BookmarkItem from "./BookmarkItem";
 import { useInfinityScrollLoading } from "../../../../hooks/useInfinityScroll";
 import LoadingSpinner from "../../../storePage/components/Modal/LoadingSpinner";
+import NoneListBox from "../../components/NoneListBox";
 
 interface BookmarkListType {
   boardId: number;
@@ -21,11 +22,11 @@ const BookmarkList = () => {
     hasNextPage,
     fetchNextPage,
   });
-  console.log(pageList);
+
   return (
     <Container>
       <ItemList>
-        {pageList &&
+        {pageList && pageList.length ? (
           pageList.map((item: BookmarkListType) => {
             return (
               <BookmarkItem
@@ -34,7 +35,10 @@ const BookmarkList = () => {
                 thumbnail={item.thumbnail}
               />
             );
-          })}
+          })
+        ) : (
+          <NoneListBox content="북마크한 게시물이 없습니다." />
+        )}
         <IoDiv ref={ref}></IoDiv>
         {isLoad && (
           <LoadingDiv>
