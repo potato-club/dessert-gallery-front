@@ -9,6 +9,8 @@ import { modalBg } from '../../../recoil/modalBg/atom';
 import Image from 'next/image'
 import defaultImage from '../../../../public/image/TodayBackground.png'
 import ReviewScore from './ReviewScore'
+import {LeftArrow, RightArrow} from '../../../../public/svg'
+import { postReview, postTestReview } from '../../../apis/controller/review'
 
 interface styleI {
   textType: "title" | "text"| "sub"
@@ -35,7 +37,7 @@ interface writeAbleI {
   name: string
   content: string
   address: string
-  storeImage: storeImageDataI
+  storeImage: storeImageDataI | null
 }
 
 interface props {
@@ -45,13 +47,74 @@ interface props {
 
 function ReviewModal({setShowReviewModal, writeAbleStoreData}: props) {
   const [content, setContent] = useState<string>('')
-  const [score, setScore] = useState<number>(3.5)
+  const [score, setScore] = useState<number>(0)
   const [modalBgState, setModalBgState] = useRecoilState(modalBg);
   const [images, setImages] = useState<ImageI[]>([])
   const [sendImageArray, setSendImageArray] = useState<File[]>([])
   const [index, setIndex] = useState<number>(0)
 
+
+  const handleSubmit = async () => {
+
+    try {
+      // FormData를 서버로 전송하거나 API 호출을 수행할 수 있습니다.
+
+      let sendFormData = new FormData();
+
+      const requestDto = {
+        content: content,
+        score: score,
+      };
+    
+      sendFormData.append(
+        "requestDto",
+        new Blob([JSON.stringify(requestDto)], { type: "application/json" })
+      );
+    
+      if(sendImageArray.length !== 0){
+        sendImageArray.forEach((i) => {
+          sendFormData.append("images", i);
+        });
+      }
+
+      // const response = await postReview({storeId: writeAbleStoreData[index].id, req: sendFormData})
+      const response = await postTestReview(sendFormData)
+
+      if (response) {
+        alert('리뷰 작성 완료')
+        window.location.href = '/myPage'
+      } else {
+        console.error('Server Error:', response.statusText);
+      }
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  };
+
+  const onClickLeft = () => {
+    if(index>0){
+      setIndex(prev=>prev-1)
+      setContent('')
+      setImages([])
+      setScore(0)
+      setSendImageArray([])
+    }
+  }
+  const onClickRight = () => {
+    if(index<writeAbleStoreData.length-1) {
+      setIndex(prev=>prev+1)
+      setContent('')
+      setImages([])
+      setScore(0)
+      setSendImageArray([])
+    }
+  }
+
   const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
+    if(images.length>=4) {
+      alert('후기 사진은 4개까지 첨부 가능합니다! \n기존 사진을 삭제하고 추가해주세요!')
+      return;
+    }
     const selectedFile = e.target.files && e.target.files[0];
     if (selectedFile) {
       const fileUrl = URL.createObjectURL(selectedFile);
@@ -63,8 +126,19 @@ function ReviewModal({setShowReviewModal, writeAbleStoreData}: props) {
       setSendImageArray(prev => prev.concat(selectedFile))
     }
   };
+
+  const handleImageDelete = (index: number) => {
+
+    const temp = images.filter(e=> e.index !== index);
+    const data = temp.map((e, i) => ({ ...e, index: i }));
+    
+    const sendData = sendImageArray.filter((_,i)=> i !== index)
+
+    setImages(data);
+    setSendImageArray(sendData);
+  };
   
-  const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+  const handleInputChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
     setContent(e.target.value);
     
     console.log("search word", content)
@@ -75,17 +149,6 @@ function ReviewModal({setShowReviewModal, writeAbleStoreData}: props) {
     setShowReviewModal(false)
   };
 
-   /**
-   * 검색어 입력 후 enter 키 입력시 동작 함수
-   * @param e : enter key press 여부
-   */
-   const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
-    // 엔터 키가 입력되었을 때 동작할 코드 작성
-    if (e.key === 'Enter') {
-      console.log('enter')
-    }
-  };
-
   
   return (
         <Wrap>
@@ -94,53 +157,84 @@ function ReviewModal({setShowReviewModal, writeAbleStoreData}: props) {
             <OutBtn onClick={onClickInputAddress}>X</OutBtn>
           </ModalHeader>
           <ModalContents>
-            <Box bgColor='#FCF6EE' padding='14px 32px'>
-              <ImageBox>
-                {writeAbleStoreData[index].storeImage
-                  ?<Image src={writeAbleStoreData[index].storeImage.fileUrl} alt={writeAbleStoreData[index].storeImage.fileName} sizes='(max-width: 1023px) 50px, (min-width: 1024px) 80px' layout='fill'/>
-                  :<Image src={defaultImage} alt='빈이미지' sizes='(max-width: 1023px) 50px, (min-width: 1024px) 80px'layout='fill'/>
+            <Box bgColor='#FCF6EE' padding='14px 0' justifyContent='space-between'>
+              <Box justifyContent='center' alignItems='center'>
+                {
+                  index>0
+                  ?( 
+                    <ArrowWrap onClick={onClickLeft}>
+                      <LeftArrow width={16} height={24}/>
+                    </ArrowWrap>
+                  ):(
+                    <ArrowWrap/>
+                  )
                 }
-              </ImageBox>
-              <Box direction='column' alignItems='flex-start' justifyContent='space-evenly' padding='0 24px'>
-                <Text textType='text'>{writeAbleStoreData[index].name}</Text>
-                <Text textType='sub'>{writeAbleStoreData[index].content}</Text>
-                <Text textType='text'>{writeAbleStoreData[index].address}</Text>
+                
+                <ImageBox>
+                <Image src={writeAbleStoreData[index].storeImage?.fileUrl ?? defaultImage} alt={writeAbleStoreData[index].storeImage?.fileName ?? '빈이미지'} sizes='(max-width: 1023px) 50px, (min-width: 1024px) 80px' layout='fill'/>
+                </ImageBox>
+                <Box height='100%' direction='column' alignItems='flex-start' justifyContent='space-evenly' padding='0 24px'>
+                  <Text textType='text'>{writeAbleStoreData[index].name}</Text>
+                  <Text textType='sub'>{writeAbleStoreData[index].content}</Text>
+                  <Text textType='text'>{writeAbleStoreData[index].address}</Text>
+                </Box>
+              </Box>
+              <Box>
+              {
+                  index<writeAbleStoreData.length-1
+                  ?( 
+                    <ArrowWrap onClick={onClickRight}>
+                      <RightArrow width={16} height={24}/>
+                    </ArrowWrap>
+                  ):(
+                    <ArrowWrap/>
+                  )
+                }
               </Box>
             </Box>
           <ContetnsWrap>
-            <Box height='120px' direction='column' alignItems='flex-start' justifyContent='space-evenly'>
+            <Box height='140px' width='406px' direction='column' alignItems='flex-start' justifyContent='space-evenly'>
               <Text textType='title'>별점을 등록해주세요</Text>
               <Text textType='sub'>별점 등록 ({score})</Text>
-              <Box width='100%'>
+              <Box width='100%' margin='8px 0' justifyContent='space-around'>
                 <ReviewScore score={score} setScore={setScore}/>
               </Box>
             </Box>
-          
-          
 
-            <SearchBox>
-              {/* <InputText type='text' onChange={handleInputChange} value={searchWord} onKeyDown={handleKeyDown}/>
-              <InputButton onClick={onClickGetAddress}>검색</InputButton> */}
-            </SearchBox>
-            {/* <AddressWrap ref={focusRef}>
+
+            <Box height='260px' margin='30px 0 8px 0' direction='column' alignItems='flex-start' justifyContent='space-evenly'>
+              <Text textType='title'>리뷰를 작성해주세요</Text>
+              <Text textType='sub'>상품과 관련된 후기를 작성해주세요</Text>
+              <InputContents value={content} onChange={handleInputChange} placeholder='좋은 후기는 디저트 갤러리에 큰 도움이 된답니다 :)'/>
+            </Box>
             {
-              addrData && addrData.map((juso, idx)=>(
-                <AddressItem onClick={()=>onClickAddress(juso.roadAddr)} key={`juso.zipNo-${idx}`}>
-                  <Text color='red' margin='0 0 8px' fontSize='20px' >{juso.zipNo}</Text>
-                  <Box>
-                    <AddressTag>도로명</AddressTag>
-                    <Text color='black' margin='0 0 8px' fontSize='16px' >{juso.roadAddr}</Text>
-                  </Box>
-                  <Box>
-                    <AddressTag>지번</AddressTag>
-                    <Text color='black' fontSize='16px' >{juso.jibunAddr}</Text>
-                  </Box>
-                </AddressItem>
-              ))
+              images.length === 0 ? (
+                <Box>
+                  <BtnText htmlFor="file">사진 첨부하기</BtnText>
+                  <FileInput type="file" id="file" accept="image/*" onChange={handleImageChange}/>
+                </Box>
+              ): (
+                <ImgScrollWrap>
+                <ImgWrap>
+                  {
+                    images.map(e=>(
+                      <ImagePreview onClick={()=>{handleImageDelete(e.index)}} key={`imgPrev${e.index}`}>
+                        <Image width={72} height={72} src={e.imagesUrl}/>
+                      </ImagePreview>
+                    ))
+                  }
+                  <ImageExistBtnText htmlFor="file">+</ImageExistBtnText>
+                  <FileInput type="file" id="file" accept="image/*" onChange={handleImageChange}/>
+                </ImgWrap>
+                </ImgScrollWrap>
+              )
             }
-            <Box ref={addrData.length >0&& common.currentPage!==-1 ? ref : null}/> */}
-            {/* </AddressWrap> */}
+            
           </ContetnsWrap>
+            <Box>
+              <CancleButton onClick={onClickInputAddress}>취소</CancleButton>
+              <SendButton onClick={handleSubmit}>등록</SendButton>
+            </Box>
 
           </ModalContents>
         </Wrap>
@@ -156,7 +250,6 @@ const Wrap = styled.div`
   left: 50%;
   transform: translate(-50%, -50%);
   width: 476px;
-  height: fit-content;
   background-color: white;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
@@ -173,14 +266,13 @@ const Wrap = styled.div`
 `;
 
 const ContetnsWrap = styled.div`
-  padding: 34px;
+  padding: 24px 34px;
   width: 100%;
   height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   align-items: flex-start;
-  
 `;
 
 const ModalHeader = styled.div`
@@ -210,7 +302,6 @@ const OutBtn = styled.div`
   font-size: 28px;
   color: gray;
   font-weight: bold;
-  margin: 0 24px;
   cursor: pointer;
 `
 
@@ -219,12 +310,13 @@ const ModalContents = styled.div`
   height:calc(100% - 48px);
 `
 
-const SearchBox = styled.div`
-  background: white;
-  padding: 15px 0;
+const ArrowWrap = styled.div`
+  height:100%;
+  width: 32px;
   display: flex;
-  justify-content: space-around;
+  justify-content: center;
   align-items: center;
+  cursor: pointer;
 `
 
 const ImageBox = styled.div`
@@ -241,6 +333,7 @@ const ImageBox = styled.div`
 `
 
 const Text = styled.div<styleI>`
+cursor: default;
  ${({textType})=>{
       if(textType === "title"){
         return `
@@ -288,3 +381,95 @@ const Text = styled.div<styleI>`
   
 `
 
+const InputContents = styled.textarea`
+  width: 406px;
+  height: 190px;
+  border-radius: 8px;
+  padding: 16px;
+  font-family: noto-sans-cjk-kr;
+  background-color: #FEE8CB;
+  border: 1px solid #82828216;
+  resize: none;
+`
+const BtnText = styled.label`
+  font-family: noto-sans-cjk-kr;
+  width: 406px;
+  height: 60px;
+  font-weight: bold;
+  font-size: 20px;
+  border-radius: 8px;
+  border: 1px solid #828282;
+  background-color: #FCF6EE;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+`
+
+const ImagePreview = styled.div`
+  border: 1px solid #82828245;
+  width: 72px;
+  height: 72px;
+  border-radius: 4px;
+  margin-right: 8px;
+  cursor: pointer;
+`
+
+const ImageExistBtnText = styled.label`
+  font-family: noto-sans-cjk-kr;
+  width: 72px;
+  height: 72px;
+  font-weight: bold;
+  font-size: 20px;
+  border-radius: 4px;
+  border: 1px solid #82828245;
+  background-color: #FCF6EE;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+`
+
+const FileInput = styled.input`
+  display: none;
+`
+
+const SendButton = styled.div`
+  font-family: noto-sans-cjk-kr;
+  background-color: #FF6F00;
+  color: white;
+  width: 50%;
+  height: 64px;
+  font-weight: bold;
+  font-size: 24px;
+  border-radius: 0 0 8px 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+`
+
+const CancleButton = styled.div`
+  font-family: noto-sans-cjk-kr;
+  background-color: #FCF0E1;
+  color: #FF6F00;
+  width: 50%;
+  height: 64px;
+  font-weight: bold;
+  font-size: 24px;
+  border-radius: 0 0 0 8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+`
+
+const ImgScrollWrap = styled.div`
+  
+`
+
+const ImgWrap = styled.div`
+  display: flex;
+  height: 100px;
+  width: 406px;
+`

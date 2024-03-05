@@ -29,6 +29,19 @@ const temp = [
   }
 ]
 
+const temp1 = [
+  {
+    id: 1,
+    name: "윤윤 도시락 케이크",
+    content: "맛있는 맛",
+    address: "서울시 양천구 오목로",
+    storeImage: {
+      fileName: "https://cdn.pixabay.com/photo/2017/10/25/08/25/cupcakes-2887270_1280.jpg",
+      fileUrl: "https://cdn.pixabay.com/photo/2017/10/25/08/25/cupcakes-2887270_1280.jpg"
+    }
+  },
+]
+
 export interface FormDataI {
   nickname: string;
   userRole: string;
@@ -206,6 +219,7 @@ function Profile() {
           setShowReviewModal(true)
           //setModalBgState(true);
         }}/>
+
         {showReviewModal && <ReviewModal writeAbleStoreData={temp} setShowReviewModal={setShowReviewModal}/>}
         {/** 리뷰모달 코드------------- */}
         {userInfo.userRole === 'MANAGER' && <ManagerProfile/>}
