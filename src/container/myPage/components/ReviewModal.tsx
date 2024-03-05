@@ -8,6 +8,7 @@ import { useRecoilState} from "recoil";
 import { modalBg } from '../../../recoil/modalBg/atom';
 import Image from 'next/image'
 import defaultImage from '../../../../public/image/TodayBackground.png'
+import ReviewScore from './ReviewScore'
 
 interface styleI {
   textType: "title" | "text"| "sub"
@@ -44,7 +45,7 @@ interface props {
 
 function ReviewModal({setShowReviewModal, writeAbleStoreData}: props) {
   const [content, setContent] = useState<string>('')
-  const [score, setScore] = useState<number>(0)
+  const [score, setScore] = useState<number>(3.5)
   const [modalBgState, setModalBgState] = useRecoilState(modalBg);
   const [images, setImages] = useState<ImageI[]>([])
   const [sendImageArray, setSendImageArray] = useState<File[]>([])
@@ -97,7 +98,7 @@ function ReviewModal({setShowReviewModal, writeAbleStoreData}: props) {
               <ImageBox>
                 {writeAbleStoreData[index].storeImage
                   ?<Image src={writeAbleStoreData[index].storeImage.fileUrl} alt={writeAbleStoreData[index].storeImage.fileName} sizes='(max-width: 1023px) 50px, (min-width: 1024px) 80px' layout='fill'/>
-                  :<Image src={defaultImage} sizes='(max-width: 1023px) 50px, (min-width: 1024px) 80px'layout='fill'/>
+                  :<Image src={defaultImage} alt='빈이미지' sizes='(max-width: 1023px) 50px, (min-width: 1024px) 80px'layout='fill'/>
                 }
               </ImageBox>
               <Box direction='column' alignItems='flex-start' justifyContent='space-evenly' padding='0 24px'>
@@ -107,6 +108,15 @@ function ReviewModal({setShowReviewModal, writeAbleStoreData}: props) {
               </Box>
             </Box>
           <ContetnsWrap>
+            <Box height='120px' direction='column' alignItems='flex-start' justifyContent='space-evenly'>
+              <Text textType='title'>별점을 등록해주세요</Text>
+              <Text textType='sub'>별점 등록 ({score})</Text>
+              <Box width='100%'>
+                <ReviewScore score={score} setScore={setScore}/>
+              </Box>
+            </Box>
+          
+          
 
             <SearchBox>
               {/* <InputText type='text' onChange={handleInputChange} value={searchWord} onKeyDown={handleKeyDown}/>
@@ -146,7 +156,7 @@ const Wrap = styled.div`
   left: 50%;
   transform: translate(-50%, -50%);
   width: 476px;
-  height: 805px;
+  height: fit-content;
   background-color: white;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
@@ -163,13 +173,13 @@ const Wrap = styled.div`
 `;
 
 const ContetnsWrap = styled.div`
-  padding: 38px 34px;
+  padding: 34px;
   width: 100%;
   height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-start;
   
 `;
 
@@ -231,6 +241,27 @@ const ImageBox = styled.div`
 `
 
 const Text = styled.div<styleI>`
+ ${({textType})=>{
+      if(textType === "title"){
+        return `
+        font-size: 12px;
+        font-weight: bold;
+        font-family: noto-sans-cjk-kr;
+        `
+      }else if(textType === "text"){
+        return `
+        font-size: 10px;
+        font-weight: bold;
+        font-family: noto-sans-cjk-kr;
+        `
+      }else{
+        return `
+        font-size: 7px;
+        color: #828282;
+        font-family: noto-sans-cjk-kr;
+        `
+      }
+    }}
   @media (min-width:1024px) {
     ${({textType})=>{
       if(textType === "title"){
@@ -254,28 +285,6 @@ const Text = styled.div<styleI>`
       }
     }}
   }
-  @media (max-width:1023x) {
-    ${({textType})=>{
-      if(textType === "title"){
-        return `
-        font-size: 12px;
-        font-weight: bold;
-        font-family: noto-sans-cjk-kr;
-        `
-      }else if(textType === "text"){
-        return `
-        font-size: 10px;
-        font-weight: bold;
-        font-family: noto-sans-cjk-kr;
-        `
-      }else{
-        return `
-        font-size: 7px;
-        color: #828282;
-        font-family: noto-sans-cjk-kr;
-        `
-      }
-    }}
-  }
+  
 `
 
