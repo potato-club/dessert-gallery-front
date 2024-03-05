@@ -5,10 +5,12 @@ function ChatItem({
   myChat,
   message,
   timestamp,
+  messageType,
 }: {
   myChat: boolean;
   message: string;
   timestamp: string;
+  messageType: "CHAT" | "RESERVEATION" | "REVIEW";
 }) {
   return (
     <Wrapper myChat={myChat}>

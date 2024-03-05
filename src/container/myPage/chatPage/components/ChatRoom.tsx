@@ -14,7 +14,7 @@ type messageObjectType = {
   roomId: number;
   sender: string;
   message: string;
-  messageType: string;
+  messageType: "CHAT" | "RESERVEATION" | "REVIEW";
   dateTime: string;
 };
 

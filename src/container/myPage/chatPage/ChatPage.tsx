@@ -16,7 +16,6 @@ export type roomInfoType = {
   storeName: string;
   customerName: string;
   thumbnailMessage: string;
-  messageType: string;
 };
 
 function ChatPage() {
