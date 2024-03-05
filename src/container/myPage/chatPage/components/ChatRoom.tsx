@@ -103,6 +103,35 @@ function ChatRoom({ userInfo }: { userInfo?: userInfoType }) {
     }
   };
 
+  const onClickReservation = () => {
+    clientRef.current.publish({
+      destination: "/pub/chat",
+      // skipContentLengthHeader: true,
+      body: JSON.stringify({
+        roomId: roomInfoState.roomId,
+        message: `${"user"}님의 예약이 확정되었습니다.`,
+        messageType: "RESERVEATION",
+        sender: userInfo?.nickname,
+      }),
+      headers: { Authorization: getAccessToken() },
+    });
+  };
+
+  const onClickReview = () => {
+    clientRef.current.publish({
+      destination: "/pub/chat",
+      // skipContentLengthHeader: true,
+      body: JSON.stringify({
+        roomId: roomInfoState.roomId,
+        message: `${"user"}님, 디저트는 잘 받으셨나요? 
+        만족하셨다면 후기를 작성해주세요`,
+        messageType: "REVIEW",
+        sender: userInfo?.nickname,
+      }),
+      headers: { Authorization: getAccessToken() },
+    });
+  };
+
   useEffect(() => {
     console.log(roomInfoState.roomId);
     console.log(roomInfoState);
@@ -113,6 +142,30 @@ function ChatRoom({ userInfo }: { userInfo?: userInfoType }) {
       clientRef.current.deactivate();
     };
   }, [roomInfoState]);
+
+  const messageData: messageObjectType[] = [
+    {
+      roomId: 52,
+      sender: "최준형카카오",
+      message: "일반메세지",
+      messageType: "CHAT",
+      dateTime: "2024-03-04",
+    },
+    {
+      roomId: 52,
+      sender: "최준형카카오",
+      message: `${"user"}님의 예약이 확정되었습니다.`,
+      messageType: "RESERVEATION",
+      dateTime: "2024-03-04",
+    },
+    {
+      roomId: 52,
+      sender: "최준형카카오",
+      message: `${"user"}님, 디저트는 잘 받으셨나요? 만족하셨다면 후기를 작성해주세요`,
+      messageType: "REVIEW",
+      dateTime: "2024-03-04",
+    },
+  ];
 
   return (
     <Wrapper>
@@ -143,19 +196,29 @@ function ChatRoom({ userInfo }: { userInfo?: userInfoType }) {
                 <ProductName>상큼오독 산딸기</ProductName>
                 <ProductPrice>34,000원</ProductPrice> */}
               </Product>
-              <ButtonDiv>
-                <Button onClick={() => {}}>예약 확정</Button>
-                <Button>후기 작성</Button>
+              <ButtonDiv userRole={userInfo?.userRole}>
+                <Button onClick={onClickReservation}>예약 확정</Button>
+                <Button onClick={onClickReview}>픽업 완료</Button>
               </ButtonDiv>
             </HeaderBottom>
           </Header>
           <Contents>
-            {chatHistoryState?.map((item: any, index) => (
+            {/* {chatHistoryState?.map((item: any, index) => (
               <ChatItem
                 key={index}
+                messageType={item.messageType}
                 myChat={userInfo?.nickname === item.sender}
                 message={item.message}
-                timestamp={"2023-11-26T20:15:10.918Z"}
+                timestamp={item.dateTime}
+              ></ChatItem>
+            ))} */}
+            {messageData?.map((item: any, index) => (
+              <ChatItem
+                key={index}
+                messageType={item.messageType}
+                myChat={userInfo?.nickname === item.sender}
+                message={item.message}
+                timestamp={item.dateTime}
               ></ChatItem>
             ))}
           </Contents>
@@ -312,7 +375,8 @@ const Product = styled.div`
 //   font-weight: bold;
 // `;
 
-const ButtonDiv = styled.div`
+const ButtonDiv = styled.div<{ userRole?: "USER" | "MANAGER" }>`
+  // 지금은 테스트중이라 항상 활성화중, 이후에 어느정도 개발 완료되면 유저에게는 뜨지 않도록 할 예정
   display: flex;
   justify-content: space-between;
   align-items: center;
