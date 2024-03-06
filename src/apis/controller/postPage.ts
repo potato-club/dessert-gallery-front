@@ -62,8 +62,8 @@ export const putStorePost = async (
   postId: number,
   title: string,
   content: string,
-  deleteFiles: []
-  // images?: File[]
+  deleteFiles?: [],
+  images?: File[]
 ) => {
   const formData = new FormData();
 
@@ -79,9 +79,9 @@ export const putStorePost = async (
     new Blob([JSON.stringify(updateDto)], { type: "application/json" })
   );
 
-  // images?.forEach((image) => {
-  //   formData.append("images", image);
-  // });
+  images?.forEach((image) => {
+    formData.append("images", image);
+  });
 
   try {
     const res = await sendApi.put(`/boards/${postId}`, formData);
