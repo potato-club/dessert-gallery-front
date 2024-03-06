@@ -70,7 +70,7 @@ function ChatRoom({ userInfo }: { userInfo?: userInfoType }) {
       destination: "/pub/chat",
       // skipContentLengthHeader: true,
       body: JSON.stringify({
-        roomId: roomInfoState.roomId,
+        chatRoomId: roomInfoState.roomId,
         message: message,
         messageType: "CHAT",
         sender: userInfo?.nickname,
@@ -108,7 +108,7 @@ function ChatRoom({ userInfo }: { userInfo?: userInfoType }) {
       destination: "/pub/chat",
       // skipContentLengthHeader: true,
       body: JSON.stringify({
-        roomId: roomInfoState.roomId,
+        chatRoomId: roomInfoState.roomId,
         message: `${"user"}님의 예약이 확정되었습니다.`,
         messageType: "RESERVEATION",
         sender: userInfo?.nickname,
@@ -122,7 +122,7 @@ function ChatRoom({ userInfo }: { userInfo?: userInfoType }) {
       destination: "/pub/chat",
       // skipContentLengthHeader: true,
       body: JSON.stringify({
-        roomId: roomInfoState.roomId,
+        chatRoomId: roomInfoState.roomId,
         message: `${"user"}님, 디저트는 잘 받으셨나요? 
         만족하셨다면 후기를 작성해주세요`,
         messageType: "REVIEW",
@@ -142,30 +142,6 @@ function ChatRoom({ userInfo }: { userInfo?: userInfoType }) {
       clientRef.current.deactivate();
     };
   }, [roomInfoState]);
-
-  const messageData: messageObjectType[] = [
-    {
-      roomId: 52,
-      sender: "최준형카카오",
-      message: "일반메세지",
-      messageType: "CHAT",
-      dateTime: "2024-03-04",
-    },
-    {
-      roomId: 52,
-      sender: "최준형카카오",
-      message: `${"user"}님의 예약이 확정되었습니다.`,
-      messageType: "RESERVEATION",
-      dateTime: "2024-03-04",
-    },
-    {
-      roomId: 52,
-      sender: "최준형카카오",
-      message: `${"user"}님, 디저트는 잘 받으셨나요? 만족하셨다면 후기를 작성해주세요`,
-      messageType: "REVIEW",
-      dateTime: "2024-03-04",
-    },
-  ];
 
   return (
     <Wrapper>
@@ -203,16 +179,7 @@ function ChatRoom({ userInfo }: { userInfo?: userInfoType }) {
             </HeaderBottom>
           </Header>
           <Contents>
-            {/* {chatHistoryState?.map((item: any, index) => (
-              <ChatItem
-                key={index}
-                messageType={item.messageType}
-                myChat={userInfo?.nickname === item.sender}
-                message={item.message}
-                timestamp={item.dateTime}
-              ></ChatItem>
-            ))} */}
-            {messageData?.map((item: any, index) => (
+            {chatHistoryState?.map((item: any, index) => (
               <ChatItem
                 key={index}
                 messageType={item.messageType}
