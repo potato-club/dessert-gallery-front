@@ -31,16 +31,19 @@ const Poster = ({ storeId, setBoardId }: any) => {
 
   return (
     <Container>
-      <PosterList>
-        {pageList &&
-          pageList.map((item: any) => (
+      {pageList && pageList.length ? (
+        <PosterList>
+          {pageList.map((item: any) => (
             <PostDiv
               key={item.boardId}
               src={item.thumbnail.fileUrl}
               onClick={() => onClick(item.boardId)}
-            ></PostDiv>
+            />
           ))}
-      </PosterList>
+        </PosterList>
+      ) : (
+        <NonePoster>등록된 게시물이 없습니다.</NonePoster>
+      )}
       <IoDiv ref={ref}></IoDiv>
       {isLoad && (
         <LoadingDiv>
@@ -75,4 +78,10 @@ const LoadingDiv = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+`;
+const NonePoster = styled.div`
+  display: flex;
+  justify-content: center;
+  margin: 50px 0px;
+  font-weight: 500;
 `;
