@@ -343,8 +343,7 @@ const Product = styled.div`
 // `;
 
 const ButtonDiv = styled.div<{ userRole?: "USER" | "MANAGER" }>`
-  // 지금은 테스트중이라 항상 활성화중, 이후에 어느정도 개발 완료되면 유저에게는 뜨지 않도록 할 예정
-  display: flex;
+  display: ${(props) => (props.userRole === "MANAGER" ? "flex" : "none")};
   justify-content: space-between;
   align-items: center;
 
