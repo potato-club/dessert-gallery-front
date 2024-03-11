@@ -17,6 +17,7 @@ import {
   DeleteBtn,
 } from "./SlideImage.style";
 import followAction from "../../utils/followAction";
+import { SlTrash } from "react-icons/sl";
 
 function SlideImage({
   storeId,
@@ -142,7 +143,12 @@ function SlideImage({
           )
         }
       </MoveWrap>
-      {/* <ImageWrap width={width} height={height}>
+      <ImageWrap width={width} height={height}>
+        {deleteBtn && (
+          <DeleteBtn onClick={() => onClickDeleteImage(srcArray[imgCnt])}>
+            <SlTrash size={30} color="white" />
+          </DeleteBtn>
+        )}
         {srcArray[imgCnt] !== null && (
           <Image
             src={srcArray[imgCnt]}
@@ -152,23 +158,7 @@ function SlideImage({
             alt="Picture of the author"
           />
         )}
-      </ImageWrap> */}
-      {srcArray[imgCnt] !== null &&srcArray.map((image, index) => (
-        <ImageWrap key={index} width={width} height={height}>
-          {deleteBtn && (
-            <DeleteBtn onClick={() => onClickDeleteImage(srcArray[imgCnt])}>
-              삭제
-            </DeleteBtn>
-          )}
-          <Image
-            src={srcArray[imgCnt]}
-            width={width}
-            height={height}
-            objectFit="cover"
-            alt={`Image ${index}`}
-          />
-        </ImageWrap>
-      ))}
+      </ImageWrap>
 
       <BottomComponent>
         {children}

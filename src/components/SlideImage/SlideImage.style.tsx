@@ -112,10 +112,15 @@ const ImageWrap = styled.div<componentProps>`
 `;
 const DeleteBtn = styled.button`
   position: absolute;
-  width: 20px;
-  height: 20px;
-  background-color: red;
+  width: 40px;
+  height: 40px;
   z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background-color: black;
+  margin: 10px 0px 0px 10px;
 `;
 
 export {

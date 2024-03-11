@@ -19,7 +19,6 @@ const PostForm: React.FC<PostFormProps> = ({ handleDone }) => {
       setImages((prevImages) => [...prevImages, file]);
     }
     setShowEditModal(true);
-    console.log(file);
   };
 
   const handleCloseEditModal = () => {
@@ -31,6 +30,13 @@ const PostForm: React.FC<PostFormProps> = ({ handleDone }) => {
     if (fileInput) {
       fileInput.click();
     }
+  };
+  const handleDeleteImage = (indexToDelete: number): void => {
+    setImages((prevImages) => {
+      const updatedImages = [...prevImages];
+      updatedImages.splice(indexToDelete, 1);
+      return updatedImages;
+    });
   };
 
   return (
@@ -69,6 +75,7 @@ const PostForm: React.FC<PostFormProps> = ({ handleDone }) => {
           handleClose={handleCloseEditModal}
           handleDone={handleDone}
           handleImagesChange={handleImageChange}
+          handleDeleteImage={handleDeleteImage}
         />
       )}
     </>

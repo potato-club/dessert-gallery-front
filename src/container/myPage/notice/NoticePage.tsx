@@ -348,7 +348,7 @@ const Option = styled.div`
   font-weight: 700;
   justify-content: center;
   display: flex;
-  width: 36.34px;
+  width: 40px;
 `;
 const ModalOptionBox = styled.div`
   position: absolute;

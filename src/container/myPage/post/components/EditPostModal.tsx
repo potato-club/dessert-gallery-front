@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { ChangeEvent, useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import Image from "next/image";
 import defaultImage from "../../../../../public/image/defaultPhoto.png";
 import PostCaption from "./PostCaption";
 import { putStorePost } from "../../../../apis/controller/postPage";
 import SlideImage from "../../../../components/SlideImage/SlideImage";
+import { IoIosAddCircle } from "react-icons/io";
 
 const EditPostModal = ({
   onCancelClick,
@@ -21,44 +22,71 @@ const EditPostModal = ({
   const [imageSrc, setImageSrc] = useState(
     detailPost.images.map((image: any) => image.fileUrl)
   );
-  // 삭제 이미지 확인을 위한 데이터
-  const [imageSrcSend, setImageSrcSend] = useState(detailPost.images.map((image: { fileUrl: any; fileName: any; }) => (
-    {
-     fileUrl: image.fileUrl,
-     fileName: image.fileName
-   })
- ));
-  //백엔드에 보낼 지울 데이터
-  let [deleteFiles, setDeleteFiles] = useState<any>([]);
 
+  const [imageSrcSend, setImageSrcSend] = useState(
+    detailPost.images.map((image: { fileUrl: any; fileName: any }) => ({
+      fileUrl: image.fileUrl,
+      fileName: image.fileName,
+    }))
+  );
+
+  const [deleteFiles, setDeleteFiles] = useState<any>([]);
+  const [images, setImages] = useState<File[]>([]);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  // const handleDeleteImage = (index: string) => {
+  //   const updatedImageSrc = imageSrc.filter((e: string) => e !== index);
+  //   setImageSrc(updatedImageSrc);
+  //   const updateImageSrcSend = imageSrcSend.filter(
+  //     (e: { fileUrl: string }) => e.fileUrl === index
+  //   );
+  //   const temp = deleteFiles.concat(updateImageSrcSend);
+  //   setDeleteFiles(temp);
+  // };
   const handleDeleteImage = (index: string) => {
-    console.log("imageSrc",imageSrc)
-    // 이미지 배열에서 해당 이미지를 제외한 새로운 배열 생성
-    const updatedImageSrc = imageSrc.filter((e: string) => e !== index);
-    // 새로운 이미지 배열로 상태 업데이트
+    // 이미지 URL을 기반으로 해당 이미지를 제외한 새로운 이미지 URL 배열 생성
+    const updatedImageSrc = imageSrc.filter((url: string) => url !== index);
     setImageSrc(updatedImageSrc);
 
-    //삭제 이미지 확인
-    const updateImageSrcSend = imageSrcSend.filter((e: { fileUrl: string; }) => e.fileUrl === index);
+    // 삭제할 이미지의 파일 정보를 deleteFiles 배열에 추가
+    const deletedImage = imageSrcSend.find(
+      (image: any) => image.fileUrl === index
+    );
+    if (deletedImage) {
+      setDeleteFiles((prevDeleteFiles: any) => [
+        ...prevDeleteFiles,
+        deletedImage,
+      ]);
 
-    console.log("지운 친구들: ",updateImageSrcSend)
+      // 실제 파일 삭제
+      const remainingFiles = images.filter(
+        (file) => URL.createObjectURL(file) === index
+      );
+      setImages(remainingFiles);
 
-    //백엔드에 보낼 삭제 이미지 데이터 정리
-    let temp = deleteFiles.concat(updateImageSrcSend)
-    setDeleteFiles(temp);
-    
-
-    console.log("지운 거 저장: ", deleteFiles)
-
-    console.log(index);
+      // 새로 추가된 파일인 경우 실제 파일을 삭제
+    }
   };
 
   const postClick = () => {
-    putStorePost(postId, title, content, deleteFiles);
+    putStorePost(postId, title, content, deleteFiles, images);
     onCancelClick();
   };
   const handleModalClick = (e: React.MouseEvent<HTMLDivElement>) => {
     e.stopPropagation();
+  };
+  const handleMultiImageBtnClick = () => {
+    fileInputRef.current?.click();
+  };
+
+  const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files || [];
+    const newImages = Array.from(files);
+
+    setImages((prevImages) => [...prevImages, ...newImages]);
+
+    const newImageSrcs = newImages.map((file) => URL.createObjectURL(file));
+    setImageSrc((prevImageSrcs: any) => [...prevImageSrcs, ...newImageSrcs]);
   };
 
   return (
@@ -77,6 +105,17 @@ const EditPostModal = ({
         </TopContainer>
         <InfoWarpper>
           <ImageBox>
+            <MultiImageBtn onClick={handleMultiImageBtnClick}>
+              <IoIosAddCircle size={40} color="" />
+            </MultiImageBtn>
+            <input
+              type="file"
+              accept="image/*"
+              multiple
+              style={{ display: "none" }}
+              ref={fileInputRef}
+              onChange={handleImageChange}
+            />
             <SlideImage
               srcArray={imageSrc}
               width={527}
@@ -201,6 +240,7 @@ const ImageBox = styled.div`
   height: 527.8px;
   border-bottom-left-radius: 15px;
   overflow: hidden;
+  position: relative;
 `;
 
 const AddWrapper = styled.div`
@@ -245,4 +285,19 @@ const ProfileInfo = styled.div`
   color: #ff6f00;
   font-size: 15px;
   font-weight: 500;
+`;
+
+const MultiImageBtn = styled.div`
+  width: 50px;
+  height: 50px;
+  bottom: 50px;
+  left: 50px;
+  font-size: 20px;
+  font-weight: 600;
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 20;
 `;

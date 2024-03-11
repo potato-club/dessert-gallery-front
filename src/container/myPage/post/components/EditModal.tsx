@@ -3,11 +3,15 @@ import styled, { css, keyframes } from "styled-components";
 import ArrowImage from "../../../../../public/SVG/myPage/postPage/arrowImage.svg";
 import Extend from "./Extend";
 import { postStorePost } from "../../../../apis/controller/postPage";
+import { TiDelete } from "react-icons/ti";
+import { IoIosAddCircle } from "react-icons/io";
+
 interface EditModalProps {
   images: File[];
   handleClose: () => void;
   handleDone: any;
   handleImagesChange: (e: ChangeEvent<HTMLInputElement>) => void;
+  handleDeleteImage: (indexToDelete: number) => void;
 }
 
 const EditModal: React.FC<EditModalProps> = ({
@@ -15,6 +19,7 @@ const EditModal: React.FC<EditModalProps> = ({
   handleClose,
   handleDone,
   handleImagesChange,
+  handleDeleteImage,
 }) => {
   const [previewImages, setPreviewImages] = useState<string[]>([]);
   const imageContainerRef = useRef<HTMLDivElement>(null);
@@ -30,20 +35,18 @@ const EditModal: React.FC<EditModalProps> = ({
   };
   useEffect(() => {
     if (images) {
-      const reader = new FileReader();
       const previewImagesArray: string[] = [];
-
-      reader.onloadend = (e) => {
-        previewImagesArray.push(e.target?.result as string);
-        if (previewImagesArray.length === images.length) {
-          setPreviewImages(previewImagesArray);
-        } else {
-          loadNextImage();
-        }
-      };
-
       const loadNextImage = (index = 0) => {
         if (index < images.length) {
+          const reader = new FileReader();
+          reader.onloadend = (e) => {
+            previewImagesArray.push(e.target?.result as string);
+            if (previewImagesArray.length === images.length) {
+              setPreviewImages(previewImagesArray);
+            } else {
+              loadNextImage(index + 1);
+            }
+          };
           reader.readAsDataURL(images[index]);
         }
       };
@@ -75,6 +78,14 @@ const EditModal: React.FC<EditModalProps> = ({
     postStorePost(title, content, images);
     handleDone();
   };
+  const multipleImages = images.length > 1;
+
+  const deleteImage = (indexToDelete: number) => {
+    handleDeleteImage(indexToDelete);
+    setPreviewImages((prevImages) =>
+      prevImages.filter((_, index) => index !== indexToDelete)
+    );
+  };
 
   return (
     <Background>
@@ -94,16 +105,29 @@ const EditModal: React.FC<EditModalProps> = ({
         </TopContainer>
         <MainContent>
           <ImageContainer ref={imageContainerRef}>
-            {previewImages.map((previewImage, index) => (
+            {previewImages.slice(0, 1).map((previewImage, index) => (
               <ImageViewer
-                ref={imageRef}
                 key={index}
                 src={previewImage}
                 alt="미리보기 이미지"
               />
             ))}
+            <MultiImageWrapper>
+              {previewImages.map((previewImage, index) => (
+                <ImageWrapper key={index}>
+                  <MultiImageViewer
+                    key={index}
+                    src={previewImage}
+                    alt="미리보기 이미지"
+                  ></MultiImageViewer>
+                  <DeleteBtn onClick={() => deleteImage(index)}>
+                    <TiDelete size={30} />
+                  </DeleteBtn>
+                </ImageWrapper>
+              ))}
+            </MultiImageWrapper>
             <MultiImageBtn onClick={handleMultiImageBtnClick}>
-              추가
+              <IoIosAddCircle size={40} color="" />
             </MultiImageBtn>
             <input
               type="file"
@@ -225,7 +249,11 @@ const ImageViewer = styled.img`
   height: 100%;
   object-fit: cover;
 `;
-
+const MultiImageViewer = styled.img`
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+`;
 const CaptionContainer = styled.div<{ expanded: boolean }>`
   width: 373px;
   height: 100%;
@@ -246,11 +274,38 @@ const MultiImageBtn = styled.div`
   left: 50px;
   font-size: 20px;
   font-weight: 600;
-  border: 2px solid red;
   position: absolute;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  color: red;
+`;
+
+const MultiImageWrapper = styled.div`
+  position: absolute;
+  bottom: 50px;
+  left: 50px;
+  display: flex;
+  background-color: gray;
+  gap: 20px;
+  max-width: 450px;
+  overflow-x: scroll;
+  ::-webkit-scrollbar {
+    display: none;
+  }
+  border-radius: 20px;
+  padding: 10px;
+`;
+
+const DeleteBtn = styled.div`
+  width: 30px;
+  height: 30px;
+  top: 0;
+  left: 0;
+  color: gray;
+  position: absolute;
+`;
+
+const ImageWrapper = styled.div`
+  position: relative;
 `;
