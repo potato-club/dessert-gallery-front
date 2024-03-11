@@ -70,3 +70,8 @@ export const toggleBookmark = async ({ boardId }: ToggleBookmarkType) => {
   const res = await sendApi.post(`/boards/${boardId}/bookmark`);
   return res.data;
 };
+
+export const getBookmark = async (page: number) => {
+  const res = await sendApi.get(`/users/bookmark?page=${page}`);
+  return res.data;
+};

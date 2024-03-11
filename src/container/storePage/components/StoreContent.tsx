@@ -30,9 +30,7 @@ const StoreContent = ({ storeId }: any) => {
           가게 후기
         </ReviewBtn>
       </Options>
-      {onModal && onModalBg && (
-        <PostModal storeId={storeId} boardId={boardId} />
-      )}
+      {onModal && onModalBg && <PostModal boardId={boardId} />}
 
       {optionNum == 1 ? (
         <PosterList storeId={storeId} setBoardId={setBoardId} />

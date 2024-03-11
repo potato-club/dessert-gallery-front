@@ -1,10 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import ModalWrapper from "../../../../components/ModalWrapper";
 import SlideImage from "../../../../components/SlideImage/SlideImage";
 import { useGetDetailBoard } from "../../../../hooks/useBoard";
 import { postBoardComment } from "../../../../apis/controller/detailStore";
-import { useGetStoreInfo } from "../../../../hooks/useStore";
 import InfoHeader from "./Header";
 import InfoContent from "./Contents";
 import LoadingSpinner from "./LoadingSpinner";
@@ -12,19 +11,21 @@ import { useSetRecoilState } from "recoil";
 import { modalBg } from "../../../../recoil/modalBg/atom";
 import { postChatRoom } from "../../../../apis/controller/chatPage";
 import { useUserState } from "../../../../hooks/useUser";
+import { useGetStoreInfo } from "../../../../hooks/useStore";
 
-const PostModal = ({ storeId, boardId }: any) => {
+const PostModal = ({ boardId }: any) => {
   const [comment, setComment] = useState<string>("");
   const [postCommentList, setPostCommentList] = useState<any[]>([]);
   const setModalBgState = useSetRecoilState(modalBg);
   const {isGuest} = useUserState();
 
   // 가게 정보 불러오기
-  const { data: storeInfo } = useGetStoreInfo(storeId);
+  //const { data: storeInfo } = useGetStoreInfo(storeId);
 
   // 세부 게시물 불러오기
   const { data: detailPoster } = useGetDetailBoard(boardId);
 
+  console.log(detailPoster);
   // 모달 댓글 작성하기
   const submit = async (e: any) => {
     await e.preventDefault();
@@ -58,12 +59,12 @@ const PostModal = ({ storeId, boardId }: any) => {
         )}
         <PostInfo>
           <InfoHeader
-            storeInfo={storeInfo}
+            storeInfo={detailPoster?.storeInfo}
             detailPoster={detailPoster}
             boardId={boardId}
           />
           <InfoContent
-            address={storeInfo?.address}
+            address={detailPoster?.storeInfo.address}
             boardId={boardId}
             detailPoster={detailPoster}
             postCommentList={postCommentList}
@@ -78,7 +79,7 @@ const PostModal = ({ storeId, boardId }: any) => {
             </InputWrapper>
             <ReservedBtn
               onClick={() => {
-                console.log(storeInfo.id);
+                //console.log(storeInfo.id);
                 if(!isGuest){
                   // 채팅페이지로 이동 전 모달 백그라운드 제거
                   setModalBgState(false);

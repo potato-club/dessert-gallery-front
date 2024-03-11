@@ -6,6 +6,8 @@ import { useFollowAction } from "../../../hooks/useFollowAction";
 import { useGetStoreInfo } from "../../../hooks/useStore";
 import { postChatRoom } from "../../../apis/controller/chatPage";
 import { useUserState } from "../../../hooks/useUser";
+import Logo from "../../../../public/svg/common/logo.svg";
+
 
 const StoreProfile = () => {
   const router = useRouter();
@@ -19,12 +21,18 @@ const StoreProfile = () => {
   const { data } = useGetStoreInfo(storeId);
 
   const { postFollowMutate, putUnFollowMutate } = useFollowAction(storeId);
-
   return (
     <Container>
       {data && (
         <>
-          <StoreImg src={data.storeImage.fileUrl} />
+          {data.storeImage ? (
+            <StoreImg src={data.storeImage.fileUrl} />
+          ) : (
+            <DefaultStoreImg>
+              <Logo width={250} height={250} />
+            </DefaultStoreImg>
+          )}
+
           <InnerContainer>
             <InfoContent>
               <StoreName>{data.name}</StoreName>
@@ -105,6 +113,14 @@ export default StoreProfile;
 const StoreImg = styled.img`
   width: 320px;
   height: 320px;
+`;
+const DefaultStoreImg = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 320px;
+  height: 320px;
+  background-color: #fdc886;
 `;
 const StoreProfileBtn = styled(Tag)``;
 const Container = styled.div`
