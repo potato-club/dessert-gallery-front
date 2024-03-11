@@ -1,6 +1,7 @@
 import { ReactNode } from "react";
 import type { boardOptionData, filterData } from "./componentsData";
 import { reviewItem } from "./apiTypes";
+import { StaticImageData } from "next/image";
 /**
  * Tag 컴포넌트 props
  */
@@ -63,7 +64,7 @@ export type slideImageValue = {
   /**
    * (필수)이미지 배열
    */
-  srcArray: string[];
+  srcArray: string[] | string | StaticImageData[];
   /**
    * (필수)사진 가로 길이 px단위
    */

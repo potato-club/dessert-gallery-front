@@ -53,7 +53,7 @@ function FeedSwitcher() {
         {selected === 2 &&followBoardListLoading && !isGuest && <FeedPrev/>}
         {selected === 1 && recentStoresLoading === false &&(<FeedRecentGallery isGuest={isGuest} contents={recentStores}/>)}
         {selected === 2 && isGuest &&(<FeedGuest/>)}
-        {selected === 2 && !isGuest && followBoardListLoading === false &&(<FeedFollowStore contents={followBoardList}/>)}
+        {selected === 2 && !isGuest && followBoardListLoading === false &&(<FeedFollowStore contents={followBoardList.content}/>)}
       </ContentsWrap>
     </FeedSwitcherWrap>
   )
