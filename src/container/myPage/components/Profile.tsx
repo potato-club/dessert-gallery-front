@@ -6,41 +6,6 @@ import ManagerProfile from './ManagerProfile';
 import { putUser } from '../../../apis/controller/profile';
 import { modalBg } from '../../../recoil/modalBg/atom';
 import { useSetRecoilState } from "recoil";
-///리뷰 모달 import
-import ReviewModal from './ReviewModal';
-
-const temp = [
-  {
-    id: 1,
-    name: "윤윤 도시락 케이크",
-    content: "맛있는 맛",
-    address: "서울시 양천구 오목로",
-    storeImage: {
-      fileName: "https://cdn.pixabay.com/photo/2017/10/25/08/25/cupcakes-2887270_1280.jpg",
-      fileUrl: "https://cdn.pixabay.com/photo/2017/10/25/08/25/cupcakes-2887270_1280.jpg"
-    }
-  },
-  {
-    id: 2,
-    name: "행케",
-    content: "행복한 케이크를 드려요",
-    address: "서울시 양천구 오목로",
-    storeImage: null
-  }
-]
-
-const temp1 = [
-  {
-    id: 1,
-    name: "윤윤 도시락 케이크",
-    content: "맛있는 맛",
-    address: "서울시 양천구 오목로",
-    storeImage: {
-      fileName: "https://cdn.pixabay.com/photo/2017/10/25/08/25/cupcakes-2887270_1280.jpg",
-      fileUrl: "https://cdn.pixabay.com/photo/2017/10/25/08/25/cupcakes-2887270_1280.jpg"
-    }
-  },
-]
 
 export interface FormDataI {
   nickname: string;
@@ -63,13 +28,6 @@ function Profile() {
     fileUrl: userInfo && userInfo.fileUrl ? userInfo.fileUrl:'',
     url: '',
   });
-  /**
-   * 후기 모달 코드
-   */
-  const setModalBgState = useSetRecoilState(modalBg);
-  const [showReviewModal, setShowReviewModal] = useState<Boolean>(false);
-
-  ///////////////////////
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -214,14 +172,7 @@ function Profile() {
           }
           
         </Box>
-        {/** --------리뷰모달 코드 */}
-        <Tag title='후기 올리기' width='120px' height='40px' clickAble={true} hoverCss={true} fontSize='20px' onClickHandler={()=>{
-          setShowReviewModal(true)
-          //setModalBgState(true);
-        }}/>
 
-        {showReviewModal && <ReviewModal writeAbleStoreData={temp} setShowReviewModal={setShowReviewModal}/>}
-        {/** 리뷰모달 코드------------- */}
         {userInfo.userRole === 'MANAGER' && <ManagerProfile/>}
       </Box>
     )

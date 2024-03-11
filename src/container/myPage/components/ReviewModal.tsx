@@ -10,6 +10,7 @@ import Image from 'next/image'
 import defaultImage from '../../../../public/image/TodayBackground.png'
 import ReviewScore from './ReviewScore'
 import {LeftArrow, RightArrow} from '../../../../public/svg'
+//차후 변경
 import { postReview, postTestReview } from '../../../apis/controller/review'
 
 interface styleI {
