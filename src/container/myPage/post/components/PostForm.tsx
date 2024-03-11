@@ -1,4 +1,6 @@
-import React, { useState, ChangeEvent, FormEvent, useEffect } from "react";
+// PostForm.tsx
+
+import React, { useState, ChangeEvent } from "react";
 import styled from "styled-components";
 import EditModal from "./EditModal";
 import myPageBack from "../../../../../public/image/myPageBack.png";
@@ -6,36 +8,35 @@ import myPageBack from "../../../../../public/image/myPageBack.png";
 interface PostFormProps {
   handleDone(): any;
 }
+
 const PostForm: React.FC<PostFormProps> = ({ handleDone }) => {
   const [images, setImages] = useState<File[]>([]);
-
   const [showEditModal, setShowEditModal] = useState(false);
 
   const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0] || null;
     if (file) {
-      setImages([file]);
+      setImages((prevImages) => [...prevImages, file]);
     }
     setShowEditModal(true);
-  };
-
-  const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
-    e.preventDefault();
-    const file = e.dataTransfer.files?.[0] || null;
-    if (file) {
-      setImages([file]);
-    }
   };
 
   const handleCloseEditModal = () => {
     setShowEditModal(false);
   };
 
-  const handleButtonClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+  const handleButtonClick = () => {
     const fileInput = document.getElementById("fileInput");
     if (fileInput) {
       fileInput.click();
     }
+  };
+  const handleDeleteImage = (indexToDelete: number): void => {
+    setImages((prevImages) => {
+      const updatedImages = [...prevImages];
+      updatedImages.splice(indexToDelete, 1);
+      return updatedImages;
+    });
   };
 
   return (
@@ -47,7 +48,7 @@ const PostForm: React.FC<PostFormProps> = ({ handleDone }) => {
               <FormTitle>게시물 올리기</FormTitle>
             </TitleContainer>
             <DragContainer
-              onDrop={handleDrop}
+              onDrop={(e) => e.preventDefault()}
               onDragOver={(e) => e.preventDefault()}
             >
               <ExplanationBox>
@@ -68,13 +69,15 @@ const PostForm: React.FC<PostFormProps> = ({ handleDone }) => {
           </FormContainer>
         </Background>
       )}
-      {showEditModal && images ? (
+      {showEditModal && images.length > 0 && (
         <EditModal
           images={images}
           handleClose={handleCloseEditModal}
           handleDone={handleDone}
+          handleImagesChange={handleImageChange}
+          handleDeleteImage={handleDeleteImage}
         />
-      ) : null}
+      )}
     </>
   );
 };
@@ -93,6 +96,7 @@ const Background = styled.div`
   align-items: center;
   z-index: 2;
 `;
+
 const FormContainer = styled.div`
   position: fixed;
   top: 50%;
@@ -139,12 +143,14 @@ const Explanation = styled.div`
   display: block;
   font-size: 20px;
   font-weight: 400;
-  white-space: nowrap; /* 글자가 한 줄에 들어가도록 설정 */
+  white-space: nowrap;
 `;
+
 const ExplanationBox = styled.div`
   display: flex;
   justify-content: center;
 `;
+
 const Button = styled.button`
   width: 133.85px;
   height: 32px;

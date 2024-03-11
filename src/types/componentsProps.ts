@@ -67,6 +67,9 @@ export type slideImageValue = {
   /**
    * (필수)사진 가로 길이 px단위
    */
+  imageName?: string[];
+  // 이미지 파일 이름
+
   width: number;
   /**
    * (필수)사진 세로 길이 px단위
@@ -95,11 +98,14 @@ export type slideImageValue = {
    * (선택: 북마크옵션 활성화시 필수)스크랩한 게시물인지
    */
   onBookmark?: boolean;
-  borderRadius?:boolean;
+  borderRadius?: boolean;
   /**
    * (선택)태그 등의 컴포넌트를 표현시
    */
   children?: ReactNode;
+  onDeleteImage?: (imageUrl: any) => void;
+  deleteBtn?: boolean;
+  // 이미지 삭제 버튼가 필요 한지?
 };
 
 /**
@@ -288,16 +294,16 @@ export type locationSelectorProps = {
 };
 
 export type locationCoordSelectorProps = {
-    onChangeLocation: (lat: string, lng: string) => void
-}
+  onChangeLocation: (lat: string, lng: string) => void;
+};
 
 export type ToastMessageProps = {
-    messageString: string
-    timer: number
-    clickEvent?: boolean
-    eventFunc?: () => void
-    wrapType: 'none'|'map'|'sideBarMap'
-}
+  messageString: string;
+  timer: number;
+  clickEvent?: boolean;
+  eventFunc?: () => void;
+  wrapType: "none" | "map" | "sideBarMap";
+};
 
 export type boardOptionValue = {
   orderOption: selectOrder;
@@ -372,9 +378,9 @@ export type roleMyMenu = {
 };
 
 export type userInfoI = {
-  nickname: string,
-  loginType: "NORMAL" | "KAKAO",
-  userRole: "USER" | "MANAGER",
-  fileName: string,
-  fileUrl: string
-}
+  nickname: string;
+  loginType: "NORMAL" | "KAKAO";
+  userRole: "USER" | "MANAGER";
+  fileName: string;
+  fileUrl: string;
+};

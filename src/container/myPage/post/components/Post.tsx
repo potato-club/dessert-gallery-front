@@ -5,6 +5,7 @@ import useGetStoreInfo, {
 } from "../../../../hooks/useGetStoreInfo";
 import DetailPost from "./DetailPost";
 import { useEscKey } from "../../../../hooks/useEscKey";
+import { getStorePost } from "../../../../apis/controller/postPage";
 
 interface StorePost {
   boardId: number;
@@ -18,8 +19,22 @@ interface StorePost {
 const Post = () => {
   const storeInfo = useGetStoreInfo();
   const storeId = storeInfo?.id;
-  const storePost = useGetStorePost(storeId as number);
   const [postId, setPostId] = useState<number | null>(null);
+  const [storePost, setStorePost] = useState<StorePost[] | null>(null);
+
+  useEffect(() => {
+    async function fetchStorePost() {
+      try {
+        const fetchedStorePost = await getStorePost(storeId as number);
+        setStorePost(fetchedStorePost);
+      } catch (error) {
+        console.error("잠시후에 다시 시도해 주세요.", error);
+      }
+    }
+    if (storeId) {
+      fetchStorePost();
+    }
+  }, [storeId]);
 
   useEscKey(() => closeThing());
 
