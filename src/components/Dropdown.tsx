@@ -53,8 +53,6 @@ const Dropdown = ({ dropdownState }: { dropdownState: boolean }) => {
       <DropdownMenu
         onClickMenu={() => {
           const response = fetchLogout();
-          console.log(response);
-          setToken("", "");
           sessionStorageService.delete(SESSION_KEY);
           setModalMessage("로그아웃 되었습니다.");
           setIsModalOpen(true);
