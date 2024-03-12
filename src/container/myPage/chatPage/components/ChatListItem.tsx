@@ -96,9 +96,12 @@ const UserName = styled.div`
 `;
 
 const UserNameHelper = styled.div`
-  font-size: 9px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+  margin: 0 2px 6px 2px;
+  height: 100%;
   font-weight: bold;
-  margin: 1px 0 0 2px;
   color: #828282;
   @media screen and (min-width: 1920px) {
     font-size: 11px;

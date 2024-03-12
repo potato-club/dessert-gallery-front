@@ -1,10 +1,17 @@
 import { useRouter } from "next/router";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled, { css } from "styled-components";
 import Tag from "../../../components/Tag";
 import { useFollowAction } from "../../../hooks/useFollowAction";
 import { useGetStoreInfo } from "../../../hooks/useStore";
-import { postChatRoom } from "../../../apis/controller/chatPage";
+
+import {
+  getChatRoom,
+  postChatRoom,
+  getUserInfo,
+} from "../../../apis/controller/chatPage";
+import { roomInfoType } from "../../myPage/chatPage/ChatPage";
+import { useRoomInfoState } from "../../../recoil/chat/roomInfoStateAtom";
 import { useUserState } from "../../../hooks/useUser";
 import Logo from "../../../../public/svg/common/logo.svg";
 
@@ -18,9 +25,52 @@ const StoreProfile = () => {
     router.query.store ? router.query.store.toString() : "0"
   );
 
+  const { isGuest } = useUserState();
   const { data } = useGetStoreInfo(storeId);
-
   const { postFollowMutate, putUnFollowMutate } = useFollowAction(storeId);
+
+  const [isChatRoomExist, setIsChatRoomExist] = useState<{
+    exist: boolean;
+    roomId: number;
+    partnerName: string;
+  }>({ exist: false, roomId: 0, partnerName: "" });
+
+  const [roomInfoState, setRoomInfoState] = useRoomInfoState();
+
+  const checkChatRoom = async () => {
+    const chatRoom = await getChatRoom();
+    const userInfo = await getUserInfo();
+    console.log(chatRoom);
+
+    console.log(chatRoom.chatList);
+    console.log(chatRoom.maxpage);
+    if (chatRoom.chatList) {
+      chatRoom.chatList.map((item: roomInfoType) => {
+        if (data && data.name === item.storeName) {
+          console.log("방이 존재합니다.", item.roomId);
+          const partnerName =
+            userInfo?.userRole === "MANAGER"
+              ? item.customerName
+              : item.storeName;
+          setIsChatRoomExist({
+            exist: true,
+            roomId: item.roomId,
+            partnerName: partnerName,
+          });
+        }
+      });
+    }
+  };
+
+  useEffect(() => {
+    console.log(storeId);
+
+    setRoomInfoState({ roomId: 0, partnerName: "" });
+    if (!isGuest) {
+      checkChatRoom();
+    }
+  }, [data]);
+
   return (
     <Container>
       {data && (
@@ -74,7 +124,12 @@ const StoreProfile = () => {
                     hoverCss={true}
                     inversion={true}
                     onClickHandler={() => {
-                      postFollowMutate();
+                      if (isGuest) {
+                        alert("로그인 후 이용하실 수 있습니다.");
+                        router.push("/login");
+                      } else {
+                        postFollowMutate();
+                      }
                     }}
                   />
                 )}
@@ -87,15 +142,24 @@ const StoreProfile = () => {
                   height="30px"
                   fontSize="12px"
                   onClickHandler={() => {
-                    console.log(storeId);
-                    if(!isGuest){
-                      // 채팅페이지로 이동 전 모달 백그라운드 제거
-                      // 현재 반영된 사항인지 알 수 없어 주석 처리
-                      // postChatRoom(storeId);
-                      window.location.href = "/myPage/chat";
-                    }else{
-                      alert('로그인 후 이용해주세요.')
-                      window.location.href = "/login";
+                    if (isGuest) {
+                      alert("로그인 후 이용하실 수 있습니다.");
+                      router.push("/login");
+                    } else if (!data.follow) {
+                      alert("팔로우 후 이용하실 수 있습니다.");
+                    } else {
+                      if (isChatRoomExist.exist) {
+                        setRoomInfoState({
+                          roomId: isChatRoomExist.roomId,
+                          partnerName: isChatRoomExist.partnerName,
+                        });
+                        router.push("/myPage/chat");
+                      } else {
+                        console.log(storeId);
+                        postChatRoom(storeId);
+                        router.push("/myPage/chat");
+                      }
+
                     }
                   }}
                 />

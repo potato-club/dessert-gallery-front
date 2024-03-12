@@ -6,85 +6,66 @@ import * as StompJs from "@stomp/stompjs";
 import { useTokenService } from "../../../../hooks/useTokenService";
 import { getChatHistory } from "../../../../apis/controller/chatPage";
 import { userInfoType } from "../ChatPage";
+import { useRoomInfoState } from "../../../../recoil/chat/roomInfoStateAtom";
+import { deleteChatRoom } from "../../../../apis/controller/chatPage";
+import { useForm } from "react-hook-form";
+import useChatWebsocket from "../../../../hooks/useChatWebsocket";
 
-function ChatRoom({
-  roomIdState,
-  userInfo,
-  partnerName,
-}: {
-  roomIdState?: number;
-  userInfo?: userInfoType;
-  partnerName?: string;
-}) {
+export type messageObjectType = {
+  chatRoomId: number;
+  sender: string;
+  message: string;
+  messageType: "CHAT" | "RESERVEATION" | "REVIEW";
+  dateTime: string;
+};
+
+function ChatRoom({ userInfo }: { userInfo?: userInfoType }) {
+  const [roomInfoState, setRoomInfoState] = useRoomInfoState();
+  const [chatHistoryState, setChatHistoryState] = useState<messageObjectType[]>(
+    []
+  );
+
+  const getChatHistoryState = (newChatHistoryState: messageObjectType[]) => {
+    setChatHistoryState(newChatHistoryState);
+  };
+
   const { getAccessToken } = useTokenService();
-  const client = new StompJs.Client({
-    brokerURL: "wss://api.dessert-gallery.site/ws/chat/websocket",
-    debug: function (str) {
-      console.log(str);
-    },
-    // webSocketFactory: () => {
-    //   return new SockJS(
-    //     "https://api.dessert-gallery.site/ws/chat"
-    //   ) as WebSocket;
-    // },
-    connectHeaders: { Authorization: getAccessToken() },
-    reconnectDelay: 5000, //자동 재연결
-    heartbeatIncoming: 4000,
-    heartbeatOutgoing: 4000,
-  });
-  client.onConnect = function (frame) {
-    client.subscribe(`/sub/${roomIdState}`, (message) => {
-      console.log(message);
-    });
-    console.log("연결성공");
-  };
-  client.onWebSocketError = (err) => {
-    console.log("웹소켓 에러");
-    console.log(err);
-  };
-  client.onStompError = function (frame) {
-    console.log("브로커 에러: ", frame.headers["message"]);
-    console.log("추가 정보: " + frame.body);
-  };
 
-  const connectHandler = () => {
-    if (window !== undefined) {
-      client.activate();
+  const clientRef = useRef<any>({});
+
+  const { register, getValues, setValue, reset } = useForm();
+
+  const {
+    connectHandler,
+    messageHandler,
+    onClickReservation,
+    onClickReview,
+    disconnectHandler,
+  } = useChatWebsocket(chatHistoryState, getChatHistoryState, userInfo);
+
+  const messageCheckHandler = async () => {
+    if (roomInfoState.roomId !== 0) {
+      const chatHistory = await getChatHistory(roomInfoState.roomId);
+      console.log("채팅 목록", chatHistory.chatList);
+      console.log("이전 채팅 날짜", chatHistory.lastDatetime);
+      setChatHistoryState(chatHistory.chatList);
     }
   };
 
-  const messageHandler = () => {
-    client.publish({
-      destination: "/pub/chat",
-      // skipContentLengthHeader: true,
-      body: JSON.stringify({
-        roomId: roomIdState,
-        message: "테스트 메세지",
-        messageType: "CHAT",
-        sender: "최준형카카오",
-      }),
-      headers: { Authorization: getAccessToken() },
-    });
-  };
-
-  const messageCheckHandler = async () => {
-    const chatHistory = await getChatHistory(5);
-    console.log(chatHistory);
-  };
-
   useEffect(() => {
-    console.log(roomIdState);
+    console.log(roomInfoState.roomId);
+    console.log(roomInfoState);
+
     messageCheckHandler();
     connectHandler();
     return () => {
-      console.log(roomIdState);
-      client.deactivate();
+      disconnectHandler();
     };
-  }, [roomIdState]);
+  }, [roomInfoState]);
 
   return (
     <Wrapper>
-      {roomIdState === undefined ? (
+      {roomInfoState.roomId === 0 ? (
         <NoItemAlert>선택된 채팅방이 없습니다.</NoItemAlert>
       ) : (
         <>
@@ -92,12 +73,14 @@ function ChatRoom({
             <HeaderTop>
               <Profile>
                 <ProfileImage />
-                <UserName>
-                  {partnerName}
-                  <UserNameHelper>님</UserNameHelper>
-                </UserName>
+                <PartnerName>
+                  {roomInfoState.partnerName}
+                  <PartnerNameHelper>님</PartnerNameHelper>
+                </PartnerName>
               </Profile>
-              <OptionButton>
+              <OptionButton
+                onClick={() => deleteChatRoom(roomInfoState.roomId)}
+              >
                 {[1, 2, 3].map((index) => (
                   <Dot key={index}></Dot>
                 ))}
@@ -105,32 +88,50 @@ function ChatRoom({
             </HeaderTop>
             <HeaderBottom>
               <Product>
-                <ProductImage />
+                {/* <ProductImage />
                 <ProductName>상큼오독 산딸기</ProductName>
-                <ProductPrice>34,000원</ProductPrice>
+                <ProductPrice>34,000원</ProductPrice> */}
               </Product>
-              <ButtonDiv>
-                <Button onClick={() => {}}>예약 확정</Button>
-                <Button onClick={messageHandler}>후기 작성</Button>
+              <ButtonDiv userRole={userInfo?.userRole}>
+                <Button onClick={onClickReservation}>예약 확정</Button>
+                <Button onClick={onClickReview}>픽업 완료</Button>
               </ButtonDiv>
             </HeaderBottom>
           </Header>
           <Contents>
-            {/* <ChatItem
-              myChat={false}
-              message={`${roomIdState} 번 방의 채팅 내역입니다.`}
-              timestamp={"2023-11-26T20:15:10.918Z"}
-            ></ChatItem> */}
-            <ChatItem
-              myChat={true}
-              message={`${roomIdState} 번 방의 채팅 내역입니다.`}
-              timestamp={"2023-11-26T20:15:10.918Z"}
-            ></ChatItem>
+            {chatHistoryState?.map((item: any, index) => (
+              <ChatItem
+                key={index}
+                messageType={item.messageType}
+                myChat={userInfo?.nickname === item.sender}
+                message={item.message}
+                timestamp={item.dateTime}
+              ></ChatItem>
+            ))}
           </Contents>
           <Bottom>
-            <Textbox placeholder="메세지를 입력해주세요">
-              {/* <SendButton>123</SendButton> */}
-            </Textbox>
+            <TextboxDiv>
+              <Textbox
+                placeholder="메세지를 입력해주세요"
+                onKeyDown={(event) => {
+                  if (event.key === "Enter") {
+                    messageHandler(getValues("message"));
+                    setValue("message", "");
+                  }
+                }}
+                {...register("message")}
+              ></Textbox>
+              <SendButtonDiv>
+                <SendButton
+                  onClick={() => {
+                    messageHandler(getValues("message"));
+                    setValue("message", "");
+                  }}
+                >
+                  전송
+                </SendButton>
+              </SendButtonDiv>
+            </TextboxDiv>
           </Bottom>
         </>
       )}
@@ -183,19 +184,30 @@ const ProfileImage = styled.div`
   border-radius: 50px;
 `;
 
-const UserName = styled.div`
+const PartnerName = styled.div`
   display: flex;
   align-items: center;
   margin-left: 13px;
   height: 21px;
-  font-size: 14px;
   font-weight: bold;
+  @media screen and (min-width: 1920px) {
+    font-size: 18px;
+  }
+  @media screen and (max-width: 1919px) {
+    font-size: 14px;
+  }
 `;
 
-const UserNameHelper = styled.div`
+const PartnerNameHelper = styled.div`
   font-size: 10px;
   color: #828282;
   margin-left: 4px;
+  @media screen and (min-width: 1920px) {
+    font-size: 13px;
+  }
+  @media screen and (max-width: 1919px) {
+    font-size: 10px;
+  }
 `;
 
 const OptionButton = styled.button`
@@ -231,46 +243,59 @@ const Product = styled.div`
   align-items: center;
 `;
 
-const ProductImage = styled.div`
-  width: 28px;
-  height: 28px;
-  background-color: #fcf0e1;
-`;
+// const ProductImage = styled.div`
+//   width: 28px;
+//   height: 28px;
+//   background-color: #fcf0e1;
+// `;
 
-const ProductName = styled.div`
-  height: 15px;
-  max-width: 156px;
-  font-size: 10px;
-  margin: 0 10px;
-`;
+// const ProductName = styled.div`
+//   height: 15px;
+//   max-width: 156px;
+//   font-size: 10px;
+//   margin: 0 10px;
+// `;
 
-const ProductPrice = styled.div`
-  height: 15px;
-  font-size: 10px;
-  font-weight: bold;
-`;
+// const ProductPrice = styled.div`
+//   height: 15px;
+//   font-size: 10px;
+//   font-weight: bold;
+// `;
 
-const ButtonDiv = styled.div`
-  display: flex;
+const ButtonDiv = styled.div<{ userRole?: "USER" | "MANAGER" }>`
+  display: ${(props) => (props.userRole === "MANAGER" ? "flex" : "none")};
   justify-content: space-between;
   align-items: center;
-  width: 202px;
+
+  @media screen and (min-width: 1920px) {
+    width: 269px;
+  }
+  @media screen and (max-width: 1919px) {
+    width: 202px;
+  }
 `;
 
 // 그림자 버전 버튼
 const Button = styled.button`
-  width: 92px;
-  height: 24px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 9px;
   font-weight: bold;
   border: none;
   border-radius: 6px;
   background-color: FCF6EE;
   box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.1);
   cursor: pointer;
+  @media screen and (min-width: 1920px) {
+    width: 122px;
+    height: 32px;
+    font-size: 12px;
+  }
+  @media screen and (max-width: 1919px) {
+    width: 92px;
+    height: 24px;
+    font-size: 9px;
+  }
 `;
 
 const Contents = styled.div`
@@ -301,26 +326,61 @@ const Bottom = styled.div`
   padding: 14px;
 `;
 
+const TextboxDiv = styled.div`
+  display: flex;
+  width: 100%;
+  height: 100%;
+  border: 2px solid #ff6f00;
+  padding: 10px 15px;
+  border-radius: 7px;
+`;
+
 const Textbox = styled.textarea`
   width: 100%;
   height: 100%;
-  padding: 19px 21px;
-  border: 2px solid #ff6f00;
+  border: none;
   border-radius: 7px;
   resize: none;
   outline: none;
-  font-size: 11px;
   font-family: noto-sans-cjk-kr, sans-serif;
   ::placeholder {
     color: #828282;
   }
+  @media screen and (min-width: 1920px) {
+    font-size: 14px;
+  }
+  @media screen and (max-width: 1919px) {
+    font-size: 11px;
+  }
+`;
+
+const SendButtonDiv = styled.div`
+  display: flex;
+  align-items: flex-end;
 `;
 
 const SendButton = styled.button`
-  width: 50px;
-  height: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   background-color: #dedede;
   border-radius: 7px;
+  margin-left: 15px;
+  border: none;
+  background-color: FCF6EE;
+  box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.1);
+  font-family: noto-sans-cjk-kr, sans-serif;
+  cursor: pointer;
+  @media screen and (min-width: 1920px) {
+    width: 67px;
+    height: 29px;
+    font-size: 12px;
+  }
+  @media screen and (max-width: 1919px) {
+    width: 50px;
+    height: 22px;
+    font-size: 9px;
+  }
 `;
 
 const NoItemAlert = styled.div`
