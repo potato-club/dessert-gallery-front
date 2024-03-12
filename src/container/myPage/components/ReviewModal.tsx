@@ -205,7 +205,7 @@ function ReviewModal({setShowReviewModal, writeAbleStoreData}: props) {
             <Box height='260px' margin='30px 0 8px 0' direction='column' alignItems='flex-start' justifyContent='space-evenly'>
               <Text textType='title'>리뷰를 작성해주세요</Text>
               <Text textType='sub'>상품과 관련된 후기를 작성해주세요</Text>
-              <InputContents value={content} onChange={handleInputChange} placeholder='좋은 후기는 디저트 갤러리에 큰 도움이 된답니다 :)'/>
+              <InputContents value={content} onChange={handleInputChange} maxLength={250} placeholder='좋은 후기는 디저트 갤러리에 큰 도움이 된답니다 :)'/>
             </Box>
             {
               images.length === 0 ? (
