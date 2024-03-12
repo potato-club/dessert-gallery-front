@@ -8,6 +8,11 @@ import ThreeDot from "../../../../public/SVG/reviewPage/ThreeDot.svg";
 import ToggleOptionBox from "../../../components/ToggleOptionBox";
 import Router from "next/router";
 import { deleteReview } from "../../../apis/controller/reviewPage";
+import useGetWriteAbleStoreInfo from "../../../hooks/useGetWriteAbleReview";
+import { modalBg } from "../../../recoil/modalBg/atom";
+import { useSetRecoilState } from "recoil";
+import ReviewModal from "../components/ReviewModal";
+
 interface Button {
   isSelected?: boolean;
   detail?: boolean;
@@ -16,6 +21,10 @@ interface Button {
 interface ButtonInfo {
   index: number;
   label: string;
+}
+
+interface style {
+  selected: boolean
 }
 
 const MyReviewPage = () => {
@@ -32,6 +41,7 @@ const MyReviewPage = () => {
   };
   const [reviewId, setReviewId] = useState<number>(-1);
   const myReview = useGetMyReview(1, month);
+  const writeAbleReview = useGetWriteAbleStoreInfo();
 
   const modalOption = [
     {
@@ -44,17 +54,25 @@ const MyReviewPage = () => {
   ];
   const reviewBoxRef = useRef<HTMLDivElement>(null);
   const [showMoreButton, setShowMoreButton] = useState<boolean>(false);
+  const [showReviewModal, setShowReviewModal] = useState<boolean>(false);
+  const setModalBgState = useSetRecoilState(modalBg);
 
   useEffect(() => {
+    console.log("writeAbleReview", writeAbleReview)
     if (reviewBoxRef.current) {
       const reviewBoxHeight = reviewBoxRef.current.clientHeight;
       setShowMoreButton(reviewBoxHeight > 230);
     }
-  }, [myReview]);
+  }, [myReview, writeAbleReview]);
 
   const detailClick = (id: number) => {
     setReviewId(id);
     setModal(!modal);
+  };
+
+  const handleWrapperClick = () => {
+    setShowReviewModal(false);
+    setModalBgState(false);
   };
 
   return (
@@ -75,7 +93,17 @@ const MyReviewPage = () => {
               </NoticeButton>
             ))}
           </NoticeValueBox>
-          <ReviewNumber>내가 쓴 후기</ReviewNumber>
+          <NoticeValueBox>
+            {
+              writeAbleReview.length === 0 
+              ? <CreateReview selected={false}>리뷰 작성</CreateReview>
+              : <CreateReview selected={true} onClick={()=>{
+                setShowReviewModal(true)
+                setModalBgState(true);
+              }}>리뷰 작성</CreateReview>
+            }
+            <ReviewNumber>내가 쓴 후기</ReviewNumber>
+          </NoticeValueBox>
         </Middle>
         <ReviewWrapper>
           {myReview?.map((review: any, index: number) => (
@@ -112,6 +140,8 @@ const MyReviewPage = () => {
           ))}
         </ReviewWrapper>
       </MenuWrapper>
+      {showReviewModal && <ReviewModal writeAbleStoreData={writeAbleReview} setShowReviewModal={setShowReviewModal}/>}
+      {showReviewModal && <WrapperOverlay onClick={handleWrapperClick} />}
     </Wrapper>
   );
 };
@@ -130,6 +160,15 @@ const MenuWrapper = styled.div`
   flex-direction: column;
   align-items: center;
   row-gap: 40px;
+`;
+
+const WrapperOverlay = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 15;
 `;
 
 const Header = styled.div`
@@ -180,6 +219,24 @@ const ReviewNumber = styled.div`
   align-items: center;
   justify-content: center;
   border-radius: 10px;
+`;
+
+const CreateReview = styled.div<style>`
+  width: 200px;
+  height: 36px;
+  background-color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  cursor: default;
+  color: gray;
+
+  ${({selected}) => selected &&  `
+    border: 2px solid #ff8d00;
+    cursor: pointer;
+    color: black;
+  `}
 `;
 
 const ReviewWrapper = styled.div`

@@ -11,7 +11,7 @@ import defaultImage from '../../../../public/image/TodayBackground.png'
 import ReviewScore from './ReviewScore'
 import {LeftArrow, RightArrow} from '../../../../public/svg'
 //차후 변경
-import { postReview } from '../../../apis/controller/review'
+import { postTestReview } from '../../../apis/controller/review'
 
 interface styleI {
   textType: "title" | "text"| "sub"
@@ -78,7 +78,8 @@ function ReviewModal({setShowReviewModal, writeAbleStoreData}: props) {
         });
       }
 
-      const response = await postReview({storeId: writeAbleStoreData[index].id, req: sendFormData})
+      // const response = await postReview({storeId: writeAbleStoreData[index].id, req: sendFormData})
+      const response = await postTestReview(sendFormData)
 
       if (response) {
         alert('리뷰 작성 완료')
@@ -254,7 +255,7 @@ const Wrap = styled.div`
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
   text-align: center;
-  z-index: 20;
+  z-index: 10;
   display: flex;
   flex-direction: column;
   justify-content: center;
