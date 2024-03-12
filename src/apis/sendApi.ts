@@ -13,7 +13,7 @@ export const sendApi = {
         authorization(sessionStorageService.get(SESSION_KEY, "accessToken"))
       );
     } else {
-      return axios.get(AUTH_KEY.apiUrl + url);
+      return axios.get(AUTH_KEY.apiUrl + url, { withCredentials: true });
     }
   },
 

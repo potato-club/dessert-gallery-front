@@ -19,10 +19,12 @@ interface StoreInfoType {
     images: any;
     tags: string[];
     title: string;
+    viewCount: number;
+    commentCount: number;
   };
   boardId: number;
 }
-const index = ({ storeInfo, detailPoster, boardId }: StoreInfoType) => {
+const ModalHeader = ({ storeInfo, detailPoster, boardId }: StoreInfoType) => {
   const [menuIconClick, setMenuIconClick] = useState<boolean>(false);
 
   const router = useRouter();
@@ -50,13 +52,13 @@ const index = ({ storeInfo, detailPoster, boardId }: StoreInfoType) => {
         },
         {
           REGI_WEB_DOMAIN: `http://localhost:3000`,
-          REDIRECT_PATH: `galleryBoard/${storeInfo.id}`,
+          REDIRECT_PATH: `galleryBoard/${storeInfo.id}?boardId=${boardId}`,
           PROFILE_IMG: storeInfo.storeImage.fileUrl,
           BOARD_HASHTAG: detailPoster.tags.join(" "),
           BOARD_TITLE: detailPoster.title,
           STORE_NAME: storeInfo.name,
-          COMMENT_COUNT: 100,
-          VIEW_COUNT: 100,
+          COMMENT_COUNT: detailPoster.commentCount,
+          VIEW_COUNT: detailPoster.viewCount,
         }
       );
 
@@ -84,13 +86,16 @@ const index = ({ storeInfo, detailPoster, boardId }: StoreInfoType) => {
   ];
   return (
     <Container>
-      <StoreInfo>
-        <StoreProfile src={storeInfo.storeImage.fileUrl} />
-        <div>
-          <StoreName>{storeInfo.name}</StoreName>
-          <SubCategory>{storeInfo.info || "default 값"}</SubCategory>
-        </div>
-      </StoreInfo>
+      {storeInfo && (
+        <StoreInfo>
+          <StoreProfile src={storeInfo.storeImage.fileUrl} />
+          <div>
+            <StoreName>{storeInfo.name}</StoreName>
+            <SubCategory>{storeInfo.info || "default 값"}</SubCategory>
+          </div>
+        </StoreInfo>
+      )}
+
       <div>
         <BoxPosition>
           {menuIconClick && <ToggleOptionBox contents={storePageModalOption} />}
@@ -107,7 +112,7 @@ const index = ({ storeInfo, detailPoster, boardId }: StoreInfoType) => {
   );
 };
 
-export default index;
+export default ModalHeader;
 
 const Container = styled.div`
   position: sticky;

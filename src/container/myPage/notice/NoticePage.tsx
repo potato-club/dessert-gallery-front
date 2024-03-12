@@ -27,15 +27,11 @@ interface ButtonInfo {
 
 const NoticePage = () => {
   const [detailButton, setDetailButton] = useState<number | null>(null);
-
   const [type, setType] = useState<number>(2);
-
   const [noticeId, setnoticeId] = useState<number>(0);
   const [modal, setModal] = useState<boolean>(false);
-
   const [inputValue, setuinputValue] = useState<string>("");
   const [search, setSearch] = useState<string>("");
-
   const { noticeList, setNoticeList } = useNoticeList(type, search);
 
   let LASTID = noticeList?.[noticeList.length - 1]?.id ?? 0;
@@ -150,9 +146,8 @@ const NoticePage = () => {
               <NoticeValue>{noticeList.type}</NoticeValue>
               {noticeList.id === detailButton ? (
                 <NoticeContent>
-                  제목 : {noticeList.title}
-                  <br />
-                  내용 : {noticeList.content}
+                  <Title>{noticeList.title}</Title>
+                  <Content>{noticeList.content}</Content>
                 </NoticeContent>
               ) : (
                 <NoticeTitle>{noticeList.title}</NoticeTitle>
@@ -277,7 +272,7 @@ const Div = styled.div`
   height: 60vh;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: right;
   overflow-y: scroll;
   width: 100%;
   background-color: #fdfaf5;
@@ -287,7 +282,7 @@ const ContentsBackground = styled.div<Button>`
   width: 100%;
   display: flex;
   justify-content: center;
-  box-shadow: ${(props) => (props.detail ? "0px 2px  3px" : "none")};
+  box-shadow: ${(props) => (props.detail ? "0px 1px 1px" : "none")};
 `;
 
 const ContentBox = styled.div<Button>`
@@ -324,9 +319,15 @@ const NoticeContent = styled.div`
   width: 400px;
   height: 36px;
   font-size: 15px;
-  align-items: center;
   display: flex;
+  flex-direction: column;
+  gap: 15px;
 `;
+const Title = styled.div`
+  font-size: 25px;
+  font-weight: 600;
+`;
+const Content = styled.div``;
 
 const NoticeDate = styled.div`
   width: 80px;
@@ -347,11 +348,11 @@ const Option = styled.div`
   font-weight: 700;
   justify-content: center;
   display: flex;
-  width: 36.34px;
+  width: 40px;
 `;
 const ModalOptionBox = styled.div`
   position: absolute;
   top: 33px;
-  right: -17px;
+  right: 163px;
   z-index: 1;
 `;

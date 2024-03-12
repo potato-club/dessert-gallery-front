@@ -4,6 +4,7 @@ import styled, { css } from "styled-components";
 import Tag from "../../../components/Tag";
 import { useFollowAction } from "../../../hooks/useFollowAction";
 import { useGetStoreInfo } from "../../../hooks/useStore";
+
 import {
   getChatRoom,
   postChatRoom,
@@ -12,9 +13,13 @@ import {
 import { roomInfoType } from "../../myPage/chatPage/ChatPage";
 import { useRoomInfoState } from "../../../recoil/chat/roomInfoStateAtom";
 import { useUserState } from "../../../hooks/useUser";
+import Logo from "../../../../public/svg/common/logo.svg";
+
 
 const StoreProfile = () => {
   const router = useRouter();
+
+  const {isGuest} = useUserState();
 
   const storeId = parseInt(
     router.query.store ? router.query.store.toString() : "0"
@@ -70,7 +75,14 @@ const StoreProfile = () => {
     <Container>
       {data && (
         <>
-          <StoreImg src={data.storeImage.fileUrl} />
+          {data.storeImage ? (
+            <StoreImg src={data.storeImage.fileUrl} />
+          ) : (
+            <DefaultStoreImg>
+              <Logo width={250} height={250} />
+            </DefaultStoreImg>
+          )}
+
           <InnerContainer>
             <InfoContent>
               <StoreName>{data.name}</StoreName>
@@ -147,6 +159,7 @@ const StoreProfile = () => {
                         postChatRoom(storeId);
                         router.push("/myPage/chat");
                       }
+
                     }
                   }}
                 />
@@ -165,6 +178,14 @@ const StoreImg = styled.img`
   width: 320px;
   height: 320px;
 `;
+const DefaultStoreImg = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 320px;
+  height: 320px;
+  background-color: #fdc886;
+`;
 const StoreProfileBtn = styled(Tag)``;
 const Container = styled.div`
   display: flex;
@@ -174,7 +195,9 @@ const Container = styled.div`
   background-color: #fffdf9;
 `;
 const InnerContainer = styled.div`
-  padding: 44px 36px 39px;
+  display: flex;
+  align-items: center;
+  padding: 0px 36px;
 `;
 const InfoContent = styled.div`
   display: flex;

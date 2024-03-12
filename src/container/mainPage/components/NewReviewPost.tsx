@@ -17,8 +17,9 @@ export default function NewReviewPost({ newReviewPosts }: { newReviewPosts: resR
 
 const ContentWrap = styled.div`
   width: 1200px;
-  margin: 0 0 64px 0;
+  margin: 64px 0;
   height: 450px;
   display: flex;
-  justify-content: flex-start
+  justify-content: space-between;
+  align-items: center;
 `

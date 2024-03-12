@@ -4,6 +4,8 @@ import { SESSION_KEY } from "../constants/session";
 
 const axiosClient = axios.create();
 
+axiosClient.defaults.withCredentials = true;
+
 axiosClient.interceptors.request.use(
   async (config) => {
     const refreshToken = sessionStorageService.get(SESSION_KEY, "refreshToken");

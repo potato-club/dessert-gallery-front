@@ -4,7 +4,7 @@ import { toggleBookmark } from "../../../../../apis/controller/detailStore";
 import Bookmark from "../../../../../components/SlideImage/Bookmark";
 import CommentList from "./CommentList";
 
-const index = ({ address, detailPoster, boardId, postCommentList }: any) => {
+const Content = ({ address, detailPoster, boardId, postCommentList }: any) => {
   const [onBookmarkState, setOnBookmarkState] = useState<boolean>(false);
 
   // bookmark 불리언값에 따른 onBookmarkState 상태 변경
@@ -45,7 +45,7 @@ const index = ({ address, detailPoster, boardId, postCommentList }: any) => {
   );
 };
 
-export default index;
+export default Content;
 
 const Container = styled.div`
   display: flex;

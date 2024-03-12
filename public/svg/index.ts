@@ -11,3 +11,8 @@ export { default as UpArrow } from "./common/UpArrow.svg";
 export { default as DefaultProfileLogo } from "./storePage/DefaultProfileLogo.svg";
 export { default as MenuIcon } from "./common/MenuIcon.svg";
 export { default as ArrowUp } from "./storePage/ArrowUp.svg";
+export { default as ScoreStar } from "./myPage/review/scoreStar.svg";
+export { default as ScoreStarEmpty } from "./myPage/review/scoreStarEmpty.svg";
+export { default as ScoreStarHalf } from "./myPage/review/scoreStarHalf.svg";
+export { default as LeftArrow } from "./myPage/review/LeftArrow.svg";
+export { default as RightArrow } from "./myPage/review/RightArrow.svg";

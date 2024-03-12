@@ -1,3 +1,5 @@
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 import { useInfiniteQuery, useQuery } from "react-query";
 import {
   getDetailPoster,
@@ -6,6 +8,8 @@ import {
   getPosterList,
   getStoreAnnounce,
 } from "../apis/controller/detailStore";
+import { useRecoilValue, useSetRecoilState } from "recoil";
+import { modalBg } from "../recoil/modalBg/atom";
 
 export const useGetInfinityPosterList = (storeId: number) => {
   const fetchPoster = async ({ pageParam = 1 }) => {
@@ -34,12 +38,12 @@ export const useGetInfinityPosterList = (storeId: number) => {
   return { posterList, fetchNextPage, hasNextPage, isLoading, refetch };
 };
 
-export const useGetDetailBoard = (options = {}, boardId: number) => {
+export const useGetDetailBoard = (boardId: number) => {
   const { data } = useQuery(
     ["detailBoard", boardId],
     () => getDetailPoster(boardId),
     {
-      ...options,
+      refetchOnWindowFocus: false,
     }
   );
 
@@ -47,7 +51,7 @@ export const useGetDetailBoard = (options = {}, boardId: number) => {
 };
 
 export const useGetReviewList = ({ page, storeId, options }: any) => {
-  const { data, refetch } = useQuery(
+  const { data, refetch, isLoading } = useQuery(
     ["review", storeId],
     () => getStoreReview({ storeId, page }),
     {
@@ -55,7 +59,7 @@ export const useGetReviewList = ({ page, storeId, options }: any) => {
     }
   );
 
-  return { data, refetch };
+  return { data, refetch, isLoading };
 };
 export const useGetStoreAnnounce = ({ storeId, options }: any) => {
   const { data: announceData, refetch } = useQuery(
@@ -89,4 +93,33 @@ export const useInfinityModalComment = ({ boardId }: any) => {
       retry: 1,
     });
   return { data, fetchNextPage, hasNextPage, isLoading, refetch };
+};
+
+export const storePageOnModal = (storeId: number) => {
+  const router = useRouter();
+  const [boardId, setBoardId] = useState<number>(0);
+  const [onModal, setOnModal] = useState<boolean>(false);
+  const modalBgState = useSetRecoilState(modalBg);
+
+  useEffect(() => {
+    if (router.query.boardId) setBoardId(Number(router.query.boardId));
+    if (Number(router.query.boardId) == boardId) {
+      setOnModal(true);
+      modalBgState(true);
+    }
+  }, [router, boardId]);
+
+  const onModalBg = useRecoilValue(modalBg);
+  useEffect(() => {
+    if (onModalBg === false)
+      router.push(`/galleryBoard/${storeId}`, undefined, {
+        shallow: true,
+      });
+    else
+      router.push(`/galleryBoard/${storeId}?boardId=${boardId}`, undefined, {
+        shallow: true,
+      });
+  }, [onModalBg]);
+
+  return { boardId, setBoardId, onModal, onModalBg };
 };

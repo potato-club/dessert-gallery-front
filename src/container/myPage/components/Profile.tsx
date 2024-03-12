@@ -4,6 +4,8 @@ import Tag from '../../../components/Tag'
 import { useLoginUserInfo } from '../../../hooks/useUser';
 import ManagerProfile from './ManagerProfile';
 import { putUser } from '../../../apis/controller/profile';
+import { modalBg } from '../../../recoil/modalBg/atom';
+import { useSetRecoilState } from "recoil";
 
 export interface FormDataI {
   nickname: string;

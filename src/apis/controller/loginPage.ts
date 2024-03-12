@@ -14,7 +14,7 @@ export const loginPageApi = {
     );
   },
   getDuplicationNickname: async (nickname: string) => {
-    return await axios.get(`/users/duplication/nickname?nickname=${nickname}`);
+    return await axios.get(`https://api.dessert-gallery.site/users/duplication/nickname?nickname=${nickname}`);
   },
   postSignup: async (signupData: {
     email?: string;

@@ -97,6 +97,46 @@ export interface NoticeListDto {
   createdDate: string;
 }
 
+interface FileDto {
+  description?: string; // 삭제할 이미지 리스트
+  fileName: string; // 이미지 파일 이름
+  fileUrl: string; // 이미지 파일 url
+}
+
+export interface MyReviewDto {
+  id: number;
+  content: string;
+  score: number;
+  images: FileDto[];
+  createDate: string;
+}
+export interface MyReviewWhole {
+  size: number;
+  content: MyReviewDto[];
+  number: number;
+  sort: {
+    empty: boolean;
+    unsorted: boolean;
+    sorted: boolean;
+  };
+  numberOfElements: number;
+  pageable: {
+    offset: number;
+    sort: {
+      empty: boolean;
+      unsorted: boolean;
+      sorted: boolean;
+    };
+    pageNumber: number;
+    pageSize: number;
+    paged: boolean;
+    unpaged: boolean;
+  };
+  first: boolean;
+  last: boolean;
+  empty: boolean;
+}
+
 export interface SliceNoticeListDto {
   size: number;
   content: NoticeListDto[];
@@ -116,50 +156,48 @@ export interface PostNoticeParam {
   typeKey: string;
 }
 
-
-export type mapStoreDetail =
-  {
-    id: number,
-    name: string,
-    info: string,
-    content: string,
-    address: string,
-    phoneNumber: string,
-    storeImage: {
-      fileName: string,
-      fileUrl: string
-    },
-    posts: [
-      {
-        title: string,
-        content: string,
-        thumbnail: {
-          fileName: string,
-          fileUrl: string
-        },
-        createdDate: string
-      }
-    ],
-    reviews: [
-      {
-        userName: string,
-        content: string,
-        score: 0,
-        image: {
-          fileName: string,
-          fileUrl: string
-        },
-        createDate: Date
-      }
-    ],
-    notices: [
-      {
-        id: 0,
-        title: string,
-        content: string,
-        exposed: true,
-        type: string,
-        createdDate: string
-      }
-    ]
-  }
+export type mapStoreDetail = {
+  id: number;
+  name: string;
+  info: string;
+  content: string;
+  address: string;
+  phoneNumber: string;
+  storeImage: {
+    fileName: string;
+    fileUrl: string;
+  };
+  posts: [
+    {
+      title: string;
+      content: string;
+      thumbnail: {
+        fileName: string;
+        fileUrl: string;
+      };
+      createdDate: string;
+    }
+  ];
+  reviews: [
+    {
+      userName: string;
+      content: string;
+      score: 0;
+      image: {
+        fileName: string;
+        fileUrl: string;
+      };
+      createDate: Date;
+    }
+  ];
+  notices: [
+    {
+      id: 0;
+      title: string;
+      content: string;
+      exposed: true;
+      type: string;
+      createdDate: string;
+    }
+  ];
+};

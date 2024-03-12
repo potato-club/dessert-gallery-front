@@ -4,16 +4,16 @@ import mainBannerBGImage from '../../../../public/image/mainBanner.png'
 
 export default function Banner() {
   return (
-    <BannerWrap>Banner</BannerWrap>
+    <BannerWrap>Dessert Gallery</BannerWrap>
   )
 }
 
 
-const BannerWrap = styled.div`
-  width: 100vw;
+const BannerWrap = styled.header`
+  min-width: 100%;
   height: 478px;
+  background-size: 100% 100%;
   background-image: url(${mainBannerBGImage.src});
-  background-size: cover;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -22,4 +22,7 @@ const BannerWrap = styled.div`
   font-family: noto-sans-cjk-kr;
   color: white;
   cursor: default;
+  /* @media screen and (max-width: 1300px) {
+    height: 400px;
+  } */
 `

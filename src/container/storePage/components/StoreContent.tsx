@@ -1,16 +1,14 @@
 import React, { useEffect, useState } from "react";
 import styled, { css } from "styled-components";
-import Poster from "./Poster";
+import PosterList from "./PosterList";
 import PostModal from "./Modal";
 import ReviewList from "../../../components/ReviewList";
-import { useRecoilValue } from "recoil";
-import { modalBg } from "../../../recoil/modalBg/atom";
+import { storePageOnModal } from "../../../hooks/useBoard";
 
 const StoreContent = ({ storeId }: any) => {
-  const [optionNum, setOptionNum] = useState<number>(1);
-  const [boardId, setBoardId] = useState<number>(1);
-  const onModal = useRecoilValue(modalBg);
+  const { boardId, setBoardId, onModal, onModalBg } = storePageOnModal(storeId);
 
+  const [optionNum, setOptionNum] = useState<number>(1);
   const optionClick = (num: number) => {
     localStorage.setItem("detailStoreOption", num.toString());
     setOptionNum(num);
@@ -32,10 +30,10 @@ const StoreContent = ({ storeId }: any) => {
           가게 후기
         </ReviewBtn>
       </Options>
-      {onModal && <PostModal boardId={boardId} />}
+      {onModal && onModalBg && <PostModal boardId={boardId} />}
 
       {optionNum == 1 ? (
-        <Poster storeId={storeId} setBoardId={setBoardId} />
+        <PosterList storeId={storeId} setBoardId={setBoardId} />
       ) : (
         <ReviewList />
       )}

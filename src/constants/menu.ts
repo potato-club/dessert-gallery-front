@@ -43,8 +43,8 @@ export const menuList = Object.freeze({
       domain: "/myPage/post",
     },
     {
-      title: "팔로우 관리",
-      domain: "/myPage/follow",
+      title: "차단된 계정",
+      domain: "/myPage/blocked",
     },
   ],
   default: [

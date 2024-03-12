@@ -1,16 +1,23 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { useSetRecoilState } from "recoil";
 import { modalBg } from "../../../../recoil/modalBg/atom";
 import { useGetInfinityPosterList } from "../../../../hooks/useBoard";
 import LoadingSpinner from "../Modal/LoadingSpinner";
 import { useInfinityScrollLoading } from "../../../../hooks/useInfinityScroll";
+import { useRouter } from "next/router";
 
 const Poster = ({ storeId, setBoardId }: any) => {
+  const router = useRouter();
+
   const modalBgState = useSetRecoilState(modalBg);
+
   const onClick = (boardId: number) => {
     modalBgState(true);
     setBoardId(boardId);
+    router.push(`/galleryBoard/${storeId}?boardId=${boardId}`, undefined, {
+      shallow: true,
+    });
   };
 
   const { posterList, isLoading, hasNextPage, fetchNextPage } =
@@ -24,16 +31,19 @@ const Poster = ({ storeId, setBoardId }: any) => {
 
   return (
     <Container>
-      <PosterList>
-        {pageList &&
-          pageList.map((item: any) => (
+      {pageList && pageList.length ? (
+        <PosterList>
+          {pageList.map((item: any) => (
             <PostDiv
               key={item.boardId}
               src={item.thumbnail.fileUrl}
               onClick={() => onClick(item.boardId)}
-            ></PostDiv>
+            />
           ))}
-      </PosterList>
+        </PosterList>
+      ) : (
+        <NonePoster>등록된 게시물이 없습니다.</NonePoster>
+      )}
       <IoDiv ref={ref}></IoDiv>
       {isLoad && (
         <LoadingDiv>
@@ -68,4 +78,10 @@ const LoadingDiv = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+`;
+const NonePoster = styled.div`
+  display: flex;
+  justify-content: center;
+  margin: 50px 0px;
+  font-weight: 500;
 `;
