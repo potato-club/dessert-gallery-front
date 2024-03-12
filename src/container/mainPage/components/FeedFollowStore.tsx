@@ -1,6 +1,6 @@
 import React from 'react'
 import GalleryPost from '../../boardPage/galleryBoard/GalleryPost'
-import { LogoImage, PostWrap, Wrap, InfoText } from './FeedSwitcher.style'
+import { LogoImage, PostWrap, Wrap, InfoText, FollowWrap } from './FeedSwitcher.style'
 import { followStore } from '../../../types/apiTypes'
 import Tag from '../../../components/Tag';
 
@@ -10,12 +10,14 @@ interface contentsProps {
 
 export default function FeedFollowStore({contents}: contentsProps) {
 
+  console.log("FeedFollowStore",contents, contents.length>0, contents.length ===0, contents.length)
   const onClickMovePage = () => {
     window.location.href = '/galleryBoard'
   }
 
   return (
-    <PostWrap>
+    <FollowWrap>
+      <PostWrap>
           {
               contents.length>0 &&contents.slice(0,6).map((e:followStore, idx:number) => (
                 <GalleryPost
@@ -27,11 +29,13 @@ export default function FeedFollowStore({contents}: contentsProps) {
                   title={e.storeName}
                   size={'small'}
                   storeId={e.idx} 
-                  location={''} ratingValue={''} bookmark={false} onBookmark={false}                  />
+                  location={''} ratingValue={''} bookmark={false} onBookmark={false}
+                />
               ))
           }
+      </PostWrap>
           {
-            contents.length <=0 && 
+            contents.length === 0 && 
             (
               <Wrap>
                 <LogoImage/>
@@ -42,6 +46,6 @@ export default function FeedFollowStore({contents}: contentsProps) {
               </Wrap>
             )
           }
-        </PostWrap>
+        </FollowWrap>
   )
 }

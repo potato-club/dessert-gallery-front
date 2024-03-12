@@ -62,12 +62,11 @@ function SlideImage({
   };
 
   const onClickBookmark = async (storeId: number) => {
-    followAction(onBookmarkState, storeId);
-    confirm(`gld: ${storeId}, ${onBookmarkState}`);
-    if (onBookmarkState) {
-      alert("해당 손님/가게를 언팔로우했습니다.");
-    } else {
-      alert("해당 가게를 팔로우했습니다.");
+    followAction(onBookmarkState,storeId)
+    if(onBookmarkState){
+      alert('해당 손님/가게를 언팔로우했습니다.')
+    }else{
+      alert('해당 가게를 팔로우했습니다.')
     }
     setOnBookmarkState((prev) => !prev);
   };
