@@ -1,11 +1,10 @@
 import React, { useState } from 'react'
 import Tag from '../../src/components/Tag';
-import ReviewModal from '../../src/container/myPage/components/ReviewModal';
-import { useLoginUserInfo } from '../../src/hooks/useUser';
+import ReviewModalTest from '../../src/container/myPage/components/ReviewModalTest';
 
 const temp = [
   {
-    id: 1,
+    id: 9,
     name: "테스트 가게",
     content: "이하 전체 더미 데이터",
     address: "입력시 9번 가게로 등록됩니다",
@@ -14,21 +13,14 @@ const temp = [
       fileUrl: "https://cdn.pixabay.com/photo/2017/10/25/08/25/cupcakes-2887270_1280.jpg"
     }
   },
-  {
-    id: 2,
-    name: "행케",
-    content: "행복한 케이크를 드려요",
-    address: "서울시 양천구 오목로",
-    storeImage: null
-  }
 ]
 
-function reviewTest() {
+function ReviewTest() {
    /**
    * 후기 모달 코드
    */
    //const setModalBgState = useSetRecoilState(modalBg);
-   const [showReviewModal, setShowReviewModal] = useState<Boolean>(false);
+   const [showReviewModal, setShowReviewModal] = useState<boolean>(false);
  
    ///////////////////////
   return (
@@ -39,10 +31,10 @@ function reviewTest() {
           //setModalBgState(true);
         }}/>
 
-        {showReviewModal && <ReviewModal writeAbleStoreData={temp} setShowReviewModal={setShowReviewModal}/>}
+        {showReviewModal && <ReviewModalTest writeAbleStoreData={temp} setShowReviewModal={setShowReviewModal}/>}
       {/** 리뷰모달 코드------------- */}
    </div>
   )
 }
 
-export default reviewTest
+export default ReviewTest

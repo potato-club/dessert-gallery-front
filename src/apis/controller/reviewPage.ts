@@ -11,3 +11,9 @@ export const deleteReview = async (id: number) => {
     alert("리뷰가 삭제 상태로 변경 되었습니다");
   }
 };
+
+
+export const getWriteAbleReview = async () => {
+  const res = await sendApi.get(`/reviews/writable`);
+  return res;
+};
