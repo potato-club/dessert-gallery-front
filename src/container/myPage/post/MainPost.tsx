@@ -6,7 +6,8 @@ import PostForm from "./components/PostForm";
 import { useEscKey } from "../../../hooks/useEscKey";
 import defaultImage from "../../../../public/image/defaultPhoto.png";
 import Post from "./components/Post";
-import Review from "./components/Review";
+import Router from "next/router";
+import ReviewList from "../../../components/ReviewList";
 
 interface CustomComponentProps {
   isSelected: boolean;
@@ -16,12 +17,19 @@ const MainPost = () => {
   const storeInfo = useGetStoreInfo();
   const [modalState, setModalState] = useState(false);
   const [detailState, setDetailState] = useState(false);
-  const [selectState, setSelectState] = useState("post");
+  const [selectState, setSelectState] = useState(1);
 
   useEscKey(() => closeThing());
 
   const closeThing = () => {
     setModalState(false);
+  };
+
+  const reviewClick = () => {
+    Router.push({
+      query: { store: storeInfo?.id },
+    });
+    setSelectState(2);
   };
 
   return (
@@ -60,21 +68,21 @@ const MainPost = () => {
           </ProfileBox>
           <PostTypeBox>
             <TypePost
-              isSelected={selectState === "post"}
-              onClick={() => setSelectState("post")}
+              isSelected={selectState === 1}
+              onClick={() => setSelectState(1)}
             >
               가게 게시물
             </TypePost>
             <TypeReview
-              isSelected={selectState === "review"}
-              onClick={() => setSelectState("review")}
+              isSelected={selectState === 2}
+              onClick={() => reviewClick()}
             >
               가게 후기글
             </TypeReview>
           </PostTypeBox>
         </HeaderWrapper>
       </Header>
-      <Body>{selectState === "post" ? <Post /> : <Review />}</Body>
+      <Body>{selectState === 1 ? <Post /> : <ReviewList />}</Body>
       {modalState && <PostForm handleDone={() => setModalState(false)} />}
     </Wrapper>
   );

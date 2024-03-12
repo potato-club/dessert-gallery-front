@@ -16,6 +16,7 @@ const Extend = ({ postTitle, content, onChange }: ExtendProps) => {
   const [caption, setCaption] = useState<string>("");
   const [title, setTitle] = useState<string>("");
   const storeInfo = useGetStoreInfo();
+  const hashtags: never[] = [];
 
   const handleCaptionChange = (value: string) => {
     const currentAmount = value.length;
@@ -44,9 +45,10 @@ const Extend = ({ postTitle, content, onChange }: ExtendProps) => {
             }
           />
         </ProfileBox>
-        <ProfileName>
-          {storeInfo?.name} / {storeInfo?.info}
-        </ProfileName>
+        <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+          <ProfileName>{storeInfo?.name}</ProfileName>
+          <ProfileInfo>{storeInfo?.info}</ProfileInfo>
+        </div>
       </InfoBox>
 
       <Caption
@@ -68,6 +70,7 @@ const AddWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  font-family: "Noto Sans CJK KR";
 `;
 
 const InfoBox = styled.div`
@@ -92,8 +95,13 @@ const ProfileBox = styled.div`
 
 const ProfileName = styled.div`
   height: 18px;
-  font-size: 14px;
+  font-size: 21px;
   display: flex;
   align-items: center;
   font-weight: 600;
+`;
+const ProfileInfo = styled.div`
+  color: #ff6f00;
+  font-size: 15px;
+  font-weight: 500;
 `;
