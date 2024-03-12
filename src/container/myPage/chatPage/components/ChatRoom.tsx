@@ -9,9 +9,10 @@ import { userInfoType } from "../ChatPage";
 import { useRoomInfoState } from "../../../../recoil/chat/roomInfoStateAtom";
 import { deleteChatRoom } from "../../../../apis/controller/chatPage";
 import { useForm } from "react-hook-form";
+import useChatWebsocket from "../../../../hooks/useChatWebsocket";
 
-type messageObjectType = {
-  roomId: number;
+export type messageObjectType = {
+  chatRoomId: number;
   sender: string;
   message: string;
   messageType: "CHAT" | "RESERVEATION" | "REVIEW";
@@ -23,76 +24,24 @@ function ChatRoom({ userInfo }: { userInfo?: userInfoType }) {
   const [chatHistoryState, setChatHistoryState] = useState<messageObjectType[]>(
     []
   );
+
+  const getChatHistoryState = (newChatHistoryState: messageObjectType[]) => {
+    setChatHistoryState(newChatHistoryState);
+  };
+
   const { getAccessToken } = useTokenService();
 
   const clientRef = useRef<any>({});
 
   const { register, getValues, setValue, reset } = useForm();
 
-  const connectHandler = () => {
-    if (window !== undefined) {
-      clientRef.current = new StompJs.Client({
-        brokerURL: "wss://api.dessert-gallery.site/ws/chat/websocket",
-        debug: function (str) {
-          console.log(str);
-        },
-        // webSocketFactory: () => {
-        //   return new SockJS(
-        //     "https://api.dessert-gallery.site/ws/chat"
-        //   ) as WebSocket;
-        // },
-        connectHeaders: { Authorization: getAccessToken() },
-        reconnectDelay: 5000, //자동 재연결
-        heartbeatIncoming: 4000,
-        heartbeatOutgoing: 4000,
-      });
-      clientRef.current.onConnect = function (frame: any) {
-        clientRef.current.subscribe(
-          `/sub/${roomInfoState.roomId}`,
-          messageCheckHandler
-        );
-        console.log("연결성공", frame);
-      };
-      clientRef.current.onWebSocketError = (err: any) => {
-        console.log("웹소켓 에러");
-        console.log(err);
-      };
-      clientRef.current.onStompError = function (frame: any) {
-        console.log("브로커 에러: ", frame.headers["message"]);
-        console.log("추가 정보: " + frame.body);
-      };
-      clientRef.current.activate();
-    }
-  };
-
-  const messageHandler = (message: string) => {
-    clientRef.current.publish({
-      destination: "/pub/chat",
-      // skipContentLengthHeader: true,
-      body: JSON.stringify({
-        chatRoomId: roomInfoState.roomId,
-        message: message,
-        messageType: "CHAT",
-        sender: userInfo?.nickname,
-      }),
-      headers: { Authorization: getAccessToken() },
-    });
-  };
-
-  const messageReceiveHandler = (messageResponse: any) => {
-    const messageBody: messageObjectType = JSON.parse(messageResponse.body);
-    const { roomId, sender, message, messageType, dateTime } = messageBody;
-    const newChat = {
-      roomId,
-      sender,
-      message,
-      messageType,
-      dateTime,
-    };
-    console.log(newChat);
-
-    setChatHistoryState([...chatHistoryState, newChat]);
-  };
+  const {
+    connectHandler,
+    messageHandler,
+    onClickReservation,
+    onClickReview,
+    disconnectHandler,
+  } = useChatWebsocket(chatHistoryState, getChatHistoryState, userInfo);
 
   const messageCheckHandler = async () => {
     if (roomInfoState.roomId !== 0) {
@@ -103,35 +52,6 @@ function ChatRoom({ userInfo }: { userInfo?: userInfoType }) {
     }
   };
 
-  const onClickReservation = () => {
-    clientRef.current.publish({
-      destination: "/pub/chat",
-      // skipContentLengthHeader: true,
-      body: JSON.stringify({
-        chatRoomId: roomInfoState.roomId,
-        message: `${"user"}님의 예약이 확정되었습니다.`,
-        messageType: "RESERVEATION",
-        sender: userInfo?.nickname,
-      }),
-      headers: { Authorization: getAccessToken() },
-    });
-  };
-
-  const onClickReview = () => {
-    clientRef.current.publish({
-      destination: "/pub/chat",
-      // skipContentLengthHeader: true,
-      body: JSON.stringify({
-        chatRoomId: roomInfoState.roomId,
-        message: `${"user"}님, 디저트는 잘 받으셨나요? 
-        만족하셨다면 후기를 작성해주세요`,
-        messageType: "REVIEW",
-        sender: userInfo?.nickname,
-      }),
-      headers: { Authorization: getAccessToken() },
-    });
-  };
-
   useEffect(() => {
     console.log(roomInfoState.roomId);
     console.log(roomInfoState);
@@ -139,7 +59,7 @@ function ChatRoom({ userInfo }: { userInfo?: userInfoType }) {
     messageCheckHandler();
     connectHandler();
     return () => {
-      clientRef.current.deactivate();
+      disconnectHandler();
     };
   }, [roomInfoState]);
 
