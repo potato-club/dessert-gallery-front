@@ -25,7 +25,6 @@ const StoreProfile = () => {
     router.query.store ? router.query.store.toString() : "0"
   );
 
-  const { isGuest } = useUserState();
   const { data } = useGetStoreInfo(storeId);
   const { postFollowMutate, putUnFollowMutate } = useFollowAction(storeId);
 
