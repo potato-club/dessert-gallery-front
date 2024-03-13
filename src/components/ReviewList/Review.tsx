@@ -39,7 +39,7 @@ const Review = ({ ...props }: StoreReviewType) => {
         </UserInfoDIv>
         <Content infoBtnClick={infoBtnClick}>
           <Text infoBtnClick={infoBtnClick}>{content}</Text>
-          {infoBtnClick && (
+          {infoBtnClick && images && (
             <Photo
               srcArray={images.map((item: any) => {
                 return item.fileUrl;
@@ -69,7 +69,7 @@ const Review = ({ ...props }: StoreReviewType) => {
         )}
       </LeftCont>
       <RightCont>
-        {!infoBtnClick && (
+        {!infoBtnClick && images && (
           <Photo
             srcArray={images.map((item: any) => {
               return item.fileUrl;
