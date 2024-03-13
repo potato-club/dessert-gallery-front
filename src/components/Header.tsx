@@ -11,6 +11,7 @@ const Header = () => {
 
   const onClickMyPageButton = () => {
     if (getAccessToken() === "") {
+      alert("로그인 후 이용할 수 있습니다.");
       router.push("login");
     }
   };
@@ -49,7 +50,7 @@ const Header = () => {
         <MyPageBtn
           onClick={onClickMyPageButton}
           onMouseOver={() => {
-            if (getAccessToken() !== "") {
+            if (getAccessToken()) {
               setDropdownState(true);
             }
           }}

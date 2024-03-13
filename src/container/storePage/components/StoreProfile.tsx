@@ -11,17 +11,19 @@ import {
 } from "../../../apis/controller/chatPage";
 import { roomInfoType } from "../../myPage/chatPage/ChatPage";
 import { useRoomInfoState } from "../../../recoil/chat/roomInfoStateAtom";
+import { useUserState } from "../../../hooks/useUser";
 import Logo from "../../../../public/svg/common/logo.svg";
 
 const StoreProfile = () => {
   const router = useRouter();
+
+  const { isGuest } = useUserState();
 
   const storeId = parseInt(
     router.query.store ? router.query.store.toString() : "0"
   );
 
   const { data } = useGetStoreInfo(storeId);
-
   const { postFollowMutate, putUnFollowMutate } = useFollowAction(storeId);
 
   const [isChatRoomExist, setIsChatRoomExist] = useState<{
@@ -119,7 +121,12 @@ const StoreProfile = () => {
                     hoverCss={true}
                     inversion={true}
                     onClickHandler={() => {
-                      postFollowMutate();
+                      if (isGuest) {
+                        alert("로그인 후 이용하실 수 있습니다.");
+                        router.push("/login");
+                      } else {
+                        postFollowMutate();
+                      }
                     }}
                   />
                 )}
@@ -132,17 +139,24 @@ const StoreProfile = () => {
                   height="30px"
                   fontSize="12px"
                   onClickHandler={() => {
-                    if (isChatRoomExist.exist) {
-                      setRoomInfoState({
-                        roomId: isChatRoomExist.roomId,
-                        partnerName: isChatRoomExist.partnerName,
-                        storeId: isChatRoomExist.storeId,
-                      });
-                      router.push("/myPage/chat");
+                    if (isGuest) {
+                      alert("로그인 후 이용하실 수 있습니다.");
+                      router.push("/login");
+                    } else if (!data.follow) {
+                      alert("팔로우 후 이용하실 수 있습니다.");
                     } else {
-                      console.log(storeId);
-                      postChatRoom(storeId);
-                      router.push("/myPage/chat");
+                      if (isChatRoomExist.exist) {
+                        setRoomInfoState({
+                          roomId: isChatRoomExist.roomId,
+                          partnerName: isChatRoomExist.partnerName,
+                          storeId: isChatRoomExist.storeId,
+                        });
+                        router.push("/myPage/chat");
+                      } else {
+                        console.log(storeId);
+                        postChatRoom(storeId);
+                        router.push("/myPage/chat");
+                      }
                     }
                   }}
                 />

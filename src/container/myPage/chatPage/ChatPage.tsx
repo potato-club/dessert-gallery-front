@@ -27,6 +27,7 @@ function ChatPage() {
     const chatRoom = await getChatRoom();
     console.log(chatRoom);
     setChatRoomList(chatRoom.chatList);
+    setChatRoomList(chatRoom.chatList);
   };
 
   const fetchUserInfo = async () => {

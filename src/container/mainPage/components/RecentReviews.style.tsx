@@ -22,10 +22,10 @@ export const ReviewPostWrap = styled.div<componentProps>`
     height: ${({height}) => `${height}px`};
     display: flex;
     flex-direction: column;
+    align-items: center;
     border-radius: 0 0 16px 16px;
     background-color: #FFFDF9;
     box-shadow: 0px 3px 5px 2px rgb(0 0 0 / 15%);
-    margin: 64px 0 64px 63px;
 `
 
 export const InformationWrap = styled.div`
@@ -34,6 +34,12 @@ export const InformationWrap = styled.div`
     align-items: start;
     margin: 12px 16px;
     border-radius: 0 0 16px 16px;
+`
+
+export const Background =styled.div`
+    width: fit-content;
+    height: fit-content;
+    background-color: #fdc886;
 `
 
 export const Contents = styled.div`

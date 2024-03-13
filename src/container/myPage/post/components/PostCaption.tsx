@@ -1,18 +1,27 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 
-interface CaptionProps {
-  titleChange: (value: string) => void;
-  contentChange: (value: string) => void;
-  amount: number;
-}
+const PostCaption = ({
+  title,
+  content,
+  tags,
+  onTitleChange,
+  onContentChange,
+}: any) => {
+  const topicInputRef = useRef<HTMLInputElement>(null);
 
-const Caption: React.FC<CaptionProps> = ({
-  titleChange,
-  contentChange,
-  amount,
-}) => {
-  const MAX_CHARACTERS = 2200;
+  const handleTopicChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    onTitleChange(e.target.value);
+  };
+
+  const handleCaptionChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    onContentChange(e.target.value);
+  };
+
+  useEffect(() => {
+    topicInputRef.current?.focus();
+  }, []);
+
   const [inputHashTag, setInputHashTag] = useState("");
   const [hashTags, setHashTags] = useState<string[]>([]);
 
@@ -28,33 +37,14 @@ const Caption: React.FC<CaptionProps> = ({
     setInputHashTag(e.target.value);
   };
 
-  const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    titleChange(value);
-  };
-
-  const handleContentChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    const value = e.target.value;
-    contentChange(value);
-  };
-
   return (
     <>
       <CaptionBox>
-        <Topic
-          placeholder="제목을 작성해 주세요..."
-          onChange={handleTitleChange}
-        />
-        <CaptionArea
-          placeholder="내용 작성해주세요..."
-          onChange={handleContentChange}
-          maxLength={MAX_CHARACTERS}
-        />
+        <Topic value={title} onChange={handleTopicChange} ref={topicInputRef} />
+        <CaptionArea value={content} onChange={handleCaptionChange} />
       </CaptionBox>
       <AmountBox>
-        <AmountSpan>
-          {amount}/{MAX_CHARACTERS}
-        </AmountSpan>
+        <AmountSpan>1/2200</AmountSpan>
       </AmountBox>
       <TagBox>
         <TagDiv>
@@ -74,7 +64,7 @@ const Caption: React.FC<CaptionProps> = ({
   );
 };
 
-export default Caption;
+export default PostCaption;
 
 const Topic = styled.input`
   width: 100%;

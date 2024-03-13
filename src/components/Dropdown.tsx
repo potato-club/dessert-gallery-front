@@ -4,10 +4,13 @@ import DropdownMenu from "./DropdownMenu";
 import { useRouter } from "next/router";
 import { useTokenService } from "../hooks/useTokenService";
 import LoginModal from "../container/loginPage/components/LoginModal";
+import sessionStorageService from "../libs/sessionStorageService";
+import { SESSION_KEY } from "../constants/session";
 import axios from "axios";
 
 const Dropdown = ({ dropdownState }: { dropdownState: boolean }) => {
   const { getAccessToken, getRefreshToken, setToken } = useTokenService();
+
   const router = useRouter();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalMessage, setModalMessage] = useState("");
@@ -50,8 +53,7 @@ const Dropdown = ({ dropdownState }: { dropdownState: boolean }) => {
       <DropdownMenu
         onClickMenu={() => {
           const response = fetchLogout();
-          console.log(response);
-          setToken("", "");
+          sessionStorageService.delete(SESSION_KEY);
           setModalMessage("로그아웃 되었습니다.");
           setIsModalOpen(true);
         }}
