@@ -1,8 +1,8 @@
-import Image from "next/image";
+import Image, { StaticImageData } from "next/image";
 import { slideImageValue } from "../../types/componentsProps";
 import { useState } from "react";
 import DotIndicator from "./DotIndicator";
-import Bookmark from "./Bookmark";
+import Follow from "./Follow";
 import { RightMoveButtonIcon, LeftMoveButtonIcon } from "../../../public/svg";
 import {
   Wrapper,
@@ -36,10 +36,10 @@ function SlideImage({
   children = <></>,
 }: slideImageValue) {
   const [imgCnt, setImgCnt] = useState<number>(0);
-  const [onBookmarkState, setOnBookmarkState] = useState<boolean>(onBookmark);
+  const [onFollowState, setOnFollowState] = useState<boolean>(onBookmark);
   const maxImgCnt = srcArray.length - 1;
 
-  const onClickDeleteImage = (index: string) => {
+  const onClickDeleteImage = (index: string| StaticImageData) => {
     if (onDeleteImage) {
       onDeleteImage(index);
     }
@@ -61,14 +61,14 @@ function SlideImage({
     }
   };
 
-  const onClickBookmark = async (storeId: number) => {
-    followAction(onBookmarkState,storeId)
-    if(onBookmarkState){
+  const onClickFollow = async (storeId: number) => {
+    followAction(onFollowState,storeId)
+    if(onFollowState){
       alert('해당 손님/가게를 언팔로우했습니다.')
     }else{
       alert('해당 가게를 팔로우했습니다.')
     }
-    setOnBookmarkState((prev) => !prev);
+    setOnFollowState((prev) => !prev);
   };
 
   return (
@@ -132,11 +132,11 @@ function SlideImage({
         {
           // 북마크가 존재
           bookmark && storeId && (
-            <Bookmark
+            <Follow
               storeId={storeId}
-              onBookmark={onBookmarkState}
+              onBookmark={onFollowState}
               size={size}
-              onClickBookmark={onClickBookmark}
+              onClickBookmark={onClickFollow}
               absolute={true}
             />
           )
