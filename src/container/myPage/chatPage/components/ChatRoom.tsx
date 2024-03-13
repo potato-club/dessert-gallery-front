@@ -6,85 +6,149 @@ import * as StompJs from "@stomp/stompjs";
 import { useTokenService } from "../../../../hooks/useTokenService";
 import { getChatHistory } from "../../../../apis/controller/chatPage";
 import { userInfoType } from "../ChatPage";
+import { useRoomInfoState } from "../../../../recoil/chat/roomInfoStateAtom";
+import { deleteChatRoom } from "../../../../apis/controller/chatPage";
+import { useForm } from "react-hook-form";
+import HeaderBottom from "../components/HeaderBottom";
 
-function ChatRoom({
-  roomIdState,
-  userInfo,
-  partnerName,
-}: {
-  roomIdState?: number;
-  userInfo?: userInfoType;
-  partnerName?: string;
-}) {
+type messageObjectType = {
+  roomId: number;
+  sender: string;
+  message: string;
+  messageType: "CHAT" | "RESERVEATION" | "REVIEW";
+  dateTime: string;
+};
+
+function ChatRoom({ userInfo }: { userInfo?: userInfoType }) {
+  const [roomInfoState, setRoomInfoState] = useRoomInfoState();
+  const [chatHistoryState, setChatHistoryState] = useState<messageObjectType[]>(
+    []
+  );
+  const [onModal, setOnModal] = useState<boolean>(false);
+
   const { getAccessToken } = useTokenService();
-  const client = new StompJs.Client({
-    brokerURL: "wss://api.dessert-gallery.site/ws/chat/websocket",
-    debug: function (str) {
-      console.log(str);
-    },
-    // webSocketFactory: () => {
-    //   return new SockJS(
-    //     "https://api.dessert-gallery.site/ws/chat"
-    //   ) as WebSocket;
-    // },
-    connectHeaders: { Authorization: getAccessToken() },
-    reconnectDelay: 5000, //자동 재연결
-    heartbeatIncoming: 4000,
-    heartbeatOutgoing: 4000,
-  });
-  client.onConnect = function (frame) {
-    client.subscribe(`/sub/${roomIdState}`, (message) => {
-      console.log(message);
-    });
-    console.log("연결성공");
-  };
-  client.onWebSocketError = (err) => {
-    console.log("웹소켓 에러");
-    console.log(err);
-  };
-  client.onStompError = function (frame) {
-    console.log("브로커 에러: ", frame.headers["message"]);
-    console.log("추가 정보: " + frame.body);
-  };
+
+  const clientRef = useRef<any>({});
+
+  const { register, getValues, setValue, reset } = useForm();
 
   const connectHandler = () => {
     if (window !== undefined) {
-      client.activate();
+      clientRef.current = new StompJs.Client({
+        brokerURL: "wss://api.dessert-gallery.site/ws/chat/websocket",
+        debug: function (str) {
+          console.log(str);
+        },
+        // webSocketFactory: () => {
+        //   return new SockJS(
+        //     "https://api.dessert-gallery.site/ws/chat"
+        //   ) as WebSocket;
+        // },
+        connectHeaders: { Authorization: getAccessToken() },
+        reconnectDelay: 5000, //자동 재연결
+        heartbeatIncoming: 4000,
+        heartbeatOutgoing: 4000,
+      });
+      clientRef.current.onConnect = function (frame: any) {
+        clientRef.current.subscribe(
+          `/sub/${roomInfoState.roomId}`,
+          messageCheckHandler
+        );
+        console.log("연결성공", frame);
+      };
+      clientRef.current.onWebSocketError = (err: any) => {
+        console.log("웹소켓 에러");
+        console.log(err);
+      };
+      clientRef.current.onStompError = function (frame: any) {
+        console.log("브로커 에러: ", frame.headers["message"]);
+        console.log("추가 정보: " + frame.body);
+      };
+      clientRef.current.activate();
     }
   };
 
-  const messageHandler = () => {
-    client.publish({
+  const messageHandler = (message: string) => {
+    clientRef.current.publish({
       destination: "/pub/chat",
       // skipContentLengthHeader: true,
       body: JSON.stringify({
-        roomId: roomIdState,
-        message: "테스트 메세지",
+        chatRoomId: roomInfoState.roomId,
+        message: message,
         messageType: "CHAT",
-        sender: "최준형카카오",
+        sender: userInfo?.nickname,
       }),
       headers: { Authorization: getAccessToken() },
     });
   };
 
+  const messageReceiveHandler = (messageResponse: any) => {
+    const messageBody: messageObjectType = JSON.parse(messageResponse.body);
+    const { roomId, sender, message, messageType, dateTime } = messageBody;
+    const newChat = {
+      roomId,
+      sender,
+      message,
+      messageType,
+      dateTime,
+    };
+    console.log(newChat);
+
+    setChatHistoryState([...chatHistoryState, newChat]);
+  };
+
   const messageCheckHandler = async () => {
-    const chatHistory = await getChatHistory(5);
-    console.log(chatHistory);
+    if (roomInfoState.roomId !== 0) {
+      const chatHistory = await getChatHistory(roomInfoState.roomId);
+      console.log("채팅 목록", chatHistory.chatList);
+      console.log("이전 채팅 날짜", chatHistory.lastDatetime);
+      setChatHistoryState(chatHistory.chatList);
+    }
+  };
+
+  const onClickReservation = () => {
+    clientRef.current.publish({
+      destination: "/pub/chat",
+      // skipContentLengthHeader: true,
+      body: JSON.stringify({
+        chatRoomId: roomInfoState.roomId,
+        message: `${"user"}님의 예약이 확정되었습니다.`,
+        messageType: "RESERVEATION",
+        sender: userInfo?.nickname,
+      }),
+      headers: { Authorization: getAccessToken() },
+    });
+  };
+
+  const onClickReview = () => {
+    clientRef.current.publish({
+      destination: "/pub/chat",
+      // skipContentLengthHeader: true,
+      body: JSON.stringify({
+        chatRoomId: roomInfoState.roomId,
+        message: `${"user"}님, 디저트는 잘 받으셨나요? 
+        만족하셨다면 후기를 작성해주세요`,
+        messageType: "REVIEW",
+        sender: userInfo?.nickname,
+      }),
+      headers: { Authorization: getAccessToken() },
+    });
   };
 
   useEffect(() => {
-    console.log(roomIdState);
+    console.log(roomInfoState.roomId);
+    console.log(roomInfoState);
+
     messageCheckHandler();
     connectHandler();
     return () => {
-      console.log(roomIdState);
-      client.deactivate();
+      clientRef.current.deactivate();
     };
-  }, [roomIdState]);
+  }, [roomInfoState]);
 
   return (
     <Wrapper>
-      {roomIdState === undefined ? (
+      {roomInfoState.roomId === 0 ? (
         <NoItemAlert>선택된 채팅방이 없습니다.</NoItemAlert>
       ) : (
         <>
@@ -92,45 +156,55 @@ function ChatRoom({
             <HeaderTop>
               <Profile>
                 <ProfileImage />
-                <UserName>
-                  {partnerName}
-                  <UserNameHelper>님</UserNameHelper>
-                </UserName>
+                <PartnerName>
+                  {roomInfoState.partnerName}
+                  <PartnerNameHelper>님</PartnerNameHelper>
+                </PartnerName>
               </Profile>
-              <OptionButton>
+              <OptionButton
+                onClick={() => deleteChatRoom(roomInfoState.roomId)}
+              >
                 {[1, 2, 3].map((index) => (
                   <Dot key={index}></Dot>
                 ))}
               </OptionButton>
             </HeaderTop>
-            <HeaderBottom>
-              <Product>
-                <ProductImage />
-                <ProductName>상큼오독 산딸기</ProductName>
-                <ProductPrice>34,000원</ProductPrice>
-              </Product>
-              <ButtonDiv>
-                <Button onClick={() => {}}>예약 확정</Button>
-                <Button onClick={messageHandler}>후기 작성</Button>
-              </ButtonDiv>
-            </HeaderBottom>
+            <HeaderBottom roomInfoState={roomInfoState} />
           </Header>
           <Contents>
-            {/* <ChatItem
-              myChat={false}
-              message={`${roomIdState} 번 방의 채팅 내역입니다.`}
-              timestamp={"2023-11-26T20:15:10.918Z"}
-            ></ChatItem> */}
-            <ChatItem
-              myChat={true}
-              message={`${roomIdState} 번 방의 채팅 내역입니다.`}
-              timestamp={"2023-11-26T20:15:10.918Z"}
-            ></ChatItem>
+            {chatHistoryState?.map((item: any, index) => (
+              <ChatItem
+                key={index}
+                messageType={item.messageType}
+                myChat={userInfo?.nickname === item.sender}
+                message={item.message}
+                timestamp={item.dateTime}
+              ></ChatItem>
+            ))}
           </Contents>
           <Bottom>
-            <Textbox placeholder="메세지를 입력해주세요">
-              {/* <SendButton>123</SendButton> */}
-            </Textbox>
+            <TextboxDiv>
+              <Textbox
+                placeholder="메세지를 입력해주세요"
+                onKeyDown={(event) => {
+                  if (event.key === "Enter") {
+                    messageHandler(getValues("message"));
+                    setValue("message", "");
+                  }
+                }}
+                {...register("message")}
+              ></Textbox>
+              <SendButtonDiv>
+                <SendButton
+                  onClick={() => {
+                    messageHandler(getValues("message"));
+                    setValue("message", "");
+                  }}
+                >
+                  전송
+                </SendButton>
+              </SendButtonDiv>
+            </TextboxDiv>
           </Bottom>
         </>
       )}
@@ -169,6 +243,9 @@ const HeaderTop = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  position: relative;
+  z-index: 5;
+  background-color: white;
 `;
 
 const Profile = styled.div`
@@ -183,19 +260,30 @@ const ProfileImage = styled.div`
   border-radius: 50px;
 `;
 
-const UserName = styled.div`
+const PartnerName = styled.div`
   display: flex;
   align-items: center;
   margin-left: 13px;
   height: 21px;
-  font-size: 14px;
   font-weight: bold;
+  @media screen and (min-width: 1920px) {
+    font-size: 18px;
+  }
+  @media screen and (max-width: 1919px) {
+    font-size: 14px;
+  }
 `;
 
-const UserNameHelper = styled.div`
+const PartnerNameHelper = styled.div`
   font-size: 10px;
   color: #828282;
   margin-left: 4px;
+  @media screen and (min-width: 1920px) {
+    font-size: 13px;
+  }
+  @media screen and (max-width: 1919px) {
+    font-size: 10px;
+  }
 `;
 
 const OptionButton = styled.button`
@@ -215,62 +303,6 @@ const Dot = styled.div`
   height: 3px;
   border-radius: 50px;
   background-color: #828282;
-`;
-
-const HeaderBottom = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 100%;
-  height: 50px;
-  padding: 11px 72px 11px 34px;
-`;
-
-const Product = styled.div`
-  display: flex;
-  align-items: center;
-`;
-
-const ProductImage = styled.div`
-  width: 28px;
-  height: 28px;
-  background-color: #fcf0e1;
-`;
-
-const ProductName = styled.div`
-  height: 15px;
-  max-width: 156px;
-  font-size: 10px;
-  margin: 0 10px;
-`;
-
-const ProductPrice = styled.div`
-  height: 15px;
-  font-size: 10px;
-  font-weight: bold;
-`;
-
-const ButtonDiv = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 202px;
-`;
-
-// 그림자 버전 버튼
-const Button = styled.button`
-  width: 92px;
-  height: 24px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 9px;
-  font-weight: bold;
-  border: none;
-  border-radius: 6px;
-  background-color: FCF6EE;
-  box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.1);
-  cursor: pointer;
 `;
 
 const Contents = styled.div`
@@ -301,26 +333,61 @@ const Bottom = styled.div`
   padding: 14px;
 `;
 
+const TextboxDiv = styled.div`
+  display: flex;
+  width: 100%;
+  height: 100%;
+  border: 2px solid #ff6f00;
+  padding: 10px 15px;
+  border-radius: 7px;
+`;
+
 const Textbox = styled.textarea`
   width: 100%;
   height: 100%;
-  padding: 19px 21px;
-  border: 2px solid #ff6f00;
+  border: none;
   border-radius: 7px;
   resize: none;
   outline: none;
-  font-size: 11px;
   font-family: noto-sans-cjk-kr, sans-serif;
   ::placeholder {
     color: #828282;
   }
+  @media screen and (min-width: 1920px) {
+    font-size: 14px;
+  }
+  @media screen and (max-width: 1919px) {
+    font-size: 11px;
+  }
+`;
+
+const SendButtonDiv = styled.div`
+  display: flex;
+  align-items: flex-end;
 `;
 
 const SendButton = styled.button`
-  width: 50px;
-  height: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   background-color: #dedede;
   border-radius: 7px;
+  margin-left: 15px;
+  border: none;
+  background-color: FCF6EE;
+  box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.1);
+  font-family: noto-sans-cjk-kr, sans-serif;
+  cursor: pointer;
+  @media screen and (min-width: 1920px) {
+    width: 67px;
+    height: 29px;
+    font-size: 12px;
+  }
+  @media screen and (max-width: 1919px) {
+    width: 50px;
+    height: 22px;
+    font-size: 9px;
+  }
 `;
 
 const NoItemAlert = styled.div`
