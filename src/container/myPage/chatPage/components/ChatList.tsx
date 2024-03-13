@@ -1,34 +1,33 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import SerchImage from "../../../../../public/SVG/myPage/chatPage/searchImage.svg";
 import ChatListItem from "./ChatListItem";
 import { userInfoType } from "../ChatPage";
-
-type roomInfoType = {
-  roomId: number;
-  storeName: string;
-  customerName: string;
-  thumbnailMessage: string;
-  messageType: string;
-};
+import { useRoomInfoState } from "../../../../recoil/chat/roomInfoStateAtom";
+import { roomInfoType } from "../ChatPage";
 
 function ChatList({
   chatRoomList,
-  getRoomIdState,
-  getPartnerNameState,
   userInfo,
 }: {
   chatRoomList?: roomInfoType[];
-  getRoomIdState: (id: number) => void;
-  getPartnerNameState: (partnerName: string) => void;
   userInfo?: userInfoType;
 }) {
+  const [roomInfoState, setRoomInfoState] = useRoomInfoState();
+  const [howToRewervationState, setHowToRewervationState] = useState(false);
+
   return (
     <Wrapper>
       <Header>
         <HeaderTop>
           <HeaderTitle>채팅</HeaderTitle>
-          <HowToReservation>케이크 예약하는 법은?</HowToReservation>
+          <HowToReservationButton
+            onMouseOver={() => setHowToRewervationState(true)}
+            onMouseOut={() => setHowToRewervationState(false)}
+          >
+            디저트 예약하는 법은?
+          </HowToReservationButton>
+          <HowToReservation state={howToRewervationState} />
         </HeaderTop>
         <HeaderBottom>
           <ImageWrapper>
@@ -50,12 +49,14 @@ function ChatList({
               }
               thumbnailMessage={item.thumbnailMessage}
               onClickItem={() => {
-                getRoomIdState(item.roomId);
-                getPartnerNameState(
-                  userInfo?.userRole === "MANAGER"
-                    ? item.customerName
-                    : item.storeName
-                );
+                setRoomInfoState({
+                  roomId: item.roomId,
+                  partnerName:
+                    userInfo?.userRole === "MANAGER"
+                      ? item.customerName
+                      : item.storeName,
+                  storeId: item.storeId,
+                });
               }}
             />
           ))}
@@ -106,14 +107,14 @@ const HeaderTitle = styled.div`
   font-weight: bold;
   margin-top: 3px;
   @media screen and (min-width: 1920px) {
-    /* font-size: 25px; */
+    font-size: 25px;
   }
   @media screen and (max-width: 1919px) {
-    /* font-size: 20px; */
+    font-size: 20px;
   }
 `;
 
-const HowToReservation = styled.button`
+const HowToReservationButton = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -127,9 +128,30 @@ const HowToReservation = styled.button`
   box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.1);
   cursor: pointer;
   @media screen and (min-width: 1920px) {
-    font-size: 11px;
+    font-size: 12px;
   }
   @media screen and (max-width: 1919px) {
+    font-size: 10px;
+  }
+`;
+
+const HowToReservation = styled.div<{ state: boolean }>`
+  display: ${(props) => (props.state === true ? "flex" : "none")};
+  position: absolute;
+  width: 280px;
+  height: 128px;
+  border-radius: 7px;
+  background-color: #ffffff;
+  z-index: 10;
+  box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.1);
+  @media screen and (min-width: 1920px) {
+    width: 373px;
+    height: 171px;
+    font-size: 12px;
+  }
+  @media screen and (max-width: 1919px) {
+    width: 280px;
+    height: 128px;
     font-size: 10px;
   }
 `;

@@ -1,10 +1,16 @@
 import { useRouter } from "next/router";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled, { css } from "styled-components";
 import Tag from "../../../components/Tag";
 import { useFollowAction } from "../../../hooks/useFollowAction";
 import { useGetStoreInfo } from "../../../hooks/useStore";
-import { postChatRoom } from "../../../apis/controller/chatPage";
+import {
+  getChatRoom,
+  postChatRoom,
+  getUserInfo,
+} from "../../../apis/controller/chatPage";
+import { roomInfoType } from "../../myPage/chatPage/ChatPage";
+import { useRoomInfoState } from "../../../recoil/chat/roomInfoStateAtom";
 import Logo from "../../../../public/svg/common/logo.svg";
 
 const StoreProfile = () => {
@@ -17,6 +23,49 @@ const StoreProfile = () => {
   const { data } = useGetStoreInfo(storeId);
 
   const { postFollowMutate, putUnFollowMutate } = useFollowAction(storeId);
+
+  const [isChatRoomExist, setIsChatRoomExist] = useState<{
+    exist: boolean;
+    roomId: number;
+    partnerName: string;
+    storeId: number;
+  }>({ exist: false, roomId: 0, partnerName: "", storeId: 0 });
+
+  const [roomInfoState, setRoomInfoState] = useRoomInfoState();
+
+  const checkChatRoom = async () => {
+    const chatRoom = await getChatRoom();
+    const userInfo = await getUserInfo();
+    console.log(chatRoom);
+
+    console.log(chatRoom.chatList);
+    console.log(chatRoom.maxpage);
+    if (chatRoom.chatList) {
+      chatRoom.chatList.map((item: roomInfoType) => {
+        if (data && data.name === item.storeName) {
+          console.log("방이 존재합니다.", item.roomId);
+          const partnerName =
+            userInfo?.userRole === "MANAGER"
+              ? item.customerName
+              : item.storeName;
+          setIsChatRoomExist({
+            exist: true,
+            roomId: item.roomId,
+            partnerName: partnerName,
+            storeId: item.storeId,
+          });
+        }
+      });
+    }
+  };
+
+  useEffect(() => {
+    console.log(storeId);
+
+    setRoomInfoState({ roomId: 0, partnerName: "", storeId: 0 });
+    checkChatRoom();
+  }, [data]);
+
   return (
     <Container>
       {data && (
@@ -83,10 +132,18 @@ const StoreProfile = () => {
                   height="30px"
                   fontSize="12px"
                   onClickHandler={() => {
-                    console.log(storeId);
-                    // 현재 에러뜨는데 현호형이 변경사항 푸시하면 괜찮아진다고 함
-                    // postChatRoom(storeId);
-                    router.push("/myPage/chat");
+                    if (isChatRoomExist.exist) {
+                      setRoomInfoState({
+                        roomId: isChatRoomExist.roomId,
+                        partnerName: isChatRoomExist.partnerName,
+                        storeId: isChatRoomExist.storeId,
+                      });
+                      router.push("/myPage/chat");
+                    } else {
+                      console.log(storeId);
+                      postChatRoom(storeId);
+                      router.push("/myPage/chat");
+                    }
                   }}
                 />
               </BtnList>
