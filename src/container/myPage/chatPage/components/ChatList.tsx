@@ -28,6 +28,13 @@ function ChatList({
             디저트 예약하는 법은?
           </HowToReservationButton>
           <HowToReservation state={howToRewervationState} />
+          <HowToReservationButton
+            onMouseOver={() => setHowToRewervationState(true)}
+            onMouseOut={() => setHowToRewervationState(false)}
+          >
+            디저트 예약하는 법은?
+          </HowToReservationButton>
+          <HowToReservation state={howToRewervationState} />
         </HeaderTop>
         <HeaderBottom>
           <ImageWrapper>
@@ -55,6 +62,7 @@ function ChatList({
                     userInfo?.userRole === "MANAGER"
                       ? item.customerName
                       : item.storeName,
+                  storeId: item.storeId,
                 });
               }}
             />
@@ -107,8 +115,10 @@ const HeaderTitle = styled.div`
   margin-top: 3px;
   @media screen and (min-width: 1920px) {
     font-size: 25px;
+    font-size: 25px;
   }
   @media screen and (max-width: 1919px) {
+    font-size: 20px;
     font-size: 20px;
   }
 `;
@@ -127,6 +137,7 @@ const HowToReservationButton = styled.button`
   box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.1);
   cursor: pointer;
   @media screen and (min-width: 1920px) {
+    font-size: 12px;
     font-size: 12px;
   }
   @media screen and (max-width: 1919px) {

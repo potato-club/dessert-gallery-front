@@ -4,7 +4,6 @@ import styled, { css } from "styled-components";
 import Tag from "../../../components/Tag";
 import { useFollowAction } from "../../../hooks/useFollowAction";
 import { useGetStoreInfo } from "../../../hooks/useStore";
-
 import {
   getChatRoom,
   postChatRoom,
@@ -15,11 +14,10 @@ import { useRoomInfoState } from "../../../recoil/chat/roomInfoStateAtom";
 import { useUserState } from "../../../hooks/useUser";
 import Logo from "../../../../public/svg/common/logo.svg";
 
-
 const StoreProfile = () => {
   const router = useRouter();
 
-  const {isGuest} = useUserState();
+  const { isGuest } = useUserState();
 
   const storeId = parseInt(
     router.query.store ? router.query.store.toString() : "0"
@@ -32,7 +30,8 @@ const StoreProfile = () => {
     exist: boolean;
     roomId: number;
     partnerName: string;
-  }>({ exist: false, roomId: 0, partnerName: "" });
+    storeId: number;
+  }>({ exist: false, roomId: 0, partnerName: "", storeId: 0 });
 
   const [roomInfoState, setRoomInfoState] = useRoomInfoState();
 
@@ -55,6 +54,7 @@ const StoreProfile = () => {
             exist: true,
             roomId: item.roomId,
             partnerName: partnerName,
+            storeId: item.storeId,
           });
         }
       });
@@ -64,10 +64,8 @@ const StoreProfile = () => {
   useEffect(() => {
     console.log(storeId);
 
-    setRoomInfoState({ roomId: 0, partnerName: "" });
-    if (!isGuest) {
-      checkChatRoom();
-    }
+    setRoomInfoState({ roomId: 0, partnerName: "", storeId: 0 });
+    checkChatRoom();
   }, [data]);
 
   return (
@@ -151,6 +149,7 @@ const StoreProfile = () => {
                         setRoomInfoState({
                           roomId: isChatRoomExist.roomId,
                           partnerName: isChatRoomExist.partnerName,
+                          storeId: isChatRoomExist.storeId,
                         });
                         router.push("/myPage/chat");
                       } else {
@@ -158,7 +157,6 @@ const StoreProfile = () => {
                         postChatRoom(storeId);
                         router.push("/myPage/chat");
                       }
-
                     }
                   }}
                 />

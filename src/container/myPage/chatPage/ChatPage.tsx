@@ -16,6 +16,7 @@ export type roomInfoType = {
   storeName: string;
   customerName: string;
   thumbnailMessage: string;
+  storeId: number;
 };
 
 function ChatPage() {
@@ -25,6 +26,7 @@ function ChatPage() {
   const fetchChatRoom = async () => {
     const chatRoom = await getChatRoom();
     console.log(chatRoom);
+    setChatRoomList(chatRoom.chatList);
     setChatRoomList(chatRoom.chatList);
   };
 

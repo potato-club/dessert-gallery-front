@@ -9,10 +9,11 @@ import { userInfoType } from "../ChatPage";
 import { useRoomInfoState } from "../../../../recoil/chat/roomInfoStateAtom";
 import { deleteChatRoom } from "../../../../apis/controller/chatPage";
 import { useForm } from "react-hook-form";
+import HeaderBottom from "../components/HeaderBottom";
 import useChatWebsocket from "../../../../hooks/useChatWebsocket";
 
-export type messageObjectType = {
-  chatRoomId: number;
+type messageObjectType = {
+  roomId: number;
   sender: string;
   message: string;
   messageType: "CHAT" | "RESERVEATION" | "REVIEW";
@@ -44,12 +45,8 @@ function ChatRoom({ userInfo }: { userInfo?: userInfoType }) {
   } = useChatWebsocket(chatHistoryState, getChatHistoryState, userInfo);
 
   const messageCheckHandler = async () => {
-    if (roomInfoState.roomId !== 0) {
-      const chatHistory = await getChatHistory(roomInfoState.roomId);
-      console.log("채팅 목록", chatHistory.chatList);
-      console.log("이전 채팅 날짜", chatHistory.lastDatetime);
-      setChatHistoryState(chatHistory.chatList);
-    }
+    const chatHistory = await getChatHistory(5);
+    console.log(chatHistory);
   };
 
   useEffect(() => {
@@ -86,17 +83,7 @@ function ChatRoom({ userInfo }: { userInfo?: userInfoType }) {
                 ))}
               </OptionButton>
             </HeaderTop>
-            <HeaderBottom>
-              <Product>
-                {/* <ProductImage />
-                <ProductName>상큼오독 산딸기</ProductName>
-                <ProductPrice>34,000원</ProductPrice> */}
-              </Product>
-              <ButtonDiv userRole={userInfo?.userRole}>
-                <Button onClick={onClickReservation}>예약 확정</Button>
-                <Button onClick={onClickReview}>픽업 완료</Button>
-              </ButtonDiv>
-            </HeaderBottom>
+            <HeaderBottom roomInfoState={roomInfoState} />
           </Header>
           <Contents>
             {chatHistoryState?.map((item: any, index) => (
@@ -170,6 +157,9 @@ const HeaderTop = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  position: relative;
+  z-index: 5;
+  background-color: white;
 `;
 
 const Profile = styled.div`
@@ -227,75 +217,6 @@ const Dot = styled.div`
   height: 3px;
   border-radius: 50px;
   background-color: #828282;
-`;
-
-const HeaderBottom = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 100%;
-  height: 50px;
-  padding: 11px 72px 11px 34px;
-`;
-
-const Product = styled.div`
-  display: flex;
-  align-items: center;
-`;
-
-// const ProductImage = styled.div`
-//   width: 28px;
-//   height: 28px;
-//   background-color: #fcf0e1;
-// `;
-
-// const ProductName = styled.div`
-//   height: 15px;
-//   max-width: 156px;
-//   font-size: 10px;
-//   margin: 0 10px;
-// `;
-
-// const ProductPrice = styled.div`
-//   height: 15px;
-//   font-size: 10px;
-//   font-weight: bold;
-// `;
-
-const ButtonDiv = styled.div<{ userRole?: "USER" | "MANAGER" }>`
-  display: ${(props) => (props.userRole === "MANAGER" ? "flex" : "none")};
-  justify-content: space-between;
-  align-items: center;
-
-  @media screen and (min-width: 1920px) {
-    width: 269px;
-  }
-  @media screen and (max-width: 1919px) {
-    width: 202px;
-  }
-`;
-
-// 그림자 버전 버튼
-const Button = styled.button`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: bold;
-  border: none;
-  border-radius: 6px;
-  background-color: FCF6EE;
-  box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.1);
-  cursor: pointer;
-  @media screen and (min-width: 1920px) {
-    width: 122px;
-    height: 32px;
-    font-size: 12px;
-  }
-  @media screen and (max-width: 1919px) {
-    width: 92px;
-    height: 24px;
-    font-size: 9px;
-  }
 `;
 
 const Contents = styled.div`

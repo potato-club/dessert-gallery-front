@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { toggleBookmark } from "../../../../../apis/controller/detailStore";
-import Bookmark from "../../../../../components/SlideImage/Bookmark";
+import Bookmark from "../../../../../components/Bookmark";
+import { useToggleBookmark } from "../../../../../hooks/useToggleBookmark";
 import CommentList from "./CommentList";
 
 const Content = ({ address, detailPoster, boardId, postCommentList }: any) => {
@@ -14,17 +14,18 @@ const Content = ({ address, detailPoster, boardId, postCommentList }: any) => {
     }
   }, [detailPoster]);
 
+  const { toggleBookmarkState } = useToggleBookmark(boardId);
+
   return (
     <Container>
       <Top>
         <Address>{address}</Address>
         <Bookmark
-          storeId={boardId}
+          boardId={boardId}
           onBookmark={onBookmarkState}
           size="medium"
           onClickBookmark={() => {
-            toggleBookmark({ boardId });
-            setOnBookmarkState((prev) => !prev);
+            toggleBookmarkState();
           }}
         />
       </Top>

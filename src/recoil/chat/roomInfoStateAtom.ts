@@ -12,13 +12,18 @@ const { persistAtom } = recoilPersist({
   storage: sessionStorage,
 });
 
-const defaultValue: { roomId: number; partnerName: string } = {
+const defaultValue: { roomId: number; partnerName: string; storeId: number } = {
   roomId: 0,
+  storeId: 0,
   partnerName: "",
 };
 
 // 리코일 atom 선언, effects_UNSTABLE 속성을 이용해 웹스토리지 사용 정의
-export const roomInfoStateAtom = atom<{ roomId: number; partnerName: string }>({
+export const roomInfoStateAtom = atom<{
+  roomId: number;
+  partnerName: string;
+  storeId: number;
+}>({
   key: "roomInfoDataState",
   default: defaultValue,
   effects_UNSTABLE: [persistAtom],
