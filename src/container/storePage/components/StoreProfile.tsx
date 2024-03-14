@@ -65,7 +65,9 @@ const StoreProfile = () => {
     console.log(storeId);
 
     setRoomInfoState({ roomId: 0, partnerName: "", storeId: 0 });
-    checkChatRoom();
+    if (!isGuest) {
+      checkChatRoom();
+    }
   }, [data]);
 
   return (
