@@ -3,6 +3,7 @@ import styled from "styled-components";
 import Rating from "../../components/Rating";
 import { DefaultProfileLogo, DownArrow, UpArrow } from "../../../public/svg";
 import SlideImage from "../../components/SlideImage/SlideImage";
+import { useOverflowDetector } from "../../hooks/useOverflowDetector";
 
 export interface StoreReviewType {
   userName: string;
@@ -19,6 +20,10 @@ export interface StoreReviewType {
 
 const Review = ({ ...props }: StoreReviewType) => {
   const [infoBtnClick, setInfoBtnClick] = useState<boolean>(false);
+  const { ref, isOverflowWidth, isOverflowHeight } = useOverflowDetector({
+    width: 640,
+    height: 92,
+  });
 
   if (!props) {
     return <></>;
@@ -38,7 +43,9 @@ const Review = ({ ...props }: StoreReviewType) => {
           </TextInfo>
         </UserInfoDIv>
         <Content infoBtnClick={infoBtnClick}>
-          <Text infoBtnClick={infoBtnClick}>{content}</Text>
+          <Text infoBtnClick={infoBtnClick} ref={ref}>
+            {content}
+          </Text>
           {infoBtnClick && images && (
             <Photo
               srcArray={images.map((item: any) => {
@@ -50,23 +57,24 @@ const Review = ({ ...props }: StoreReviewType) => {
             />
           )}
         </Content>
-        {infoBtnClick ? (
-          <MoreBtn
-            onClick={() => setInfoBtnClick(false)}
-            infoBtnClick={infoBtnClick}
-          >
-            <span>접기</span>
-            <UpArrow width="16px" height="7px" />
-          </MoreBtn>
-        ) : (
-          <MoreBtn
-            onClick={() => setInfoBtnClick(true)}
-            infoBtnClick={infoBtnClick}
-          >
-            <span>더보기</span>
-            <DownArrow width="16px" height="7px" />
-          </MoreBtn>
-        )}
+        {(isOverflowHeight || images) &&
+          (infoBtnClick ? (
+            <MoreBtn
+              onClick={() => setInfoBtnClick(false)}
+              infoBtnClick={infoBtnClick}
+            >
+              <span>접기</span>
+              <UpArrow width="16px" height="7px" />
+            </MoreBtn>
+          ) : (
+            <MoreBtn
+              onClick={() => setInfoBtnClick(true)}
+              infoBtnClick={infoBtnClick}
+            >
+              <span>더보기</span>
+              <DownArrow width="16px" height="7px" />
+            </MoreBtn>
+          ))}
       </LeftCont>
       <RightCont>
         {!infoBtnClick && images && (
