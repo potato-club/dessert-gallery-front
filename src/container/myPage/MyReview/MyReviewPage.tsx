@@ -24,7 +24,7 @@ interface ButtonInfo {
 }
 
 interface style {
-  selected: boolean
+  selected: boolean;
 }
 
 const MyReviewPage = () => {
@@ -58,16 +58,32 @@ const MyReviewPage = () => {
   const setModalBgState = useSetRecoilState(modalBg);
 
   useEffect(() => {
-    console.log("writeAbleReview", writeAbleReview)
+    console.log("writeAbleReview", writeAbleReview);
     if (reviewBoxRef.current) {
       const reviewBoxHeight = reviewBoxRef.current.clientHeight;
       setShowMoreButton(reviewBoxHeight > 230);
     }
   }, [myReview, writeAbleReview]);
+  // const reviewContentRef = useRef<HTMLDivElement>(null);
+  // const [showMoreButtons, setShowMoreButtons] = useState<boolean[]>([]);
+
+  // useEffect(() => {
+  //   if (myReview) {
+  //     const buttons: boolean[] = myReview.map((review: any) => {
+  //       const reviewContentElement = document.createElement("div");
+  //       reviewContentElement.innerHTML = review.content;
+  //       document.body.appendChild(reviewContentElement);
+  //       const reviewContentHeight = reviewContentElement.clientHeight;
+  //       document.body.removeChild(reviewContentElement);
+  //       return reviewContentHeight > 100;
+  //     });
+  //     setShowMoreButtons(buttons);
+  //   }
+  // }, [myReview]);
 
   const detailClick = (id: number) => {
     setReviewId(id);
-    setModal(!modal);
+    setModal(modal ? false : true);
   };
 
   const handleWrapperClick = () => {
@@ -94,53 +110,67 @@ const MyReviewPage = () => {
             ))}
           </NoticeValueBox>
           <NoticeValueBox>
-            {
-              writeAbleReview.length === 0 
-              ? <CreateReview selected={false}>리뷰 작성</CreateReview>
-              : <CreateReview selected={true} onClick={()=>{
-                setShowReviewModal(true)
-                setModalBgState(true);
-              }}>리뷰 작성</CreateReview>
-            }
+            {writeAbleReview.length === 0 ? (
+              <CreateReview selected={false}>리뷰 작성</CreateReview>
+            ) : (
+              <CreateReview
+                selected={true}
+                onClick={() => {
+                  setShowReviewModal(true);
+                  setModalBgState(true);
+                }}
+              >
+                리뷰 작성
+              </CreateReview>
+            )}
             <ReviewNumber>내가 쓴 후기</ReviewNumber>
           </NoticeValueBox>
         </Middle>
         <ReviewWrapper>
           {myReview?.map((review: any, index: number) => (
-            <ReviewBox key={review.id} ref={reviewBoxRef}>
+            <ReviewBox key={review.id}>
               <DataBox>
                 <ReviewDataBox>
                   <ReviewDate>{review.createDate}</ReviewDate>
                   <Rating size={"medium"} ratingValue={Number(review.score)} />
                   <ReviewContent>{review.content}</ReviewContent>
+                  {/* <ShowMoreButton>더보기</ShowMoreButton> */}
                 </ReviewDataBox>
                 <ReviewImageBox>
-                  <SvgDiv>
-                    <DivBox onClick={() => detailClick(review.id)}>
-                      <ThreeDot />
-                    </DivBox>
-                    {modal && (
-                      <ModalOptionBox>
-                        <ToggleOptionBox contents={modalOption} />
-                      </ModalOptionBox>
-                    )}
-                  </SvgDiv>
-                  <Image
-                    src={review.images[index].fileUrl}
-                    width={137}
-                    height={137}
-                    alt=""
-                  />
+                  {review.images && review.images.length > 0 ? (
+                    <Image
+                      src={
+                        review.images && review.images.length > 0
+                          ? review.images[0].fileUrl
+                          : defaultPhoto
+                      }
+                      width={137}
+                      height={137}
+                      alt=""
+                    />
+                  ) : null}
                 </ReviewImageBox>
+                <SvgDiv>
+                  <DivBox onClick={() => detailClick(review.id)}>
+                    <ThreeDot />
+                  </DivBox>
+                  {modal && review.id === reviewId ? (
+                    <ModalOptionBox>
+                      <ToggleOptionBox contents={modalOption} />
+                    </ModalOptionBox>
+                  ) : null}
+                </SvgDiv>
               </DataBox>
-              <MoreBtnDiv>
-                {showMoreButton && <ShowMoreButton>더보기</ShowMoreButton>}
-              </MoreBtnDiv>
             </ReviewBox>
           ))}
         </ReviewWrapper>
       </MenuWrapper>
-      {showReviewModal && <ReviewModal writeAbleStoreData={writeAbleReview} setShowReviewModal={setShowReviewModal}/>}
+      {showReviewModal && (
+        <ReviewModal
+          writeAbleStoreData={writeAbleReview}
+          setShowReviewModal={setShowReviewModal}
+        />
+      )}
       {showReviewModal && <WrapperOverlay onClick={handleWrapperClick} />}
     </Wrapper>
   );
@@ -232,7 +262,9 @@ const CreateReview = styled.div<style>`
   cursor: default;
   color: gray;
 
-  ${({selected}) => selected &&  `
+  ${({ selected }) =>
+    selected &&
+    `
     border: 2px solid #ff8d00;
     cursor: pointer;
     color: black;
@@ -248,7 +280,6 @@ const ReviewWrapper = styled.div`
 
 const ReviewBox = styled.div`
   width: 100%;
-  height: 240px;
   max-height: 235px;
   border: 2px solid #ff8d00;
   border-radius: 15px;
@@ -256,14 +287,20 @@ const ReviewBox = styled.div`
   padding: 30px;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: space-around;
 `;
 const ReviewDataBox = styled.div`
-  height: 100%;
   width: 80%;
+  height: 100%;
   display: flex;
   flex-direction: column;
   row-gap: 10px;
+  overflow: hidden;
+`;
+const DataBox = styled.div`
+  display: flex;
+  width: 100%;
+  height: 200px;
 `;
 
 const ReviewDate = styled.div`
@@ -272,23 +309,24 @@ const ReviewDate = styled.div`
 `;
 const ReviewImageBox = styled.div`
   width: 140px;
-  height: 100%;
+  height: 140px;
   display: flex;
   align-self: flex-end;
-  flex-direction: column;
-  justify-content: space-between;
 `;
 const ReviewContent = styled.div`
-  width: 80%;
-  overflow: hidden;
-  white-space: pre-wrap;
+  width: 70%;
+  max-width: 1000px;
   line-height: 25px;
+  word-wrap: break-word;
+  overflow: hidden;
+  max-height: 110px;
 `;
+
 const SvgDiv = styled.div`
+  width: 40px;
   height: 30px;
   display: flex;
   justify-content: end;
-  align-items: center;
 `;
 const DivBox = styled.div`
   cursor: pointer;
@@ -306,14 +344,4 @@ const ShowMoreButton = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-`;
-const DataBox = styled.div`
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
-`;
-const MoreBtnDiv = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
 `;
