@@ -92,11 +92,11 @@ export type slideImageValue = {
    */
   size?: "big" | "medium" | "small";
   /**
-   * (선택)북마크 옵션 활성화 유무(기본 false)
+   * (선택)북마크(가게 팔로우) 옵션 활성화 유무(기본 false)
    */
   bookmark?: Boolean;
   /**
-   * (선택: 북마크옵션 활성화시 필수)스크랩한 게시물인지
+   * (선택: 북마크옵션 활성화시 필수)구독한 가게인지
    */
   onBookmark?: boolean;
   borderRadius?: boolean;

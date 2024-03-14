@@ -1,9 +1,9 @@
 import React from 'react'
 import { SlideImgBookmarkValue } from '../../types/componentsProps'
-import { OnBookmark, OffBookmark } from '../../../public/svg';
-import { BookmarkOnWrap, BookmarkOffWrap,BookmarkOnAbsoluteWrap,BookmarkOffAbsoluteWrap } from './Bookmark.style';
+import { OnStar, OffStar } from '../../../public/svg';
+import { BookmarkOnWrap, BookmarkOffWrap,BookmarkOnAbsoluteWrap,BookmarkOffAbsoluteWrap } from './Follow.style';
 
-export default function Bookmark({storeId,onBookmark, size, absolute=false, onClickBookmark}:SlideImgBookmarkValue) {
+export default function Follow({storeId,onBookmark, size, absolute=false, onClickBookmark}:SlideImgBookmarkValue) {
   let svgSize = 38;
   if (size === "small") {
     svgSize = 23;
@@ -16,7 +16,7 @@ export default function Bookmark({storeId,onBookmark, size, absolute=false, onCl
         onBookmark
         ? (
             <BookmarkOnAbsoluteWrap sizeValue={svgSize} onClick={()=> onClickBookmark(storeId)}>
-              <OnBookmark
+              <OnStar
                 width={svgSize}
                 height={svgSize}
                 />
@@ -24,7 +24,7 @@ export default function Bookmark({storeId,onBookmark, size, absolute=false, onCl
             )
         : (
             <BookmarkOffAbsoluteWrap sizeValue={svgSize}  onClick={()=> onClickBookmark(storeId)} >
-              <OffBookmark
+              <OffStar
                 width={svgSize}
                 height={svgSize}
                 />
