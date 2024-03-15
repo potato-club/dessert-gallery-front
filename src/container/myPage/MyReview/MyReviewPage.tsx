@@ -12,6 +12,7 @@ import useGetWriteAbleStoreInfo from "../../../hooks/useGetWriteAbleReview";
 import { modalBg } from "../../../recoil/modalBg/atom";
 import { useSetRecoilState } from "recoil";
 import ReviewModal from "../components/ReviewModal";
+import { useOverflowDetector } from "../../../hooks/useOverflowDetector";
 
 interface Button {
   isSelected?: boolean;
@@ -52,35 +53,9 @@ const MyReviewPage = () => {
       },
     },
   ];
-  const reviewBoxRef = useRef<HTMLDivElement>(null);
-  const [showMoreButton, setShowMoreButton] = useState<boolean>(false);
+
   const [showReviewModal, setShowReviewModal] = useState<boolean>(false);
   const setModalBgState = useSetRecoilState(modalBg);
-
-  useEffect(() => {
-    console.log("writeAbleReview", writeAbleReview);
-    if (reviewBoxRef.current) {
-      const reviewBoxHeight = reviewBoxRef.current.clientHeight;
-      setShowMoreButton(reviewBoxHeight > 230);
-    }
-  }, [myReview, writeAbleReview]);
-  // const reviewContentRef = useRef<HTMLDivElement>(null);
-  // const [showMoreButtons, setShowMoreButtons] = useState<boolean[]>([]);
-
-  // useEffect(() => {
-  //   if (myReview) {
-  //     const buttons: boolean[] = myReview.map((review: any) => {
-  //       const reviewContentElement = document.createElement("div");
-  //       reviewContentElement.innerHTML = review.content;
-  //       document.body.appendChild(reviewContentElement);
-  //       const reviewContentHeight = reviewContentElement.clientHeight;
-  //       document.body.removeChild(reviewContentElement);
-  //       return reviewContentHeight > 100;
-  //     });
-  //     setShowMoreButtons(buttons);
-  //   }
-  // }, [myReview]);
-
   const detailClick = (id: number) => {
     setReviewId(id);
     setModal(modal ? false : true);
@@ -90,6 +65,10 @@ const MyReviewPage = () => {
     setShowReviewModal(false);
     setModalBgState(false);
   };
+  const { ref, isOverflowWidth, isOverflowHeight } = useOverflowDetector({
+    width: 1000,
+    height: 200,
+  });
 
   return (
     <Wrapper>
@@ -132,9 +111,11 @@ const MyReviewPage = () => {
               <DataBox>
                 <ReviewDataBox>
                   <ReviewDate>{review.createDate}</ReviewDate>
-                  <Rating size={"medium"} ratingValue={Number(review.score)} />
-                  <ReviewContent>{review.content}</ReviewContent>
-                  {/* <ShowMoreButton>더보기</ShowMoreButton> */}
+                  <Rating size={"medium"} ratingValue={review.score} />
+
+                  <Text infoBtnClick={true} ref={ref}>
+                    {review.content}
+                  </Text>
                 </ReviewDataBox>
                 <ReviewImageBox>
                   {review.images && review.images.length > 0 ? (
@@ -144,8 +125,8 @@ const MyReviewPage = () => {
                           ? review.images[0].fileUrl
                           : defaultPhoto
                       }
-                      width={137}
-                      height={137}
+                      width={140}
+                      height={140}
                       alt=""
                     />
                   ) : null}
@@ -315,11 +296,32 @@ const ReviewImageBox = styled.div`
 `;
 const ReviewContent = styled.div`
   width: 70%;
-  max-width: 1000px;
+  max-width: 400px;
   line-height: 25px;
-  word-wrap: break-word;
   overflow: hidden;
-  max-height: 110px;
+  text-overflow: ellipsis;
+  max-height: 80px;
+`;
+const Content = styled.div<{ infoBtnClick: boolean }>`
+  display: flex;
+  justify-content: space-between;
+  flex-direction: ${({ infoBtnClick }) => infoBtnClick && "column"};
+  gap: ${({ infoBtnClick }) => (infoBtnClick ? "16px" : "89px")};
+`;
+const Text = styled.p<{ infoBtnClick: boolean }>`
+  margin: 17px 0px 11px;
+  padding-left: 5px;
+  width: 640px;
+  color: #000;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 200%;
+  overflow: ${({ infoBtnClick }) => (infoBtnClick ? "none" : "hidden")};
+  text-overflow: ellipsis;
+  word-break: break-word;
+  display: -webkit-box;
+  -webkit-line-clamp: ${({ infoBtnClick }) => (infoBtnClick ? "" : "3")};
+  -webkit-box-orient: vertical;
 `;
 
 const SvgDiv = styled.div`

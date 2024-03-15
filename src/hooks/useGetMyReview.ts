@@ -4,7 +4,7 @@ import { MyReviewDto } from "../types/apiTypes";
 import { MyReviewWhole } from "../types/apiTypes";
 
 const useGetMyReview = (page: number, month: number) => {
-  const [myReview, setMyReview] = useState<MyReviewWhole[] | null>(null);
+  const [myReview, setMyReview] = useState<MyReviewDto[] | null>(null);
 
   const fetchData = async () => {
     try {
