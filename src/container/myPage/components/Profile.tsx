@@ -3,7 +3,7 @@ import { Box, Text, ProfileForm, TagWrap, TextInput, BtnText, FileInput, ImgBox 
 import Tag from '../../../components/Tag'
 import { useLoginUserInfo } from '../../../hooks/useUser';
 import ManagerProfile from './ManagerProfile';
-import { putUser } from '../../../apis/controller/profile';
+import { getCheckNicknamme, putUser } from '../../../apis/controller/profile';
 import { modalBg } from '../../../recoil/modalBg/atom';
 import { useSetRecoilState } from "recoil";
 
@@ -21,7 +21,7 @@ function Profile() {
   const [modifying, setModifying] = useState<Boolean>(false);
   const { data: userInfo } = useLoginUserInfo();
   const [formData, setFormData] = useState<FormDataI>({
-    nickname: userInfo && userInfo.nickname ? userInfo.nickname:'',
+    nickname: '',
     userRole: userInfo && userInfo.userRole ? userInfo.userRole:'',
     file: [],
     fileName: userInfo && userInfo.fileName ? userInfo.fileName:'',
@@ -59,11 +59,33 @@ function Profile() {
     setModifying(false)
   }
 
+  const convertURLtoFile = async (url: string) => {
+  const response = await fetch(url);
+  const data = await response.blob();
+  const ext = url.split(".").pop(); // url 구조에 맞게 수정할 것
+  const filename = url.split("/").pop(); // url 구조에 맞게 수정할 것
+  const metadata = { type: `image/${ext}` };
+  return new File([data], filename!, metadata);
+};
+
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
 
     try {
+      if(formData.nickname !== '' && userInfo.nickname !== formData.nickname ){
+        let nicknameCheck = await getCheckNicknamme(formData.nickname);
+        if(nicknameCheck){
+          alert('중복된 닉네임입니다!')
+          return;
+        }
+      }
+    } catch (error) {
+      
+    }
+
+    try {
       let sendFormData = new FormData();
+      let fileData = formData.file[0] ? formData.file[0]: await convertURLtoFile(userInfo.fileUrl);
 
       sendFormData.append('nickname', formData.nickname ? formData.nickname : userInfo.nickname);
       sendFormData.append('userRole', userInfo.userRole);

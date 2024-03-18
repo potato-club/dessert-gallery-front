@@ -33,12 +33,24 @@ export const putUser = async (sendFormData: FormData) => {
     const res = await axios.put('https://api.dessert-gallery.site/users', sendFormData, {
         headers: {
           'Content-Type': 'multipart/form-data',
-          'Authorization': `${sessionStorageService.get('JWTSessionStorage')}`,
+          'Authorization': `${sessionStorageService.get('JWTSessionStorage', "accessToken")}`,
         },
       });
 
       console.log("\n\n\nres", res)
   return res.data
+}
+
+
+export const getCheckNicknamme = async (nicknameString: string) => {
+  const res = await axios.get(`https://api.dessert-gallery.site/users/duplication/nickname?nickname=${nicknameString}`, {
+      headers: {
+        'Authorization': `${sessionStorageService.get('JWTSessionStorage', "accessToken")}`,
+      },
+    });
+
+    console.log("\n\n\n getCheckNicknamme res", res)
+return res.data
 }
 
 // export const getStoreProfile = async () => {
