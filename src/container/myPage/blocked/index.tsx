@@ -30,6 +30,6 @@ const InnerWrap = styled.div`
   display: flex;
   gap: 30px;
   flex-direction: column;
-  justify-content: center;
   width: 100%;
+  height: 100%;
 `;
