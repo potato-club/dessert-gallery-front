@@ -12,8 +12,8 @@ import { useForm } from "react-hook-form";
 import HeaderBottom from "../components/HeaderBottom";
 import useChatWebsocket from "../../../../hooks/useChatWebsocket";
 
-type messageObjectType = {
-  roomId: number;
+export type messageObjectType = {
+  chatRoomId: number;
   sender: string;
   message: string;
   messageType: "CHAT" | "RESERVEATION" | "REVIEW";
