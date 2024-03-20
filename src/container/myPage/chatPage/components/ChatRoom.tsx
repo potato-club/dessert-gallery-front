@@ -11,6 +11,7 @@ import { deleteChatRoom } from "../../../../apis/controller/chatPage";
 import { useForm } from "react-hook-form";
 import HeaderBottom from "../components/HeaderBottom";
 import useChatWebsocket from "../../../../hooks/useChatWebsocket";
+import { useGueryGetChatRoom } from "../../../../hooks/useReactQueryChatRoom";
 
 export type messageObjectType = {
   chatRoomId: number;
@@ -41,6 +42,8 @@ function ChatRoom({ userInfo }: { userInfo?: userInfoType }) {
   const clientRef = useRef<any>({});
 
   const { register, getValues, setValue, reset } = useForm();
+
+  // const { item } = useGueryGetChatRoom();
 
   const {
     connectHandler,
