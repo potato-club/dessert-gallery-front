@@ -28,13 +28,6 @@ function ChatList({
             디저트 예약하는 법은?
           </HowToReservationButton>
           <HowToReservation state={howToRewervationState} />
-          <HowToReservationButton
-            onMouseOver={() => setHowToRewervationState(true)}
-            onMouseOut={() => setHowToRewervationState(false)}
-          >
-            디저트 예약하는 법은?
-          </HowToReservationButton>
-          <HowToReservation state={howToRewervationState} />
         </HeaderTop>
         <HeaderBottom>
           <ImageWrapper>
@@ -49,6 +42,7 @@ function ChatList({
             <ChatListItem
               key={index}
               roomId={item.roomId}
+              lastChatDatetime={item.lastChatDatetime}
               name={
                 userInfo?.userRole === "MANAGER"
                   ? item.customerName

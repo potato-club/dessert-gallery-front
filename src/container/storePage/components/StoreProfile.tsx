@@ -13,6 +13,10 @@ import { roomInfoType } from "../../myPage/chatPage/ChatPage";
 import { useRoomInfoState } from "../../../recoil/chat/roomInfoStateAtom";
 import { useUserState } from "../../../hooks/useUser";
 import Logo from "../../../../public/svg/common/logo.svg";
+import {
+  useGueryGetChatRoom,
+  useMutationPostChatRoom,
+} from "../../../hooks/useReactQueryChatRoom";
 
 const StoreProfile = () => {
   const router = useRouter();
@@ -24,7 +28,10 @@ const StoreProfile = () => {
   );
 
   const { data } = useGetStoreInfo(storeId);
+
+  
   const { postFollowMutate, putUnFollowMutate } = useFollowAction(storeId);
+
 
   const [isChatRoomExist, setIsChatRoomExist] = useState<{
     exist: boolean;
@@ -65,7 +72,9 @@ const StoreProfile = () => {
     console.log(storeId);
 
     setRoomInfoState({ roomId: 0, partnerName: "", storeId: 0 });
-    checkChatRoom();
+    if (!isGuest) {
+      checkChatRoom();
+    }
   }, [data]);
 
   return (

@@ -8,7 +8,7 @@ import { messageObjectType } from "../container/myPage/chatPage/components/ChatR
 
 const useChatWebsocket = (
   chatHistoryState: messageObjectType[],
-  getChatHistoryState: (newChat: messageObjectType[]) => void,
+  getNewChat: (newChat: messageObjectType) => void,
   userInfo?: userInfoType
 ) => {
   const [roomInfoState, setRoomInfoState] = useRoomInfoState();
@@ -56,6 +56,16 @@ const useChatWebsocket = (
   };
 
   const messageHandler = (message: string) => {
+    var today = new Date();
+
+    var year = today.getFullYear();
+    var month = ("0" + (today.getMonth() + 1)).slice(-2);
+    var day = ("0" + today.getDate()).slice(-2);
+
+    var dateTime = year + "-" + month + "-" + day;
+
+    console.log(userInfo?.nickname);
+
     clientRef.current.publish({
       destination: "/pub/chat",
       body: JSON.stringify({
@@ -63,6 +73,7 @@ const useChatWebsocket = (
         message: message,
         messageType: "CHAT",
         sender: userInfo?.nickname,
+        dateTime: dateTime,
       }),
       headers: { Authorization: getAccessToken() },
     });
@@ -82,9 +93,7 @@ const useChatWebsocket = (
     };
     console.log(newChat);
 
-    console.log(chatHistoryState, newChat);
-
-    getChatHistoryState([...chatHistoryState, newChat]);
+    getNewChat(newChat);
   };
 
   const onClickReservation = () => {
