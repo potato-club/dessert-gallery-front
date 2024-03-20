@@ -26,8 +26,14 @@ function ChatRoom({ userInfo }: { userInfo?: userInfoType }) {
     []
   );
 
-  const getChatHistoryState = (newChatHistoryState: messageObjectType[]) => {
-    setChatHistoryState(newChatHistoryState);
+  const getNewChat = (newChatHistoryState: messageObjectType) => {
+    setChatHistoryState((prevChatList) => {
+      if (prevChatList) {
+        return [...prevChatList, newChatHistoryState];
+      } else {
+        return [newChatHistoryState];
+      }
+    });
   };
 
   const { getAccessToken } = useTokenService();
@@ -42,11 +48,12 @@ function ChatRoom({ userInfo }: { userInfo?: userInfoType }) {
     onClickReservation,
     onClickReview,
     disconnectHandler,
-  } = useChatWebsocket(chatHistoryState, getChatHistoryState, userInfo);
+  } = useChatWebsocket(chatHistoryState, getNewChat, userInfo);
 
   const messageCheckHandler = async () => {
-    const chatHistory = await getChatHistory(5);
+    const chatHistory = await getChatHistory(roomInfoState.roomId);
     console.log(chatHistory);
+    setChatHistoryState(chatHistory.chatList);
   };
 
   useEffect(() => {
@@ -55,6 +62,8 @@ function ChatRoom({ userInfo }: { userInfo?: userInfoType }) {
 
     messageCheckHandler();
     connectHandler();
+    console.log(chatHistoryState);
+
     return () => {
       disconnectHandler();
     };
