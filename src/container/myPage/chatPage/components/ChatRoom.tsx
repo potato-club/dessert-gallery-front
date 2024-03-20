@@ -111,8 +111,13 @@ function ChatRoom({ userInfo }: { userInfo?: userInfoType }) {
                 placeholder="메세지를 입력해주세요"
                 onKeyDown={(event) => {
                   if (event.key === "Enter") {
-                    messageHandler(getValues("message"));
-                    setValue("message", "");
+                    event.preventDefault();
+                    if (event.shiftKey) {
+                      // 시프트 엔터 누를 시 개행되도록 하려고 시도중
+                      return;
+                    }
+                    messageHandler(getValues("message")); // Handle sending the message
+                    setValue("message", ""); // Clear the textarea
                   }
                 }}
                 {...register("message")}
