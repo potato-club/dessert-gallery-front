@@ -95,7 +95,7 @@ export const useInfinityModalComment = ({ boardId }: any) => {
   return { data, fetchNextPage, hasNextPage, isLoading, refetch };
 };
 
-export const storePageOnModal = (storeId: number) => {
+export const useStorePageOnModal = (storeId: number) => {
   const router = useRouter();
   const [boardId, setBoardId] = useState<number>(0);
   const [onModal, setOnModal] = useState<boolean>(false);
