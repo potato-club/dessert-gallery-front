@@ -1,18 +1,15 @@
 import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import useGetMyReview from "../../../hooks/useGetMyReview";
-import Rating from "../../../components/Rating";
-import defaultPhoto from "../../../../public/image/defaultPhoto.png";
-import Image from "next/image";
 import ThreeDot from "../../../../public/SVG/reviewPage/ThreeDot.svg";
 import ToggleOptionBox from "../../../components/ToggleOptionBox";
-import Router from "next/router";
 import { deleteReview } from "../../../apis/controller/reviewPage";
 import useGetWriteAbleStoreInfo from "../../../hooks/useGetWriteAbleReview";
 import { modalBg } from "../../../recoil/modalBg/atom";
 import { useSetRecoilState } from "recoil";
 import ReviewModal from "../components/ReviewModal";
-import { useOverflowDetector } from "../../../hooks/useOverflowDetector";
+import MyReview from "./MyReview";
+import { MyReviewDto } from "../../../types/apiTypes";
 
 interface Button {
   isSelected?: boolean;
@@ -36,40 +33,43 @@ const MyReviewPage = () => {
     { index: 0, label: "전체" },
   ];
   const [month, setMonth] = useState<number>(0);
-  const [modal, setModal] = useState<boolean>(false);
+
   const monthClick = (month: number) => {
     setMonth(month);
   };
-  const [reviewId, setReviewId] = useState<number>(-1);
+
   const myReview = useGetMyReview(1, month);
   const writeAbleReview = useGetWriteAbleStoreInfo();
 
-  const modalOption = [
-    {
-      title: "삭제하기",
-      onClickHandler: async () => {
-        await deleteReview(reviewId);
-        location.reload();
-      },
-    },
-  ];
-
   const [showReviewModal, setShowReviewModal] = useState<boolean>(false);
   const setModalBgState = useSetRecoilState(modalBg);
-  const detailClick = (id: number) => {
-    setReviewId(id);
-    setModal(modal ? false : true);
-  };
 
   const handleWrapperClick = () => {
     setShowReviewModal(false);
     setModalBgState(false);
   };
-  const { ref, isOverflowWidth, isOverflowHeight } = useOverflowDetector({
-    width: 1000,
-    height: 200,
-  });
 
+  const [modal, setModal] = useState<boolean>(false);
+  const [reviewId, setReviewId] = useState<number | null>(null);
+
+  const detailClick = (id: number) => {
+    setReviewId(id);
+    if (id == reviewId) {
+      setModal(!modal);
+    } else {
+      setModal(true);
+    }
+  };
+
+  const modalOption = [
+    {
+      title: "삭제하기",
+      onClickHandler: async () => {
+        await deleteReview(reviewId as number);
+        location.reload();
+      },
+    },
+  ];
   return (
     <Wrapper>
       <MenuWrapper>
@@ -102,48 +102,34 @@ const MyReviewPage = () => {
                 리뷰 작성
               </CreateReview>
             )}
-            <ReviewNumber>내가 쓴 후기</ReviewNumber>
+            <ReviewNumber>내가 쓴 후기 {myReview?.length}</ReviewNumber>
           </NoticeValueBox>
         </Middle>
         <ReviewWrapper>
-          {myReview?.map((review: any, index: number) => (
-            <ReviewBox key={review.id}>
-              <DataBox>
-                <ReviewDataBox>
-                  <ReviewDate>{review.createDate}</ReviewDate>
-                  <Rating size={"medium"} ratingValue={review.score} />
-
-                  <Text infoBtnClick={true} ref={ref}>
-                    {review.content}
-                  </Text>
-                </ReviewDataBox>
-                <ReviewImageBox>
-                  {review.images && review.images.length > 0 ? (
-                    <Image
-                      src={
-                        review.images && review.images.length > 0
-                          ? review.images[0].fileUrl
-                          : defaultPhoto
-                      }
-                      width={140}
-                      height={140}
-                      alt=""
-                    />
-                  ) : null}
-                </ReviewImageBox>
+          {myReview?.map((item: MyReviewDto, idx: number) => {
+            return (
+              <div style={{ display: "flex" }} key={item.id}>
+                <MyReview
+                  key={item.id}
+                  id={item.id}
+                  content={item.content}
+                  score={item.score}
+                  images={item.images}
+                  createDate={item.createDate}
+                />
                 <SvgDiv>
-                  <DivBox onClick={() => detailClick(review.id)}>
+                  <DivBox onClick={() => detailClick(item.id)}>
                     <ThreeDot />
                   </DivBox>
-                  {modal && review.id === reviewId ? (
+                  {modal && reviewId === item.id ? (
                     <ModalOptionBox>
                       <ToggleOptionBox contents={modalOption} />
                     </ModalOptionBox>
                   ) : null}
                 </SvgDiv>
-              </DataBox>
-            </ReviewBox>
-          ))}
+              </div>
+            );
+          })}
         </ReviewWrapper>
       </MenuWrapper>
       {showReviewModal && (
@@ -259,76 +245,13 @@ const ReviewWrapper = styled.div`
   row-gap: 30px;
 `;
 
-const ReviewBox = styled.div`
-  width: 100%;
-  max-height: 235px;
-  border: 2px solid #ff8d00;
-  border-radius: 15px;
-  background-color: white;
-  padding: 30px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-`;
-const ReviewDataBox = styled.div`
-  width: 80%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  row-gap: 10px;
-  overflow: hidden;
-`;
-const DataBox = styled.div`
-  display: flex;
-  width: 100%;
-  height: 200px;
-`;
-
-const ReviewDate = styled.div`
-  font-size: 18px;
-  color: #828282;
-`;
-const ReviewImageBox = styled.div`
-  width: 140px;
-  height: 140px;
-  display: flex;
-  align-self: flex-end;
-`;
-const ReviewContent = styled.div`
-  width: 70%;
-  max-width: 400px;
-  line-height: 25px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  max-height: 80px;
-`;
-const Content = styled.div<{ infoBtnClick: boolean }>`
-  display: flex;
-  justify-content: space-between;
-  flex-direction: ${({ infoBtnClick }) => infoBtnClick && "column"};
-  gap: ${({ infoBtnClick }) => (infoBtnClick ? "16px" : "89px")};
-`;
-const Text = styled.p<{ infoBtnClick: boolean }>`
-  margin: 17px 0px 11px;
-  padding-left: 5px;
-  width: 640px;
-  color: #000;
-  font-size: 16px;
-  font-weight: 500;
-  line-height: 200%;
-  overflow: ${({ infoBtnClick }) => (infoBtnClick ? "none" : "hidden")};
-  text-overflow: ellipsis;
-  word-break: break-word;
-  display: -webkit-box;
-  -webkit-line-clamp: ${({ infoBtnClick }) => (infoBtnClick ? "" : "3")};
-  -webkit-box-orient: vertical;
-`;
-
 const SvgDiv = styled.div`
-  width: 40px;
   height: 30px;
   display: flex;
   justify-content: end;
+  position: relative;
+  right: 80px;
+  top: 40px;
 `;
 const DivBox = styled.div`
   cursor: pointer;
@@ -338,12 +261,4 @@ const ModalOptionBox = styled.div`
   top: 5px;
   right: 153px;
   z-index: 1;
-`;
-
-const ShowMoreButton = styled.div`
-  width: 50px;
-  height: 30px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 `;
