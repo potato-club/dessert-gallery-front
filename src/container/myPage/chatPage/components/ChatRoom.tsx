@@ -11,9 +11,10 @@ import { deleteChatRoom } from "../../../../apis/controller/chatPage";
 import { useForm } from "react-hook-form";
 import HeaderBottom from "../components/HeaderBottom";
 import useChatWebsocket from "../../../../hooks/useChatWebsocket";
+import { useGueryGetChatRoom } from "../../../../hooks/useReactQueryChatRoom";
 
-type messageObjectType = {
-  roomId: number;
+export type messageObjectType = {
+  chatRoomId: number;
   sender: string;
   message: string;
   messageType: "CHAT" | "RESERVEATION" | "REVIEW";
@@ -26,8 +27,14 @@ function ChatRoom({ userInfo }: { userInfo?: userInfoType }) {
     []
   );
 
-  const getChatHistoryState = (newChatHistoryState: messageObjectType[]) => {
-    setChatHistoryState(newChatHistoryState);
+  const getNewChat = (newChatHistoryState: messageObjectType) => {
+    setChatHistoryState((prevChatList) => {
+      if (prevChatList) {
+        return [...prevChatList, newChatHistoryState];
+      } else {
+        return [newChatHistoryState];
+      }
+    });
   };
 
   const { getAccessToken } = useTokenService();
@@ -36,17 +43,20 @@ function ChatRoom({ userInfo }: { userInfo?: userInfoType }) {
 
   const { register, getValues, setValue, reset } = useForm();
 
+  // const { item } = useGueryGetChatRoom();
+
   const {
     connectHandler,
     messageHandler,
     onClickReservation,
     onClickReview,
     disconnectHandler,
-  } = useChatWebsocket(chatHistoryState, getChatHistoryState, userInfo);
+  } = useChatWebsocket(chatHistoryState, getNewChat, userInfo);
 
   const messageCheckHandler = async () => {
-    const chatHistory = await getChatHistory(5);
+    const chatHistory = await getChatHistory(roomInfoState.roomId);
     console.log(chatHistory);
+    setChatHistoryState(chatHistory.chatList);
   };
 
   useEffect(() => {
@@ -55,6 +65,8 @@ function ChatRoom({ userInfo }: { userInfo?: userInfoType }) {
 
     messageCheckHandler();
     connectHandler();
+    console.log(chatHistoryState);
+
     return () => {
       disconnectHandler();
     };
@@ -102,8 +114,13 @@ function ChatRoom({ userInfo }: { userInfo?: userInfoType }) {
                 placeholder="메세지를 입력해주세요"
                 onKeyDown={(event) => {
                   if (event.key === "Enter") {
-                    messageHandler(getValues("message"));
-                    setValue("message", "");
+                    event.preventDefault();
+                    if (event.shiftKey) {
+                      // 시프트 엔터 누를 시 개행되도록 하려고 시도중
+                      return;
+                    }
+                    messageHandler(getValues("message")); // Handle sending the message
+                    setValue("message", ""); // Clear the textarea
                   }
                 }}
                 {...register("message")}

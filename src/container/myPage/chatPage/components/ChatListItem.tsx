@@ -5,11 +5,13 @@ function ChatListItem({
   roomId,
   name,
   thumbnailMessage,
+  lastChatDatetime,
   onClickItem,
 }: {
   roomId: number;
   name: string;
   thumbnailMessage: string;
+  lastChatDatetime: string;
   onClickItem: () => void;
 }) {
   return (
@@ -24,7 +26,7 @@ function ChatListItem({
           <ThumbnailMessage>{thumbnailMessage}</ThumbnailMessage>
         </InfoLeft>
         <InfoRight>
-          <TimeStamp>오전 9:30</TimeStamp>
+          <TimeStamp>{lastChatDatetime}</TimeStamp>
         </InfoRight>
       </ItemInfoWrapper>
     </Wrapper>
@@ -76,7 +78,6 @@ const InfoLeft = styled.div`
 
 const InfoRight = styled.div`
   position: relative;
-  width: 43px;
   height: 100%;
 `;
 
@@ -127,6 +128,7 @@ const ThumbnailMessage = styled.div`
 const TimeStamp = styled.div`
   position: absolute;
   right: 0;
+  width: 50px;
   height: 13px;
   font-size: 9px;
   color: #828282;
