@@ -33,7 +33,7 @@ export const putUser = async (sendFormData: FormData) => {
     const res = await axios.put('https://api.dessert-gallery.site/users', sendFormData, {
         headers: {
           'Content-Type': 'multipart/form-data',
-          'Authorization': `${sessionStorageService.get('JWTSessionStorage')}`,
+          'Authorization': `${sessionStorageService.get('JWTSessionStorage', "accessToken")}`,
         },
       });
 
