@@ -1,8 +1,8 @@
 import { Meta, StoryObj } from "@storybook/react";
-import Bookmark from "../../src/components/SlideImage/Bookmark";
+import Follow from "../../src/components/SlideImage/Follow";
 
-const meta: Meta<typeof Bookmark> = {
-  title: "commonComponents/Bookmark",
+const meta: Meta<typeof Follow> = {
+  title: "commonComponents/Follow",
   component: Bookmark,
   tags: ["autodocs"],
   argTypes: {
@@ -30,7 +30,7 @@ const meta: Meta<typeof Bookmark> = {
 
 export default meta;
 
-type Story = StoryObj<typeof Bookmark>;
+type Story = StoryObj<typeof Follow>;
 
 export const BookmarkOn: Story = {
   args: {
