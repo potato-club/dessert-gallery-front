@@ -3,7 +3,7 @@ import Follow from "../../src/components/SlideImage/Follow";
 
 const meta: Meta<typeof Follow> = {
   title: "commonComponents/Follow",
-  component: Bookmark,
+  component: Follow,
   tags: ["autodocs"],
   argTypes: {
     size: {
