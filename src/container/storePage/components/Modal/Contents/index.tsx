@@ -4,7 +4,7 @@ import Bookmark from "../../../../../components/Bookmark";
 import { useToggleBookmark } from "../../../../../hooks/useToggleBookmark";
 import CommentList from "./CommentList";
 
-const Content = ({ address, detailPoster, boardId, postCommentList }: any) => {
+const Content = ({ address, detailPoster, boardId }: any) => {
   const [onBookmarkState, setOnBookmarkState] = useState<boolean>(false);
 
   // bookmark 불리언값에 따른 onBookmarkState 상태 변경
@@ -41,7 +41,7 @@ const Content = ({ address, detailPoster, boardId, postCommentList }: any) => {
           </HashTagBox>
         </>
       )}
-      <CommentList boardId={boardId} postCommentList={postCommentList} />
+      <CommentList boardId={boardId} />
     </Container>
   );
 };

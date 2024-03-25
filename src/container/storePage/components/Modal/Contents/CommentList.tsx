@@ -5,7 +5,7 @@ import styled from "styled-components";
 import { useInfinityModalComment } from "../../../../../hooks/useBoard";
 import { useInfinityScrollLoading } from "../../../../../hooks/useInfinityScroll";
 
-const CommentList = ({ boardId, postCommentList }: any) => {
+const CommentList = ({ boardId }: any) => {
   // infiniteQuery 모달 댓글 불러오기
   const { data, fetchNextPage, hasNextPage, isLoading, refetch } =
     useInfinityModalComment({ boardId });
@@ -18,25 +18,16 @@ const CommentList = ({ boardId, postCommentList }: any) => {
 
   return (
     <Container>
-      {postCommentList &&
-        postCommentList.map((item: any, idx: number) => {
-          return (
-            <Comment
-              nickname={item.nickname}
-              comment={item.comment}
-              profile={item.profile}
-              key={idx}
-            />
-          );
-        })}
       {pageList &&
-        pageList.map((item: any, idx: number) => {
+        pageList.map((item: any) => {
           return (
             <Comment
+              commentId={item.id}
               nickname={item.nickname}
               comment={item.comment}
               profile={item.profile}
-              key={idx}
+              writer={item.writer}
+              key={item.id}
             />
           );
         })}

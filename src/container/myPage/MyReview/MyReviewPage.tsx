@@ -24,7 +24,7 @@ interface ButtonInfo {
 }
 
 interface style {
-  selected: boolean
+  selected: boolean;
 }
 
 const MyReviewPage = () => {
@@ -58,7 +58,7 @@ const MyReviewPage = () => {
   const setModalBgState = useSetRecoilState(modalBg);
 
   useEffect(() => {
-    console.log("writeAbleReview", writeAbleReview)
+    console.log("writeAbleReview", writeAbleReview);
     if (reviewBoxRef.current) {
       const reviewBoxHeight = reviewBoxRef.current.clientHeight;
       setShowMoreButton(reviewBoxHeight > 230);
@@ -94,14 +94,19 @@ const MyReviewPage = () => {
             ))}
           </NoticeValueBox>
           <NoticeValueBox>
-            {
-              writeAbleReview.length === 0 
-              ? <CreateReview selected={false}>리뷰 작성</CreateReview>
-              : <CreateReview selected={true} onClick={()=>{
-                setShowReviewModal(true)
-                setModalBgState(true);
-              }}>리뷰 작성</CreateReview>
-            }
+            {writeAbleReview.length === 0 ? (
+              <CreateReview selected={false}>리뷰 작성</CreateReview>
+            ) : (
+              <CreateReview
+                selected={true}
+                onClick={() => {
+                  setShowReviewModal(true);
+                  setModalBgState(true);
+                }}
+              >
+                리뷰 작성
+              </CreateReview>
+            )}
             <ReviewNumber>내가 쓴 후기</ReviewNumber>
           </NoticeValueBox>
         </Middle>
@@ -111,7 +116,7 @@ const MyReviewPage = () => {
               <DataBox>
                 <ReviewDataBox>
                   <ReviewDate>{review.createDate}</ReviewDate>
-                  <Rating size={"medium"} ratingValue={Number(review.score)} />
+                  <Rating size={"medium"} ratingValue={review.score} />
                   <ReviewContent>{review.content}</ReviewContent>
                 </ReviewDataBox>
                 <ReviewImageBox>
@@ -140,7 +145,12 @@ const MyReviewPage = () => {
           ))}
         </ReviewWrapper>
       </MenuWrapper>
-      {showReviewModal && <ReviewModal writeAbleStoreData={writeAbleReview} setShowReviewModal={setShowReviewModal}/>}
+      {showReviewModal && (
+        <ReviewModal
+          writeAbleStoreData={writeAbleReview}
+          setShowReviewModal={setShowReviewModal}
+        />
+      )}
       {showReviewModal && <WrapperOverlay onClick={handleWrapperClick} />}
     </Wrapper>
   );
@@ -232,7 +242,9 @@ const CreateReview = styled.div<style>`
   cursor: default;
   color: gray;
 
-  ${({selected}) => selected &&  `
+  ${({ selected }) =>
+    selected &&
+    `
     border: 2px solid #ff8d00;
     cursor: pointer;
     color: black;

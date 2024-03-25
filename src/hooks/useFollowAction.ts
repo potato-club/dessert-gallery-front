@@ -13,6 +13,7 @@ export const useFollowAction = (storeId: number) => {
     {
       onSuccess: () => {
         queryClient.refetchQueries(["detailBoard", storeId]);
+        queryClient.refetchQueries(["storeInfo", storeId]);
         queryClient.refetchQueries(["follow"]);
         alert("언팔로우 되었습니다.");
       },
@@ -24,8 +25,13 @@ export const useFollowAction = (storeId: number) => {
     {
       onSuccess: () => {
         queryClient.refetchQueries(["detailBoard", storeId]);
+        queryClient.refetchQueries(["storeInfo", storeId]);
         queryClient.refetchQueries(["follow"]);
         alert("팔로우 되었습니다.");
+      },
+      onError: (err: any) => {
+        if (err.response.data.errorCode === "401")
+          alert("해당 가게로부터 차단 되었습니다.");
       },
     }
   );
