@@ -177,6 +177,9 @@ function Profile() {
       </Box>
     )
   }
+  else{
+    return null;
+  }
 }
 
 export default Profile
