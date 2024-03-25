@@ -1,12 +1,20 @@
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { useInfiniteQuery, useQuery } from "react-query";
+import {
+  useInfiniteQuery,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from "react-query";
 import {
   getDetailPoster,
   getStoreReview,
   getBoardComment,
   getPosterList,
   getStoreAnnounce,
+  deleteComment,
+  postBoardComment,
+  PostCommentType,
 } from "../apis/controller/detailStore";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { modalBg } from "../recoil/modalBg/atom";
@@ -84,7 +92,7 @@ export const useInfinityModalComment = ({ boardId }: any) => {
   };
 
   const { data, fetchNextPage, hasNextPage, isLoading, refetch } =
-    useInfiniteQuery(["boardComment"], fetchModalComment, {
+    useInfiniteQuery(["boardComment", boardId], fetchModalComment, {
       getNextPageParam: (lastPage, pages) => {
         if (!lastPage.isLast) return lastPage.nextPage;
         return undefined;
@@ -93,6 +101,42 @@ export const useInfinityModalComment = ({ boardId }: any) => {
       retry: 1,
     });
   return { data, fetchNextPage, hasNextPage, isLoading, refetch };
+};
+
+export const usePostComment = (boardId: number) => {
+  const queryClient = useQueryClient();
+  const { mutate: postCommentMutate, isLoading } = useMutation(
+    ["boardComment", boardId],
+    (comment: string) => postBoardComment({ boardId, comment }),
+    {
+      onSuccess: () => {
+        queryClient.refetchQueries();
+      },
+      onError: (err: any) => {
+        if (err.response.status == 403) {
+          alert("로그인 해주세요.");
+        }
+      },
+    }
+  );
+
+  return { postCommentMutate, isLoading };
+};
+
+export const useDeleteComment = (boardId: number) => {
+  const queryClient = useQueryClient();
+  const { mutate: deleteCommentMutate, isLoading } = useMutation(
+    ["boardComment", boardId],
+    (commentId: number) => deleteComment(commentId),
+    {
+      onSuccess: () => {
+        queryClient.refetchQueries();
+        alert("댓글이 삭제되었습니다.");
+      },
+    }
+  );
+
+  return { deleteCommentMutate, isLoading };
 };
 
 export const useStorePageOnModal = (storeId: number) => {
