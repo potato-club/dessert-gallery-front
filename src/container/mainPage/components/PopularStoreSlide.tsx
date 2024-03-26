@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/swiper-bundle.css';
 import GalleryPost from '../../boardPage/galleryBoard/GalleryPost';
@@ -11,13 +11,16 @@ interface PopularStoreProps {
 }
 
 export default function PopularStoreSlide({ popularStoreList,isGuest }: PopularStoreProps) {
+  const [clientWidth, setClientWidth] = useState(0);
 
-  useEffect(() => {}, [popularStoreList]);
+  useEffect(() => {
+    setClientWidth(window.innerWidth);
+  }, [popularStoreList, clientWidth]);
 
   return (
     <Swiper
-      spaceBetween={10}
-      slidesPerView={5}
+      spaceBetween={0}
+      slidesPerView={Math.trunc(clientWidth/304)}
       effect="fade"
       direction="horizontal"
     >

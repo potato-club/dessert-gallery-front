@@ -1,5 +1,5 @@
 import React, { ChangeEvent, FormEvent, useState } from 'react'
-import { Box, Text, ProfileForm, TagWrap, TextInput, BtnText, FileInput, ImgBox } from './MyPage.style'
+import { Box, Text, ProfileForm, TagWrap, TextInput, BtnText, FileInput, ImgBox, InputBox, ContentsWrap, ModiProfileBox } from './MyPage.style'
 import Tag from '../../../components/Tag'
 import { useLoginUserInfo } from '../../../hooks/useUser';
 import ManagerProfile from './ManagerProfile';
@@ -114,15 +114,14 @@ function Profile() {
     console.log("profile ", userInfo)
   console.log("profile 2222", userInfo.fileUrl, userInfo.fileUrl === null)
     return (
-      <Box width='100%' height='100%' direction='column' justifyContent='flex-start' alignItems='center' padding='64px'>
-        
-        <Box direction='column' width='1122px' >
+      <ContentsWrap width='100%' height='100%' direction='column' justifyContent='flex-start' alignItems='center' padding='64px'>
+        <InputBox direction='column' width='1122px' padding='0 0 0 '>
           <Text color='#000000' fontSize='20px' fontWeight='bold' margin='0 0 8px 8px'>마이 프로필</Text>
           {
           modifying ? (
           <ProfileForm onSubmit={handleSubmit} width='1122px' padding='0'>
              {/* 프로필 박스 영역 */}
-             <Box border='2px solid #FF6F00' bgColor='#ffffffab' rounded='24px' padding='27px 43px'>
+             <Box border='2px solid #FF6F00' width='100%' bgColor='#ffffffab' rounded='24px' padding='27px 43px'>
                 {/* 사진영역 */}
                 <Box direction='column' alignItems='center'>
                   <ImgBox width='108px' height='108px' imgUrl={formData.url} />
@@ -143,7 +142,7 @@ function Profile() {
                 </Box>
                 {/* 정보영역 */}
                 <Box justifyContent='space-between' height='fit-content' width='100%' alignItems='flex-start'>
-                  <Box  margin='0 0 0 96px' direction='column' width='738px' justifyContent='space-btween'>
+                  <ModiProfileBox  margin='0 0 0 46px' direction='column' width='738px' justifyContent='space-btween'>
                     <TextInput 
                       padding='16px 0 0 0'
                       fontSize='28px'
@@ -155,7 +154,7 @@ function Profile() {
                       onChange={handleInputChange}
                       maxLength={30}
                       placeholder={`${userInfo.nickname}`}/>
-                  </Box>
+                  </ModiProfileBox>
                   <Box direction='column' alignItems='center' height='100%' width='90px'>
                     {modifying && <TagWrap width='63px' height='27px' title='완료' type='submit'  fontSize='13px'>완료</TagWrap>}
                     {modifying && <Tag margin='8px 0' width='63px' height='27px' title='취소' onClickHandler={handleCancle} clickAble={true} hoverCss={true} fontSize='13px' />}
@@ -166,7 +165,7 @@ function Profile() {
           ):(
             <>
                 {/* 프로필 박스 영역 */}
-              <Box border='2px solid #FF6F00' bgColor='#ffffffab' rounded='24px' padding='27px 57px'>
+              <Box border='2px solid #FF6F00' bgColor='#ffffffab' rounded='24px' padding='27px 36px'>
                 {/* 사진영역 */}
                 <Box direction='column' alignItems='center'>
                 <ImgBox width='108px' height='108px' imgUrl={userInfo.fileUrl} />
@@ -174,16 +173,14 @@ function Profile() {
                 </Box>
                 {/* 정보영역 */}
                 <Box justifyContent='space-between' height='fit-content' width='100%' alignItems='flex-start'>
-                  <Box  margin='0 0 0 96px' direction='column' width='738px' justifyContent='space-btween'>
+                  <ModiProfileBox  margin='0 0 0 36px' direction='column' width='738px' justifyContent='space-btween'>
                     <Text padding='16px 0 0 0' fontSize='28px' fontWeight='bold' color='#000000' cursor='pointer'>{userInfo.nickname}</Text>
                     <Box>
-                      <Text padding='16px 0 0 0' fontSize='17px' fontWeight='bold' color='#000000' cursor='pointer'>안녕하세요.</Text>
-                      <Text padding='16px 0 0 8px' fontSize='17px' fontWeight='bold' color='#FF6F00' cursor='pointer'>{userInfo.nickname}</Text>
-                      <Text padding='16px 0 0 0' fontSize='17px' fontWeight='bold' color='#000000' cursor='pointer'>님께서는 현재 </Text>
+                      <Text padding='16px 0 0 0' fontSize='17px' fontWeight='bold' color='#000000' cursor='pointer'>현재 </Text>
                       <Text padding='16px 8px 0 8px' fontSize='17px' fontWeight='bold' color='#FF6F00' cursor='pointer'>{userInfo.userRole === 'MANAGER' ? "사장님" : "고객 "}</Text>
                       <Text padding='16px 0 0 0' fontSize='17px' fontWeight='bold' color='#000000' cursor='pointer'>계정을 이용 중입니다.</Text>
                     </Box>
-                  </Box>
+                  </ModiProfileBox>
                   <Box direction='column' alignItems='center' height='100%' width='68px'>
                     <Tag width='63px' height='27px' title='수정' onClickHandler={()=>setModifying(true)} clickAble={true} hoverCss={true} fontSize='13px' />
                   </Box>
@@ -193,10 +190,10 @@ function Profile() {
           )
           }
           
-        </Box>
+        </InputBox>
 
         {userInfo.userRole === 'MANAGER' && <ManagerProfile/>}
-      </Box>
+      </ContentsWrap>
     )
   }
 }

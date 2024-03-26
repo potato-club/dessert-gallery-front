@@ -11,6 +11,15 @@ export const FeedSwitcherWrap = styled.div`
   background-color: #FCF0E1;
   display: flex;
   justify-content: center;
+  @media screen and (max-width: 1280px) {
+    height: 400px; 
+    width: 1280px; 
+  }
+  @media screen and (max-width: 480px) {
+    height: 280px; 
+    min-width: 480px; 
+    font-size: 72px;
+  }
 `
 
 export const ContentsWrap = styled.div`

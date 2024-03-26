@@ -111,7 +111,7 @@ const MyReviewPage = () => {
               <DataBox>
                 <ReviewDataBox>
                   <ReviewDate>{review.createDate}</ReviewDate>
-                  <Rating size={"medium"} ratingValue={Number(review.score)} />
+                  <Rating size={"medium"} ratingValue={review.score} />
                   <ReviewContent>{review.content}</ReviewContent>
                 </ReviewDataBox>
                 <ReviewImageBox>
