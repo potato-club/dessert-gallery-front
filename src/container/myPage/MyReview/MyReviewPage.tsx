@@ -1,6 +1,8 @@
 import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
-import useGetMyReview from "../../../hooks/useGetMyReview";
+import useGetMyReview, {
+  useGetMyReviewList,
+} from "../../../hooks/useGetMyReview";
 import ThreeDot from "../../../../public/SVG/reviewPage/ThreeDot.svg";
 import ToggleOptionBox from "../../../components/ToggleOptionBox";
 import { deleteReview } from "../../../apis/controller/reviewPage";
@@ -10,6 +12,8 @@ import { useSetRecoilState } from "recoil";
 import ReviewModal from "../components/ReviewModal";
 import MyReview from "./MyReview";
 import { MyReviewDto } from "../../../types/apiTypes";
+import PagingBox from "../../../components/ReviewList/PagingBox";
+import Router, { useRouter } from "next/router";
 
 interface Button {
   isSelected?: boolean;
@@ -37,6 +41,17 @@ const MyReviewPage = () => {
   const monthClick = (month: number) => {
     setMonth(month);
   };
+
+  const router = useRouter();
+
+  const { data, refetch, isLoading } = useGetMyReviewList(
+    router.query.page as number,
+    month
+  );
+
+  useEffect(() => {
+    refetch();
+  }, [router.query.page]);
 
   const myReview = useGetMyReview(1, month);
   const writeAbleReview = useGetWriteAbleStoreInfo();
@@ -70,6 +85,8 @@ const MyReviewPage = () => {
       },
     },
   ];
+  console.log("데이터", data);
+  console.log("page", router.query.page);
   return (
     <Wrapper>
       <MenuWrapper>
@@ -102,11 +119,11 @@ const MyReviewPage = () => {
                 리뷰 작성
               </CreateReview>
             )}
-            <ReviewNumber>내가 쓴 후기 {myReview?.length}</ReviewNumber>
+            <ReviewNumber>내가 쓴 후기 {data?.size}</ReviewNumber>
           </NoticeValueBox>
         </Middle>
         <ReviewWrapper>
-          {myReview?.map((item: MyReviewDto, idx: number) => {
+          {data?.content.map((item: MyReviewDto, idx: number) => {
             return (
               <div style={{ display: "flex" }} key={item.id}>
                 <MyReview
@@ -130,6 +147,7 @@ const MyReviewPage = () => {
               </div>
             );
           })}
+          <PagingBox data={data} />
         </ReviewWrapper>
       </MenuWrapper>
       {showReviewModal && (
