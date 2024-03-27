@@ -2,8 +2,7 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import ModalWrapper from "../../../../components/ModalWrapper";
 import SlideImage from "../../../../components/SlideImage/SlideImage";
-import { useGetDetailBoard } from "../../../../hooks/useBoard";
-import { postBoardComment } from "../../../../apis/controller/detailStore";
+import { useGetDetailBoard, usePostComment } from "../../../../hooks/useBoard";
 import InfoHeader from "./Header";
 import InfoContent from "./Contents";
 import LoadingSpinner from "./LoadingSpinner";
@@ -11,32 +10,19 @@ import { useSetRecoilState } from "recoil";
 import { modalBg } from "../../../../recoil/modalBg/atom";
 import { postChatRoom } from "../../../../apis/controller/chatPage";
 import { useUserState } from "../../../../hooks/useUser";
-import { useGetStoreInfo } from "../../../../hooks/useStore";
 
 const PostModal = ({ boardId }: any) => {
-  const [comment, setComment] = useState<string>("");
-  const [postCommentList, setPostCommentList] = useState<any[]>([]);
   const setModalBgState = useSetRecoilState(modalBg);
-  const {isGuest} = useUserState();
+  const { isGuest } = useUserState();
 
-  // 가게 정보 불러오기
-  //const { data: storeInfo } = useGetStoreInfo(storeId);
-
+  const [comment, setComment] = useState<string>("");
   // 세부 게시물 불러오기
   const { data: detailPoster } = useGetDetailBoard(boardId);
-
-  console.log(detailPoster);
+  const { postCommentMutate, isLoading } = usePostComment(boardId);
   // 모달 댓글 작성하기
-  const submit = async (e: any) => {
-    await e.preventDefault();
-    try {
-      const postComment = await postBoardComment({ boardId, comment });
-      setPostCommentList((prev) => [postComment, ...prev]);
-    } catch (err: any) {
-      if (err.response.status == 403) {
-        alert("로그인을 해주세요.");
-      }
-    }
+  const submit = (e: any) => {
+    e.preventDefault();
+    postCommentMutate(comment);
     setComment("");
   };
   return (
@@ -67,27 +53,30 @@ const PostModal = ({ boardId }: any) => {
             address={detailPoster?.storeInfo.address}
             boardId={boardId}
             detailPoster={detailPoster}
-            postCommentList={postCommentList}
           />
           <Bottom>
             <InputWrapper onSubmit={submit}>
-              <InputBox
-                placeholder="댓글 추가"
-                onChange={(e) => setComment(e.target.value)}
-                value={comment}
-              />
+              {isLoading ? (
+                <LoadingSpinner width={20} height={20} borderWidth={2} />
+              ) : (
+                <InputBox
+                  placeholder="댓글 추가"
+                  onChange={(e) => setComment(e.target.value)}
+                  value={comment}
+                />
+              )}
             </InputWrapper>
             <ReservedBtn
               onClick={() => {
                 //console.log(storeInfo.id);
-                if(!isGuest){
+                if (!isGuest) {
                   // 채팅페이지로 이동 전 모달 백그라운드 제거
                   setModalBgState(false);
                   // 현재 반영된 사항인지 알 수 없어 주석 처리
                   // postChatRoom(storeInfo.id);
                   window.location.href = "/myPage/chat";
-                }else{
-                  alert('로그인 후 이용해주세요.')
+                } else {
+                  alert("로그인 후 이용해주세요.");
                   window.location.href = "/login";
                 }
               }}

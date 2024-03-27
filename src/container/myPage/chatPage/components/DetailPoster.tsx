@@ -32,8 +32,8 @@ const DetailPoster = ({ ...props }) => {
           <Title>{detailPoster.title}</Title>
           <Content>{detailPoster.content}</Content>
           <TagList>
-            {detailPoster.tags.map((item: any) => (
-              <Tag>{item}</Tag>
+            {detailPoster.tags.map((item: any, idx: number) => (
+              <Tag key={idx}>{item}</Tag>
             ))}
           </TagList>
         </BoardInfoContent>
