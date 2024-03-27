@@ -6,7 +6,7 @@ const BlockedItem = ({ ...props }) => {
   const { putUnBlockedMutate } = useBlockedAction(props.userName);
   const unBlocked = (e: any) => {
     e.preventDefault();
-    putUnBlockedMutate();
+    putUnBlockedMutate(props.storeId);
   };
 
   return (

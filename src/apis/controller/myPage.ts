@@ -15,15 +15,17 @@ export const getBlockedList = async (page: number) => {
   return res.data;
 };
 
-export const postBlocked = async (userName: string) => {
+export const postBlocked = async (storeId: number, userName: string) => {
   const res = await sendApi.post(`/mypage/blacklist`, {
+    storeId,
     userName,
   });
   return res.data;
 };
 
-export const putUnBlocked = async (userName: string) => {
+export const putUnBlocked = async (storeId: number, userName: string) => {
   const res = await sendApi.put(`/mypage/blacklist`, {
+    storeId,
     userName,
   });
   return res.data;

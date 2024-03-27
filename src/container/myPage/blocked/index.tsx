@@ -1,13 +1,16 @@
 import React from "react";
 import styled from "styled-components";
+import { useLoginUserInfo } from "../../../hooks/useUser";
 import BlockedList from "./components/BlockedList";
 
 const BlockedPage = () => {
+  const { data: userInfo } = useLoginUserInfo();
+
   return (
     <Container>
       <InnerWrap>
         <Title>차단된 계정</Title>
-        <BlockedList />
+        <BlockedList storeId={userInfo?.storeId} />
       </InnerWrap>
     </Container>
   );
