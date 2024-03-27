@@ -67,7 +67,7 @@ export default AroundMarketItem;
 const Container = styled.li<style>`
   display: flex;
   width: 100%;
-  height: 134px;
+  height: fit-content;
   background-color: white;
   padding: 21px;
   cursor: pointer;

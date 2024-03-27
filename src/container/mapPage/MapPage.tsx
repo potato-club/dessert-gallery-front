@@ -234,6 +234,13 @@ export default MapPage;
 const Container = styled.div`
   display: flex;
   height: calc(100% - 96px);
+  width: 100vw;
+  @media screen and (max-width: 1280px) {
+    width: 1280px; 
+  }
+  @media screen and (max-width: 480px) {
+    min-width: 500px; 
+  }
 `;
 
 

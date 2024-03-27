@@ -56,11 +56,10 @@ const Container = styled.div<style>`
   position: absolute;
   right: 0;
   width: 100%;
-  width: calc(100% - 439px);
   height: 100%;
   ${({sidebar}) => {
         if(sidebar === true){
-            return `width: calc(100% - 439px - 431px);`
+            return `width: calc(100% - 431px);`
         }
     }};
 
@@ -68,7 +67,7 @@ const Container = styled.div<style>`
     width: calc(100% - (340px + (438 - 340) * ((100vw - 1280px) / (1920 - 1280))));
     ${({sidebar}) => {
         if(sidebar === true){
-            return `width: calc(100% - (340px + (438 - 340) * ((100vw - 1280px) / (1920 - 1280))-340px + (438 - 340) * ((100vw - 1280px) / (1920 - 1280))));`
+            return `width: calc(100% - 398px);`
         }
     }};
   }
@@ -76,7 +75,7 @@ const Container = styled.div<style>`
     width: calc(100% - 439px);
     ${({sidebar}) => {
         if(sidebar === true){
-            return `width: calc(100% - 438px - 438px);`
+            return `width: calc(100% - 438px);`
         }
     }};
   }
