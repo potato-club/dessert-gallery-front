@@ -7,7 +7,7 @@ import {
 import Image from "next/image";
 import useGetStoreInfo from "../../../../hooks/useGetStoreInfo";
 import defaultImage from "../../../../../public/image/defaultPhoto.png";
-import ThreeDot from "../../../../../public/SVG/myPage/postPage/ThreeDot.svg";
+import ThreeDot from "../../../../../public/svg/myPage/postPage/ThreeDot.svg";
 import { deletePost } from "../../../../apis/controller/postPage";
 import ToggleOptionBox from "../../../../components/ToggleOptionBox";
 import EditPostModal from "./EditPostModal";
