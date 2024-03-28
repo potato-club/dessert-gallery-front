@@ -47,7 +47,7 @@ const Calendar = ({ ...props }) => {
         selectable
         locale="kr"
         dayCellContent={(info: any) => customDayCellContent(info)}
-        datesSet={(args) => {
+        datesSet={(args: any) => {
           const tenDaysLater =
             new Date(args.startStr).getTime() + 10 * 24 * 60 * 60 * 1000;
           props.setDateInfo({
