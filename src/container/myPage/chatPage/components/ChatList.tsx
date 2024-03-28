@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import SerchImage from "../../../../../public/SVG/myPage/chatPage/searchImage.svg";
+import SerchImage from "../../../../../public/svg/myPage/chatPage/searchImage.svg";
 import ChatListItem from "./ChatListItem";
 import { userInfoType } from "../ChatPage";
 import { useRoomInfoState } from "../../../../recoil/chat/roomInfoStateAtom";

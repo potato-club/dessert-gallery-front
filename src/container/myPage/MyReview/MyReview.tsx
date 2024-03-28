@@ -4,7 +4,7 @@ import { MyReviewDto } from "../../../types/apiTypes";
 import Rating from "../../../components/Rating";
 import Image from "next/image";
 import { useOverflowDetector } from "../../../hooks/useOverflowDetector";
-import { DownArrow, UpArrow } from "../../../../public/SVG";
+import { DownArrow, UpArrow } from "../../../../public/svg";
 import SlideImage from "../../../components/SlideImage/SlideImage";
 
 const MyReview = ({ ...props }: MyReviewDto) => {
@@ -24,7 +24,7 @@ const MyReview = ({ ...props }: MyReviewDto) => {
       <DataBox>
         <ReviewDataBox>
           <ReviewDate>{createDate}</ReviewDate>
-          <Rating size={"medium"} ratingValue={score} />
+          <Rating size={"medium"} ratingValue={score.toString()} />
           <ReviewContent infoBtnClick={infoBtnClick}>
             <Text infoBtnClick={infoBtnClick} ref={ref}>
               {content}
@@ -45,12 +45,12 @@ const MyReview = ({ ...props }: MyReviewDto) => {
             (infoBtnClick ? (
               <MoreBtn onClick={() => setInfoBtnClick(false)}>
                 <span>접기</span>
-                <UpArrow width="16px" height="7px" />
+                {/* <UpArrow width="16px" height="7px" /> */}
               </MoreBtn>
             ) : (
               <MoreBtn onClick={() => setInfoBtnClick(true)}>
                 <span>더보기</span>
-                <DownArrow width="16px" height="7px" />
+                {/* <DownArrow width="16px" height="7px" /> */}
               </MoreBtn>
             ))}
         </ReviewDataBox>
