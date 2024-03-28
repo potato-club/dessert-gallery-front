@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, ChangeEvent } from "react";
 import styled, { css, keyframes } from "styled-components";
-import ArrowImage from "../../../../../public/SVG/myPage/postPage/arrowImage.svg";
+import ArrowImage from "../../../../../public/svg/myPage/postPage/arrowImage.svg";
 import Extend from "./Extend";
 import { postStorePost } from "../../../../apis/controller/postPage";
 import { TiDelete } from "react-icons/ti";

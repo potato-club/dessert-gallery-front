@@ -3,7 +3,7 @@ import styled from "styled-components";
 import useGetMyReview, {
   useGetMyReviewList,
 } from "../../../hooks/useGetMyReview";
-import ThreeDot from "../../../../public/SVG/reviewPage/ThreeDot.svg";
+import ThreeDot from "../../../../public/svg/reviewPage/ThreeDot.svg";
 import ToggleOptionBox from "../../../components/ToggleOptionBox";
 import { deleteReview } from "../../../apis/controller/reviewPage";
 import useGetWriteAbleStoreInfo from "../../../hooks/useGetWriteAbleReview";
