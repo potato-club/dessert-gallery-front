@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import styled from "styled-components";
 import Rating from "../../components/Rating";
 import { DefaultProfileLogo, DownArrow, UpArrow } from "../../../public/svg";
@@ -19,8 +19,10 @@ export interface StoreReviewType {
 }
 
 const Review = ({ ...props }: StoreReviewType) => {
+  const ref = useRef<any>(null);
   const [infoBtnClick, setInfoBtnClick] = useState<boolean>(false);
-  const { ref, isOverflowWidth, isOverflowHeight } = useOverflowDetector({
+  const { isOverflowWidth, isOverflowHeight } = useOverflowDetector({
+    ref: ref,
     width: 640,
     height: 92,
   });

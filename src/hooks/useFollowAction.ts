@@ -66,7 +66,7 @@ export const useBlockedAction = (userName: string) => {
 
   const { mutate: putUnBlockedMutate } = useMutation(
     ["blockedList"],
-    () => putUnBlocked(userName),
+    (storeId: number) => putUnBlocked(storeId, userName),
     {
       onSuccess: () => {
         queryClient.refetchQueries(["blockedList"]);
@@ -77,7 +77,7 @@ export const useBlockedAction = (userName: string) => {
   );
   const { mutate: postBlockedMutate } = useMutation(
     ["blockedList"],
-    () => postBlocked(userName),
+    (storeId: number) => postBlocked(storeId, userName),
     {
       onSuccess: () => {
         queryClient.refetchQueries(["blockedList"]);

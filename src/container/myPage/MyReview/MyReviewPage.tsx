@@ -45,7 +45,7 @@ const MyReviewPage = () => {
   const router = useRouter();
 
   const { data, refetch, isLoading } = useGetMyReviewList(
-    router.query.page as number,
+    router.query.page ? parseInt(router.query.page as string) : 1,
     month
   );
 
