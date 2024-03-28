@@ -4,7 +4,6 @@ RUN apk add --no-cache libc6-compat python3 build-base
 WORKDIR /app
 RUN npm i -g npm
 COPY package.json yarn.lock ./
-RUN export NODE_OPTIONS=--max_old_space_size=800
 RUN npm install
 
 # 필요할 때만 소스 코드를 다시 빌드함.
