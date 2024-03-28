@@ -3,9 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "next-high-memory": "node --max_old_space_size=4096 ./node_modules/.bin/next",
     "dev": "next dev",
-    "build": "cross-env NODE_OPTIONS=--max_old_space_size=4096 next build",
+    "build": "next build",
     "start": "next start",
     "lint": "next lint",
     "test": "jest --watch",
