@@ -12,7 +12,7 @@ interface BlockedListType {
   fileUrl: string;
 }
 
-const BlockedList = () => {
+const BlockedList = ({ ...props }) => {
   const { data, fetchNextPage, hasNextPage, isLoading, refetch } =
     useInfinityGetBlockedList();
   const { pageList, isLoad, ref } = useInfinityScrollLoading({
@@ -36,6 +36,7 @@ const BlockedList = () => {
                 key={item.userName}
                 userName={item.userName}
                 fileUrl={item.fileUrl}
+                storeId={props.storeId}
               />
             ))
           ) : (

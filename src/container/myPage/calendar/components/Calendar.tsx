@@ -19,7 +19,7 @@ const Calendar = ({ ...props }) => {
   };
 
   return (
-    <MyCalContainer>
+    <MyCalContainer currentWidth={props.currentWidth}>
       {onModal && (
         <ModalWrapper>
           {clickDateInfo && (
@@ -38,7 +38,7 @@ const Calendar = ({ ...props }) => {
           center: "title",
           right: "next",
         }}
-        height={770}
+        height={props.currentWidth > 1700 ? 900 : 770}
         dateClick={(e: any) => {
           setOnModal(true);
           setClickDateInfo(e.dateStr);
@@ -76,8 +76,8 @@ const Calendar = ({ ...props }) => {
 
 export default Calendar;
 
-const MyCalContainer = styled(Container)`
-  width: 818px;
+const MyCalContainer = styled(Container)<{ currentWidth: number }>`
+  width: ${({ currentWidth }) => (currentWidth > 1700 ? "1000px" : "818px")};
   height: auto;
   border-radius: 0px;
   gap: 0px;
@@ -90,12 +90,13 @@ const MyCalContainer = styled(Container)`
     padding: 20px 0px 30px;
     border-bottom: 3px solid #ff8d00;
     .fc-toolbar-title {
-      font-size: 32px;
+      font-size: ${({ currentWidth }) =>
+        currentWidth > 1700 ? "35px" : "32px"};
       font-weight: 600;
     }
   }
   .fc .fc-button {
-    padding: 4px;
+    padding: ${({ currentWidth }) => (currentWidth > 1700 ? "7px" : "4px")};
   }
   /* fullCalandar body style */
   .fc .fc-col-header-cell {
@@ -104,7 +105,7 @@ const MyCalContainer = styled(Container)`
     font-size: 22px;
   }
   .fc-daygrid-day-frame {
-    font-size: 20px;
+    font-size: ${({ currentWidth }) => (currentWidth > 1700 ? "23px" : "20px")};
   }
   /* fullcalendar event css */
   .fc .fc-daygrid-body-unbalanced .fc-daygrid-day-events {
