@@ -9,12 +9,12 @@ interface IRatingProps {
   /**
    * 평점 value 값
    */
-  ratingValue?: number;
+  ratingValue?: string;
 }
 /**
  * 후기에대한 평점을 나타내는 컴포넌트입니다.
  */
-const Rating = ({ size, ratingValue = 0.0 }: IRatingProps) => {
+const Rating = ({ size, ratingValue = "0.0" }: IRatingProps) => {
   let imgWidth = "20px";
   let imgHeight = "19px";
   if (size == "small") {
