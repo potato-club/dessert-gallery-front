@@ -119,7 +119,7 @@ const MyReviewPage = () => {
                 리뷰 작성
               </CreateReview>
             )}
-            <ReviewNumber>내가 쓴 후기 {data?.size}</ReviewNumber>
+            <ReviewNumber>내가 쓴 후기 {data?.totalElements}</ReviewNumber>
           </NoticeValueBox>
         </Middle>
         <ReviewWrapper>
