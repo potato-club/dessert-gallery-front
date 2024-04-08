@@ -60,5 +60,3 @@ export default function Follow({storeId,onBookmark, size, absolute=false, onClic
     </div>
   )
 }
-
-export default Follow;
