@@ -41,6 +41,18 @@ export const putUser = async (sendFormData: FormData) => {
   return res.data
 }
 
+
+export const getCheckNicknamme = async (nicknameString: string) => {
+  const res = await axios.get(`https://api.dessert-gallery.site/users/duplication/nickname?nickname=${nicknameString}`, {
+      headers: {
+        'Authorization': `${sessionStorageService.get('JWTSessionStorage', "accessToken")}`,
+      },
+    });
+
+    console.log("\n\n\n getCheckNicknamme res", res)
+return res.data
+}
+
 // export const getStoreProfile = async () => {
 //     const res = await sendApi.get('/stores');
 

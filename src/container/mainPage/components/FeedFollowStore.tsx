@@ -10,7 +10,6 @@ interface contentsProps {
 
 export default function FeedFollowStore({contents}: contentsProps) {
 
-  console.log("FeedFollowStore",contents, contents.length>0, contents.length ===0, contents.length)
   const onClickMovePage = () => {
     window.location.href = '/galleryBoard'
   }
@@ -29,7 +28,10 @@ export default function FeedFollowStore({contents}: contentsProps) {
                   title={e.storeName}
                   size={'small'}
                   storeId={e.idx} 
-                  location={''} ratingValue={''} bookmark={false} onBookmark={false}
+                  location={''} 
+                  ratingValue={''}
+                  bookmark={false}
+                  onBookmark={false}
                 />
               ))
           }
