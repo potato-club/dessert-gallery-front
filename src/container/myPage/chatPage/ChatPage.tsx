@@ -15,6 +15,7 @@ export type roomInfoType = {
   roomId: number;
   storeName: string;
   customerName: string;
+  lastChatDatetime: string;
   thumbnailMessage: string;
   storeId: number;
 };

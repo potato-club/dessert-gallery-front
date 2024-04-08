@@ -12,7 +12,7 @@ interface BlockedListType {
   fileUrl: string;
 }
 
-const BlockedList = () => {
+const BlockedList = ({ ...props }) => {
   const { data, fetchNextPage, hasNextPage, isLoading, refetch } =
     useInfinityGetBlockedList();
   const { pageList, isLoad, ref } = useInfinityScrollLoading({
@@ -24,25 +24,32 @@ const BlockedList = () => {
 
   return (
     <Container>
-      <ItemList>
-        {pageList && pageList.length ? (
-          pageList.map((item: BlockedListType) => (
-            <BlockedItem
-              key={item.userName}
-              userName={item.userName}
-              fileUrl={item.fileUrl}
-            />
-          ))
-        ) : (
-          <NoneListBox content="차단된 계정이 없습니다." />
-        )}
-        <IoDiv ref={ref}></IoDiv>
-        {isLoad && (
-          <LoadingDiv>
-            <LoadingSpinner width={40} height={40} borderWidth={2} />
-          </LoadingDiv>
-        )}
-      </ItemList>
+      {isLoading ? (
+        <InitLoading>
+          <LoadingSpinner width={100} height={100} borderWidth={5} />
+        </InitLoading>
+      ) : (
+        <ItemList>
+          {pageList && pageList.length ? (
+            pageList.map((item: BlockedListType) => (
+              <BlockedItem
+                key={item.userName}
+                userName={item.userName}
+                fileUrl={item.fileUrl}
+                storeId={props.storeId}
+              />
+            ))
+          ) : (
+            <NoneListBox content="차단된 계정이 없습니다." />
+          )}
+          <IoDiv ref={ref}></IoDiv>
+          {isLoad && (
+            <LoadingDiv>
+              <LoadingSpinner width={40} height={40} borderWidth={2} />
+            </LoadingDiv>
+          )}
+        </ItemList>
+      )}
     </Container>
   );
 };
@@ -53,6 +60,7 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   width: 1122px;
+  height: 100%;
   @media (max-width: 1470px) {
     width: 800px;
   }
@@ -76,4 +84,10 @@ const ItemList = styled.div`
   &::-webkit-scrollbar {
     display: none;
   }
+`;
+const InitLoading = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
 `;

@@ -49,7 +49,7 @@ export const getBoardComment = async ({ boardId, page }: GetCommentType) => {
   const res = await sendApi.get(`/comments/${boardId}?p=${page}`);
   return res.data;
 };
-interface PostCommentType {
+export interface PostCommentType {
   boardId: number;
   comment: string;
 }
@@ -60,6 +60,10 @@ export const postBoardComment = async ({
   const res = await sendApi.post(`/comments/${boardId}`, {
     comment: comment,
   });
+  return res.data;
+};
+export const deleteComment = async (commentId: number) => {
+  const res = await sendApi.delete(`/comments?id=${commentId}`);
   return res.data;
 };
 

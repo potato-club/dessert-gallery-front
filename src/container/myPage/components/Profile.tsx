@@ -196,6 +196,9 @@ function Profile() {
       </ContentsWrap>
     )
   }
+  else{
+    return null;
+  }
 }
 
 export default Profile

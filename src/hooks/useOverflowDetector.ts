@@ -1,12 +1,15 @@
 import { useEffect, useState, useRef } from "react";
 
 interface OverflowDetectorProps {
+  ref: React.RefObject<any>;
   width: number;
   height: number;
 }
-export function useOverflowDetector({ width, height }: OverflowDetectorProps) {
-  const ref = useRef<any>(null);
-
+export function useOverflowDetector({
+  ref,
+  width,
+  height,
+}: OverflowDetectorProps) {
   const [componenetWidth, setComponenetWidth] = useState(0);
   const [componentHeight, setComponentHeight] = useState(0);
   const [isOverflowWidth, setIsOverflowWidth] = useState(false);
@@ -22,5 +25,5 @@ export function useOverflowDetector({ width, height }: OverflowDetectorProps) {
     if (componentHeight > height) setIsOverflowHeight(true);
   }, [componenetWidth, componentHeight, width, height]);
 
-  return { ref, isOverflowWidth, isOverflowHeight };
+  return { isOverflowWidth, isOverflowHeight };
 }

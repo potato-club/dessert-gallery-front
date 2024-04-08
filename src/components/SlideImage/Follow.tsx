@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react'
 import { SlideImgBookmarkValue } from '../../types/componentsProps'
 import { OnStar, OffStar } from '../../../public/svg';
-import { BookmarkOnWrap, BookmarkOffWrap,BookmarkOnAbsoluteWrap,BookmarkOffAbsoluteWrap } from './Follow.style';
+import { BookmarkOnWrap, BookmarkOffWrap, BookmarkOnAbsoluteWrap, BookmarkOffAbsoluteWrap } from './Follow.style';
 
 export default function Follow({storeId,onBookmark, size, absolute=false, onClickBookmark}:SlideImgBookmarkValue) {
   const svgSize = useMemo(() => {

@@ -19,7 +19,7 @@ const ScheduleCheckColumn = ({ ...props }: ScheduleCheckColumnProps) => {
       {onWarning ? (
         <WarningDiv>
           <span>
-            <strong>정말로</strong>
+            <strong>정말로 </strong>
             삭제 하시겠습니까?
           </span>
           <BtnList>
@@ -97,6 +97,9 @@ const WarningDiv = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  span {
+    font-weight: 600;
+  }
   strong {
     color: red;
   }
@@ -110,10 +113,11 @@ const btnstyle = css`
   background-color: transparent;
   border: 1px solid #0000001a;
   border-radius: 10px;
-  transition: all ease-in-out 100ms;
+  transition: all ease-in-out 200ms;
   font-size: 13px;
+  color: white;
   &:hover {
-    box-shadow: 0px 0px 0px 4px #0000000d;
+    box-shadow: 0px 0px 0px 4px #0000001a;
     cursor: pointer;
   }
 `;
@@ -123,4 +127,5 @@ const DeleteBtn = styled.button`
 `;
 const CancelBtn = styled.button`
   ${btnstyle}
+  background-color: gray;
 `;

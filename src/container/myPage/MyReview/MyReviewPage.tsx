@@ -1,17 +1,19 @@
 import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
-import useGetMyReview from "../../../hooks/useGetMyReview";
-import Rating from "../../../components/Rating";
-import defaultPhoto from "../../../../public/image/defaultPhoto.png";
-import Image from "next/image";
-import ThreeDot from "../../../../public/SVG/reviewPage/ThreeDot.svg";
+import useGetMyReview, {
+  useGetMyReviewList,
+} from "../../../hooks/useGetMyReview";
+import ThreeDot from "../../../../public/svg/reviewPage/ThreeDot.svg";
 import ToggleOptionBox from "../../../components/ToggleOptionBox";
-import Router from "next/router";
 import { deleteReview } from "../../../apis/controller/reviewPage";
 import useGetWriteAbleStoreInfo from "../../../hooks/useGetWriteAbleReview";
 import { modalBg } from "../../../recoil/modalBg/atom";
 import { useSetRecoilState } from "recoil";
 import ReviewModal from "../components/ReviewModal";
+import MyReview from "./MyReview";
+import { MyReviewDto } from "../../../types/apiTypes";
+import PagingBox from "../../../components/ReviewList/PagingBox";
+import Router, { useRouter } from "next/router";
 
 interface Button {
   isSelected?: boolean;
@@ -24,7 +26,7 @@ interface ButtonInfo {
 }
 
 interface style {
-  selected: boolean
+  selected: boolean;
 }
 
 const MyReviewPage = () => {
@@ -35,46 +37,56 @@ const MyReviewPage = () => {
     { index: 0, label: "전체" },
   ];
   const [month, setMonth] = useState<number>(0);
-  const [modal, setModal] = useState<boolean>(false);
+
   const monthClick = (month: number) => {
     setMonth(month);
   };
-  const [reviewId, setReviewId] = useState<number>(-1);
+
+  const router = useRouter();
+
+  const { data, refetch, isLoading } = useGetMyReviewList(
+    router.query.page ? parseInt(router.query.page as string) : 1,
+    month
+  );
+
+  useEffect(() => {
+    refetch();
+  }, [router.query.page]);
+
   const myReview = useGetMyReview(1, month);
   const writeAbleReview = useGetWriteAbleStoreInfo();
 
-  const modalOption = [
-    {
-      title: "삭제하기",
-      onClickHandler: async () => {
-        await deleteReview(reviewId);
-        location.reload();
-      },
-    },
-  ];
-  const reviewBoxRef = useRef<HTMLDivElement>(null);
-  const [showMoreButton, setShowMoreButton] = useState<boolean>(false);
   const [showReviewModal, setShowReviewModal] = useState<boolean>(false);
   const setModalBgState = useSetRecoilState(modalBg);
-
-  useEffect(() => {
-    console.log("writeAbleReview", writeAbleReview)
-    if (reviewBoxRef.current) {
-      const reviewBoxHeight = reviewBoxRef.current.clientHeight;
-      setShowMoreButton(reviewBoxHeight > 230);
-    }
-  }, [myReview, writeAbleReview]);
-
-  const detailClick = (id: number) => {
-    setReviewId(id);
-    setModal(!modal);
-  };
 
   const handleWrapperClick = () => {
     setShowReviewModal(false);
     setModalBgState(false);
   };
 
+  const [modal, setModal] = useState<boolean>(false);
+  const [reviewId, setReviewId] = useState<number | null>(null);
+
+  const detailClick = (id: number) => {
+    setReviewId(id);
+    if (id == reviewId) {
+      setModal(!modal);
+    } else {
+      setModal(true);
+    }
+  };
+
+  const modalOption = [
+    {
+      title: "삭제하기",
+      onClickHandler: async () => {
+        await deleteReview(reviewId as number);
+        location.reload();
+      },
+    },
+  ];
+  console.log("데이터", data);
+  console.log("page", router.query.page);
   return (
     <Wrapper>
       <MenuWrapper>
@@ -94,53 +106,56 @@ const MyReviewPage = () => {
             ))}
           </NoticeValueBox>
           <NoticeValueBox>
-            {
-              writeAbleReview.length === 0 
-              ? <CreateReview selected={false}>리뷰 작성</CreateReview>
-              : <CreateReview selected={true} onClick={()=>{
-                setShowReviewModal(true)
-                setModalBgState(true);
-              }}>리뷰 작성</CreateReview>
-            }
-            <ReviewNumber>내가 쓴 후기</ReviewNumber>
+            {writeAbleReview.length === 0 ? (
+              <CreateReview selected={false}>리뷰 작성</CreateReview>
+            ) : (
+              <CreateReview
+                selected={true}
+                onClick={() => {
+                  setShowReviewModal(true);
+                  setModalBgState(true);
+                }}
+              >
+                리뷰 작성
+              </CreateReview>
+            )}
+            <ReviewNumber>내가 쓴 후기 {data?.totalElements}</ReviewNumber>
           </NoticeValueBox>
         </Middle>
         <ReviewWrapper>
-          {myReview?.map((review: any, index: number) => (
-            <ReviewBox key={review.id} ref={reviewBoxRef}>
-              <DataBox>
-                <ReviewDataBox>
-                  <ReviewDate>{review.createDate}</ReviewDate>
-                  <Rating size={"medium"} ratingValue={review.score} />
-                  <ReviewContent>{review.content}</ReviewContent>
-                </ReviewDataBox>
-                <ReviewImageBox>
-                  <SvgDiv>
-                    <DivBox onClick={() => detailClick(review.id)}>
-                      <ThreeDot />
-                    </DivBox>
-                    {modal && (
-                      <ModalOptionBox>
-                        <ToggleOptionBox contents={modalOption} />
-                      </ModalOptionBox>
-                    )}
-                  </SvgDiv>
-                  <Image
-                    src={review.images[index].fileUrl}
-                    width={137}
-                    height={137}
-                    alt=""
-                  />
-                </ReviewImageBox>
-              </DataBox>
-              <MoreBtnDiv>
-                {showMoreButton && <ShowMoreButton>더보기</ShowMoreButton>}
-              </MoreBtnDiv>
-            </ReviewBox>
-          ))}
+          {data?.content.map((item: MyReviewDto, idx: number) => {
+            return (
+              <div style={{ display: "flex" }} key={item.id}>
+                <MyReview
+                  key={item.id}
+                  id={item.id}
+                  content={item.content}
+                  score={item.score}
+                  images={item.images}
+                  createDate={item.createDate}
+                />
+                <SvgDiv>
+                  <DivBox onClick={() => detailClick(item.id)}>
+                    <ThreeDot />
+                  </DivBox>
+                  {modal && reviewId === item.id ? (
+                    <ModalOptionBox>
+                      <ToggleOptionBox contents={modalOption} />
+                    </ModalOptionBox>
+                  ) : null}
+                </SvgDiv>
+              </div>
+            );
+          })}
+          <PagingBox data={data} />
         </ReviewWrapper>
       </MenuWrapper>
-      {showReviewModal && <ReviewModal writeAbleStoreData={writeAbleReview} setShowReviewModal={setShowReviewModal}/>}
+      {showReviewModal && (
+        <ReviewModal
+          writeAbleStoreData={writeAbleReview}
+          setShowReviewModal={setShowReviewModal}
+        />
+      )}
       {showReviewModal && <WrapperOverlay onClick={handleWrapperClick} />}
     </Wrapper>
   );
@@ -232,7 +247,9 @@ const CreateReview = styled.div<style>`
   cursor: default;
   color: gray;
 
-  ${({selected}) => selected &&  `
+  ${({ selected }) =>
+    selected &&
+    `
     border: 2px solid #ff8d00;
     cursor: pointer;
     color: black;
@@ -246,49 +263,13 @@ const ReviewWrapper = styled.div`
   row-gap: 30px;
 `;
 
-const ReviewBox = styled.div`
-  width: 100%;
-  height: 240px;
-  max-height: 235px;
-  border: 2px solid #ff8d00;
-  border-radius: 15px;
-  background-color: white;
-  padding: 30px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-`;
-const ReviewDataBox = styled.div`
-  height: 100%;
-  width: 80%;
-  display: flex;
-  flex-direction: column;
-  row-gap: 10px;
-`;
-
-const ReviewDate = styled.div`
-  font-size: 18px;
-  color: #828282;
-`;
-const ReviewImageBox = styled.div`
-  width: 140px;
-  height: 100%;
-  display: flex;
-  align-self: flex-end;
-  flex-direction: column;
-  justify-content: space-between;
-`;
-const ReviewContent = styled.div`
-  width: 80%;
-  overflow: hidden;
-  white-space: pre-wrap;
-  line-height: 25px;
-`;
 const SvgDiv = styled.div`
   height: 30px;
   display: flex;
   justify-content: end;
-  align-items: center;
+  position: relative;
+  right: 80px;
+  top: 40px;
 `;
 const DivBox = styled.div`
   cursor: pointer;
@@ -298,22 +279,4 @@ const ModalOptionBox = styled.div`
   top: 5px;
   right: 153px;
   z-index: 1;
-`;
-
-const ShowMoreButton = styled.div`
-  width: 50px;
-  height: 30px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;
-const DataBox = styled.div`
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
-`;
-const MoreBtnDiv = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
 `;
