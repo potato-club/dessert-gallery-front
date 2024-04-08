@@ -1,15 +1,19 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import { SlideImgBookmarkValue } from '../../types/componentsProps'
 import { OnStar, OffStar } from '../../../public/svg';
 import { BookmarkOnWrap, BookmarkOffWrap,BookmarkOnAbsoluteWrap,BookmarkOffAbsoluteWrap } from './Follow.style';
 
 export default function Follow({storeId,onBookmark, size, absolute=false, onClickBookmark}:SlideImgBookmarkValue) {
-  let svgSize = 38;
-  if (size === "small") {
-    svgSize = 23;
-  } else if(size === 'medium') {
-    svgSize = 36;
-  }
+  const svgSize = useMemo(() => {
+    if (size === "small") {
+      return 23;
+    } else if (size === 'medium') {
+      return 36;
+    } else {
+      return 38; // 기본값 설정
+    }
+  }, [size]);
+
   return absolute? (
     <div>
       {
@@ -38,7 +42,7 @@ export default function Follow({storeId,onBookmark, size, absolute=false, onClic
         onBookmark
         ? (
             <BookmarkOnWrap sizeValue={svgSize} onClick={()=> onClickBookmark(storeId)}>
-              <OnBookmark
+              <OnStar
                 width={svgSize}
                 height={svgSize}
                 />
@@ -46,7 +50,7 @@ export default function Follow({storeId,onBookmark, size, absolute=false, onClic
             )
         : (
             <BookmarkOffWrap sizeValue={svgSize}  onClick={()=> onClickBookmark(storeId)} >
-              <OffBookmark
+              <OffStar
                 width={svgSize}
                 height={svgSize}
                 />

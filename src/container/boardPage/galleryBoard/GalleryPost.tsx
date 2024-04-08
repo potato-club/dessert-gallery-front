@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import { GalleryPostWrap, TitleText, InformationWrap,LocationText, Summary, TextWrap } from './GalleryPost.style'
 import SlideImage from '../../../components/SlideImage/SlideImage'
 import Tag from '../../../components/Tag'
@@ -7,23 +7,33 @@ import { galleryPostValue, galleryPostSizeValue } from '../../../types/component
 
 
 export default function GalleryPost({storeId, height=444, width,location,imgArray,ratingValue,summary,size='big', tagValue='none', bookmark, onBookmark ,title, margin="48px 0"}:galleryPostValue) {
-  let sizeValue:galleryPostSizeValue = {
-    titleTextSize: '18px',
-    locationTextSize: '12px',
-    summaryTextSize: '12px',
-    ratingSize: "medium",
-    textPadding: "16px 20px"
-  }
-
-  if(size === 'medium'){
-    sizeValue.titleTextSize = '17px';
-  }else if(size === 'small'){
-    sizeValue.titleTextSize = '16px';
-    sizeValue.locationTextSize = '10px';
-    sizeValue.summaryTextSize = '10px';
-    sizeValue.ratingSize = "small"
-    sizeValue.textPadding = "10px 12px"
-  }
+  const sizeValue:galleryPostSizeValue = useMemo(() => {
+    if (size === 'medium') {
+      return {
+        titleTextSize: '17px',
+        locationTextSize: '12px',
+        summaryTextSize: '12px',
+        ratingSize: "medium",
+        textPadding: "16px 20px"
+      };
+    } else if (size === 'small') {
+      return {
+        titleTextSize: '16px',
+        locationTextSize: '10px',
+        summaryTextSize: '10px',
+        ratingSize: "small",
+        textPadding: "10px 12px"
+      };
+    } else {
+      return {
+        titleTextSize: '18px',
+        locationTextSize: '12px',
+        summaryTextSize: '12px',
+        ratingSize: "medium",
+        textPadding: "16px 20px"
+      }; // 기본값 설정
+    }
+  }, [size]);
 
   const onClickGalleryPost = ()=>{
     window.location.href  = `/galleryBoard/${storeId}`
