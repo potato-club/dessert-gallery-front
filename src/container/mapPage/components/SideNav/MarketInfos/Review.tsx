@@ -74,7 +74,7 @@ const Review = ({ ...props }: StoreReviewType) => {
         )}
       </LeftCont>
       <RightCont>
-        {!infoBtnClick && (
+        {!infoBtnClick && images[0]?.fileUrl && (
           <Photo
             srcArray={images.map((item: any) => {
               return item.fileUrl;
