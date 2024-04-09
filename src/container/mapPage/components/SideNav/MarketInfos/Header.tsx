@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import Tag from "../../../../../components/Tag";
 import Image from "next/image";
@@ -14,12 +14,8 @@ import { roomInfoType } from "../../../../myPage/chatPage/ChatPage";
 const Header = ({store}:any) => {
   const router = useRouter();
   const { isGuest } = useUserState();
-  const storeId = parseInt(
-    router.query.store ? router.query.store.toString() : "0"
-  );
-
-  const { data } = useGetStoreInfo(store.storeId);
-  const { postFollowMutate, putUnFollowMutate } = useFollowAction(storeId);
+  const { data } = useGetStoreInfo(store.id);
+  const { postFollowMutate, putUnFollowMutate } = useFollowAction(store.id);
   const [isChatRoomExist, setIsChatRoomExist] = useState<{
     exist: boolean;
     roomId: number;
@@ -28,13 +24,17 @@ const Header = ({store}:any) => {
   }>({ exist: false, roomId: 0, partnerName: "", storeId: 0 });
   const [roomInfoState, setRoomInfoState] = useRoomInfoState();
 
+  useEffect(() => {
+    setRoomInfoState({ roomId: 0, partnerName: "", storeId: 0 });
+    if (!isGuest) {
+      checkChatRoom();
+    }
+  }, [data]);
+  
   const checkChatRoom = async () => {
     const chatRoom = await getChatRoom();
     const userInfo = await getUserInfo();
-    console.log(chatRoom);
 
-    console.log(chatRoom.chatList);
-    console.log(chatRoom.maxpage);
     if (chatRoom.chatList) {
       chatRoom.chatList.map((item: roomInfoType) => {
         if (data && data.name === item.storeName) {
@@ -53,6 +53,8 @@ const Header = ({store}:any) => {
       });
     }
   };
+
+  
   const url = window.location.href.split('?')[1].split('&')
   
   return (
@@ -92,7 +94,7 @@ const Header = ({store}:any) => {
                 if (isGuest) {
                   alert("로그인 후 이용하실 수 있습니다.");
                   router.push("/login");
-                } else if (!data.follow) {
+                } else if (data === undefined && !data?.follow) {
                   alert("팔로우 후 이용하실 수 있습니다.");
                 } else {
                   if (isChatRoomExist.exist) {
@@ -103,8 +105,7 @@ const Header = ({store}:any) => {
                     });
                     router.push("/myPage/chat");
                   } else {
-                    console.log(storeId);
-                    postChatRoom(storeId);
+                    postChatRoom(store.id);
                     router.push("/myPage/chat");
                   }
                 }
