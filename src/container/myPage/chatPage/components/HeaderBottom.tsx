@@ -85,9 +85,7 @@ const HeaderBottom = ({
         />
       )}
 
-      {onModalBg && (
-        <StorePosterModal storeId={roomInfoState.storeId} userInfo={userInfo} />
-      )}
+      {onModalBg && <StorePosterModal storeId={roomInfoState.storeId} />}
     </>
   );
 };
