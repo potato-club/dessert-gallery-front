@@ -1,22 +1,72 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import Tag from "../../../../../components/Tag";
 import Image from "next/image";
 import { mapStoreDetail } from "../../../../../types/apiTypes";
-
+import { useRouter } from "next/router";
+import { useUserState } from "../../../../../hooks/useUser";
+import { useGetStoreInfo } from "../../../../../hooks/useStore";
+import { useFollowAction } from "../../../../../hooks/useFollowAction";
+import { getChatRoom, postChatRoom, getUserInfo } from "../../../../../apis/controller/chatPage";
+import { useRoomInfoState } from "../../../../../recoil/chat/roomInfoStateAtom";
+import { roomInfoType } from "../../../../myPage/chatPage/ChatPage";
 // 가게 정보조회 api 들어와야함
 const Header = ({store}:any) => {
+  const router = useRouter();
+  const { isGuest } = useUserState();
+  const { data } = useGetStoreInfo(store.id);
+  const { postFollowMutate, putUnFollowMutate } = useFollowAction(store.id);
+  const [isChatRoomExist, setIsChatRoomExist] = useState<{
+    exist: boolean;
+    roomId: number;
+    partnerName: string;
+    storeId: number;
+  }>({ exist: false, roomId: 0, partnerName: "", storeId: 0 });
+  const [roomInfoState, setRoomInfoState] = useRoomInfoState();
+
+  useEffect(() => {
+    setRoomInfoState({ roomId: 0, partnerName: "", storeId: 0 });
+    if (!isGuest) {
+      checkChatRoom();
+    }
+  }, [data]);
+  
+  const checkChatRoom = async () => {
+    const chatRoom = await getChatRoom();
+    const userInfo = await getUserInfo();
+
+    if (chatRoom.chatList) {
+      chatRoom.chatList.map((item: roomInfoType) => {
+        if (data && data.name === item.storeName) {
+          console.log("방이 존재합니다.", item.roomId);
+          const partnerName =
+            userInfo?.userRole === "MANAGER"
+              ? item.customerName
+              : item.storeName;
+          setIsChatRoomExist({
+            exist: true,
+            roomId: item.roomId,
+            partnerName: partnerName,
+            storeId: item.storeId,
+          });
+        }
+      });
+    }
+  };
+
+  
   const url = window.location.href.split('?')[1].split('&')
+  
   return (
     <>
       <Container>
         <ImageSet >
-          <Image 
+          {store.storeImage?.fileUrl && <Image 
             src={store.storeImage.fileUrl}
             alt={store.storeImage.fileName} 
             layout="fill"
             objectFit="cover"
-          />
+          />}
         <Exit href={`/map?selected=-1&${url[1]}`}>X</Exit>
         </ImageSet>
         <StoreInfo>
@@ -40,7 +90,26 @@ const Header = ({store}:any) => {
               width="94px"
               height="27px"
               clickAble={true}
-              onClickHandler={() => {}}
+              onClickHandler={() => {
+                if (isGuest) {
+                  alert("로그인 후 이용하실 수 있습니다.");
+                  router.push("/login");
+                } else if (data === undefined && !data?.follow) {
+                  alert("팔로우 후 이용하실 수 있습니다.");
+                } else {
+                  if (isChatRoomExist.exist) {
+                    setRoomInfoState({
+                      roomId: isChatRoomExist.roomId,
+                      partnerName: isChatRoomExist.partnerName,
+                      storeId: isChatRoomExist.storeId,
+                    });
+                    router.push("/myPage/chat");
+                  } else {
+                    postChatRoom(store.id);
+                    router.push("/myPage/chat");
+                  }
+                }
+              }}
               fontSize="10px"
             />
           </ButtonList>

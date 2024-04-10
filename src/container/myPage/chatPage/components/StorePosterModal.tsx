@@ -7,11 +7,11 @@ import { useGetInfinityPosterList } from "../../../../hooks/useBoard";
 import { useInfinityScrollLoading } from "../../../../hooks/useInfinityScroll";
 import LoadingSpinner from "../../../storePage/components/Modal/LoadingSpinner";
 
-const StorePosterModal = ({ ...props }) => {
+const StorePosterModal = ({ storeId }: { storeId: any }) => {
   const [isShown, setIsShown] = useState(false);
 
   const { posterList, isLoading, hasNextPage, fetchNextPage } =
-    useGetInfinityPosterList(props.storeId);
+    useGetInfinityPosterList(storeId);
   const { pageList, isLoad, ref } = useInfinityScrollLoading({
     data: posterList,
     isLoading,

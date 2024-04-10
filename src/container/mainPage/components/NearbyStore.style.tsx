@@ -9,6 +9,12 @@ export const NearbyStoreWrap = styled.div`
   justify-content: space-evenly;
   align-items: center;
   border-radius: 16px 16px 0 0;
+  @media screen and (max-width: 1280px) {
+    width: 1280px; 
+  }
+  @media screen and (max-width: 480px) {
+    min-width: 480px; 
+  }
 `
 
 export const TitleWrap = styled.div`

@@ -1,18 +1,45 @@
-import { useEffect, useRef, useState } from "react";
-import { useTokenService } from "./useTokenService";
+import { useEffect, useRef, useState, createContext, useContext } from "react";
+import { useTokenService } from "../../../../hooks/useTokenService";
 import SockJS from "sockjs-client";
 import * as StompJs from "@stomp/stompjs";
-import { useRoomInfoState } from "../recoil/chat/roomInfoStateAtom";
-import { userInfoType } from "../container/myPage/chatPage/ChatPage";
-import { messageObjectType } from "../container/myPage/chatPage/components/ChatRoom";
+import { useRoomInfoState } from "../../../../recoil/chat/roomInfoStateAtom";
+import { userInfoType } from "../ChatPage";
+import { messageObjectType } from "../components/ChatRoom";
+import { useChatHistoryState } from "../../../../recoil/chat/chatHistoryState";
 
-const useChatWebsocket = (
-  chatHistoryState: messageObjectType[],
-  getNewChat: (newChat: messageObjectType) => void,
-  userInfo?: userInfoType
-) => {
+const StompClientContext = createContext(
+  {} as {
+    connectHandler: () => void;
+    disconnectHandler: () => void;
+    messageHandler: (message: string) => void;
+    onClickReservation: () => void;
+    onClickReview: () => void;
+  }
+);
+
+export const useStompClientContext = () => useContext(StompClientContext);
+
+export function StompClientProvider({
+  children,
+  userInfo,
+}: {
+  children: any;
+  userInfo?: userInfoType;
+}) {
   const [roomInfoState, setRoomInfoState] = useRoomInfoState();
+  const [chatHistoryState, setChatHistoryState] = useChatHistoryState();
   const { getAccessToken } = useTokenService();
+
+  const getNewChat = (newChatHistoryState: messageObjectType) => {
+    setChatHistoryState((prevChatList) => {
+      if (prevChatList) {
+        return [...prevChatList, newChatHistoryState];
+      } else {
+        return [newChatHistoryState];
+      }
+    });
+  };
+
   const clientRef = useRef<any>({});
 
   const connectHandler = () => {
@@ -117,7 +144,7 @@ const useChatWebsocket = (
       body: JSON.stringify({
         chatRoomId: roomInfoState.roomId,
         message: `${"user"}님, 디저트는 잘 받으셨나요? 
-        만족하셨다면 후기를 작성해주세요`,
+            만족하셨다면 후기를 작성해주세요`,
         messageType: "REVIEW",
         sender: userInfo?.nickname,
       }),
@@ -125,13 +152,16 @@ const useChatWebsocket = (
     });
   };
 
-  return {
+  const chatMethod = {
     connectHandler,
     messageHandler,
     onClickReservation,
     onClickReview,
     disconnectHandler,
   };
-};
-
-export default useChatWebsocket;
+  return (
+    <StompClientContext.Provider value={chatMethod}>
+      {children}
+    </StompClientContext.Provider>
+  );
+}

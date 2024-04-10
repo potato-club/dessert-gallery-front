@@ -14,16 +14,29 @@ const BoardTopWrap = styled.div<componentProps>`
     justify-content: center;
     align-items: center;
     cursor: default;
+    @media screen and (max-width: 1280px) {
+      width: 1736px; 
+    }
+    @media screen and (max-width: 480px) {
+      min-width: 480px; 
+    }
 `
 
 const TextWrap = styled.div`
+    width: 100vw;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    @media screen and (max-width: 1280px) {
+      width: 1736px; 
+    }
+    @media screen and (max-width: 480px) {
+      min-width: 100vw; 
+    }
 `
 
-const TitleWrap = styled.div`
+const TitleWrap = styled.div`  
     font-size: 40px;
     font-family: noto-sans-cjk-kr;
     font-weight: bold;

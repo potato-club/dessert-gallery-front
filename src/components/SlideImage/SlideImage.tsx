@@ -98,7 +98,6 @@ function SlideImage({
                   <LeftMoveButtonIcon
                     width={`${width / 30}px`}
                     height={`${height / 30}px`}
-                    style={{ filter: "drop-shadow(30px 10px 4px #4444dd)" }}
                   />
                 </SvgWrap>
               </LeftMoveButton>

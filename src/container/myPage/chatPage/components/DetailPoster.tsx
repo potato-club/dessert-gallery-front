@@ -5,13 +5,18 @@ import { useGetDetailBoard } from "../../../../hooks/useBoard";
 import Bookmark from "../../../../components/Bookmark";
 import { useToggleBookmark } from "../../../../hooks/useToggleBookmark";
 import { IoIosSend } from "react-icons/io";
+import { useStompClientContext } from "../context/StompClientProvider";
 
 const DetailPoster = ({ ...props }) => {
   const { data: detailPoster } = useGetDetailBoard(props.boardId);
   const { toggleBookmarkState } = useToggleBookmark(props.boardId);
 
+  const { messageHandler } = useStompClientContext();
+
+  const handlePosterClick = () => {};
+
   return (
-    <Container>
+    <Container onClick={() => messageHandler("게시물 테스트")}>
       <ImageWrapper>
         <IconWrapper>
           <Bookmark

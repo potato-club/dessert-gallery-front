@@ -32,4 +32,5 @@ function MainPage() {
 
 export default MainPage
 
-const MainWrap = styled.div``
+const MainWrap = styled.div`
+`

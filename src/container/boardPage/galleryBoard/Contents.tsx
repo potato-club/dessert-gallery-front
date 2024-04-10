@@ -4,6 +4,7 @@ import styled from 'styled-components'
 import { useGetStoreBoardListdData } from '../../../hooks/useGetStoreBoardList';
 import type { resGalleryPost } from '../../../types/apiTypes';
 import ToastMessage from '../../../components/ToastMessage';
+import { useLoginUserInfo } from '../../../hooks/useUser';
 
 const imgSrc = [
   'https://cdn.pixabay.com/photo/2016/11/22/18/52/cake-1850011_960_720.jpg',
@@ -72,6 +73,7 @@ const imgSrc = [
 // ]
 
 export default function Contents({data}: {data: resGalleryPost[][]}) {
+  const { data: userInfo } = useLoginUserInfo();
   return (
     <Wrap>
       {data.map((el)=>(
@@ -83,7 +85,7 @@ export default function Contents({data}: {data: resGalleryPost[][]}) {
           height={460}
           imgArray={[e.fileUrl]} 
           location={e.address} 
-          bookmark={true}
+          bookmark={userInfo?.userRole === "USER"}
           onBookmark={e.followId === null ? false: true} 
           ratingValue={e.score} 
           summary={e.content} 
