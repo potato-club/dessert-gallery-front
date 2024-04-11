@@ -53,7 +53,6 @@ const MyReviewPage = () => {
     refetch();
   }, [router.query.page]);
 
-  const myReview = useGetMyReview(1, month);
   const writeAbleReview = useGetWriteAbleStoreInfo();
 
   const [showReviewModal, setShowReviewModal] = useState<boolean>(false);
