@@ -9,14 +9,14 @@ export const getStoreInfo = async () => {
 export const postStorePost = async (
   title: string,
   content: string,
-  images: File[]
+  images: File[],
+  tags: string
 ) => {
   const formData = new FormData();
-
   const boardDto = {
     title: title,
     content: content,
-    tags: "#asd",
+    tags: tags,
   };
 
   formData.append(
@@ -62,6 +62,7 @@ export const putStorePost = async (
   postId: number,
   title: string,
   content: string,
+  tags: string,
   deleteFiles?: [],
   images?: File[]
 ) => {
@@ -70,7 +71,7 @@ export const putStorePost = async (
   const updateDto = {
     title: title,
     content: content,
-    tags: "#asd",
+    tags: tags,
     deleteFiles: deleteFiles,
   };
 

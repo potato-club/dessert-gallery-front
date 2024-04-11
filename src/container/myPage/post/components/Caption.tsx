@@ -4,17 +4,23 @@ import styled from "styled-components";
 interface CaptionProps {
   titleChange: (value: string) => void;
   contentChange: (value: string) => void;
+  addTags: (value: any) => void;
   amount: number;
 }
 
 const Caption: React.FC<CaptionProps> = ({
   titleChange,
   contentChange,
+  addTags,
   amount,
 }) => {
   const MAX_CHARACTERS = 2200;
   const [inputHashTag, setInputHashTag] = useState("");
   const [hashTags, setHashTags] = useState<string[]>([]);
+
+  const handleAddTags = () => {
+    addTags(inputHashTag);
+  };
 
   const addHashTag = (e: any) => {
     e.preventDefault();
@@ -22,6 +28,7 @@ const Caption: React.FC<CaptionProps> = ({
       setHashTags((prevHashTags) => [...prevHashTags, inputHashTag.trim()]);
       setInputHashTag("");
     }
+    handleAddTags();
   };
 
   const changeHashTagInput = (e: React.ChangeEvent<HTMLInputElement>) => {
