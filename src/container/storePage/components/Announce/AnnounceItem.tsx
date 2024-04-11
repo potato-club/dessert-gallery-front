@@ -10,11 +10,19 @@ interface Props {
   createdDate: string;
   spreadClick: boolean;
   setSpreadClick: Dispatch<SetStateAction<boolean>>;
+  itemLength: number;
 }
 
 const AnnounceItem = ({ ...props }: Props) => {
-  const { title, content, spreadClick, setSpreadClick, createdDate, type } =
-    props;
+  const {
+    title,
+    content,
+    spreadClick,
+    setSpreadClick,
+    createdDate,
+    type,
+    itemLength,
+  } = props;
 
   const [infoBtnClick, setInfoBtnClick] = useState<boolean>(false);
   useEffect(() => {
@@ -38,12 +46,14 @@ const AnnounceItem = ({ ...props }: Props) => {
               <UpArrow width="16px" height="7px" />
             </MoreBtn>
           ) : (
-            <MoreBtn onClick={() => setInfoBtnClick(true)}>
-              <span>더보기</span>
-              <DownArrow width="16px" height="7px" />
-            </MoreBtn>
+            content && (
+              <MoreBtn onClick={() => setInfoBtnClick(true)}>
+                <span>더보기</span>
+                <DownArrow width="16px" height="7px" />
+              </MoreBtn>
+            )
           )}
-          {!spreadClick && (
+          {itemLength >= 2 && !spreadClick && (
             <FoldBtn
               title="전체보기"
               width="106px"

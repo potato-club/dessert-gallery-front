@@ -7,7 +7,6 @@ import AnnounceItem from './AnnounceItem';
 const AnnounceList = ({ storeId }: any) => {
   const [spreadClick, setSpreadClick] = useState<boolean>(false);
   const { announceData } = useGetStoreAnnounce({ storeId });
-
   return (
     <Layout>
       <SpreadAnnounce spreadClick={spreadClick}>
@@ -22,6 +21,7 @@ const AnnounceList = ({ storeId }: any) => {
                 spreadClick={spreadClick}
                 setSpreadClick={setSpreadClick}
                 createdDate={item.createdDate}
+                itemLength={announceData?.length}
               />
             ))
           ) : (
@@ -36,6 +36,7 @@ const AnnounceList = ({ storeId }: any) => {
                   spreadClick={spreadClick}
                   setSpreadClick={setSpreadClick}
                   createdDate={item.createdDate}
+                  itemLength={announceData?.length}
                 />
               ))
           )
@@ -47,6 +48,7 @@ const AnnounceList = ({ storeId }: any) => {
             spreadClick={spreadClick}
             setSpreadClick={setSpreadClick}
             createdDate={''}
+            itemLength={announceData?.length}
           />
         )}
         <InnerDiv spreadClick={spreadClick}>
