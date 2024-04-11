@@ -1,27 +1,28 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState, Dispatch, SetStateAction } from 'react';
 import styled from 'styled-components';
 import Tag from '../../../../components/Tag';
 import { DownArrow, UpArrow } from '../../../../../public/svg';
 
-/**
- * props 종류
- * title
- * type
- * createdDate
- * spreadClick, setSpreadClick
- */
-const AnnounceItem = ({
-  title,
-  content,
-  spreadClick,
-  setSpreadClick,
-  isFirst,
-  createdDate,
-  type,
-}: any) => {
+interface Props {
+  title: string;
+  content: string;
+  type: string;
+  createdDate: string;
+  spreadClick: boolean;
+  setSpreadClick: Dispatch<SetStateAction<boolean>>;
+}
+
+const AnnounceItem = ({ ...props }: Props) => {
+  const { title, content, spreadClick, setSpreadClick, createdDate, type } =
+    props;
+
   const [infoBtnClick, setInfoBtnClick] = useState<boolean>(false);
+  useEffect(() => {
+    if (!spreadClick) setInfoBtnClick(false);
+  }, [spreadClick]);
+
   return (
-    <Container infoBtnClick={infoBtnClick}>
+    <Container>
       <InnerCont>
         <LeftCont>
           <Tag title={type} width="112px" height="32px" fontSize="13px" />
@@ -42,7 +43,7 @@ const AnnounceItem = ({
               <DownArrow width="16px" height="7px" />
             </MoreBtn>
           )}
-          {isFirst && !spreadClick && (
+          {!spreadClick && (
             <FoldBtn
               title="전체보기"
               width="106px"
@@ -65,9 +66,7 @@ const AnnounceItem = ({
 
 export default AnnounceItem;
 
-const Container = styled.div<{
-  infoBtnClick: boolean;
-}>`
+const Container = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -75,9 +74,8 @@ const Container = styled.div<{
   background-color: #fffdf9;
   border-top: 3px solid #fdc886;
   border-bottom: 3px solid #fdc886;
-  padding: 23px 0;
+  padding: 18px 0;
   width: 100%;
-  height: ${({ infoBtnClick }) => (infoBtnClick ? 'auto' : '84px')};
 `;
 const InnerCont = styled.div`
   display: flex;
@@ -141,6 +139,6 @@ const Content = styled.div<{ infoBtnClick: boolean }>`
 const Text = styled.pre`
   min-width: 510px;
   font-size: 15px;
-  line-height: 200%;
+  line-height: 20px;
   white-space: pre-wrap;
 `;
