@@ -1,25 +1,14 @@
-import React, { useEffect, useState } from "react";
-import styled from "styled-components";
-import Calender from "./components/StoreCalendar";
-import StoreProfile from "./components/StoreProfile";
-import StoreContent from "./components/StoreContent";
-import { StoreProps } from "../../../pages/galleryBoard/[store]";
-import { useRecoilValue } from "recoil";
-import { JWTStateAtom } from "../../recoil/login/JWTStateAtom";
-import { useGetScheduleForUser } from "../../hooks/useSchedule";
-import { BoardBottom } from "../../../public/image";
-import AnnounceList from "./components/Announce";
+import React from 'react';
+import styled from 'styled-components';
+import Calender from './components/StoreCalendar';
+import StoreProfile from './components/StoreProfile';
+import StoreContent from './components/StoreContent';
+import { StoreProps } from '../../../pages/galleryBoard/[store]';
+import { useGetScheduleForUser } from '../../hooks/useSchedule';
+import { BoardBottom } from '../../../public/image';
+import AnnounceList from './components/Announce';
 
 const StorePage = (props: StoreProps) => {
-  const [isGuest, setIsGuest] = useState<boolean>(true);
-  const jwtData = useRecoilValue(JWTStateAtom);
-
-  useEffect(() => {
-    if (jwtData.accessToken) {
-      setIsGuest(false);
-    }
-  }, [jwtData]);
-
   const { setDateInfo, calendarData } = useGetScheduleForUser(props.storeId);
 
   return (
@@ -70,10 +59,9 @@ const StoreInfo = styled.div`
   width: 100%;
   padding: 72px 0;
 `;
-
 const BottomWrap = styled.div<{ imgSrc: string }>`
   width: 100%;
-  height: 495px;
+  height: 300px;
   margin-top: 64px;
   background-image: ${({ imgSrc }) => `url('${imgSrc}')`};
 `;

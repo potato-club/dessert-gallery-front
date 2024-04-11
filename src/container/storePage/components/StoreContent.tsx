@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from "react";
-import styled, { css } from "styled-components";
-import PosterList from "./PosterList";
-import PostModal from "./Modal";
-import ReviewList from "../../../components/ReviewList";
-import { useStorePageOnModal } from "../../../hooks/useBoard";
+import React, { useEffect, useState } from 'react';
+import styled, { css } from 'styled-components';
+import PosterList from './PosterList';
+import PostModal from './Modal';
+import ReviewList from '../../../components/ReviewList';
+import { useStorePageOnModal } from '../../../hooks/useBoard';
 
 const StoreContent = ({ storeId }: any) => {
   const { boardId, setBoardId, onModal, onModalBg } =
@@ -11,12 +11,12 @@ const StoreContent = ({ storeId }: any) => {
 
   const [optionNum, setOptionNum] = useState<number>(1);
   const optionClick = (num: number) => {
-    localStorage.setItem("detailStoreOption", num.toString());
+    localStorage.setItem('detailStoreOption', num.toString());
     setOptionNum(num);
   };
 
   useEffect(() => {
-    const initValue = localStorage.getItem("detailStoreOption");
+    const initValue = localStorage.getItem('detailStoreOption');
     if (!initValue) setOptionNum(1);
     else setOptionNum(Number(initValue));
   }, []);
@@ -49,8 +49,8 @@ const Container = styled.div`
   flex-direction: column;
   justify-content: center;
   gap: 45px;
-  margin: 0px auto;
   max-width: 1100px;
+  margin-top: 74px;
 `;
 const Options = styled.div`
   border-bottom: 3px solid #ff8d00;

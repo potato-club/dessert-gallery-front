@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from "react";
-import styled from "styled-components";
-import Bookmark from "../../../../../components/Bookmark";
-import { useToggleBookmark } from "../../../../../hooks/useToggleBookmark";
-import CommentList from "./CommentList";
+import React, { useEffect, useState } from 'react';
+import styled from 'styled-components';
+import Bookmark from '../../../../../components/Bookmark';
+import { useToggleBookmark } from '../../../../../hooks/useToggleBookmark';
+import CommentList from './CommentList';
 
 const Content = ({ address, detailPoster, boardId }: any) => {
   const [onBookmarkState, setOnBookmarkState] = useState<boolean>(false);
@@ -54,6 +54,7 @@ const Container = styled.div`
   min-width: 408px;
   padding: 33px 28px;
   height: 444px;
+  overflow-x: hidden;
   overflow-y: scroll;
   ::-webkit-scrollbar {
     display: none;
@@ -81,6 +82,8 @@ const TextContent = styled.div`
   color: #000;
   font-size: 15px;
   font-weight: 500;
+  word-break: break-all;
+  line-height: 22px;
 `;
 const HashTagBox = styled.div`
   display: flex;
