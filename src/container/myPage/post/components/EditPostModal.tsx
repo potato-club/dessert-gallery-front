@@ -19,6 +19,7 @@ const EditPostModal = ({
 
   const [title, setTitle] = useState(`${detailPost.title}`);
   const [content, setContent] = useState(`${detailPost.content}`);
+  const [tags, setTags] = useState<string>(`${detailPost.tag}`);
   const [imageSrc, setImageSrc] = useState(
     detailPost.images.map((image: any) => image.fileUrl)
   );
@@ -69,7 +70,7 @@ const EditPostModal = ({
   };
 
   const postClick = () => {
-    putStorePost(postId, title, content, deleteFiles, images);
+    putStorePost(postId, title, content, tags, deleteFiles, images);
     onCancelClick();
   };
   const handleModalClick = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -88,6 +89,7 @@ const EditPostModal = ({
     const newImageSrcs = newImages.map((file) => URL.createObjectURL(file));
     setImageSrc((prevImageSrcs: any) => [...prevImageSrcs, ...newImageSrcs]);
   };
+  console.log("태그", tags);
 
   return (
     <Background onClick={cancelClick}>
@@ -120,8 +122,8 @@ const EditPostModal = ({
               srcArray={imageSrc}
               width={527}
               height={527}
-              dotIndicator={true}
               moveBtnType="show"
+              dotIndicator={true}
               deleteBtn={true}
               onDeleteImage={handleDeleteImage}
             />
