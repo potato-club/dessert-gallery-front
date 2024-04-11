@@ -1,7 +1,7 @@
-import React, { useState } from "react";
-import styled from "styled-components";
-import Tag from "../../../../components/Tag";
-import { DownArrow, UpArrow } from "../../../../../public/svg";
+import React, { useState } from 'react';
+import styled from 'styled-components';
+import Tag from '../../../../components/Tag';
+import { DownArrow, UpArrow } from '../../../../../public/svg';
 
 /**
  * props 종류
@@ -77,7 +77,7 @@ const Container = styled.div<{
   border-bottom: 3px solid #fdc886;
   padding: 23px 0;
   width: 100%;
-  height: ${({ infoBtnClick }) => (infoBtnClick ? "auto" : "84px")};
+  height: ${({ infoBtnClick }) => (infoBtnClick ? 'auto' : '84px')};
 `;
 const InnerCont = styled.div`
   display: flex;
@@ -93,15 +93,15 @@ const Title = styled.span<{
   spreadClick: boolean;
 }>`
   display: inline-block;
-  width: ${({ spreadClick }) => (spreadClick ? "630px" : "510px")};
+  width: ${({ spreadClick }) => (spreadClick ? '630px' : '510px')};
   color: #000;
   font-size: 15px;
   font-weight: 900;
   line-height: 200%;
-  overflow: ${({ infoBtnClick }) => (infoBtnClick ? "none" : "hidden")};
-  white-space: ${({ infoBtnClick }) => (infoBtnClick ? "normal" : "nowrap")};
+  overflow: ${({ infoBtnClick }) => (infoBtnClick ? 'none' : 'hidden')};
+  white-space: ${({ infoBtnClick }) => (infoBtnClick ? 'normal' : 'nowrap')};
   text-overflow: ellipsis;
-  word-wrap: ${({ infoBtnClick }) => infoBtnClick && "break-word"};
+  word-wrap: ${({ infoBtnClick }) => infoBtnClick && 'break-word'};
 `;
 
 const RightCont = styled.div`
@@ -133,7 +133,7 @@ const MoreBtn = styled.button`
 `;
 const FoldBtn = styled(Tag)``;
 const Content = styled.div<{ infoBtnClick: boolean }>`
-  display: ${({ infoBtnClick }) => (infoBtnClick ? "flex" : "none")};
+  display: ${({ infoBtnClick }) => (infoBtnClick ? 'flex' : 'none')};
   justify-content: space-between;
   width: 1100px;
   padding-left: 167px;
@@ -142,4 +142,5 @@ const Text = styled.pre`
   min-width: 510px;
   font-size: 15px;
   line-height: 200%;
+  white-space: pre-wrap;
 `;
