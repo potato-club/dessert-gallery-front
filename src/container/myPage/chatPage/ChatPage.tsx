@@ -4,6 +4,7 @@ import ChatList from "./components/ChatList";
 import ChatRoom from "./components/ChatRoom";
 import { getChatRoom, getUserInfo } from "../../../apis/controller/chatPage";
 import { loginPageApi } from "../../../apis/controller/loginPage";
+import { StompClientProvider } from "./context/StompClientProvider";
 
 export type userInfoType = {
   nickname: string;
@@ -47,7 +48,9 @@ function ChatPage() {
     <Layout>
       <Wrapper>
         <ChatList chatRoomList={chatRoomList} userInfo={userInfoState} />
-        <ChatRoom userInfo={userInfoState} />
+        <StompClientProvider userInfo={userInfoState}>
+          <ChatRoom userInfo={userInfoState} />
+        </StompClientProvider>
       </Wrapper>
     </Layout>
   );

@@ -36,6 +36,7 @@ const PostCaption = ({
   const changeHashTagInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputHashTag(e.target.value);
   };
+  console.log("태그", tags);
 
   return (
     <>
@@ -48,7 +49,7 @@ const PostCaption = ({
       </AmountBox>
       <TagBox>
         <TagDiv>
-          {hashTags.map((tag, index) => (
+          {tags?.map((tag: string, index: number) => (
             <Tag key={index}>#{tag}</Tag>
           ))}
         </TagDiv>
