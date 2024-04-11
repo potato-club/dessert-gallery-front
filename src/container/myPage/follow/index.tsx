@@ -1,6 +1,6 @@
-import React from "react";
-import styled from "styled-components";
-import FollowList from "./components/FollowList";
+import React from 'react';
+import styled from 'styled-components';
+import FollowList from './components/FollowList';
 
 const FollowPage = () => {
   return (
@@ -25,11 +25,11 @@ const Container = styled.div`
 const Title = styled.h1`
   font-size: 20px;
   font-weight: 600;
+  margin-bottom: 30px;
 `;
 const InnerWrap = styled.div`
-  display: flex;
-  gap: 30px;
   flex-direction: column;
   justify-content: center;
   width: 100%;
+  height: 100%;
 `;
