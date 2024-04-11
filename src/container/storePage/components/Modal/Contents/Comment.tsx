@@ -1,9 +1,9 @@
-import React, { useState } from "react";
-import styled from "styled-components";
-import DeleteIcon from "/public/svg/common/deleteIcon.svg";
-import { MdKeyboardDoubleArrowRight } from "react-icons/md";
-import { MdKeyboardDoubleArrowLeft } from "react-icons/md";
-import { useDeleteComment } from "../../../../../hooks/useBoard";
+import React, { useState } from 'react';
+import styled from 'styled-components';
+import DeleteIcon from '/public/svg/common/deleteIcon.svg';
+import { MdKeyboardDoubleArrowRight } from 'react-icons/md';
+import { MdKeyboardDoubleArrowLeft } from 'react-icons/md';
+import { useDeleteComment } from '../../../../../hooks/useBoard';
 /**
  * props 설명
  * profile : 유저의 프로필, 기본값은 DefaultProfileLogo
@@ -16,49 +16,60 @@ interface CommentType {
   comment: string;
   createdDate?: string;
   nickname: string;
-  profile: string | null;
+  profile: any;
   boardId?: number;
   commentId: number;
   writer: boolean;
 }
 const Comment = ({ ...props }: CommentType) => {
   const { comment, nickname, profile, boardId, commentId, writer } = props;
-
+  console.log(profile);
   const [onArrowClick, setOnArrowClick] = useState<boolean>(false);
 
   const { deleteCommentMutate, isLoading } = useDeleteComment(boardId || 0);
   return (
     <Container onArrowClick={onArrowClick}>
       <Content>
-        <Profile src={profile || "/svg/storePage/DefaultProfileLogo.svg"} />
+        <Profile
+          src={profile?.fileUrl || '/svg/storePage/DefaultProfileLogo.svg'}
+        />
         <Nickname>{nickname}</Nickname>
         <Text>{comment}</Text>
       </Content>
       {writer &&
         (onArrowClick ? (
-          <CursorBox>
-            <MdKeyboardDoubleArrowRight
-              onClick={() => setOnArrowClick(false)}
-              color="#828282"
-            />
-          </CursorBox>
+          <OptionSet>
+            <CursorBox>
+              <MdKeyboardDoubleArrowRight
+                onClick={() => setOnArrowClick(false)}
+                color="#828282"
+              />
+            </CursorBox>
+            <DeleteBtn
+              onClick={() => {
+                deleteCommentMutate(commentId);
+              }}
+            >
+              <DeleteIcon width={15} height={15} />
+            </DeleteBtn>
+          </OptionSet>
         ) : (
-          <CursorBox>
-            <MdKeyboardDoubleArrowLeft
-              onClick={() => setOnArrowClick(true)}
-              color="#828282"
-            />
-          </CursorBox>
+          <OptionSet>
+            <CursorBox>
+              <MdKeyboardDoubleArrowLeft
+                onClick={() => setOnArrowClick(true)}
+                color="#828282"
+              />
+            </CursorBox>
+            <DeleteBtn
+              onClick={() => {
+                deleteCommentMutate(commentId);
+              }}
+            >
+              <DeleteIcon width={15} height={15} />
+            </DeleteBtn>
+          </OptionSet>
         ))}
-      {writer && (
-        <DeleteBtn
-          onClick={() => {
-            deleteCommentMutate(commentId);
-          }}
-        >
-          <DeleteIcon width={15} height={15} />
-        </DeleteBtn>
-      )}
     </Container>
   );
 };
@@ -72,7 +83,7 @@ const Container = styled.div<{ onArrowClick: boolean }>`
   position: relative;
   transition: all 200ms ease;
   transform: ${({ onArrowClick }) =>
-    onArrowClick ? "translateX(-45px)" : "translateX(0px)"};
+    onArrowClick ? 'translateX(-45px)' : 'translateX(0px)'};
 `;
 const Content = styled.div`
   display: flex;
@@ -96,12 +107,16 @@ const Profile = styled.img`
   height: 30px;
   border-radius: 100%;
 `;
+const OptionSet = styled.div`
+  display: flex;
+  gap: 30px;
+  position: absolute;
+  right: -57px;
+`;
 const CursorBox = styled.div`
   cursor: pointer;
 `;
 const DeleteBtn = styled.button`
-  position: absolute;
-  right: -50px;
   border: none;
   background-color: transparent;
   cursor: pointer;
