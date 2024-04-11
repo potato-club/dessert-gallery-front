@@ -1,5 +1,5 @@
-import React from "react";
-import styled from "styled-components";
+import React from 'react';
+import styled from 'styled-components';
 
 const NoneListBox = ({ ...props }) => {
   return (
@@ -13,11 +13,10 @@ export default NoneListBox;
 
 const Container = styled.div`
   width: 100%;
-  height: 100vh;
+  height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 300px;
 `;
 const InnerBox = styled.div`
   display: flex;

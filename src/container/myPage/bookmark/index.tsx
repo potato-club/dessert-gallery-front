@@ -1,6 +1,6 @@
-import React from "react";
-import styled from "styled-components";
-import BookmarkList from "./components/BookmarkList";
+import React from 'react';
+import styled from 'styled-components';
+import BookmarkList from './components/BookmarkList';
 
 const BookmarkPage = () => {
   return (
@@ -21,16 +21,15 @@ const Container = styled.div`
   gap: 30px;
   margin: 0px auto;
   padding: 55px 0px;
+  height: 100vh;
 `;
 
 const Title = styled.h1`
   font-size: 20px;
   font-weight: 600;
+  margin-bottom: 30px;
 `;
 const InnerWrap = styled.div`
-  display: flex;
-  gap: 30px;
-  flex-direction: column;
-  justify-content: center;
   width: 100%;
+  height: 100%;
 `;
