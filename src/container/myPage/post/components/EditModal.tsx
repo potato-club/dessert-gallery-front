@@ -28,6 +28,17 @@ const EditModal: React.FC<EditModalProps> = ({
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const [tags, setTags] = useState<string>(""); // 태그를 배열이 아닌 문자열로 관리
+
+  const handleAddTag = (tag: string) => {
+    // 띄어쓰기를 제거한 태그 추가
+    const trimmedTag = tag.replace(/\s/g, ""); // 띄어쓰기 제거
+    setTags((prevTags) => {
+      // 이전 태그 문자열에 새 태그를 추가하고 앞에 #을 붙여서 반환
+      return prevTags ? `${prevTags}#${trimmedTag}` : `#${trimmedTag}`;
+    });
+    console.log(tags);
+  };
 
   const handleExtendChange = (newTitle: string, newContent: string) => {
     setTitle(newTitle);
@@ -75,10 +86,9 @@ const EditModal: React.FC<EditModalProps> = ({
   };
 
   const postClick = () => {
-    postStorePost(title, content, images);
+    postStorePost(title, content, images, tags);
     handleDone();
   };
-  const multipleImages = images.length > 1;
 
   const deleteImage = (indexToDelete: number) => {
     handleDeleteImage(indexToDelete);
@@ -143,6 +153,7 @@ const EditModal: React.FC<EditModalProps> = ({
               postTitle={title}
               content={content}
               onChange={handleExtendChange}
+              tagChange={handleAddTag}
             />
           </CaptionContainer>
         </MainContent>
