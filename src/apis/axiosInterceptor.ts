@@ -1,6 +1,6 @@
-import axios from "axios";
-import sessionStorageService from "../libs/sessionStorageService";
-import { SESSION_KEY } from "../constants/session";
+import axios from 'axios';
+import sessionStorageService from '../libs/sessionStorageService';
+import { SESSION_KEY } from '../constants/session';
 
 const axiosClient = axios.create();
 
@@ -8,14 +8,14 @@ axiosClient.defaults.withCredentials = true;
 
 axiosClient.interceptors.request.use(
   async (config) => {
-    const refreshToken = sessionStorageService.get(SESSION_KEY, "refreshToken");
-    const accessToken = sessionStorageService.get(SESSION_KEY, "accessToken");
+    const refreshToken = sessionStorageService.get(SESSION_KEY, 'refreshToken');
+    const accessToken = sessionStorageService.get(SESSION_KEY, 'accessToken');
 
-    if (accessToken !== "") {
+    if (accessToken !== '') {
       console.log(123);
       try {
         const tokenResponse: any = await axios.get(
-          "https://api.dessert-gallery.site/users/check",
+          `${process.env.NEXT_PUBLIC_API_URL}/users/check`,
           {
             headers: {
               Authorization: accessToken,
@@ -25,10 +25,14 @@ axiosClient.interceptors.request.use(
         console.log(tokenResponse);
         console.log(tokenResponse.response);
       } catch (error: any) {
+        if (error.response.data.status === 403) {
+          alert('로그인 후 이용해주세요');
+        }
+
         if (error.response.data.code === 4002) {
-          console.log("토큰 만료");
+          console.log('토큰 만료');
           const reissueResponse: any = await axios.get(
-            "https://api.dessert-gallery.site/users/reissue",
+            'https://api.dessert-gallery.site/users/reissue',
             { headers: { refreshToken: refreshToken } }
           );
           console.log(reissueResponse);
@@ -37,8 +41,8 @@ axiosClient.interceptors.request.use(
               SESSION_KEY,
               JSON.stringify({
                 JWTDataState: {
-                  accessToken: reissueResponse.headers.get("Authorization"),
-                  refreshToken: reissueResponse.headers.get("Refreshtoken"),
+                  accessToken: reissueResponse.headers.get('Authorization'),
+                  refreshToken: reissueResponse.headers.get('Refreshtoken'),
                 },
               })
             );
