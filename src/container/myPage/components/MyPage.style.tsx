@@ -128,6 +128,36 @@ export const Box = styled.div<defaultStyleProps>`
   margin: ${({margin}) => margin};
 `
 
+export const ContentsWrap = styled(Box)`
+  padding: 64px; 
+  @media screen and (max-width: 1220px) {
+    padding: 64px 64px 64px 200px; 
+  }
+  @media screen and (max-width: 480px) {
+    padding: 64px 64px 64px 394px; 
+  }
+`
+
+export const InputBox = styled(Box)`
+  width: 1122px;
+  @media screen and (max-width: 1600px) {
+    width: 800px; 
+  }
+  @media screen and (max-width: 1200px) {
+    min-width: 500px; 
+  }
+` 
+export const ModiProfileBox = styled(Box)`
+  width: 738px;
+  @media screen and (max-width: 1600px) {
+    width: 400px; 
+  }
+  @media screen and (max-width: 480px) {
+    min-width: 480px; 
+  }
+` 
+
+
 export const ImgBox = styled(Box)<imgProps>`
 background-color: #FDC886;
   ${({imgUrl})=>{
@@ -150,11 +180,11 @@ export const Text = styled.div<defaultStyleProps>`
   color: ${({color}) => color};
   padding: ${({padding}) => padding};
   margin: ${({margin}) => margin};
+  ${({width}) => width && `width: ${width}`};
   cursor: ${({cursor}) => cursor};
 `
 export const ProfileForm = styled.form<defaultStyleProps>`
-  width: ${({width}) => width};
-  height: ${({height}) => height};
+  
   
   display: flex;
   flex-direction: ${({direction}) => direction};
@@ -168,12 +198,18 @@ export const ProfileForm = styled.form<defaultStyleProps>`
 
   padding: ${({padding}) => padding};
   margin: ${({margin}) => margin};
+  @media screen and (max-width: 1600px) {
+    width: 800px; 
+  }
+  @media screen and (max-width: 1200px) {
+    min-width: 500px; 
+  }
 `
 
 export const TextInput = styled.input<defaultStyleProps>`
   border: none;
   background-color: #ffffffab;
-  width: 700px;
+  width: 400px;
   font-family: noto-sans-cjk-kr;
   font-size: ${({fontSize}) => fontSize};
   font-weight: ${({fontWeight}) => fontWeight};

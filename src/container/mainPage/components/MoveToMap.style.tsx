@@ -19,6 +19,13 @@ export const MoveToMapWrap = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+
+  @media screen and (max-width: 1280px) {
+    width: 1280px; 
+  }
+  @media screen and (max-width: 480px) {
+    min-width: 480px; 
+  }
 `
 
 export const ConstentsWrap = styled.div`

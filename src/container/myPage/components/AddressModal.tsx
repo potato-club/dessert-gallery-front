@@ -168,7 +168,7 @@ const ModalContent = styled.div`
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
   text-align: center;
-  z-index: 10;
+  z-index: 20;
   display: flex;
   flex-direction: column;
   justify-content: center;

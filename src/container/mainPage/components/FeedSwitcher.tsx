@@ -9,7 +9,7 @@ import FeedFollowStore from './FeedFollowStore';
 import FeedRecentGallery from './FeedRecentGallery';
 import FeedPrev from './FeedPrev';
 import FeedGuest from './FeedGuest';
-import { useUserState } from '../../../hooks/useUser';
+import { useLoginUserInfo, useUserState } from '../../../hooks/useUser';
 
 
 interface FeedSwitcherProps {
@@ -22,6 +22,8 @@ function FeedSwitcher() {
   const { data: recentStores, isLoading: recentStoresLoading, error: recentStoresError } = useGetRecentStores();
   const { data: followBoardList, isLoading: followBoardListLoading, error: followBoardListError } = useGetFollowBoardList();
   const {isGuest} = useUserState();
+  const { data: userInfo } = useLoginUserInfo();
+
 
   const onClickMovegalleryBoard = () => {
     window.location.href = '/galleryBoard'
@@ -41,7 +43,7 @@ function FeedSwitcher() {
               selected === 1 ? <TextLogo>NEW!</TextLogo> : <TextLogo>FOL!</TextLogo>
             }
             <TextNEW menu={selected} onClick={()=>onChangeFeed(1)}>새로운 가게</TextNEW>
-            <TextFollow menu={selected} onClick={()=>onChangeFeed(2)}>팔로우한 가게</TextFollow>
+            {userInfo?.userRole === "USER" && <TextFollow menu={selected} onClick={()=>onChangeFeed(2)}>팔로우한 가게</TextFollow>}
           </ToggleWrap>
           <MoveStoreListWrap>
             <Image alt='' src={smileLogo.src} width={smileLogo.width} height={smileLogo.height}/>
@@ -51,7 +53,7 @@ function FeedSwitcher() {
         </NenuWrap>
         {selected === 1 &&recentStoresLoading && <FeedPrev/>}
         {selected === 2 &&followBoardListLoading && !isGuest && <FeedPrev/>}
-        {selected === 1 && recentStoresLoading === false &&(<FeedRecentGallery isGuest={isGuest} contents={recentStores}/>)}
+        {selected === 1 && recentStoresLoading === false &&(<FeedRecentGallery userInfo={userInfo} isGuest={isGuest} contents={recentStores}/>)}
         {selected === 2 && isGuest &&(<FeedGuest/>)}
         {selected === 2 && !isGuest && followBoardListLoading === false &&(<FeedFollowStore contents={followBoardList.content}/>)}
       </ContentsWrap>

@@ -30,6 +30,12 @@ export default function PopularStore({ isGuest }: mainComponentsProps) {
 const PopularStoreWrap = styled.div`
   width: 100vw;
   height: 708px;
+  @media screen and (max-width: 1280px) {
+    width: 1280px; 
+  }
+  @media screen and (max-width: 480px) {
+    min-width: 480px; 
+  }
 `;
 
 const TextWrap = styled.div`
@@ -56,19 +62,20 @@ const ContentsWrap = styled.div`
   margin-bottom: 30px;
   justify-content: center;
   width: 100vw;
+  @media screen and (max-width: 1280px) {
+    width: 1280px; 
+  }
+  @media screen and (max-width: 480px) {
+    min-width: 480px; 
+  }
 
   .swiper-wrapper {
     width: 100vw;
-  }
-
-  .swiper-container {
-    width: 100%; 
-    height: auto;
-  }
-
-  .swiper-slide {
-    display: flex;
-    justify-content: center;
-    align-items: center; 
+    @media screen and (max-width: 1280px) {
+    width: 1280px; 
+    }
+    @media screen and (max-width: 480px) {
+      min-width: 480px; 
+    }
   }
 `;

@@ -23,4 +23,10 @@ const BottomWrap = styled.div<componentsProps>`
     height: 495px;
     margin-top: 64px;
     background-image: ${({imgSrc})=> `url('${imgSrc}')`};
+    @media screen and (max-width: 1280px) {
+      width: 1736px; 
+    }
+    @media screen and (max-width: 480px) {
+      min-width: 100vw; 
+    }
 `

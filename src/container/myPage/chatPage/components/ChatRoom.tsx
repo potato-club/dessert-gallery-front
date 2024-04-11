@@ -1,17 +1,15 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import ChatItem from "./ChatItem";
-import SockJS from "sockjs-client";
-import * as StompJs from "@stomp/stompjs";
-import { useTokenService } from "../../../../hooks/useTokenService";
 import { getChatHistory } from "../../../../apis/controller/chatPage";
 import { userInfoType } from "../ChatPage";
 import { useRoomInfoState } from "../../../../recoil/chat/roomInfoStateAtom";
 import { deleteChatRoom } from "../../../../apis/controller/chatPage";
 import { useForm } from "react-hook-form";
 import HeaderBottom from "../components/HeaderBottom";
-import useChatWebsocket from "../../../../hooks/useChatWebsocket";
 import { useGueryGetChatRoom } from "../../../../hooks/useReactQueryChatRoom";
+import { useStompClientContext } from "../context/StompClientProvider";
+import { useChatHistoryState } from "../../../../recoil/chat/chatHistoryState";
 
 export type messageObjectType = {
   chatRoomId: number;
@@ -23,9 +21,7 @@ export type messageObjectType = {
 
 function ChatRoom({ userInfo }: { userInfo?: userInfoType }) {
   const [roomInfoState, setRoomInfoState] = useRoomInfoState();
-  const [chatHistoryState, setChatHistoryState] = useState<messageObjectType[]>(
-    []
-  );
+  const [chatHistoryState, setChatHistoryState] = useChatHistoryState();
 
   const getNewChat = (newChatHistoryState: messageObjectType) => {
     setChatHistoryState((prevChatList) => {
@@ -37,10 +33,6 @@ function ChatRoom({ userInfo }: { userInfo?: userInfoType }) {
     });
   };
 
-  const { getAccessToken } = useTokenService();
-
-  const clientRef = useRef<any>({});
-
   const { register, getValues, setValue, reset } = useForm();
 
   // const { item } = useGueryGetChatRoom();
@@ -51,7 +43,7 @@ function ChatRoom({ userInfo }: { userInfo?: userInfoType }) {
     onClickReservation,
     onClickReview,
     disconnectHandler,
-  } = useChatWebsocket(chatHistoryState, getNewChat, userInfo);
+  } = useStompClientContext();
 
   const messageCheckHandler = async () => {
     const chatHistory = await getChatHistory(roomInfoState.roomId);
@@ -95,8 +87,9 @@ function ChatRoom({ userInfo }: { userInfo?: userInfoType }) {
                 ))}
               </OptionButton>
             </HeaderTop>
-            <HeaderBottom roomInfoState={roomInfoState} />
+            <HeaderBottom roomInfoState={roomInfoState} userInfo={userInfo} />
           </Header>
+
           <Contents>
             {chatHistoryState?.map((item: any, index) => (
               <ChatItem

@@ -1,5 +1,5 @@
 import React, { ChangeEvent, FormEvent, useEffect, useState } from 'react'
-import { Box, Text, ImgBox, ProfileForm, FileInput, BtnText, TextInput } from './MyPage.style'
+import { Box, Text, ImgBox, ProfileForm, FileInput, BtnText, TextInput, InputBox } from './MyPage.style'
 import { propfileApiList } from '../../../apis/controller/profile';
 import Tag from '../../../components/Tag'
 import AddressModal from './AddressModal';
@@ -229,7 +229,7 @@ export default function ManagerProfile() {
   console.log("사장이면서, 정보가 있는 상태", storeInfo)
   return (
     <>
-    <Box direction='column' width='1122px' margin='64px 0 0 0' >
+      <InputBox direction='column' width='1122px' margin='64px 0 0 0' >
           <Box alignItems='' justifyContent='space-between'>
             <Text color='#000000' fontSize='20px' fontWeight='bold' margin='0 0 8px 8px'>대표 가게 사진</Text>
             <Tag color='#000000' onClickHandler={()=>setInputMode(true)} clickAble={true} hoverCss={true} fontSize='16px' height='36px' width='140px' margin='0 0 8px 0' title='가게 정보 수정'/>
@@ -243,28 +243,28 @@ export default function ManagerProfile() {
             </Box>
             </Box>
           </Box>
-        </Box>
+      </InputBox>
 
-    <Box direction='column' width='1122px' margin='64px 0 0 0'>
+      <InputBox direction='column' width='1122px' margin='64px 0 0 0'>
           <Text color='#000000' fontSize='20px' fontWeight='bold' margin='0 0 8px 8px'>가게 프로필</Text>
           {/* 프로필 박스 영역 */}
           <Box direction='column' border='2px solid #FF6F00' bgColor='#ffffffab' rounded='24px' padding='0 57px'>
             <Box width='100%' alignItems='center' justifyContent='space-between'>
               <Box  margin='24px 0'>
-                <Text fontSize='17px' fontWeight='bold' color='#000000'>가게 이름</Text>
+                <Text width='72px' fontSize='17px' fontWeight='bold' color='#000000'>가게 이름</Text>
                 <Text fontSize='14px' fontWeight='bold' color='#000000' padding='0 64px'>{storeInfo.res.name}</Text>
               </Box>
             </Box>
             <Box width='100%' alignItems='center' justifyContent='space-between'>
               <Box  margin='24px 0'>
-                <Text fontSize='17px' fontWeight='bold' color='#000000'>전화번호</Text>
+                <Text width='72px' fontSize='17px' fontWeight='bold' color='#000000'>전화번호</Text>
                 <Text fontSize='14px' fontWeight='bold' color='#000000' padding='0 64px'>{storeInfo.res.phoneNumber}</Text>
               </Box>
             </Box>
           </Box>
-        </Box>
+      </InputBox>
 
-        <Box direction='column' width='1122px' margin='64px 0 0 0'>
+        <InputBox direction='column' width='1122px' margin='64px 0 0 0'>
           <Box alignItems='' justifyContent='space-between'>
             <Text color='#000000' fontSize='20px' fontWeight='bold' margin='0 0 8px 8px'>가게 상세 설명</Text>
           </Box>
@@ -272,25 +272,25 @@ export default function ManagerProfile() {
           <Box direction='column' border='2px solid #FF6F00' bgColor='#ffffffab' rounded='24px' padding='0 57px'>
             <Box width='100%' alignItems='center' justifyContent='space-between'>
               <Box  margin='24px 0'>
-                <Text fontSize='17px' fontWeight='bold' color='#000000'>가게 정보</Text>
+                <Text width='72px' fontSize='17px' fontWeight='bold' color='#000000'>가게 정보</Text>
                 <Text fontSize='14px' fontWeight='bold' color='#000000' padding='0 64px'>{storeInfo.res.info}</Text>
               </Box>
             </Box>
             <Box width='100%' alignItems='center' justifyContent='space-between'>
               <Box  margin='24px 0'>
-                <Text fontSize='17px' fontWeight='bold' color='#000000'>가게 위치</Text>
+                <Text width='72px' fontSize='17px' fontWeight='bold' color='#000000'>가게 위치</Text>
                 <Text fontSize='14px' fontWeight='bold' color='#000000' padding='0 64px'>{storeInfo.res.address}</Text>
               </Box>
             </Box>
 
             <Box width='100%' alignItems='center' justifyContent='space-between'>
               <Box  margin='24px 0'>
-                <Text fontSize='17px' fontWeight='bold' color='#000000'>가게 설명</Text>
+                <Text width='72px' fontSize='17px' fontWeight='bold' color='#000000'>가게 설명</Text>
                 <Text fontSize='14px' fontWeight='bold' color='#000000' padding='0 64px'>{storeInfo.res.content}</Text>
               </Box>
             </Box>
           </Box>
-        </Box>
+        </InputBox>
 
         
     </>
@@ -299,7 +299,7 @@ export default function ManagerProfile() {
   console.log("사장이면서, 정보 수정 중", storeInfo)
     return (
       <>
-      <Box direction='column' width='1122px' margin='64px 0 0 0' >
+      <InputBox direction='column' width='1122px' margin='64px 0 0 0' >
             <Box alignItems='' justifyContent='space-between'>
               <Text color='#000000' fontSize='20px' fontWeight='bold' margin='0 0 8px 8px'>대표 가게 사진 설정</Text>
               <Box>
@@ -341,28 +341,28 @@ export default function ManagerProfile() {
               </Box>
               </Box>
             </Box>
-          </Box>
+          </InputBox>
   
-      <Box direction='column' width='1122px' margin='64px 0 0 0'>
+      <InputBox direction='column' width='1122px' margin='64px 0 0 0'>
             <Text color='#000000' fontSize='20px' fontWeight='bold' margin='0 0 8px 8px'>프로필 설정</Text>
             {/* 프로필 박스 영역 */}
             <Box direction='column' border='2px solid #FF6F00' bgColor='#ffffffab' rounded='24px' padding='0 57px'>
               <Box width='100%' alignItems='center' justifyContent='space-between'>
                 <Box  margin='24px 0'>
-                  <Text fontSize='17px' fontWeight='bold' color='#000000'>가게 이름</Text>
+                  <Text width='72px' fontSize='17px' fontWeight='bold' color='#000000'>가게 이름</Text>
                   <TextInput  fontSize='14px' fontWeight='bold' color='#000000' padding='0 64px' type="text" id="name" name="name" value={modiStoreValue.name} onChange={handleInputChange} placeholder={`${storeInfo.res.name}`}/>
                 </Box>
               </Box>
               <Box width='100%' alignItems='center' justifyContent='space-between'>
                 <Box  margin='24px 0'>
-                  <Text fontSize='17px' fontWeight='bold' color='#000000'>전화번호</Text>
+                  <Text width='72px' fontSize='17px' fontWeight='bold' color='#000000'>전화번호</Text>
                   <TextInput fontSize='14px' fontWeight='bold' color='#000000' padding='0 64px' type="text" id="phoneNumber" name="phoneNumber" value={modiStoreValue.phoneNumber} onChange={handleInputChange} placeholder={`${storeInfo.res.phoneNumber}`}/>
                 </Box>
               </Box>
             </Box>
-          </Box>
+          </InputBox>
   
-          <Box direction='column' width='1122px' margin='64px 0 0 0'>
+          <InputBox direction='column' width='1122px' margin='64px 0 0 0'>
             <Box alignItems='' justifyContent='space-between'>
               <Text color='#000000' fontSize='20px' fontWeight='bold' margin='0 0 8px 8px'>가게 상세 설명</Text>
             </Box>
@@ -370,13 +370,13 @@ export default function ManagerProfile() {
             <Box direction='column' border='2px solid #FF6F00' bgColor='#ffffffab' rounded='24px' padding='0 57px'>
               <Box width='100%' alignItems='center' justifyContent='space-between'>
                 <Box alignItems='center' margin='24px 0'>
-                  <Text fontSize='17px' fontWeight='bold' color='#000000'>가게 정보</Text>
+                  <Text width='72px' fontSize='17px' fontWeight='bold' color='#000000'>가게 정보</Text>
                   <TextInput fontSize='14px' fontWeight='bold' color='#000000' padding='0 64px' type="text" id="info" name="info" value={modiStoreValue.info} onChange={handleInputChange} placeholder={`${storeInfo.res.info}`}/>
                 </Box>
               </Box>
               <Box width='100%' alignItems='center' justifyContent='space-between'>
                 <Box justifyContent='flex-start' margin='24px 0 16px 0' >
-                  <Text fontSize='17px' fontWeight='bold' color='#000000'>가게 위치</Text>
+                  <Text width='72px' fontSize='17px' fontWeight='bold' color='#000000'>가게 위치</Text>
                   <Box width='90%'>
                     <Box direction='column'>
                       <TextInput disabled fontSize='14px' fontWeight='bold' color='#000000' padding='0 64px' type="text" id="address" name="address" value={modiStoreValue.address} onChange={handleInputChange} placeholder={`${storeInfo.res.address}`}/>
@@ -390,12 +390,12 @@ export default function ManagerProfile() {
   
               <Box width='100%' alignItems='center' justifyContent='space-between'>
                 <Box alignItems='center' margin='24px 0'>
-                  <Text fontSize='17px' fontWeight='bold' color='#000000'>가게 설명</Text>
+                  <Text width='72px' fontSize='17px' fontWeight='bold' color='#000000'>가게 설명</Text>
                   <TextInput fontSize='14px' fontWeight='bold' color='#000000' padding='0 64px' type="text" id="content" name="content" value={modiStoreValue.content} onChange={handleInputChange} placeholder={`${storeInfo.res.content}`}/>
                 </Box>
               </Box>
             </Box>
-          </Box>
+          </InputBox>
   
           
       </>
@@ -404,7 +404,7 @@ export default function ManagerProfile() {
   console.log("사장아님, 가게 생성X", storeInfo)
     return (
       <>
-      <Box direction='column' width='1122px' margin='64px 0 0 0' >
+      <InputBox direction='column' width='1122px' margin='64px 0 0 0' >
             <Box alignItems='' justifyContent='space-between'>
               <Text color='#00000086' fontSize='20px' fontWeight='bold' margin='0 0 8px 8px'>대표 가게 사진 설정</Text>
               <Tag color='#000000' fontSize='16px' height='36px' width='140px' margin='0 0 8px 0' onClickHandler={()=>setInputMode(true)} clickAble={true} hoverCss={true} title='가게 생성하기'/>
@@ -419,9 +419,9 @@ export default function ManagerProfile() {
               </Box>
               </Box>
             </Box>
-          </Box>
+          </InputBox>
   
-      <Box direction='column' width='1122px' margin='64px 0 0 0'>
+      <InputBox direction='column' width='1122px' margin='64px 0 0 0'>
             <Text color='#00000086' fontSize='20px' fontWeight='bold' margin='0 0 8px 8px'>프로필 설정</Text>
             {/* 프로필 박스 영역 */}
             <Box direction='column' border='2px solid #ff6f0047' bgColor='#ffffffab' rounded='24px' padding='0 57px'>
@@ -438,9 +438,9 @@ export default function ManagerProfile() {
                 </Box>
               </Box>
             </Box>
-          </Box>
+          </InputBox>
   
-          <Box direction='column' width='1122px' margin='64px 0 0 0'>
+          <InputBox direction='column' width='1122px' margin='64px 0 0 0'>
             <Box alignItems='' justifyContent='space-between'>
               <Text color='#00000086' fontSize='20px' fontWeight='bold' margin='0 0 8px 8px'>가게 상세 설명</Text>
             </Box>
@@ -466,7 +466,7 @@ export default function ManagerProfile() {
                 </Box>
               </Box>
             </Box>
-          </Box>
+          </InputBox>
   
           
       </>
@@ -475,7 +475,7 @@ export default function ManagerProfile() {
       console.log("가게 생성중", storeInfo)
       return (
         <>
-        <Box direction='column' width='1122px' margin='64px 0 0 0' >
+        <InputBox direction='column' width='1122px' margin='64px 0 0 0' >
               <Box alignItems='' justifyContent='space-between'>
                 <Text color='#000000' fontSize='20px' fontWeight='bold' margin='0 0 8px 8px'>대표 가게 사진 설정</Text>
                 <Box>
@@ -504,28 +504,28 @@ export default function ManagerProfile() {
                 </Box>
                 </Box>
               </Box>
-            </Box>
+            </InputBox>
     
-        <Box direction='column' width='1122px' margin='64px 0 0 0'>
+        <InputBox direction='column' width='1122px' margin='64px 0 0 0'>
               <Text color='#000000' fontSize='20px' fontWeight='bold' margin='0 0 8px 8px'>프로필 설정</Text>
               {/* 프로필 박스 영역 */}
               <Box direction='column' border='2px solid #FF6F00' bgColor='#ffffffab' rounded='24px' padding='0 57px'>
                 <Box width='100%' alignItems='center' justifyContent='space-between'>
                   <Box  margin='24px 0'>
-                    <Text fontSize='17px' fontWeight='bold' color='#000000'>가게 이름</Text>
+                    <Text width='72px' fontSize='17px' fontWeight='bold' color='#000000'>가게 이름</Text>
                     <TextInput fontSize='14px' fontWeight='bold' color='#000000' padding='0 64px' type="text" id="name" name="name" value={modiStoreValue.name} onChange={handleInputChange} placeholder={`가게 이름을 기재합니다.`}/>
                   </Box>
                 </Box>
                 <Box width='100%' alignItems='center' justifyContent='space-between'>
                   <Box  margin='24px 0'>
-                    <Text fontSize='17px' fontWeight='bold' color='#000000'>전화번호</Text>
+                    <Text width='72px' fontSize='17px' fontWeight='bold' color='#000000'>전화번호</Text>
                     <TextInput fontSize='14px' fontWeight='bold' color='#000000' padding='0 64px' type="text" id="phoneNumber" name="phoneNumber" value={modiStoreValue.phoneNumber} onChange={handleInputChange} placeholder={`010-1234-5678`}/>
                   </Box>
                 </Box>
               </Box>
-            </Box>
+            </InputBox>
     
-            <Box direction='column' width='1122px' margin='64px 0 0 0'>
+            <InputBox direction='column' width='1122px' margin='64px 0 0 0'>
               <Box alignItems='' justifyContent='space-between'>
                 <Text color='#000000' fontSize='20px' fontWeight='bold' margin='0 0 8px 8px'>가게 상세 설명</Text>
               </Box>
@@ -533,14 +533,14 @@ export default function ManagerProfile() {
               <Box direction='column' border='2px solid #FF6F00' bgColor='#ffffffab' rounded='24px' padding='0 57px'>
                 <Box width='100%' alignItems='center' justifyContent='space-between'>
                   <Box  margin='24px 0'>
-                    <Text fontSize='17px' fontWeight='bold' color='#000000'>가게 정보</Text>
+                    <Text width='72px' fontSize='17px' fontWeight='bold' color='#000000'>가게 정보</Text>
                     <TextInput fontSize='14px' fontWeight='bold' color='#000000' padding='0 64px' type="text" id="info" name="info" value={modiStoreValue.info} onChange={handleInputChange} placeholder={`가게 정보를 기재합니다 예)수제 레터링 케이크`}/>
   
                   </Box>
                 </Box>
                 <Box width='100%' alignItems='center' justifyContent='space-between'>
                   <Box  margin='24px 0'>
-                    <Text fontSize='17px' fontWeight='bold' color='#000000'>가게 위치</Text>
+                    <Text width='72px' fontSize='17px' fontWeight='bold' color='#000000'>가게 위치</Text>
                     <Box width='90%'>
                     <Box direction='column'>
                       <TextInput disabled fontSize='14px' fontWeight='bold' color='#000000' padding='0 64px' type="text" id="address" name="address" value={modiStoreValue.address} onChange={handleInputChange} placeholder='가게 위치를 기재합니다.'/>
@@ -554,12 +554,12 @@ export default function ManagerProfile() {
     
                 <Box width='100%' alignItems='center' justifyContent='space-between'>
                   <Box  margin='24px 0'>
-                    <Text fontSize='17px' fontWeight='bold' color='#000000'>가게 설명</Text>
+                    <Text width='72px' fontSize='17px' fontWeight='bold' color='#000000'>가게 설명</Text>
                     <TextInput fontSize='14px' fontWeight='bold' color='#000000' padding='0 64px' type="text" id="content" name="content" value={modiStoreValue.content} onChange={handleInputChange} placeholder={`가게의 상세한 설명을 자유롭게 기재합니다`}/>
                   </Box>
                 </Box>
               </Box>
-            </Box>
+            </InputBox>
     
             
         </>
