@@ -44,6 +44,6 @@ export const Text = styled.div<componentsProps>`
 `
 
 export const RatingWrap = styled.div`
-    margin-top: 16px;
+    margin-top: auto;
 `
 
