@@ -22,6 +22,7 @@ function GalleryBoardContainer() {
     selectSearchWord: [],
   })
   const [toast, setToast] = useState<boolean>(false)
+  const [reloadDone, setReloadDone] = useState<boolean>(false)
   const [resData, setResData] = useState<resGalleryPost[][]>([])
   const observerRef = useRef<HTMLDivElement>(null);
 
@@ -38,6 +39,7 @@ function GalleryBoardContainer() {
       address: optionData.location,
       searchType: optionData.selectSearchWord,
       setToast: setToast,
+      setReloadDone: setReloadDone,
       setResData: setResData,
       resData: resData
     });
@@ -46,7 +48,7 @@ function GalleryBoardContainer() {
     // Intersection Observer 콜백
     const handleIntersection = (entries: IntersectionObserverEntry[]) => {
       const target = entries[0];
-      if (target.isIntersecting && status === "success") {
+      if (target.isIntersecting && status === "success"&& !reloadDone) {
         window.scrollTo(0, window.scrollY - 100);
         setPageCount((prev) => prev + 1);
         fetchNextPage();
@@ -66,7 +68,7 @@ function GalleryBoardContainer() {
     }
 
     return () => {
-      if (observerRef.current) {
+      if (observerRef.current && !reloadDone) {
         observer.unobserve(observerRef.current);
       }
     };
@@ -78,7 +80,7 @@ function GalleryBoardContainer() {
   return (
     <Wrapper>
         <BoardTop title='가게 게시판' decription='다양한 가게의 게시물을 볼 수 있는 가게 게시판입니다.' imgSrc={BoardBanner.src}/>
-        <BoardOption orderOption={orderOption} setOrderOption={setOrderOption} optionData={optionData} setOptionData={setOptionData} setPageCount={setPageCount} />
+        <BoardOption setReloadDone={setReloadDone} orderOption={orderOption} setOrderOption={setOrderOption} optionData={optionData} setOptionData={setOptionData} setPageCount={setPageCount} />
         {status === "loading" && <ToastMessage messageString='불러오는 중...' timer={5000} wrapType={'map'}/>}
         {status === "error" && <p>error</p>}
         {status === "success" &&  resData.length !== 0 && <Contents data={resData} />}

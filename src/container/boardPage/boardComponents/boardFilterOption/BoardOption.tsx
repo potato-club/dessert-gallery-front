@@ -8,7 +8,7 @@ import SortingButton from '../SortingButton'
 import { selectOrder, boardOptionValue } from '../../../../types/componentsProps'
 
 
-function BoardOption({orderOption, setOrderOption,optionData,setOptionData, setPageCount}: boardOptionValue) {
+function BoardOption({orderOption, setOrderOption,optionData,setOptionData, setPageCount, setReloadDone}: boardOptionValue) {
   const [isSelected, setIsSelected] = useState<boolean>(false)
   const [selectCategory, setSelectCategory] = useState<number>(2)
   const [searchWord, setSearchWord] = useState<string>('')
@@ -35,6 +35,7 @@ function BoardOption({orderOption, setOrderOption,optionData,setOptionData, setP
     setIsSelected(false);
     setSearchWordList([])
     setPageCount(1);
+    setReloadDone(false);
   }
 
   /**
@@ -67,6 +68,7 @@ function BoardOption({orderOption, setOrderOption,optionData,setOptionData, setP
       setIsSelected(false);
     }
     setPageCount(1)
+    setReloadDone(false);
   }
 
   /**
@@ -88,6 +90,7 @@ function BoardOption({orderOption, setOrderOption,optionData,setOptionData, setP
     setIsSelected(true);
     setSearchWord('');
     setPageCount(1)
+    setReloadDone(false);
     }
   };
 
@@ -101,6 +104,7 @@ function BoardOption({orderOption, setOrderOption,optionData,setOptionData, setP
     }))
     setIsSelected(true)
     setPageCount(1)
+    setReloadDone(false);
   }
 
   const onClickTag = ({menu, idx=0}:tagClickData) => {
@@ -121,6 +125,7 @@ function BoardOption({orderOption, setOrderOption,optionData,setOptionData, setP
       isAllClean(menu);
     }
     setPageCount(1)
+    setReloadDone(false);
   }
 
   return (

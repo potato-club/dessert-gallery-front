@@ -31,6 +31,7 @@ async function fetchStoreBoardData(req: boardSearchOptionData) {
       if(Number(req.page) === 1 ){
         if(data.length ===0){  // 첫 검색인데 데이터 없을시
           req.setToast(true);  // 데이터 없다고 띄우기
+          req.setReloadDone(true);
           req.setResData([])   // 데이터 초기화
         }else{                        // 검색해서 받은 데이터 있는 경우
           let temp = [];
@@ -44,6 +45,7 @@ async function fetchStoreBoardData(req: boardSearchOptionData) {
       else if(Number(req.page)-1 >=req.resData.length){
         if(data.length ===0 && req.resData.length !== 0){ // 새로 받은 데이터는 빈배열이나, 기존에 가지고 있는 데이터가 있는 경우
           req.setToast(true);                             // 데이터 없다고 띄우기
+          req.setReloadDone(true)
         }else{                  // 새로 받은 데이터가 있는 경우
           let temp = req.resData;
           temp.push(data)     

@@ -4,6 +4,7 @@ export type boardSearchOptionData = {
   searchType: string[];
   sortType: "RECENT" | "FOLLOWER" | "SCORE";
   setToast: React.Dispatch<React.SetStateAction<boolean>>;
+  setReloadDone: React.Dispatch<React.SetStateAction<boolean>>;
   setResData: React.Dispatch<React.SetStateAction<resGalleryPost[][]>>;
   resData: resGalleryPost[][];
 };
@@ -14,6 +15,7 @@ export type reviewBoardSearchOptionData = {
   searchType: string[];
   sortType: "RECENT" | "FOLLOWER" | "SCORE";
   setToast: React.Dispatch<React.SetStateAction<boolean>>;
+  setReloadDone: React.Dispatch<React.SetStateAction<boolean>>;
   setResData: React.Dispatch<React.SetStateAction<resReviewPost[][]>>;
   resData: resReviewPost[][];
 };
