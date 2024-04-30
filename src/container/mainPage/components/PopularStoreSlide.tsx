@@ -13,17 +13,24 @@ interface PopularStoreProps {
 
 export default function PopularStoreSlide({ popularStoreList,isGuest }: PopularStoreProps) {
   const { data: userInfo } = useLoginUserInfo();
-  const [clientWidth, setClientWidth] = useState(0);
+  const [slideCnt, setSlideCnt] = useState(3);
 
   useEffect(() => {
-    setClientWidth(window.innerWidth);
-  }, [popularStoreList, clientWidth, userInfo]);
+    setSlideCnt(Math.trunc(window.innerWidth/400));
+    console.log("싸벌", slideCnt)
+  }, [popularStoreList, userInfo, slideCnt]);
+
+  console.log("싸벌", Math.trunc(slideCnt/2)-1)
 
   if(isGuest){
     return (
       <Swiper
-        spaceBetween={50}
-        slidesPerView={Math.trunc(clientWidth/400)}
+        spaceBetween={80}
+        slidesOffsetBefore={20}
+        slidesOffsetAfter={20}
+        centeredSlides={slideCnt<6 ? true: false}
+        initialSlide={1}
+        slidesPerView={slideCnt}
         effect="fade"
         direction="horizontal"
       >
@@ -51,8 +58,8 @@ export default function PopularStoreSlide({ popularStoreList,isGuest }: PopularS
   }else{
     return (
       <Swiper
-        spaceBetween={50}
-        slidesPerView={Math.trunc(clientWidth/400)}
+        spaceBetween={80}
+        slidesPerView={slideCnt}
         effect="fade"
         direction="horizontal"
       >
