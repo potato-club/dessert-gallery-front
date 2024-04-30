@@ -42,7 +42,7 @@ const DetailPost = ({ postId }: DetailPostProps) => {
   const onCancelClick = () => {
     setPutModalState(false);
   };
-
+  console.log(detailPost?.tags);
   return (
     <Background>
       <CloseBtn />
@@ -92,7 +92,11 @@ const DetailPost = ({ postId }: DetailPostProps) => {
             <Adress>{storeInfo?.address}</Adress>
             <PostTitle>{detailPost?.title}</PostTitle>
             <PostContent>{detailPost?.content}</PostContent>
-            <TagBox>{detailPost?.tags}</TagBox>
+            <TagBox>
+              {detailPost?.tags.map((tag, index) => (
+                <div key={index}>{tag}</div>
+              ))}
+            </TagBox>
             <CommentBox>
               {postComment?.map((comment, index) => (
                 <Comment key={index}>
@@ -228,8 +232,12 @@ const TagBox = styled.div`
   height: 100px;
   color: #ff6f00;
   display: flex;
-  gap: 20px;
+  gap: 5px;
+  row-gap: 10px;
+  overflow-x: scroll;
+  flex-wrap: wrap;
 `;
+
 const CommentBox = styled.div`
   width: 100%;
   height: 170px;

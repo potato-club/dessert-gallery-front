@@ -37,9 +37,16 @@ const EditModal: React.FC<EditModalProps> = ({
       // 이전 태그 문자열에 새 태그를 추가하고 앞에 #을 붙여서 반환
       return prevTags ? `${prevTags}#${trimmedTag}` : `#${trimmedTag}`;
     });
-    console.log(tags);
   };
-
+  const handleRemoveTag = (tag: string) => {
+    setTags((prevTags) => {
+      // '#'과 태그를 구분하여 문자열을 배열로 분할
+      const tagArray = prevTags.split("#").filter((t) => t.trim() !== "");
+      // 선택된 태그를 제외한 나머지 태그들로 업데이트하여 다시 문자열로 결합
+      const updatedTags = tagArray.filter((t) => t !== tag).join("#");
+      return updatedTags;
+    });
+  };
   const handleExtendChange = (newTitle: string, newContent: string) => {
     setTitle(newTitle);
     setContent(newContent);
@@ -154,6 +161,7 @@ const EditModal: React.FC<EditModalProps> = ({
               content={content}
               onChange={handleExtendChange}
               tagChange={handleAddTag}
+              tagRemove={handleRemoveTag}
             />
           </CaptionContainer>
         </MainContent>

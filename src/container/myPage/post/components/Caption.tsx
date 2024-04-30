@@ -5,6 +5,7 @@ interface CaptionProps {
   titleChange: (value: string) => void;
   contentChange: (value: string) => void;
   addTags: (value: any) => void;
+  removeTag: (value: any) => void;
   amount: number;
 }
 
@@ -12,6 +13,7 @@ const Caption: React.FC<CaptionProps> = ({
   titleChange,
   contentChange,
   addTags,
+  removeTag,
   amount,
 }) => {
   const MAX_CHARACTERS = 2200;
@@ -22,15 +24,25 @@ const Caption: React.FC<CaptionProps> = ({
     addTags(inputHashTag);
   };
 
-  const addHashTag = (e: any) => {
+  const addHashTag = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (inputHashTag.trim() !== "") {
-      setHashTags((prevHashTags) => [...prevHashTags, inputHashTag.trim()]);
+    if (inputHashTag !== "") {
+      const regex = /^[a-zA-Z0-9ㄱ-ㅎ가-힣]*$/;
+      if (!regex.test(inputHashTag)) {
+        alert("공백 및 특수문자는 입력할 수 없습니다.");
+        setInputHashTag("");
+        return;
+      }
+      setHashTags((prevHashTags) => [...prevHashTags, inputHashTag]);
       setInputHashTag("");
+      handleAddTags();
     }
-    handleAddTags();
   };
 
+  const handleRemoveTag = (tag: string) => {
+    setHashTags(hashTags.filter((t) => t !== tag)); // 선택된 태그를 제외한 나머지 태그들로 업데이트
+    removeTag(tag);
+  };
   const changeHashTagInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputHashTag(e.target.value);
   };
@@ -66,12 +78,14 @@ const Caption: React.FC<CaptionProps> = ({
       <TagBox>
         <TagDiv>
           {hashTags.map((tag, index) => (
-            <Tag key={index}>#{tag}</Tag>
+            <Tag key={index} onClick={() => handleRemoveTag(tag)}>
+              #{tag}
+            </Tag>
           ))}
         </TagDiv>
         <form onSubmit={addHashTag}>
           <TagInput
-            placeholder="태그를 입력 후 엔터를 눌러주세요"
+            placeholder="#없이 태그를 입력해주세요!"
             onChange={changeHashTagInput}
             value={inputHashTag}
           />
@@ -128,23 +142,30 @@ const AmountSpan = styled.span`
 `;
 const TagBox = styled.div`
   width: 90%;
-  height: 100px;
+  height: 150px;
   display: flex;
   flex-direction: column;
+  justify-content: end;
   gap: 20px;
 `;
 const TagDiv = styled.div`
-  width: 100%;
-  border: 1px solid black;
   display: flex;
   gap: 5px;
+  overflow-x: scroll;
+  height: 80px;
+  flex-wrap: wrap;
 `;
-const TagInput = styled.input`
-  width: 100%;
-  border: 1px solid black;
+const Tag = styled.div`
+  color: #ff8d00;
+  flex-shrink: 0;
+  height: 20px;
+  cursor: pointer;
 `;
 
-const Tag = styled.div`
-  border: 1px solid black;
-  padding: 5px 10px;
+const TagInput = styled.input`
+  width: 100%;
+  border: 3px solid #ff8d00;
+  border-radius: 20px;
+  height: 35px;
+  padding-left: 10px;
 `;
