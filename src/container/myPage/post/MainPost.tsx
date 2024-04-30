@@ -139,6 +139,15 @@ const ProfileInfoArea = styled.div`
 const PostBtn = styled.button`
   width: 114px;
   height: 25px;
+  border: 2px solid #ff8d00;
+  border-radius: 10px;
+  background-color: white;
+  color: #ff8d00;
+  cursor: pointer;
+  &:hover {
+    background-color: #ff8d00;
+    color: white;
+  }
 `;
 
 const PostTypeBox = styled.div`

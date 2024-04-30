@@ -10,9 +10,16 @@ interface ExtendProps {
   content: string;
   onChange: (newContent: string, newTitle: string) => void;
   tagChange: (e: any) => void;
+  tagRemove: (e: any) => void;
 }
 
-const Extend = ({ postTitle, content, onChange, tagChange }: ExtendProps) => {
+const Extend = ({
+  postTitle,
+  content,
+  onChange,
+  tagChange,
+  tagRemove,
+}: ExtendProps) => {
   const [amount, setAmount] = useState<number>(0);
   const [caption, setCaption] = useState<string>("");
   const [title, setTitle] = useState<string>("");
@@ -32,6 +39,9 @@ const Extend = ({ postTitle, content, onChange, tagChange }: ExtendProps) => {
 
   const handleTagChange = (newTags: string[]) => {
     tagChange(newTags);
+  };
+  const handleRemoveTag = (tag: string) => {
+    tagRemove(tag);
   };
 
   return (
@@ -59,6 +69,7 @@ const Extend = ({ postTitle, content, onChange, tagChange }: ExtendProps) => {
         titleChange={handleTitleChange}
         contentChange={handleCaptionChange}
         addTags={handleTagChange}
+        removeTag={handleRemoveTag}
         amount={amount}
       />
     </AddWrapper>

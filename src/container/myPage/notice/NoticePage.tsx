@@ -107,7 +107,7 @@ const NoticePage = () => {
         <Header>
           <NoticeBox>공지사항/이벤트 관리</NoticeBox>
           <Link href={"/myPage/writing"}>
-            <WritingBox>게시글 작성</WritingBox>
+            <WritingBox>공지글 작성</WritingBox>
           </Link>
         </Header>
         <Middle>
@@ -216,13 +216,17 @@ const NoticeBox = styled.div``;
 const WritingBox = styled.button`
   width: 114px;
   height: 25px;
-  border: 1px solid #828282;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 7px;
+  border: 2px solid #ff8d00;
+  border-radius: 10px;
+  background-color: white;
+  color: #ff8d00;
   cursor: pointer;
+  &:hover {
+    background-color: #ff8d00;
+    color: white;
+  }
 `;
+
 const Middle = styled.div`
   font-family: Noto Sans CJK KR;
   font-size: 20px;
