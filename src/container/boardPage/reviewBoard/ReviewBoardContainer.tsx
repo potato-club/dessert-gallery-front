@@ -48,7 +48,7 @@ function ReviewBoardContainer() {
       // Intersection Observer 콜백
     const handleIntersection = (entries: IntersectionObserverEntry[]) => {
       const target = entries[0];
-      if (target.isIntersecting && status === "success" && !reloadDone) {
+      if (target.isIntersecting && status === "success" && !reloadDone && !toast ) {
         window.scrollTo(0, window.scrollY - 100);
         setPageCount((prev) => prev + 1);
         fetchNextPage();

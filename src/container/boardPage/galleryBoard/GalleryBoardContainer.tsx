@@ -68,7 +68,7 @@ function GalleryBoardContainer() {
     }
 
     return () => {
-      if (observerRef.current && !reloadDone) {
+      if (observerRef.current && !reloadDone && !toast ) {
         observer.unobserve(observerRef.current);
       }
     };
