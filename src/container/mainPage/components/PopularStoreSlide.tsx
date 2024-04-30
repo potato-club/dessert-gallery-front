@@ -16,23 +16,20 @@ export default function PopularStoreSlide({ popularStoreList,isGuest }: PopularS
   const [slideCnt, setSlideCnt] = useState(3);
 
   useEffect(() => {
-    setSlideCnt(Math.trunc(window.innerWidth/400));
-    console.log("싸벌", slideCnt)
+    setSlideCnt(Math.trunc(window.innerWidth/380));
   }, [popularStoreList, userInfo, slideCnt]);
 
-  console.log("싸벌", Math.trunc(slideCnt/2)-1)
 
   if(isGuest){
     return (
       <Swiper
         spaceBetween={80}
-        slidesOffsetBefore={20}
-        slidesOffsetAfter={20}
-        centeredSlides={slideCnt<6 ? true: false}
-        initialSlide={1}
+        slidesOffsetBefore={200}
+        slidesOffsetAfter={200}
         slidesPerView={slideCnt}
         effect="fade"
         direction="horizontal"
+        
       >
         {popularStoreList && popularStoreList.length > 0 &&
           popularStoreList.filter((e: resGalleryPost,idx: number)=> idx<6).map((e:resGalleryPost, idx:number) => (
@@ -59,6 +56,8 @@ export default function PopularStoreSlide({ popularStoreList,isGuest }: PopularS
     return (
       <Swiper
         spaceBetween={80}
+        slidesOffsetBefore={200}
+        slidesOffsetAfter={200}
         slidesPerView={slideCnt}
         effect="fade"
         direction="horizontal"
