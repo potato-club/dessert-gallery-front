@@ -31,6 +31,7 @@ export const postStorePost = async (
   try {
     const res = await sendApi.post(`/boards`, formData);
     alert("게시글 작성이 완료 되었습니다");
+    location.reload();
     return res;
   } catch (error: any) {
     console.error("Error in postStorePost:");
