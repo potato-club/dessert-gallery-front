@@ -64,7 +64,6 @@ const Extend = ({
           <ProfileInfo>{storeInfo?.info}</ProfileInfo>
         </div>
       </InfoBox>
-
       <Caption
         titleChange={handleTitleChange}
         contentChange={handleCaptionChange}

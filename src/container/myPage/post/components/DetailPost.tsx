@@ -15,9 +15,10 @@ import SlideImage from "../../../../components/SlideImage/SlideImage";
 
 interface DetailPostProps {
   postId: number;
+  onClickOutside: () => void;
 }
 
-const DetailPost = ({ postId }: DetailPostProps) => {
+const DetailPost = ({ postId, onClickOutside }: DetailPostProps) => {
   const [modalState, setModalState] = useState(false);
   const detailPost = useGetDetailPost(postId);
   const storeInfo = useGetStoreInfo();
@@ -42,11 +43,10 @@ const DetailPost = ({ postId }: DetailPostProps) => {
   const onCancelClick = () => {
     setPutModalState(false);
   };
-  console.log(detailPost?.tags);
+
   return (
-    <Background>
-      <CloseBtn />
-      <Wrapper>
+    <Background onClick={onClickOutside}>
+      <Wrapper onClick={(e) => e.stopPropagation()}>
         <ImageBox>
           <SlideImage
             srcArray={
@@ -153,6 +153,7 @@ const Wrapper = styled.div`
   background-color: white;
   display: flex;
   font-family: "Noto Sans CJK KR";
+  z-index: 10;
 `;
 const ImageBox = styled.div`
   width: 750px;
