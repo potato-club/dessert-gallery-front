@@ -100,8 +100,6 @@ function AddressModal({onClickInputAddress, onChangeAddress, setInputAddress}: p
   
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     setSearchWord(e.target.value);
-    
-    console.log("search word", searchWord)
   };
 
   const onClickGetAddress = () => {

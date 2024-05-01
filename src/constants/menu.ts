@@ -49,10 +49,6 @@ export const menuList = Object.freeze({
   ],
   default: [
     {
-      title: "고객센터",
-      domain: "/myPage/services",
-    },
-    {
       title: "로그아웃",
       domain: "/myPage/logout",
     },

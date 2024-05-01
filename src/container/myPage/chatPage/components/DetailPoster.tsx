@@ -16,7 +16,17 @@ const DetailPoster = ({ ...props }) => {
   const handlePosterClick = () => {};
 
   return (
-    <Container onClick={() => messageHandler("게시물 테스트")}>
+    <Container
+      onClick={() => {
+        let select = confirm("선택한 게시물을 전송하시겠습니까?");
+        if (select) {
+          messageHandler(
+            `${props.userInfo.nickname}님이 [${detailPoster.title}]게시물을 태그했습니다./boardInfoStringboardId=${props.boardId}&thumbnail=${props.thumbnail}`,
+            "BOARD"
+          );
+        }
+      }}
+    >
       <ImageWrapper>
         <IconWrapper>
           <Bookmark
@@ -57,6 +67,7 @@ const Container = styled.div`
   background-color: white;
   box-shadow: 0px 3px 5px 2px rgb(0 0 0 / 15%);
   border-radius: 0px 0px 16px 16px;
+  cursor: pointer;
 `;
 const ImageWrapper = styled.div`
   position: relative;

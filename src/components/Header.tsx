@@ -1,21 +1,45 @@
-import React, { useState } from "react";
-import styled, { css } from "styled-components";
-import { Logo, Search, HeaderBookmark, HeaderInfo } from "../../public/svg";
-import { useRouter } from "next/router";
-import { useTokenService } from "../hooks/useTokenService";
-import Dropdown from "./Dropdown";
+import React, { ChangeEvent, KeyboardEvent, useState } from 'react';
+import styled, { css } from 'styled-components';
+import { Logo, Search, HeaderBookmark, HeaderInfo } from '../../public/svg';
+import { useRouter } from 'next/router';
+import { useTokenService } from '../hooks/useTokenService';
+import Dropdown from './Dropdown';
+import { useLoginUserInfo } from '../hooks/useUser';
+import Link from 'next/link';
 
 const Header = () => {
   const router = useRouter();
   const { getAccessToken } = useTokenService();
 
   const onClickMyPageButton = () => {
-    if (getAccessToken() === "") {
-      alert("로그인 후 이용할 수 있습니다.");
-      router.push("login");
+    if (getAccessToken() === '') {
+      alert('로그인 후 이용할 수 있습니다.');
+      router.push('login');
     }
   };
   const [dropdownState, setDropdownState] = useState(false);
+  const [searchWord, setSearchWord] = useState<string>('');
+
+  const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setSearchWord(e.target.value);
+  };
+
+  const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
+    // 엔터 키가 입력되었을 때 동작할 코드 작성
+    if (e.key === 'Enter') {
+      e.preventDefault(); // 기본 동작 방지
+      if (searchWord.trim() !== '') {
+        setSearchWord('');
+        router.push(
+          `/map?selected=-1&search=${encodeURIComponent(searchWord)}`
+        );
+      }
+    }
+  };
+
+  console.log('router', router);
+
+  const { data } = useLoginUserInfo();
 
   return (
     <Container>
@@ -26,25 +50,35 @@ const Header = () => {
       <BtnList>
         <PageMoveBtn
           href="/galleryBoard"
-          active={router.pathname === "/galleryBoard"}
+          active={router.pathname === '/galleryBoard'}
         >
           가게 게시판
         </PageMoveBtn>
         <PageMoveBtn
           href="/reviewBoard"
-          active={router.pathname === "/reviewBoard"}
+          active={router.pathname === '/reviewBoard'}
         >
           후기 게시판
         </PageMoveBtn>
-        <PageMoveBtn href="/map" active={router.pathname === "/map"}>
+        <PageMoveBtn href="/map" active={router.pathname === '/map'}>
           지도로 찾기
         </PageMoveBtn>
       </BtnList>
 
-      <FormDiv>
-        <Search width="15px" height="15px" />
-        <SearchInput placeholder="검색어를 입력해 주세요" />
-      </FormDiv>
+      {router.pathname !== '/map' ? (
+        <FormDiv>
+          <Search width="15px" height="15px" />
+          <SearchInput
+            type="text"
+            onChange={handleInputChange}
+            value={searchWord}
+            onKeyDown={handleKeyDown}
+            placeholder="검색어를 입력해 주세요"
+          />
+        </FormDiv>
+      ) : (
+        <DivWrap />
+      )}
 
       <AboutUser>
         <MyPageBtn
@@ -59,9 +93,11 @@ const Header = () => {
           <HeaderInfo width="31px" height="32px" />
           <Dropdown dropdownState={dropdownState} />
         </MyPageBtn>
-        <BookmarkBtn>
-          <HeaderBookmark width="23px" height="32px" />
-        </BookmarkBtn>
+        {data && data.userRole === 'USER' && (
+          <Link href={'/myPage/bookmark'}>
+            <HeaderBookmark width="23px" height="32px" />
+          </Link>
+        )}
       </AboutUser>
     </Container>
   );
@@ -150,4 +186,6 @@ const MyPageBtn = styled.div`
   cursor: pointer;
   position: relative;
 `;
-const BookmarkBtn = styled.div``;
+const DivWrap = styled.div`
+  width: 277px;
+`;

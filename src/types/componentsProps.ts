@@ -312,6 +312,7 @@ export type boardOptionValue = {
   optionData: boardOptionData;
   setOptionData: React.Dispatch<React.SetStateAction<boardOptionData>>;
   setPageCount: React.Dispatch<React.SetStateAction<number>>;
+  setReloadDone: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 export type resGalleryPost = {

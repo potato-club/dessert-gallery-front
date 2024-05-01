@@ -1,9 +1,9 @@
-import { useEffect, useState } from "react";
-import { JWTStateAtom } from "../recoil/login/JWTStateAtom";
-import { useRecoilValue } from "recoil";
-import { getLoginUserInfo } from "../apis/controller/myPage";
-import { useInfiniteQuery, useQuery } from "react-query";
-import { getBookmark } from "../apis/controller/detailStore";
+import { useEffect, useState } from 'react';
+import { JWTStateAtom } from '../recoil/login/JWTStateAtom';
+import { useRecoilValue } from 'recoil';
+import { getLoginUserInfo } from '../apis/controller/myPage';
+import { useQuery } from 'react-query';
+import { propfileApiList } from '../apis/controller/profile';
 
 export const useUserState = () => {
   const [isGuest, setIsGuest] = useState<boolean>(true);
@@ -19,30 +19,19 @@ export const useUserState = () => {
 };
 
 export const useLoginUserInfo = () => {
-  const { data } = useQuery(["loginUserInfo"], () => getLoginUserInfo(), {
+  const { data } = useQuery(['loginUserInfo'], () => getLoginUserInfo(), {
     refetchOnWindowFocus: false,
   });
   return { data };
 };
 
-export const useInfinityMyBookmark = () => {
-  const fetchMyBookmark = async ({ pageParam = 1 }) => {
-    const result = await getBookmark(pageParam);
-    return {
-      result: result.content,
-      nextPage: pageParam + 1,
-      isLast: result.last,
-    };
-  };
-
-  const { data, fetchNextPage, hasNextPage, isLoading, refetch } =
-    useInfiniteQuery(["bookmark"], fetchMyBookmark, {
-      getNextPageParam: (lastPage, pages) => {
-        if (!lastPage.isLast) return lastPage.nextPage;
-        return undefined;
-      },
+export const useExistStore = () => {
+  const { data } = useQuery(
+    ['existStore'],
+    () => propfileApiList.getStoreProfile(),
+    {
       refetchOnWindowFocus: false,
-      retry: 1,
-    });
-  return { data, fetchNextPage, hasNextPage, isLoading, refetch };
+    }
+  );
+  return { data };
 };

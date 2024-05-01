@@ -17,14 +17,13 @@ const Container = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: -55px;
 `;
 const InnerBox = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
   width: 400px;
-  height: 90px;
+  height: 150px;
   background-color: rgba(255, 255, 255, 0.6);
   border-radius: 100px;
   font-weight: 600;

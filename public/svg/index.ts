@@ -18,3 +18,4 @@ export { default as LeftArrow } from "./myPage/review/LeftArrow.svg";
 export { default as RightArrow } from "./myPage/review/RightArrow.svg";
 export { default as OnStar } from "./common/OnStar.svg";
 export { default as OffStar } from "./common/OffStar.svg";
+export { default as SearchBoardSvg } from "./galleryBoardPage/Search.svg";

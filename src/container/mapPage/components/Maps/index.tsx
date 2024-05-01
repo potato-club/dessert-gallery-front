@@ -67,7 +67,7 @@ const Container = styled.div<style>`
     width: calc(100% - (340px + (438 - 340) * ((100vw - 1280px) / (1920 - 1280))));
     ${({sidebar}) => {
         if(sidebar === true){
-            return `width: calc(100% - 398px);`
+            return `width: calc(100% - 378px - 380px);`
         }
     }};
   }
@@ -75,7 +75,7 @@ const Container = styled.div<style>`
     width: calc(100% - 439px);
     ${({sidebar}) => {
         if(sidebar === true){
-            return `width: calc(100% - 438px);`
+            return `width: calc(100% - 438px - 438px);`
         }
     }};
   }

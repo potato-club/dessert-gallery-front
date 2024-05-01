@@ -1,11 +1,12 @@
-import styled from "styled-components";
-import Image from "next/image";
-import React from "react";
-import myPageLogo from "../../../../public/image/myPageLogo.png";
-import type { roleMyMenu, myMenu, userInfoI } from "../../../types/componentsProps";
-import Link from "next/link";
-import { useRouter } from "next/router";
-import { useLoginUserInfo } from "../../../hooks/useUser";
+import styled from 'styled-components';
+import Image from 'next/image';
+import React from 'react';
+import myPageLogo from '../../../../public/image/myPageLogo.png';
+import defaultImage from '../../../../public/image/defaultPhoto.png';
+import type { myMenu } from '../../../types/componentsProps';
+import Link from 'next/link';
+import { useMypageMenu } from '../../../hooks/useMypageRoute';
+import { useRouter } from 'next/router';
 
 interface styleProp {
   fontSize: string;
@@ -15,14 +16,14 @@ interface styleProp {
   cursorStyle?: boolean;
 }
 interface imgProps {
-  imgUrl: string
+  imgUrl: string;
 }
 
-export default function Menu({ menu, userInfo }: { menu: roleMyMenu, userInfo:userInfoI }) {
+export default function Menu() {
   const router = useRouter();
-
+  const { menu, userInfo } = useMypageMenu();
   const onClickMoveMain = () => {
-    window.location.href = "/";
+    window.location.href = '/';
   };
 
   return (
@@ -40,7 +41,13 @@ export default function Menu({ menu, userInfo }: { menu: roleMyMenu, userInfo:us
         <MenuContentsWrap>
           <ColumnBox>
             <UserInfoWrap>
-              <ProfileImage imgUrl={userInfo && userInfo.fileUrl ? userInfo.fileUrl: ''} />
+              <ProfileImage
+                imgUrl={
+                  userInfo && userInfo.fileUrl
+                    ? userInfo.fileUrl
+                    : defaultImage.src
+                }
+              />
               <RowBox>
                 <Text
                   bold
@@ -60,7 +67,7 @@ export default function Menu({ menu, userInfo }: { menu: roleMyMenu, userInfo:us
                 </Text>
               </RowBox>
             </UserInfoWrap>
-    
+
             <UserMenuWrap>
               {menu.category.map((el: myMenu, idx) => (
                 <Link key={`Category${idx}`} href={el.domain}>
@@ -81,7 +88,7 @@ export default function Menu({ menu, userInfo }: { menu: roleMyMenu, userInfo:us
               ))}
             </UserMenuWrap>
           </ColumnBox>
-                    
+
           <SiteMenuWrap>
             {menu.siteDefaultMenu.map((el: myMenu, idx) => (
               <CategoryWrap key={`SiteMenuWrap${idx}`}>
@@ -121,7 +128,7 @@ const MenuWrapper = styled.div`
 const Box = styled.div`
   width: 330px;
   height: 100vh;
-`
+`;
 
 const MenuHeader = styled.div`
   width: 330px;
@@ -144,7 +151,7 @@ const MenuContentsWrap = styled.div`
   flex-direction: column;
   justify-content: flex-start;
   overflow-y: auto;
-  
+
   scrollbar-width: none;
   ::-webkit-scrollbar {
     display: none;
@@ -163,15 +170,15 @@ const ProfileImage = styled.div<imgProps>`
   height: 140px;
   background-color: #fdc886;
   box-shadow: 0px 1px 1px 1px rgb(0 0 0 / 5%);
-  ${({imgUrl})=>{
-    if(imgUrl){
+  ${({ imgUrl }) => {
+    if (imgUrl) {
       return `
         background-image: url(${imgUrl});
         background-repeat: no-repeat;
         background-size: cover;
         background-position: center;
         border: 1px solid lightgray
-      `
+      `;
     }
   }}
 `;

@@ -1,31 +1,35 @@
-import React, { RefObject } from 'react';
-import styled from 'styled-components';
-import BookmarkItem from './BookmarkItem';
+import React from 'react';
+import BlockedItem from './BlockedItem';
 import LoadingSpinner from '../../../storePage/components/Modal/LoadingSpinner';
+import styled from 'styled-components';
+import { useLoginUserInfo } from '../../../../hooks/useUser';
 
-interface BookmarkListType {
-  boardId: number;
-  thumbnail: any;
-  createData: string;
+interface BlockedListType {
+  userName: string;
+  fileName: string;
+  fileUrl: string;
 }
+
 interface Props {
-  pageList: BookmarkListType[];
+  pageList: BlockedListType[];
   isLoad: boolean;
   propRef: any;
 }
+
 const ItemList = ({ ...props }: Props) => {
+  const { data: userInfo } = useLoginUserInfo();
+
   return (
     <Container>
-      {props.pageList.map((item: BookmarkListType) => {
-        return (
-          <BookmarkItem
-            key={item.boardId}
-            boardId={item.boardId}
-            thumbnail={item.thumbnail}
-          />
-        );
-      })}
-      <IoDiv ref={props.propRef}></IoDiv>
+      {props.pageList.map((item: BlockedListType) => (
+        <BlockedItem
+          key={item.userName}
+          userName={item.userName}
+          fileUrl={item.fileUrl}
+          storeId={userInfo?.storeId}
+        />
+      ))}
+      <IoDiv ref={props.propRef} />
       {props.isLoad && (
         <LoadingDiv>
           <LoadingSpinner width={40} height={40} borderWidth={2} />
@@ -49,9 +53,7 @@ const LoadingDiv = styled.div`
 `;
 const Container = styled.div`
   display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 40px;
+  flex-direction: column;
   height: 100%;
   overflow-y: scroll;
   &::-webkit-scrollbar {

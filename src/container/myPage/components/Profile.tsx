@@ -4,6 +4,7 @@ import Tag from '../../../components/Tag'
 import { useLoginUserInfo } from '../../../hooks/useUser';
 import ManagerProfile from './ManagerProfile';
 import { getCheckNicknamme, putUser } from '../../../apis/controller/profile';
+import defaultImage from "../../../../public/image/defaultPhoto.png";
 import { modalBg } from '../../../recoil/modalBg/atom';
 import { useSetRecoilState } from "recoil";
 
@@ -168,7 +169,7 @@ function Profile() {
               <Box border='2px solid #FF6F00' bgColor='#ffffffab' rounded='24px' padding='27px 36px'>
                 {/* 사진영역 */}
                 <Box direction='column' alignItems='center'>
-                <ImgBox width='108px' height='108px' imgUrl={userInfo.fileUrl} />
+                <ImgBox width='108px' height='108px' imgUrl={userInfo.fileUrl?userInfo.fileUrl:defaultImage.src} />
                   {modifying&&<Text padding='16px 0 0 0' fontSize='12px' fontWeight='bold' color='#FF6F00' cursor='pointer'>사진 변경</Text>}
                 </Box>
                 {/* 정보영역 */}
