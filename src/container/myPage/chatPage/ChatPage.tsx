@@ -42,7 +42,15 @@ function ChatPage() {
   useEffect(() => {
     fetchChatRoom();
     fetchUserInfo();
+    return () => {
+      setRoomInfoState({
+        roomId: 0,
+        storeId: 0,
+        partnerName: "",
+      });
+    };
   }, []);
+
 
   return (
     <Layout>
