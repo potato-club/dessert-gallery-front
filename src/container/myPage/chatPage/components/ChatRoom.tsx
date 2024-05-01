@@ -53,8 +53,8 @@ function ChatRoom({ userInfo }: { userInfo?: userInfoType }) {
 
   const handleKeyDown = (event: React.KeyboardEvent) => {
     if (event.key === "Enter" && !event.shiftKey) {
+      event.preventDefault();
       if (getValues("message")) {
-        event.preventDefault();
         messageHandler(getValues("message"));
         setValue("message", "");
       }
