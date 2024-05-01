@@ -11,11 +11,11 @@ function ChatItem({
   myChat: boolean;
   message: string;
   timestamp: string;
-  messageType: "CHAT" | "RESERVEATION" | "REVIEW";
+  messageType: "CHAT" | "RESERVATION" | "REVIEW" | "BOARD";
 }) {
   const router = useRouter();
   const onclickMessageButton = () => {
-    if (messageType === "RESERVEATION") {
+    if (messageType === "RESERVATION") {
       router.push(`/galleryBoard/${1}`);
     } else if (messageType === "REVIEW") {
       router.push("/myPage/review");
@@ -28,13 +28,22 @@ function ChatItem({
         <>
           <Timestamp myChat={myChat}>{timestamp}</Timestamp>
           <Message myChat={myChat}>
+            <MessageTypeDiv>
+              {/* [예약 확정] */}
+              {messageType === "RESERVATION"
+                ? "[예약 확정]"
+                : messageType === "REVIEW"
+                ? "[픽업 완료]"
+                : null}
+            </MessageTypeDiv>
             {message}
             <MessageButtonDiv>
               <MessageButton
                 messageType={messageType}
                 onClick={onclickMessageButton}
               >
-                {messageType === "RESERVEATION"
+                {/* 메세지 타입이 "CHAT" 혹은 "RESERVATION" 일때는 버튼이 보이지 않음*/}
+                {messageType === "BOARD"
                   ? "가게 게시판 보러가기"
                   : "후기 작성하러 가기"}
               </MessageButton>
@@ -52,7 +61,7 @@ function ChatItem({
                 messageType={messageType}
                 onClick={onclickMessageButton}
               >
-                {messageType === "RESERVEATION"
+                {messageType === "RESERVATION"
                   ? "가게 게시판 보러가기"
                   : "후기 작성하러 가기"}
               </MessageButton>
@@ -94,12 +103,11 @@ const Profile = styled.div`
 const Message = styled.div<{ myChat: boolean }>`
   display: flex;
   flex-direction: column;
-
   background-color: ${(props) => (props.myChat ? "#FDC886" : "#FCF0E1")};
   font-family: noto-sans-cjk-kr, sans-serif;
   border-radius: ${(props) =>
     props.myChat ? "15px 0 15px 15px" : "0 15px 15px 15px"};
-
+  white-space: pre-line;
   @media screen and (min-width: 1920px) {
     max-width: 261px;
     line-height: 15px;
@@ -116,6 +124,8 @@ const Message = styled.div<{ myChat: boolean }>`
   }
 `;
 
+const MessageTypeDiv = styled.div``;
+
 const MessageButtonDiv = styled.div`
   display: flex;
   align-items: center;
@@ -124,9 +134,10 @@ const MessageButtonDiv = styled.div`
 `;
 
 const MessageButton = styled.button<{
-  messageType: "CHAT" | "RESERVEATION" | "REVIEW";
+  messageType: "CHAT" | "RESERVATION" | "REVIEW" | "BOARD";
 }>`
-  display: ${(props) => (props.messageType === "CHAT" ? "none" : "flex")};
+  display: ${(props) =>
+    props.messageType === "CHAT" || "RESERVATION" ? "none" : "flex"};
   align-items: center;
   justify-content: center;
   border: 1px solid #ff8d00;
