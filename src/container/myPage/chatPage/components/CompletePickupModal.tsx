@@ -84,7 +84,8 @@ const CompletePickupModal = ({
           <Wrapper>
             <Top>픽업 완료 처리할 예약을 선택해주세요</Top>
             <Contents>
-              {pickupListState &&
+              {pickupListState?.length !== 0 ? (
+                pickupListState &&
                 pickupListState.map((item, index) => {
                   return (
                     <PickupListItem
@@ -95,7 +96,10 @@ const CompletePickupModal = ({
                       {item.dateTime}
                     </PickupListItem>
                   );
-                })}
+                })
+              ) : (
+                <NoContentsDiv>픽업 완료처리할 예약이 없습니다.</NoContentsDiv>
+              )}
             </Contents>
             <Bottom>
               <ButtonDiv>
@@ -189,4 +193,14 @@ const Button = styled.button`
     height: 24px;
     font-size: 9px;
   } */
+`;
+
+const NoContentsDiv = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  font-size: 21px;
+  color: #a09f9f;
 `;
