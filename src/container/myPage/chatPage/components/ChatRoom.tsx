@@ -51,6 +51,20 @@ function ChatRoom({ userInfo }: { userInfo?: userInfoType }) {
     setChatHistoryState(chatHistory.chatList);
   };
 
+  const handleKeyDown = (event: React.KeyboardEvent) => {
+    if (event.key === "Enter" && !event.shiftKey) {
+      if (getValues("message")) {
+        event.preventDefault();
+        messageHandler(getValues("message"));
+        setValue("message", "");
+      }
+    } else if (event.key === "Enter" && event.shiftKey) {
+      event.preventDefault();
+      setValue("message", getValues("message") + "\n");
+      // ((prevText) => prevText + '\n');
+    }
+  };
+
   useEffect(() => {
     console.log(roomInfoState.roomId);
     console.log(roomInfoState);
@@ -105,17 +119,6 @@ function ChatRoom({ userInfo }: { userInfo?: userInfoType }) {
             <TextboxDiv>
               <Textbox
                 placeholder="메세지를 입력해주세요"
-                onKeyDown={(event) => {
-                  if (event.key === "Enter") {
-                    event.preventDefault();
-                    if (event.shiftKey) {
-                      // 시프트 엔터 누를 시 개행되도록 하려고 시도중
-                      return;
-                    }
-                    messageHandler(getValues("message")); // Handle sending the message
-                    setValue("message", ""); // Clear the textarea
-                  }
-                }}
                 {...register("message")}
               ></Textbox>
               <SendButtonDiv>
