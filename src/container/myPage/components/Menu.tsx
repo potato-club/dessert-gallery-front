@@ -2,9 +2,9 @@ import styled from 'styled-components';
 import Image from 'next/image';
 import React from 'react';
 import myPageLogo from '../../../../public/image/myPageLogo.png';
+import defaultImage from '../../../../public/image/defaultPhoto.png';
 import type { myMenu } from '../../../types/componentsProps';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
 import { useMypageMenu } from '../../../hooks/useMypageRoute';
 
 interface styleProp {
@@ -41,7 +41,11 @@ export default function Menu() {
           <ColumnBox>
             <UserInfoWrap>
               <ProfileImage
-                imgUrl={userInfo && userInfo.fileUrl ? userInfo.fileUrl : ''}
+                imgUrl={
+                  userInfo && userInfo.fileUrl
+                    ? userInfo.fileUrl
+                    : defaultImage.src
+                }
               />
               <RowBox>
                 <Text

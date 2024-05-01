@@ -11,9 +11,10 @@ const StompClientContext = createContext(
   {} as {
     connectHandler: () => void;
     disconnectHandler: () => void;
-    messageHandler: (message: string) => void;
-    onClickReservation: () => void;
-    onClickReview: () => void;
+    messageHandler: (
+      message: string,
+      messageType: "CHAT" | "RESERVATION" | "REVIEW" | "BOARD"
+    ) => void;
   }
 );
 
@@ -82,7 +83,10 @@ export function StompClientProvider({
     clientRef.current.deactivate();
   };
 
-  const messageHandler = (message: string) => {
+  const messageHandler = (
+    message: string,
+    messageType: "CHAT" | "RESERVATION" | "REVIEW" | "BOARD"
+  ) => {
     var today = new Date();
 
     var year = today.getFullYear();
@@ -98,7 +102,7 @@ export function StompClientProvider({
       body: JSON.stringify({
         chatRoomId: roomInfoState.roomId,
         message: message,
-        messageType: "CHAT",
+        messageType: messageType,
         sender: userInfo?.nickname,
         dateTime: dateTime,
       }),
@@ -123,40 +127,9 @@ export function StompClientProvider({
     getNewChat(newChat);
   };
 
-  const onClickReservation = () => {
-    clientRef.current.publish({
-      destination: "/pub/chat",
-      // skipContentLengthHeader: true,
-      body: JSON.stringify({
-        chatRoomId: roomInfoState.roomId,
-        message: `${"user"}님의 예약이 확정되었습니다.`,
-        messageType: "RESERVEATION",
-        sender: userInfo?.nickname,
-      }),
-      headers: { Authorization: getAccessToken() },
-    });
-  };
-
-  const onClickReview = () => {
-    clientRef.current.publish({
-      destination: "/pub/chat",
-      // skipContentLengthHeader: true,
-      body: JSON.stringify({
-        chatRoomId: roomInfoState.roomId,
-        message: `${"user"}님, 디저트는 잘 받으셨나요? 
-            만족하셨다면 후기를 작성해주세요`,
-        messageType: "REVIEW",
-        sender: userInfo?.nickname,
-      }),
-      headers: { Authorization: getAccessToken() },
-    });
-  };
-
   const chatMethod = {
     connectHandler,
     messageHandler,
-    onClickReservation,
-    onClickReview,
     disconnectHandler,
   };
   return (

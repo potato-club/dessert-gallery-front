@@ -6,9 +6,10 @@ import Tag from '../../../../components/Tag'
 import type { tagClickData } from '../../../../types/componentsData'
 import SortingButton from '../SortingButton'
 import { selectOrder, boardOptionValue } from '../../../../types/componentsProps'
+import { SearchBoardSvg } from '../../../../../public/svg'
 
 
-function BoardOption({orderOption, setOrderOption,optionData,setOptionData, setPageCount}: boardOptionValue) {
+function BoardOption({orderOption, setOrderOption,optionData,setOptionData, setPageCount, setReloadDone}: boardOptionValue) {
   const [isSelected, setIsSelected] = useState<boolean>(false)
   const [selectCategory, setSelectCategory] = useState<number>(2)
   const [searchWord, setSearchWord] = useState<string>('')
@@ -35,6 +36,7 @@ function BoardOption({orderOption, setOrderOption,optionData,setOptionData, setP
     setIsSelected(false);
     setSearchWordList([])
     setPageCount(1);
+    setReloadDone(false);
   }
 
   /**
@@ -67,6 +69,7 @@ function BoardOption({orderOption, setOrderOption,optionData,setOptionData, setP
       setIsSelected(false);
     }
     setPageCount(1)
+    setReloadDone(false);
   }
 
   /**
@@ -88,6 +91,7 @@ function BoardOption({orderOption, setOrderOption,optionData,setOptionData, setP
     setIsSelected(true);
     setSearchWord('');
     setPageCount(1)
+    setReloadDone(false);
     }
   };
 
@@ -101,6 +105,7 @@ function BoardOption({orderOption, setOrderOption,optionData,setOptionData, setP
     }))
     setIsSelected(true)
     setPageCount(1)
+    setReloadDone(false);
   }
 
   const onClickTag = ({menu, idx=0}:tagClickData) => {
@@ -121,6 +126,7 @@ function BoardOption({orderOption, setOrderOption,optionData,setOptionData, setP
       isAllClean(menu);
     }
     setPageCount(1)
+    setReloadDone(false);
   }
 
   return (
@@ -128,7 +134,7 @@ function BoardOption({orderOption, setOrderOption,optionData,setOptionData, setP
       <OptionCategoriesWrap>
         <OptionCategoriesButton categoryId={0} selectNumber={selectCategory} onClick={()=>{setSelectCategory(0)}}>픽업 지역 선택</OptionCategoriesButton>
         <OptionCategoriesTextInputLabel>
-          <OptionCategoriesSVGImg src='/SVG/galleryBoardPage/Search.svg'/>
+          <SearchBoardSvg/>
           <OptionCategoriesTextInput type="text" placeholder='해시태그를 검색해보세요' onChange={onChangeSearchWord} onKeyUp={handleKeyUp} value={searchWord} onFocus={()=>{setSelectCategory(2)}}/>
         </OptionCategoriesTextInputLabel>
       </OptionCategoriesWrap>

@@ -14,6 +14,13 @@ function ChatListItem({
   lastChatDatetime: string;
   onClickItem: () => void;
 }) {
+  const parsedMessage = () => {
+    if (thumbnailMessage?.includes("/boardInfoString")) {
+      return thumbnailMessage.split("/boardInfoString")[0];
+    } else {
+      return thumbnailMessage;
+    }
+  };
   return (
     <Wrapper onClick={onClickItem}>
       <Profile />
@@ -23,7 +30,7 @@ function ChatListItem({
             {name}
             <UserNameHelper>님</UserNameHelper>
           </UserName>
-          <ThumbnailMessage>{thumbnailMessage}</ThumbnailMessage>
+          <ThumbnailMessage>{parsedMessage()}</ThumbnailMessage>
         </InfoLeft>
         <InfoRight>
           <TimeStamp>{lastChatDatetime}</TimeStamp>
