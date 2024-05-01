@@ -53,8 +53,8 @@ function NearbyStorePost({item}: nearbyStoreProps) {
     <NearbyStorePostWrap key={item.longitude+item.latitude}>
         <MapWrap ref={storeMap}/>
         <TextWrap>
-            <Text bold fontSize='45px'>{item.storeName}</Text>
-            <Text fontSize='14px'>{item.storeAddress}</Text>
+            <Text bold fontSize='40px'>{item.storeName}</Text>
+            <Text line fontSize='14px'>{item.storeAddress}</Text>
             <RatingWrap>
               <Rating size='medium' ratingValue={item.score}/>
             </RatingWrap>
