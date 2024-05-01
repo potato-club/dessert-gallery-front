@@ -68,10 +68,18 @@ const HeaderBottom = ({
           </ModalOnButton>
         </Product>
         <ButtonDiv userRole={userInfo && userInfo.userRole}>
-          <Button onClick={() => setReservationModalState(true)}>
+          <Button
+            onClick={() => {
+              setReservationModalState(true);
+            }}
+          >
             예약 확정
           </Button>
-          <Button onClick={() => setCmpletePickupModalState(true)}>
+          <Button
+            onClick={() => {
+              setCmpletePickupModalState(true);
+            }}
+          >
             픽업 완료
           </Button>
         </ButtonDiv>

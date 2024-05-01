@@ -4,14 +4,25 @@ import "react-datepicker/dist/react-datepicker.css";
 import { useRoomInfoState } from "../../../../recoil/chat/roomInfoStateAtom";
 import axios from "axios";
 import { useTokenService } from "../../../../hooks/useTokenService";
+import PickupListItem from "./PickupListItem";
+import { createPortal } from "react-dom";
+
+type reservationListType = {
+  id: number;
+  dateTime: string;
+};
 
 const CompletePickupModal = ({
   getCompletePickupModalState,
 }: {
   getCompletePickupModalState: (modalState: boolean) => void;
 }) => {
+  const [mounted, setMounted] = useState(false);
   const [roomInfoState, setRoomInfoState] = useRoomInfoState();
-  const [reservationState, setReservationState] = useState();
+  const [selectedItem, setSelectedItem] = useState<number>(0);
+  const [pickupListState, setPickupListState] =
+    useState<reservationListType[]>();
+
   const { getAccessToken } = useTokenService();
 
   // 손님의 예약 리스트 받아오기 테스트 코드
@@ -23,52 +34,98 @@ const CompletePickupModal = ({
       { headers: { Authorization: getAccessToken() } }
     );
     console.log(response);
-    return response;
+    return response.data;
   };
 
-  // // 손님의 예약 완료처리하기(체크처리하기) 테스트 코드
-  // const onClicktest = async () => {
-  //   const response = await axios.put(
-  //     `https://api.dessert-gallery.site/stores/schedule?id=${1}`,
-  //     {},
-  //     { headers: { Authorization: getAccessToken() } }
-  //   );
-  //   console.log(response);
-  // };
+  // 손님의 예약 완료처리하기(체크처리하기) 테스트 코드
+  const fetchCompletePickup = async () => {
+    if (selectedItem) {
+      const response = await axios.put(
+        `https://api.dessert-gallery.site/stores/schedule?id=${selectedItem}`,
+        {},
+        { headers: { Authorization: getAccessToken() } }
+      );
+      console.log(response);
+    }
+  };
 
   useEffect(() => {
-    console.log(roomInfoState);
+    async function fetchData() {
+      console.log(roomInfoState);
 
-    const reservation = fetchPickUpList();
+      if (roomInfoState.roomId) {
+        const response = await fetchPickUpList();
+        console.log(response);
+
+        setPickupListState(response);
+      }
+    }
+
+    fetchData();
+    console.log(pickupListState);
 
     // setReservationState(reservation);
   }, [roomInfoState]);
 
-  return (
-    <Wrapper>
-      <Top></Top>
-      <Contents></Contents>
-      <Bottom>
-        <ButtonDiv>
-          <Button>확인</Button>
-          <Button onClick={() => getCompletePickupModalState(false)}>
-            닫기
-          </Button>
-        </ButtonDiv>
-      </Bottom>
-    </Wrapper>
-  );
+  useEffect(() => {
+    console.log(roomInfoState);
+    setMounted(true);
+
+    return () => setMounted(false);
+  }, []);
+
+  return mounted
+    ? createPortal(
+        <Layout>
+          <Wrapper>
+            <Top>픽업 완료 처리할 예약을 선택해주세요</Top>
+            <Contents>
+              {pickupListState &&
+                pickupListState.map((item, index) => {
+                  return (
+                    <PickupListItem
+                      key={item.id}
+                      onClickItem={() => setSelectedItem(item.id)}
+                      isSelected={selectedItem === item.id}
+                    >
+                      {item.dateTime}
+                    </PickupListItem>
+                  );
+                })}
+            </Contents>
+            <Bottom>
+              <ButtonDiv>
+                <Button onClick={() => fetchCompletePickup()}>확인</Button>
+                <Button onClick={() => getCompletePickupModalState(false)}>
+                  닫기
+                </Button>
+              </ButtonDiv>
+            </Bottom>
+          </Wrapper>
+        </Layout>,
+        document.querySelector("#completePickupModal") as HTMLElement
+      )
+    : null;
 };
 
 export default CompletePickupModal;
+
+const Layout = styled.div`
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.3);
+  z-index: 11;
+`;
 
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   width: 500px;
   height: 400px;
-  position: absolute;
-  border: 1px solid black;
   border-radius: 10px;
   background-color: #ffffff;
   z-index: 10;
@@ -85,8 +142,9 @@ const Contents = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
   height: 200px;
+  gap: 20px;
+  overflow: auto;
 `;
 
 const Bottom = styled.div`
@@ -114,7 +172,10 @@ const Button = styled.button`
   background-color: #fcf6ee;
   box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.1);
   cursor: pointer;
-  @media screen and (min-width: 1920px) {
+  width: 92px;
+  height: 24px;
+  font-size: 9px;
+  /* @media screen and (min-width: 1920px) {
     width: 122px;
     height: 32px;
     font-size: 12px;
@@ -123,5 +184,5 @@ const Button = styled.button`
     width: 92px;
     height: 24px;
     font-size: 9px;
-  }
+  } */
 `;
