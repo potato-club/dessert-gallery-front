@@ -37,18 +37,27 @@ function ChatRoom({ userInfo }: { userInfo?: userInfoType }) {
 
   // const { item } = useGueryGetChatRoom();
 
-  const {
-    connectHandler,
-    messageHandler,
-    onClickReservation,
-    onClickReview,
-    disconnectHandler,
-  } = useStompClientContext();
+  const { connectHandler, messageHandler, disconnectHandler } =
+    useStompClientContext();
 
   const messageCheckHandler = async () => {
     const chatHistory = await getChatHistory(roomInfoState.roomId);
     console.log(chatHistory);
     setChatHistoryState(chatHistory.chatList);
+  };
+
+  const handleKeyDown = (event: React.KeyboardEvent) => {
+    if (event.key === "Enter" && !event.shiftKey) {
+      event.preventDefault();
+      if (getValues("message")) {
+        messageHandler(getValues("message"), "CHAT");
+        setValue("message", "");
+      }
+    } else if (event.key === "Enter" && event.shiftKey) {
+      event.preventDefault();
+      setValue("message", getValues("message") + "\n");
+      // ((prevText) => prevText + '\n');
+    }
   };
 
   useEffect(() => {
@@ -70,58 +79,48 @@ function ChatRoom({ userInfo }: { userInfo?: userInfoType }) {
         <NoItemAlert>선택된 채팅방이 없습니다.</NoItemAlert>
       ) : (
         <>
-          <Header>
-            <HeaderTop>
-              <Profile>
-                <ProfileImage />
-                <PartnerName>
-                  {roomInfoState.partnerName}
-                  <PartnerNameHelper>님</PartnerNameHelper>
-                </PartnerName>
-              </Profile>
-              <OptionButton
-                onClick={() => deleteChatRoom(roomInfoState.roomId)}
-              >
-                {[1, 2, 3].map((index) => (
-                  <Dot key={index}></Dot>
-                ))}
-              </OptionButton>
-            </HeaderTop>
+          <HeaderTop>
+            <Profile>
+              <ProfileImage />
+              <PartnerName>
+                {roomInfoState.partnerName}
+                <PartnerNameHelper>님</PartnerNameHelper>
+              </PartnerName>
+            </Profile>
+            <OptionButton onClick={() => deleteChatRoom(roomInfoState.roomId)}>
+              {[1, 2, 3].map((index) => (
+                <Dot key={index}></Dot>
+              ))}
+            </OptionButton>
+          </HeaderTop>
+          <SubWrapper>
+            <div id="reservationModal"></div>
+            <div id="completePickupModal"></div>
             <HeaderBottom roomInfoState={roomInfoState} userInfo={userInfo} />
-          </Header>
+            <Contents>
+              {chatHistoryState?.map((item: any, index) => (
+                <ChatItem
+                  key={index}
+                  messageType={item.messageType}
+                  myChat={userInfo?.nickname === item.sender}
+                  message={item.message}
+                  timestamp={item.dateTime}
+                ></ChatItem>
+              ))}
+            </Contents>
+          </SubWrapper>
 
-          <Contents>
-            {chatHistoryState?.map((item: any, index) => (
-              <ChatItem
-                key={index}
-                messageType={item.messageType}
-                myChat={userInfo?.nickname === item.sender}
-                message={item.message}
-                timestamp={item.dateTime}
-              ></ChatItem>
-            ))}
-          </Contents>
           <Bottom>
             <TextboxDiv>
               <Textbox
                 placeholder="메세지를 입력해주세요"
-                onKeyDown={(event) => {
-                  if (event.key === "Enter") {
-                    event.preventDefault();
-                    if (event.shiftKey) {
-                      // 시프트 엔터 누를 시 개행되도록 하려고 시도중
-                      return;
-                    }
-                    messageHandler(getValues("message")); // Handle sending the message
-                    setValue("message", ""); // Clear the textarea
-                  }
-                }}
+                onKeyDown={(event) => handleKeyDown(event)}
                 {...register("message")}
               ></Textbox>
               <SendButtonDiv>
                 <SendButton
                   onClick={() => {
-                    messageHandler(getValues("message"));
+                    messageHandler(getValues("message"), "CHAT");
                     setValue("message", "");
                   }}
                 >
@@ -154,9 +153,8 @@ const Wrapper = styled.div`
   border-right: 1px solid #dedede;
 `;
 
-const Header = styled.div`
-  width: 100%;
-  height: 124px;
+const SubWrapper = styled.div`
+  position: relative;
 `;
 
 const HeaderTop = styled.div`
@@ -240,7 +238,14 @@ const Contents = styled.div`
   display: flex;
   flex-direction: column;
   border-bottom: 1px solid #dedede;
+  position: relative;
   overflow: auto;
+  padding: 15px 20px;
+`;
+
+const MessageContentsDiv = styled.div`
+  width: 100%;
+  height: 100%;
   padding: 15px 20px 0;
 `;
 

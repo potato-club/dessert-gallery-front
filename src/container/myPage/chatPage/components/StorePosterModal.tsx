@@ -6,8 +6,15 @@ import myPageBack from "../../../../../public/image/myPageBack.png";
 import { useGetInfinityPosterList } from "../../../../hooks/useBoard";
 import { useInfinityScrollLoading } from "../../../../hooks/useInfinityScroll";
 import LoadingSpinner from "../../../storePage/components/Modal/LoadingSpinner";
+import { userInfoType } from "../ChatPage";
 
-const StorePosterModal = ({ storeId }: { storeId: any }) => {
+const StorePosterModal = ({
+  storeId,
+  userInfo,
+}: {
+  storeId: any;
+  userInfo?: userInfoType;
+}) => {
   const [isShown, setIsShown] = useState(false);
 
   const { posterList, isLoading, hasNextPage, fetchNextPage } =
@@ -42,6 +49,7 @@ const StorePosterModal = ({ storeId }: { storeId: any }) => {
                     key={item.boardId}
                     boardId={item.boardId}
                     thumbnail={item.thumbnail.fileUrl}
+                    userInfo={userInfo}
                   />
                 ))}
               {isShown && <NonePoster>등록된 게시물이 없습니다.</NonePoster>}

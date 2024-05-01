@@ -5,6 +5,7 @@ import ChatRoom from "./components/ChatRoom";
 import { getChatRoom, getUserInfo } from "../../../apis/controller/chatPage";
 import { loginPageApi } from "../../../apis/controller/loginPage";
 import { StompClientProvider } from "./context/StompClientProvider";
+import { useRoomInfoState } from "../../../recoil/chat/roomInfoStateAtom";
 
 export type userInfoType = {
   nickname: string;
@@ -24,6 +25,7 @@ export type roomInfoType = {
 function ChatPage() {
   const [chatRoomList, setChatRoomList] = useState<roomInfoType[]>();
   const [userInfoState, setUserInfoState] = useState<userInfoType>();
+  const [roomInfoState, setRoomInfoState] = useRoomInfoState();
 
   const fetchChatRoom = async () => {
     const chatRoom = await getChatRoom();
@@ -42,7 +44,15 @@ function ChatPage() {
   useEffect(() => {
     fetchChatRoom();
     fetchUserInfo();
+    return () => {
+      setRoomInfoState({
+        roomId: 0,
+        storeId: 0,
+        partnerName: "",
+      });
+    };
   }, []);
+
 
   return (
     <Layout>
