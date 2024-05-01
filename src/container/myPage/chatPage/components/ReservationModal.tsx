@@ -119,6 +119,10 @@ const ReservationCalendar = ({
                       onClickReservation(
                         `${roomInfoState.partnerName}님의 예약이 ${parsedDateTime.year}년 ${parsedDateTime.month}월 ${parsedDateTime.date}일 ${parsedDateTime.time}으로 확정되었습니다.`
                       );
+                      alert(
+                        `${roomInfoState.partnerName}님의 예약이 ${parsedDateTime.year}년 ${parsedDateTime.month}월 ${parsedDateTime.date}일 ${parsedDateTime.time}으로 확정되었습니다.`
+                      );
+                      getReservationModalState(false);
                     }
                   }}
                 >

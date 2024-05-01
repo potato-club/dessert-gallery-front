@@ -46,6 +46,10 @@ const CompletePickupModal = ({
         { headers: { Authorization: getAccessToken() } }
       );
       console.log(response);
+      if (response.status === 200) {
+        alert("선택한 예약이 완료처리 되었습니다.");
+        getCompletePickupModalState(false);
+      }
     }
   };
 
