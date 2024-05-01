@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { ChangeEvent,KeyboardEvent, useState } from "react";
 import styled, { css } from "styled-components";
 import { Logo, Search, HeaderBookmark, HeaderInfo } from "../../public/svg";
 import { useRouter } from "next/router";
@@ -16,6 +16,24 @@ const Header = () => {
     }
   };
   const [dropdownState, setDropdownState] = useState(false);
+  const [searchWord, setSearchWord] = useState<string>('') 
+
+  const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setSearchWord(e.target.value);
+  };
+
+  const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
+    // 엔터 키가 입력되었을 때 동작할 코드 작성
+    if (e.key === 'Enter') {
+      e.preventDefault(); // 기본 동작 방지
+      if (searchWord.trim() !== '') {
+        setSearchWord('');
+        router.push(`/map?selected=-1&search=${encodeURIComponent(searchWord)}`);
+      }
+    }
+  };
+
+  console.log("router", router)
 
   return (
     <Container>
@@ -41,10 +59,14 @@ const Header = () => {
         </PageMoveBtn>
       </BtnList>
 
-      <FormDiv>
-        <Search width="15px" height="15px" />
-        <SearchInput placeholder="검색어를 입력해 주세요" />
-      </FormDiv>
+      {
+        router.pathname !== '/map'?
+        <FormDiv>
+          <Search width="15px" height="15px" />
+          <SearchInput type='text' onChange={handleInputChange} value={searchWord} onKeyDown={handleKeyDown} placeholder="검색어를 입력해 주세요" />
+        </FormDiv>
+        :<DivWrap/>
+      }
 
       <AboutUser>
         <MyPageBtn
@@ -151,3 +173,6 @@ const MyPageBtn = styled.div`
   position: relative;
 `;
 const BookmarkBtn = styled.div``;
+const DivWrap = styled.div`
+  width: 277px;
+`;
