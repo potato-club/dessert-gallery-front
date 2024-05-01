@@ -25,7 +25,7 @@ const CompletePickupModal = ({
 
   const { getAccessToken } = useTokenService();
 
-  // 손님의 예약 리스트 받아오기 테스트 코드
+  // 손님의 예약 리스트 받아오는 함수
   const fetchPickUpList = async () => {
     console.log(roomInfoState);
 
@@ -37,7 +37,7 @@ const CompletePickupModal = ({
     return response.data;
   };
 
-  // 손님의 예약 완료처리하기(체크처리하기) 테스트 코드
+  // 손님의 예약 완료처리하는(체크처리하기) 함수
   const fetchCompletePickup = async () => {
     if (selectedItem) {
       const response = await axios.put(
