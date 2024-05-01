@@ -116,8 +116,9 @@ const ReservationCalendar = ({
                     const response: any = await onClickConfirm();
                     console.log(response);
                     if (response.status === 201) {
-                      onClickReservation(
-                        `${roomInfoState.partnerName}님의 예약이 ${parsedDateTime.year}년 ${parsedDateTime.month}월 ${parsedDateTime.date}일 ${parsedDateTime.time}으로 확정되었습니다.`
+                      messageHandler(
+                        `${roomInfoState.partnerName}님의 예약이 ${parsedDateTime.year}년 ${parsedDateTime.month}월 ${parsedDateTime.date}일 ${parsedDateTime.time}으로 확정되었습니다.`,
+                        "RESERVATION"
                       );
                       alert(
                         `${roomInfoState.partnerName}님의 예약이 ${parsedDateTime.year}년 ${parsedDateTime.month}월 ${parsedDateTime.date}일 ${parsedDateTime.time}으로 확정되었습니다.`
