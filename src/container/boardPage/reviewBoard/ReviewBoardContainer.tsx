@@ -22,6 +22,7 @@ function ReviewBoardContainer() {
     selectSearchWord: [],
   })
   const [toast, setToast] = useState<boolean>(false)
+  const [reloadDone, setReloadDone] = useState<boolean>(false)
   const [resData, setResData] = useState<resReviewPost[][]>([])
   const observerRef = useRef<HTMLDivElement>(null);
 
@@ -38,6 +39,7 @@ function ReviewBoardContainer() {
       address: optionData.location,
       searchType: optionData.selectSearchWord,
       setToast: setToast,
+      setReloadDone,
       setResData: setResData,
       resData: resData
     });
@@ -46,7 +48,7 @@ function ReviewBoardContainer() {
       // Intersection Observer 콜백
     const handleIntersection = (entries: IntersectionObserverEntry[]) => {
       const target = entries[0];
-      if (target.isIntersecting && status === "success") {
+      if (target.isIntersecting && status === "success" && !reloadDone && !toast ) {
         window.scrollTo(0, window.scrollY - 100);
         setPageCount((prev) => prev + 1);
         fetchNextPage();
@@ -66,7 +68,7 @@ function ReviewBoardContainer() {
     }
 
     return () => {
-      if (observerRef.current) {
+      if (observerRef.current && !reloadDone) {
         observer.unobserve(observerRef.current);
       }
     };
@@ -75,7 +77,7 @@ function ReviewBoardContainer() {
   return (
     <Wrapper>
         <BoardTop title='후기 게시판' decription='다양한 가게의 후기를 볼 수 있는 가게 게시판입니다.' imgSrc={BoardBanner.src}/>
-        <BoardOption orderOption={orderOption} setOrderOption={setOrderOption} optionData={optionData} setOptionData={setOptionData} setPageCount={setPageCount} />
+        <BoardOption setReloadDone={setReloadDone} orderOption={orderOption} setOrderOption={setOrderOption} optionData={optionData} setOptionData={setOptionData} setPageCount={setPageCount} />
         {status === "loading" && <ToastMessage wrapType={'map'} messageString='불러오는 중...' timer={5000} />}
         {status === "error" && <p>error</p>}
         {status === "success" && resData.length !== 0 && <Contents data={resData} />}

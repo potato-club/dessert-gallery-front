@@ -5,6 +5,7 @@ import Tag from '../../../components/Tag'
 import AddressModal from './AddressModal';
 import { useRecoilState} from "recoil";
 import { modalBg } from '../../../recoil/modalBg/atom';
+import defaultImage from "../../../../public/image/defaultPhoto.png";
 
 // export interface storeImageI {
 //   fileName: string,
@@ -239,7 +240,7 @@ export default function ManagerProfile() {
           <Box border='2px solid #FF6F00' bgColor='#ffffffab' rounded='24px' padding='27px 57px'>
             <Box width='100%' justifyContent='center' height='fit-content'>
             <Box direction='column' alignItems='center'>
-              <ImgBox width='160px' height='160px' bgColor='#FDC886' imgUrl={storeInfo.res.storeImage !== null ? storeInfo.res.storeImage.fileUrl : ''} />
+              <ImgBox width='160px' height='160px' bgColor='#FDC886' imgUrl={storeInfo.res.storeImage !== null ? storeInfo.res.storeImage.fileUrl : defaultImage.src} />
             </Box>
             </Box>
           </Box>
@@ -313,7 +314,7 @@ export default function ManagerProfile() {
               <Box direction='column' alignItems='center'>
                 {
                   modiStoreValue.url === null || modiStoreValue.url === undefined
-                    ? <ImgBox width='160px' height='160px' bgColor='#FDC886' imgUrl={storeInfo.res.storeImage?storeInfo.res.storeImage.fileUrl:''} />
+                    ? <ImgBox width='160px' height='160px' bgColor='#FDC886' imgUrl={storeInfo.res.storeImage?storeInfo.res.storeImage.fileUrl:defaultImage.src} />
                     : <ImgBox width='160px' height='160px' bgColor='#FDC886' imgUrl={modiStoreValue.url} />
                 }
                 
@@ -487,7 +488,7 @@ export default function ManagerProfile() {
               <Box border='2px solid #FF6F00' bgColor='#ffffffab' rounded='24px' padding='27px 57px'>
                 <Box width='100%' justifyContent='center' height='fit-content'>
                 <Box direction='column' alignItems='center'>
-                  <ImgBox width='160px' height='160px' bgColor='#FDC886' imgUrl={modiStoreValue.url !== null ? modiStoreValue.url: ''} />
+                  <ImgBox width='160px' height='160px' bgColor='#FDC886' imgUrl={modiStoreValue.url !== null ? modiStoreValue.url: defaultImage.src} />
                   <BtnText
                       htmlFor="file"
                       padding='16px 0 0 0'

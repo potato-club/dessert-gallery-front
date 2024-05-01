@@ -2,6 +2,7 @@ import styled from "styled-components";
 import Image from "next/image";
 import React from "react";
 import myPageLogo from "../../../../public/image/myPageLogo.png";
+import defaultImage from "../../../../public/image/defaultPhoto.png";
 import type { roleMyMenu, myMenu, userInfoI } from "../../../types/componentsProps";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -40,7 +41,7 @@ export default function Menu({ menu, userInfo }: { menu: roleMyMenu, userInfo:us
         <MenuContentsWrap>
           <ColumnBox>
             <UserInfoWrap>
-              <ProfileImage imgUrl={userInfo && userInfo.fileUrl ? userInfo.fileUrl: ''} />
+              <ProfileImage imgUrl={userInfo && userInfo.fileUrl ? userInfo.fileUrl: defaultImage.src} />
               <RowBox>
                 <Text
                   bold

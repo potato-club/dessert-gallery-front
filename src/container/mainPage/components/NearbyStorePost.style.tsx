@@ -3,6 +3,7 @@ import styled from "styled-components";
 interface componentsProps {
     fontSize: string
     bold?: boolean
+    line?:boolean
 }
 
 export const NearbyStorePostWrap = styled.div`
@@ -25,7 +26,7 @@ export const MapWrap = styled.div`
 export const TextWrap = styled.div`
     width: 550px;
     height: 284px;
-    padding: 52px 54px;
+    padding: 48px 48px;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
@@ -34,6 +35,7 @@ export const TextWrap = styled.div`
 export const Text = styled.div<componentsProps>`
     margin: 10px 0;
     font-family: noto-sans-cjk-kr;
+    
     font-size: ${({fontSize})=>`${fontSize}`};
     ${({bold}) => {
         if(bold === true){
@@ -41,9 +43,15 @@ export const Text = styled.div<componentsProps>`
         }
     }};
 
+    ${({line}) => {
+        if(line === true){
+            return `line-height: 1.2;`
+        }
+    }};
+
 `
 
 export const RatingWrap = styled.div`
-    margin-top: 16px;
+    margin-top: auto;
 `
 

@@ -103,7 +103,7 @@ const MapPage = () => {
 
       fetchData(typeof lat === 'string'? lat: lat.join(), typeof lng === 'string'? lng: lng.join(), typeof sort === "string" ? sort: sort.join(), typeof search === 'string'? search: search.join());
     }
-  },[isReady, searchData.page]);
+  },[isReady, searchData.page, searchData.searchKeyword]);
 
   /** 지도 정보 업데이트 */
   useEffect(()=>{
@@ -142,7 +142,7 @@ const MapPage = () => {
       })
 
       /** 마커와 오버레이를 포함하는 지도영역을 재설정 */
-      renderedMap.current.setBounds(bounds, 90, 30, 10, 30);
+      renderedMap.current.setBounds(bounds, 120, 120, 120, 120);
 
       /** marker overlay 생성 */
       renderedOverlay.current = storeListData.map((marker: { storeId: number, latitude: number; longitude: number; storeName:string; score:number; storeAddress: string, content: string, fileUrl:string}, idx) =>{ 
@@ -211,12 +211,10 @@ const MapPage = () => {
           if(storeListData&&storeListData.length>0) {
             setMarker();
           }
-          
+          renderedMap.current.relayout()
         }
       });
     };
-
-    
 
   },[storeListData.length])
 
