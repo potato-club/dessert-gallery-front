@@ -6,6 +6,7 @@ import Tag from '../../../../components/Tag'
 import type { tagClickData } from '../../../../types/componentsData'
 import SortingButton from '../SortingButton'
 import { selectOrder, boardOptionValue } from '../../../../types/componentsProps'
+import { SearchBoardSvg } from '../../../../../public/svg'
 
 
 function BoardOption({orderOption, setOrderOption,optionData,setOptionData, setPageCount, setReloadDone}: boardOptionValue) {
@@ -133,7 +134,7 @@ function BoardOption({orderOption, setOrderOption,optionData,setOptionData, setP
       <OptionCategoriesWrap>
         <OptionCategoriesButton categoryId={0} selectNumber={selectCategory} onClick={()=>{setSelectCategory(0)}}>픽업 지역 선택</OptionCategoriesButton>
         <OptionCategoriesTextInputLabel>
-          <OptionCategoriesSVGImg src='/SVG/galleryBoardPage/Search.svg'/>
+          <SearchBoardSvg/>
           <OptionCategoriesTextInput type="text" placeholder='해시태그를 검색해보세요' onChange={onChangeSearchWord} onKeyUp={handleKeyUp} value={searchWord} onFocus={()=>{setSelectCategory(2)}}/>
         </OptionCategoriesTextInputLabel>
       </OptionCategoriesWrap>
