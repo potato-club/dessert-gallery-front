@@ -103,7 +103,7 @@ const MapPage = () => {
 
       fetchData(typeof lat === 'string'? lat: lat.join(), typeof lng === 'string'? lng: lng.join(), typeof sort === "string" ? sort: sort.join(), typeof search === 'string'? search: search.join());
     }
-  },[isReady, searchData.page]);
+  },[isReady, searchData.page, searchData.searchKeyword]);
 
   /** 지도 정보 업데이트 */
   useEffect(()=>{
