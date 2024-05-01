@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { useInfinityGetFollow } from '../../../../hooks/useFollowAction';
 import { useInfinityScrollLoading } from '../../../../hooks/useInfinityScroll';
+import LoadingSpinner from '../../../storePage/components/Modal/LoadingSpinner';
 import NoneListBox from '../../components/NoneListBox';
 import ItemList from './ItemList';
 
@@ -17,7 +18,11 @@ const FollowList = () => {
 
   return (
     <Container>
-      {pageList?.length ? (
+      {isLoading ? (
+        <InitLoading>
+          <LoadingSpinner width={100} height={100} borderWidth={5} />
+        </InitLoading>
+      ) : pageList?.length ? (
         <ItemList pageList={pageList} isLoad={isLoad} propRef={ref} />
       ) : (
         <NoneListBox content="팔로우한 가게가 없습니다." />
@@ -39,4 +44,10 @@ const Container = styled.div`
   @media (max-width: 1190px) {
     width: 520px;
   }
+`;
+const InitLoading = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
 `;

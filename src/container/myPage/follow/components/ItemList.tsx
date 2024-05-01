@@ -37,7 +37,9 @@ const ItemList = ({ ...props }: Props) => {
 
 export default ItemList;
 
-const IoDiv = styled.div``;
+const IoDiv = styled.div`
+  margin-top: 30px;
+`;
 const LoadingDiv = styled.div`
   width: 100%;
   margin-top: 10px;
@@ -48,6 +50,7 @@ const LoadingDiv = styled.div`
 const Container = styled.div`
   display: flex;
   flex-direction: column;
+  height: 100%;
   overflow-y: scroll;
   &::-webkit-scrollbar {
     display: none;
