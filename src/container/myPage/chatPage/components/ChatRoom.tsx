@@ -84,41 +84,42 @@ function ChatRoom({ userInfo }: { userInfo?: userInfoType }) {
         <NoItemAlert>선택된 채팅방이 없습니다.</NoItemAlert>
       ) : (
         <>
-          <Header>
-            <HeaderTop>
-              <Profile>
-                <ProfileImage />
-                <PartnerName>
-                  {roomInfoState.partnerName}
-                  <PartnerNameHelper>님</PartnerNameHelper>
-                </PartnerName>
-              </Profile>
-              <OptionButton
-                onClick={() => deleteChatRoom(roomInfoState.roomId)}
-              >
-                {[1, 2, 3].map((index) => (
-                  <Dot key={index}></Dot>
-                ))}
-              </OptionButton>
-            </HeaderTop>
+          <HeaderTop>
+            <Profile>
+              <ProfileImage />
+              <PartnerName>
+                {roomInfoState.partnerName}
+                <PartnerNameHelper>님</PartnerNameHelper>
+              </PartnerName>
+            </Profile>
+            <OptionButton onClick={() => deleteChatRoom(roomInfoState.roomId)}>
+              {[1, 2, 3].map((index) => (
+                <Dot key={index}></Dot>
+              ))}
+            </OptionButton>
+          </HeaderTop>
+          <SubWrapper>
+            <div id="reservationModal"></div>
+            <div id="completePickupModal"></div>
             <HeaderBottom roomInfoState={roomInfoState} userInfo={userInfo} />
-          </Header>
+            <Contents>
+              {chatHistoryState?.map((item: any, index) => (
+                <ChatItem
+                  key={index}
+                  messageType={item.messageType}
+                  myChat={userInfo?.nickname === item.sender}
+                  message={item.message}
+                  timestamp={item.dateTime}
+                ></ChatItem>
+              ))}
+            </Contents>
+          </SubWrapper>
 
-          <Contents>
-            {chatHistoryState?.map((item: any, index) => (
-              <ChatItem
-                key={index}
-                messageType={item.messageType}
-                myChat={userInfo?.nickname === item.sender}
-                message={item.message}
-                timestamp={item.dateTime}
-              ></ChatItem>
-            ))}
-          </Contents>
           <Bottom>
             <TextboxDiv>
               <Textbox
                 placeholder="메세지를 입력해주세요"
+                onKeyDown={(event) => handleKeyDown(event)}
                 {...register("message")}
               ></Textbox>
               <SendButtonDiv>
@@ -157,9 +158,8 @@ const Wrapper = styled.div`
   border-right: 1px solid #dedede;
 `;
 
-const Header = styled.div`
-  width: 100%;
-  height: 124px;
+const SubWrapper = styled.div`
+  position: relative;
 `;
 
 const HeaderTop = styled.div`
@@ -243,7 +243,14 @@ const Contents = styled.div`
   display: flex;
   flex-direction: column;
   border-bottom: 1px solid #dedede;
+  position: relative;
   overflow: auto;
+  padding: 15px 20px;
+`;
+
+const MessageContentsDiv = styled.div`
+  width: 100%;
+  height: 100%;
   padding: 15px 20px 0;
 `;
 
