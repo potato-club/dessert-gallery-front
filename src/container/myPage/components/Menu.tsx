@@ -6,6 +6,7 @@ import defaultImage from '../../../../public/image/defaultPhoto.png';
 import type { myMenu } from '../../../types/componentsProps';
 import Link from 'next/link';
 import { useMypageMenu } from '../../../hooks/useMypageRoute';
+import { useRouter } from 'next/router';
 
 interface styleProp {
   fontSize: string;
