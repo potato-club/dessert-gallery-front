@@ -18,10 +18,13 @@ const DetailPoster = ({ ...props }) => {
   return (
     <Container
       onClick={() => {
-        messageHandler(
-          `${props.userInfo.nickname}님이 [${detailPoster.title}]게시물을 태그했습니다./boardInfoStringboardId=${props.boardId}&thumbnail=${props.thumbnail}`,
-          "BOARD"
-        );
+        let select = confirm("선택한 게시물을 전송하시겠습니까?");
+        if (select) {
+          messageHandler(
+            `${props.userInfo.nickname}님이 [${detailPoster.title}]게시물을 태그했습니다./boardInfoStringboardId=${props.boardId}&thumbnail=${props.thumbnail}`,
+            "BOARD"
+          );
+        }
       }}
     >
       <ImageWrapper>
