@@ -83,7 +83,12 @@ const MainPost = () => {
         </HeaderWrapper>
       </Header>
       <Body>{selectState === 1 ? <Post /> : <ReviewList />}</Body>
-      {modalState && <PostForm handleDone={() => setModalState(false)} />}
+      {modalState && (
+        <PostForm
+          handleDone={() => setModalState(false)}
+          onClickOutside={() => setModalState(false)}
+        />
+      )}
     </Wrapper>
   );
 };

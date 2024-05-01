@@ -7,9 +7,10 @@ import myPageBack from "../../../../../public/image/myPageBack.png";
 
 interface PostFormProps {
   handleDone(): any;
+  onClickOutside: () => void;
 }
 
-const PostForm: React.FC<PostFormProps> = ({ handleDone }) => {
+const PostForm: React.FC<PostFormProps> = ({ handleDone, onClickOutside }) => {
   const [images, setImages] = useState<File[]>([]);
   const [showEditModal, setShowEditModal] = useState(false);
 
@@ -42,8 +43,8 @@ const PostForm: React.FC<PostFormProps> = ({ handleDone }) => {
   return (
     <>
       {!showEditModal && (
-        <Background>
-          <FormContainer>
+        <Background onClick={onClickOutside}>
+          <FormContainer onClick={(e) => e.stopPropagation()}>
             <TitleContainer>
               <FormTitle>게시물 올리기</FormTitle>
             </TitleContainer>
@@ -76,6 +77,7 @@ const PostForm: React.FC<PostFormProps> = ({ handleDone }) => {
           handleDone={handleDone}
           handleImagesChange={handleImageChange}
           handleDeleteImage={handleDeleteImage}
+          onBgClick={onClickOutside}
         />
       )}
     </>

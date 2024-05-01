@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import useGetStoreInfo, {
   useGetStorePost,
@@ -21,6 +21,7 @@ const Post = () => {
   const storeId = storeInfo?.id;
   const [postId, setPostId] = useState<number | null>(null);
   const [storePost, setStorePost] = useState<StorePost[] | null>(null);
+  const detailPostRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     async function fetchStorePost() {
@@ -36,11 +37,7 @@ const Post = () => {
     }
   }, [storeId]);
 
-  useEscKey(() => closeThing());
-
-  const closeThing = () => {
-    setPostId(null);
-  };
+  useEscKey(() => setPostId(null));
 
   return (
     <>
@@ -54,7 +51,10 @@ const Post = () => {
           />
         ))}
       </BodyWrapper>
-      {postId && <DetailPost postId={postId} />}
+
+      {postId && (
+        <DetailPost postId={postId} onClickOutside={() => setPostId(null)} />
+      )}
     </>
   );
 };
@@ -75,4 +75,19 @@ const PostImage = styled.img`
   &:hover {
     cursor: pointer;
   }
+`;
+const Background = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1;
+`;
+const DetailPostContainer = styled.div`
+  z-index: 3; /* DetailPost가 Background 위에 올라오도록 */
 `;

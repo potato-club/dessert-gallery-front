@@ -12,6 +12,7 @@ interface EditModalProps {
   handleDone: any;
   handleImagesChange: (e: ChangeEvent<HTMLInputElement>) => void;
   handleDeleteImage: (indexToDelete: number) => void;
+  onBgClick: () => void;
 }
 
 const EditModal: React.FC<EditModalProps> = ({
@@ -20,6 +21,7 @@ const EditModal: React.FC<EditModalProps> = ({
   handleDone,
   handleImagesChange,
   handleDeleteImage,
+  onBgClick,
 }) => {
   const [previewImages, setPreviewImages] = useState<string[]>([]);
   const imageContainerRef = useRef<HTMLDivElement>(null);
@@ -105,8 +107,8 @@ const EditModal: React.FC<EditModalProps> = ({
   };
 
   return (
-    <Background>
-      <FormContainer expanded={expanded}>
+    <Background onClick={onBgClick}>
+      <FormContainer expanded={expanded} onClick={(e) => e.stopPropagation()}>
         <TopContainer>
           <DeleteBox>
             <ArrowImage onClick={deleteClick} />
