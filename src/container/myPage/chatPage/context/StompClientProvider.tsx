@@ -12,8 +12,8 @@ const StompClientContext = createContext(
     connectHandler: () => void;
     disconnectHandler: () => void;
     messageHandler: (message: string) => void;
-    onClickReservation: () => void;
-    onClickReview: () => void;
+    onClickReservation: (message: string) => void;
+    onClickReview: (message: string) => void;
   }
 );
 
@@ -123,14 +123,14 @@ export function StompClientProvider({
     getNewChat(newChat);
   };
 
-  const onClickReservation = () => {
+  const onClickReservation = (message: string) => {
     clientRef.current.publish({
       destination: "/pub/chat",
       // skipContentLengthHeader: true,
       body: JSON.stringify({
         chatRoomId: roomInfoState.roomId,
-        message: `${"user"}님의 예약이 확정되었습니다.`,
-        messageType: "RESERVEATION",
+        message: `${message}`,
+        messageType: "RESERVATION",
         sender: userInfo?.nickname,
       }),
       headers: { Authorization: getAccessToken() },
