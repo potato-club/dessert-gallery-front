@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import NoneListBox from '../../components/NoneListBox';
-import { useInfinityMyBookmark } from '../../../../hooks/useUser';
+import { useInfinityMyBookmark } from '../../../../hooks/useGetMyBookmark';
 import { useInfinityScrollLoading } from '../../../../hooks/useInfinityScroll';
 import ItemList from './ItemList';
 import LoadingSpinner from '../../../storePage/components/Modal/LoadingSpinner';
