@@ -37,13 +37,8 @@ function ChatRoom({ userInfo }: { userInfo?: userInfoType }) {
 
   // const { item } = useGueryGetChatRoom();
 
-  const {
-    connectHandler,
-    messageHandler,
-    onClickReservation,
-    onClickReview,
-    disconnectHandler,
-  } = useStompClientContext();
+  const { connectHandler, messageHandler, disconnectHandler } =
+    useStompClientContext();
 
   const messageCheckHandler = async () => {
     const chatHistory = await getChatHistory(roomInfoState.roomId);
@@ -55,7 +50,7 @@ function ChatRoom({ userInfo }: { userInfo?: userInfoType }) {
     if (event.key === "Enter" && !event.shiftKey) {
       event.preventDefault();
       if (getValues("message")) {
-        messageHandler(getValues("message"));
+        messageHandler(getValues("message"), "CHAT");
         setValue("message", "");
       }
     } else if (event.key === "Enter" && event.shiftKey) {
@@ -125,7 +120,7 @@ function ChatRoom({ userInfo }: { userInfo?: userInfoType }) {
               <SendButtonDiv>
                 <SendButton
                   onClick={() => {
-                    messageHandler(getValues("message"));
+                    messageHandler(getValues("message"), "CHAT");
                     setValue("message", "");
                   }}
                 >

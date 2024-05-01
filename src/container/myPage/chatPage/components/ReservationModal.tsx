@@ -17,7 +17,7 @@ const ReservationCalendar = ({
   const [selectedDate, setSelectedDate] = useState<Date | null>(new Date());
   const [roomInfoState, setRoomInfoState] = useRoomInfoState();
 
-  const { onClickReservation } = useStompClientContext();
+  const { messageHandler } = useStompClientContext();
 
   const convertedMonth = (month: string) => {
     switch (month) {
