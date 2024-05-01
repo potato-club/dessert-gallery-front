@@ -1,17 +1,12 @@
-import React from "react";
-import styled from "styled-components";
-import { useLoginUserInfo } from "../../../hooks/useUser";
-import BlockedList from "./components/BlockedList";
+import React from 'react';
+import styled from 'styled-components';
+import BlockedList from './components/BlockedList';
 
 const BlockedPage = () => {
-  const { data: userInfo } = useLoginUserInfo();
-
   return (
     <Container>
-      <InnerWrap>
-        <Title>차단된 계정</Title>
-        <BlockedList storeId={userInfo?.storeId} />
-      </InnerWrap>
+      <Title>차단된 계정</Title>
+      <BlockedList />
     </Container>
   );
 };
@@ -21,18 +16,12 @@ export default BlockedPage;
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 30px;
-  padding-top: 55px;
+  padding: 55px 0px;
   margin: 0px auto;
+  height: 100vh;
 `;
 const Title = styled.h1`
   font-size: 20px;
   font-weight: 600;
-`;
-const InnerWrap = styled.div`
-  display: flex;
-  gap: 30px;
-  flex-direction: column;
-  width: 100%;
-  height: 100%;
+  margin-bottom: 30px;
 `;

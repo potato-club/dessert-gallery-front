@@ -1,37 +1,49 @@
-import { useInfiniteQuery, useMutation, useQueryClient } from "react-query";
-import { boardApiList } from "../apis/controller/boardPage";
-import { getBlockedList, getFollow } from "../apis/controller/myPage";
-import { postBlocked, putUnBlocked } from "../apis/controller/myPage";
+import {
+  useInfiniteQuery,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from 'react-query';
+import { boardApiList } from '../apis/controller/boardPage';
+import { getBlockedList, getFollow } from '../apis/controller/myPage';
+import { postBlocked, putUnBlocked } from '../apis/controller/myPage';
+import { getLoginUserInfo } from '../apis/controller/myPage';
 
 // 팔로우 상태와 팔로우/취소 함수를 관리하는 Hook
 export const useFollowAction = (storeId: number) => {
   const queryClient = useQueryClient();
+  const { data } = useQuery(['loginUserInfo'], () => getLoginUserInfo(), {
+    refetchOnWindowFocus: false,
+  });
 
   const { mutate: putUnFollowMutate } = useMutation(
-    ["detailBoard", storeId],
+    ['detailBoard', storeId],
     () => boardApiList.putUnfollow(storeId.toString()),
     {
       onSuccess: () => {
-        queryClient.refetchQueries(["detailBoard", storeId]);
-        queryClient.refetchQueries(["storeInfo", storeId]);
-        queryClient.refetchQueries(["follow"]);
-        alert("언팔로우 되었습니다.");
+        queryClient.refetchQueries(['detailBoard', storeId]);
+        queryClient.refetchQueries(['storeInfo', storeId]);
+        queryClient.refetchQueries(['follow']);
+        alert('언팔로우 되었습니다.');
       },
     }
   );
   const { mutate: postFollowMutate } = useMutation(
-    ["detailBoard", storeId],
+    ['detailBoard', storeId],
     () => boardApiList.postFollow(storeId.toString()),
     {
       onSuccess: () => {
-        queryClient.refetchQueries(["detailBoard", storeId]);
-        queryClient.refetchQueries(["storeInfo", storeId]);
-        queryClient.refetchQueries(["follow"]);
-        alert("팔로우 되었습니다.");
+        queryClient.refetchQueries(['detailBoard', storeId]);
+        queryClient.refetchQueries(['storeInfo', storeId]);
+        queryClient.refetchQueries(['follow']);
+        alert('팔로우 되었습니다.');
       },
       onError: (err: any) => {
-        if (err.response.data.errorCode === "401")
-          alert("해당 가게로부터 차단 되었습니다.");
+        if (err.response.data.errorCode === '401') {
+          if (data.userRole === 'MANAGER')
+            alert('사장님 계정은 가게를 팔로우 할 수 없습니다.');
+          else alert('해당 가게로부터 차단 되었습니다.');
+        }
       },
     }
   );
@@ -49,7 +61,7 @@ export function useInfinityGetFollow() {
   };
 
   const { data, fetchNextPage, hasNextPage, isLoading, refetch } =
-    useInfiniteQuery(["follow"], fetchFollower, {
+    useInfiniteQuery(['follow'], fetchFollower, {
       getNextPageParam: (lastPage, pages) => {
         console.log(lastPage);
         if (!lastPage.isLast) return lastPage.nextPage;
@@ -65,23 +77,23 @@ export const useBlockedAction = (userName: string) => {
   const queryClient = useQueryClient();
 
   const { mutate: putUnBlockedMutate } = useMutation(
-    ["blockedList"],
+    ['blockedList'],
     (storeId: number) => putUnBlocked(storeId, userName),
     {
       onSuccess: () => {
-        queryClient.refetchQueries(["blockedList"]);
-        queryClient.refetchQueries(["follow"]);
+        queryClient.refetchQueries(['blockedList']);
+        queryClient.refetchQueries(['follow']);
         alert(`"${userName}" 이 차단 해제 되었습니다.`);
       },
     }
   );
   const { mutate: postBlockedMutate } = useMutation(
-    ["blockedList"],
+    ['blockedList'],
     (storeId: number) => postBlocked(storeId, userName),
     {
       onSuccess: () => {
-        queryClient.refetchQueries(["blockedList"]);
-        queryClient.refetchQueries(["follow"]);
+        queryClient.refetchQueries(['blockedList']);
+        queryClient.refetchQueries(['follow']);
         alert(`"${userName}" 이 차단 되었습니다.`);
       },
     }
@@ -100,7 +112,7 @@ export function useInfinityGetBlockedList() {
   };
 
   const { data, fetchNextPage, hasNextPage, isLoading, refetch } =
-    useInfiniteQuery(["blockedList"], fetchBlockedList, {
+    useInfiniteQuery(['blockedList'], fetchBlockedList, {
       getNextPageParam: (lastPage, pages) => {
         console.log(lastPage);
         if (!lastPage.isLast) return lastPage.nextPage;
