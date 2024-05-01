@@ -24,3 +24,14 @@ export const useLoginUserInfo = () => {
   });
   return { data };
 };
+
+export const useExistStore = () => {
+  const { data } = useQuery(
+    ['existStore'],
+    () => propfileApiList.getStoreProfile(),
+    {
+      refetchOnWindowFocus: false,
+    }
+  );
+  return { data };
+};
