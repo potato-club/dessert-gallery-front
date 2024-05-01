@@ -1,21 +1,25 @@
-import React, { useState } from "react";
-import styled, { css } from "styled-components";
-import { Logo, Search, HeaderBookmark, HeaderInfo } from "../../public/svg";
-import { useRouter } from "next/router";
-import { useTokenService } from "../hooks/useTokenService";
-import Dropdown from "./Dropdown";
+import React, { useState } from 'react';
+import styled, { css } from 'styled-components';
+import { Logo, Search, HeaderBookmark, HeaderInfo } from '../../public/svg';
+import { useRouter } from 'next/router';
+import { useTokenService } from '../hooks/useTokenService';
+import Dropdown from './Dropdown';
+import { useUserState, useLoginUserInfo } from '../hooks/useUser';
+import Link from 'next/link';
 
 const Header = () => {
   const router = useRouter();
   const { getAccessToken } = useTokenService();
 
   const onClickMyPageButton = () => {
-    if (getAccessToken() === "") {
-      alert("로그인 후 이용할 수 있습니다.");
-      router.push("login");
+    if (getAccessToken() === '') {
+      alert('로그인 후 이용할 수 있습니다.');
+      router.push('login');
     }
   };
   const [dropdownState, setDropdownState] = useState(false);
+
+  const { data } = useLoginUserInfo();
 
   return (
     <Container>
@@ -26,17 +30,17 @@ const Header = () => {
       <BtnList>
         <PageMoveBtn
           href="/galleryBoard"
-          active={router.pathname === "/galleryBoard"}
+          active={router.pathname === '/galleryBoard'}
         >
           가게 게시판
         </PageMoveBtn>
         <PageMoveBtn
           href="/reviewBoard"
-          active={router.pathname === "/reviewBoard"}
+          active={router.pathname === '/reviewBoard'}
         >
           후기 게시판
         </PageMoveBtn>
-        <PageMoveBtn href="/map" active={router.pathname === "/map"}>
+        <PageMoveBtn href="/map" active={router.pathname === '/map'}>
           지도로 찾기
         </PageMoveBtn>
       </BtnList>
@@ -59,9 +63,11 @@ const Header = () => {
           <HeaderInfo width="31px" height="32px" />
           <Dropdown dropdownState={dropdownState} />
         </MyPageBtn>
-        <BookmarkBtn>
-          <HeaderBookmark width="23px" height="32px" />
-        </BookmarkBtn>
+        {data && data.userRole === 'USER' && (
+          <Link href={'/myPage/bookmark'}>
+            <HeaderBookmark width="23px" height="32px" />
+          </Link>
+        )}
       </AboutUser>
     </Container>
   );
@@ -150,4 +156,3 @@ const MyPageBtn = styled.div`
   cursor: pointer;
   position: relative;
 `;
-const BookmarkBtn = styled.div``;
