@@ -1,21 +1,11 @@
-import {
-  useInfiniteQuery,
-  useMutation,
-  useQuery,
-  useQueryClient,
-} from 'react-query';
+import { useInfiniteQuery, useMutation, useQueryClient } from 'react-query';
 import { boardApiList } from '../apis/controller/boardPage';
 import { getBlockedList, getFollow } from '../apis/controller/myPage';
 import { postBlocked, putUnBlocked } from '../apis/controller/myPage';
-import { getLoginUserInfo } from '../apis/controller/myPage';
 
 // 팔로우 상태와 팔로우/취소 함수를 관리하는 Hook
 export const useFollowAction = (storeId: number) => {
   const queryClient = useQueryClient();
-  const { data } = useQuery(['loginUserInfo'], () => getLoginUserInfo(), {
-    refetchOnWindowFocus: false,
-  });
-
   const { mutate: putUnFollowMutate } = useMutation(
     ['detailBoard', storeId],
     () => boardApiList.putUnfollow(storeId.toString()),
@@ -39,11 +29,11 @@ export const useFollowAction = (storeId: number) => {
         alert('팔로우 되었습니다.');
       },
       onError: (err: any) => {
-        if (err.response.data.errorCode === '401') {
-          if (data.userRole === 'MANAGER')
-            alert('사장님 계정은 가게를 팔로우 할 수 없습니다.');
-          else alert('해당 가게로부터 차단 되었습니다.');
-        }
+        console.log(err);
+        if (err.response.data.errorCode === 'F4001')
+          alert('해당 가게로부터 차단 되었습니다.');
+        else if (err.response.data.errorCode === 'F4002')
+          alert('사장님 계정은 가게를 팔로우 할 수 없습니다.');
       },
     }
   );

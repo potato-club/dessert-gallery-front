@@ -1,15 +1,18 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import Menu from '../components/Menu';
 import myPageBack from '../../../../public/image/myPageBack.png';
 import { useRouter } from 'next/router';
 import {
+  useNoneLoginBlocking,
   useNoneStoreBlocking,
   useUserRoleRouteBlocking,
 } from '../../../hooks/useMypageRoute';
 
 const MyPageLayout = ({ ...props }) => {
   const router = useRouter();
+
+  useNoneLoginBlocking();
   useNoneStoreBlocking();
   useUserRoleRouteBlocking();
 
