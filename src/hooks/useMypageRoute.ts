@@ -3,6 +3,17 @@ import { roleMyMenu } from '../types/componentsProps';
 import { useExistStore, useLoginUserInfo, useUserState } from './useUser';
 import { menuList } from '../constants/menu';
 import { useRouter } from 'next/router';
+import sessionStorageService from '../libs/sessionStorageService';
+
+export const useNoneLoginBlocking = () => {
+  const router = useRouter();
+  useEffect(() => {
+    const token = sessionStorageService.get('JWTSessionStorage', 'accessToken');
+    if (!token) {
+      router.push('/login');
+    }
+  }, []);
+};
 
 export const useMypageMenu = () => {
   const { isGuest } = useUserState();
@@ -36,46 +47,56 @@ export const useMypageMenu = () => {
 
 export const useNoneStoreBlocking = () => {
   const router = useRouter();
+  const { isGuest } = useUserState();
   const { data: userInfo } = useLoginUserInfo();
   const { data: existStore } = useExistStore();
 
   useEffect(() => {
-    if (userInfo && userInfo.userRole === 'MANAGER') {
-      const mustExistRoute = [
-        '/myPage/calendar',
-        '/myPage/notice',
-        '/myPage/review',
-        '/myPage/post',
-        '/myPage/blocked',
-      ];
-      if (
-        existStore?.res === 'noneStore' &&
-        mustExistRoute.includes(router.pathname)
-      ) {
-        alert('가게를 생성해주세요');
-        router.push('/myPage');
+    if (!isGuest) {
+      if (userInfo && userInfo.userRole === 'MANAGER') {
+        const mustExistRoute = [
+          '/myPage/calendar',
+          '/myPage/notice',
+          '/myPage/review',
+          '/myPage/post',
+          '/myPage/blocked',
+        ];
+        if (
+          existStore?.res === 'noneStore' &&
+          mustExistRoute.includes(router.pathname)
+        ) {
+          alert('가게를 생성해주세요');
+          router.push('/myPage');
+        }
       }
     }
-  }, [router, existStore]);
+  }, [isGuest, router, existStore]);
 };
 
 export const useUserRoleRouteBlocking = () => {
   const router = useRouter();
+  const { isGuest } = useUserState();
   const { data: userInfo } = useLoginUserInfo();
 
   useEffect(() => {
-    if (userInfo && userInfo.userRole === 'USER') {
-      const onlyManager = [
-        '/myPage/calendar',
-        '/myPage/notice',
-        '/myPage/post',
-        '/myPage/blocked',
-      ];
-      if (onlyManager.includes(router.pathname)) router.push('/myPage');
+    if (!isGuest) {
+      if (userInfo && userInfo.userRole === 'USER') {
+        const onlyManager = [
+          '/myPage/calendar',
+          '/myPage/notice',
+          '/myPage/post',
+          '/myPage/blocked',
+        ];
+        if (onlyManager.includes(router.pathname)) router.push('/myPage');
+      }
+      if (userInfo && userInfo.userRole === 'MANAGER') {
+        const onlyUser = [
+          '/myPage/review',
+          '/myPage/bookmark',
+          '/myPage/follow',
+        ];
+        if (onlyUser.includes(router.pathname)) router.push('/myPage');
+      }
     }
-    if (userInfo && userInfo.userRole === 'MANAGER') {
-      const onlyUser = ['/myPage/review', '/myPage/bookmark', '/myPage/follow'];
-      if (onlyUser.includes(router.pathname)) router.push('/myPage');
-    }
-  }, [userInfo, router]);
+  }, [isGuest, userInfo, router]);
 };

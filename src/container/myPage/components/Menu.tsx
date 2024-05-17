@@ -7,6 +7,8 @@ import type { myMenu } from '../../../types/componentsProps';
 import Link from 'next/link';
 import { useMypageMenu } from '../../../hooks/useMypageRoute';
 import { useRouter } from 'next/router';
+import { useLogout, useWithdrawal } from '../../../hooks/useUser';
+import { useTokenService } from '../../../hooks/useTokenService';
 
 interface styleProp {
   fontSize: string;
@@ -21,7 +23,12 @@ interface imgProps {
 
 export default function Menu() {
   const router = useRouter();
+  const { getAccessToken, getRefreshToken } = useTokenService();
+
   const { menu, userInfo } = useMypageMenu();
+  const { mutate: logout } = useLogout();
+  const { mutate: withdrawal } = useWithdrawal();
+
   const onClickMoveMain = () => {
     window.location.href = '/';
   };
@@ -91,7 +98,16 @@ export default function Menu() {
 
           <SiteMenuWrap>
             {menu.siteDefaultMenu.map((el: myMenu, idx) => (
-              <CategoryWrap key={`SiteMenuWrap${idx}`}>
+              <CategoryWrap
+                key={`SiteMenuWrap${idx}`}
+                onClick={() => {
+                  const at = getAccessToken();
+                  const rt = getRefreshToken();
+                  el.domain === 'logout'
+                    ? logout({ at, rt })
+                    : withdrawal({ at, rt });
+                }}
+              >
                 <CategoryLogo key={`SiteMenuLogo${idx}`} />
                 <Text
                   cursorStyle={true}
