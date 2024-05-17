@@ -1,29 +1,20 @@
 import React, { ChangeEvent, KeyboardEvent, useState } from 'react';
 import styled, { css } from 'styled-components';
-import { Logo, Search, HeaderBookmark, HeaderInfo } from '../../public/svg';
+import { Logo, Search, HeaderInfo } from '../../public/svg';
 import { useRouter } from 'next/router';
-import { useTokenService } from '../hooks/useTokenService';
 import Dropdown from './Dropdown';
-import { useLoginUserInfo } from '../hooks/useUser';
-import Link from 'next/link';
+import { useUserState } from '../hooks/useUser';
 
 const Header = () => {
   const router = useRouter();
-  const { getAccessToken } = useTokenService();
+  const { isGuest } = useUserState();
 
-  const onClickMyPageButton = () => {
-    if (getAccessToken() === '') {
-      alert('로그인 후 이용할 수 있습니다.');
-      router.push('login');
-    }
-  };
   const [dropdownState, setDropdownState] = useState(false);
   const [searchWord, setSearchWord] = useState<string>('');
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     setSearchWord(e.target.value);
   };
-
   const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
     // 엔터 키가 입력되었을 때 동작할 코드 작성
     if (e.key === 'Enter') {
@@ -36,10 +27,6 @@ const Header = () => {
       }
     }
   };
-
-  console.log('router', router);
-
-  const { data } = useLoginUserInfo();
 
   return (
     <Container>
@@ -82,22 +69,20 @@ const Header = () => {
 
       <AboutUser>
         <MyPageBtn
-          onClick={onClickMyPageButton}
-          onMouseOver={() => {
-            if (getAccessToken()) {
-              setDropdownState(true);
+          onClick={() => {
+            if (isGuest) {
+              alert('로그인 후 이용할 수 있습니다.');
+              router.push('/login');
             }
+          }}
+          onMouseOver={() => {
+            !isGuest && setDropdownState(true);
           }}
           onMouseOut={() => setDropdownState(false)}
         >
           <HeaderInfo width="31px" height="32px" />
           <Dropdown dropdownState={dropdownState} />
         </MyPageBtn>
-        {data && data.userRole === 'USER' && (
-          <Link href={'/myPage/bookmark'}>
-            <HeaderBookmark width="23px" height="32px" />
-          </Link>
-        )}
       </AboutUser>
     </Container>
   );
