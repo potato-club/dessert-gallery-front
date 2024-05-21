@@ -9,6 +9,7 @@ import { SESSION_KEY } from "../constants/session";
 import axios from "axios";
 
 const Dropdown = ({ dropdownState }: { dropdownState: boolean }) => {
+  const baseURL = process.env.NEXT_PUBLIC_API_URL;
   const { getAccessToken, getRefreshToken, setToken } = useTokenService();
 
   const router = useRouter();
@@ -19,15 +20,12 @@ const Dropdown = ({ dropdownState }: { dropdownState: boolean }) => {
     const accessToekn = getAccessToken();
     const refreshToken = getRefreshToken();
 
-    const response = await axios.get(
-      "https://api.dessert-gallery.site/users/logout",
-      {
-        headers: {
-          Authorization: accessToekn,
-          RefreshToken: refreshToken,
-        },
-      }
-    );
+    const response = await axios.get(`${baseURL}/users/logout`, {
+      headers: {
+        Authorization: accessToekn,
+        RefreshToken: refreshToken,
+      },
+    });
     console.log(response);
     return response;
   };
