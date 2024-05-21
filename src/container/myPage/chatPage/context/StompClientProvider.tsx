@@ -46,13 +46,13 @@ export function StompClientProvider({
   const connectHandler = () => {
     if (window !== undefined) {
       clientRef.current = new StompJs.Client({
-        brokerURL: "wss://api.dessert-gallery.site/ws/chat/websocket",
+        brokerURL: "wss://api.dessertgallery.site/ws/chat/websocket",
         debug: function (str) {
           console.log(str);
         },
         // webSocketFactory: () => {
         //   return new SockJS(
-        //     "https://api.dessert-gallery.site/ws/chat"
+        //     "https://api.dessertgallery.site/ws/chat"
         //   ) as WebSocket;
         // },
         connectHeaders: { Authorization: getAccessToken() },
