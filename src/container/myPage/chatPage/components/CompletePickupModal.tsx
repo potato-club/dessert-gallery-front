@@ -17,6 +17,8 @@ const CompletePickupModal = ({
 }: {
   getCompletePickupModalState: (modalState: boolean) => void;
 }) => {
+  const baseURL = process.env.NEXT_PUBLIC_API_URL;
+
   const [mounted, setMounted] = useState(false);
   const [roomInfoState, setRoomInfoState] = useRoomInfoState();
   const [selectedItem, setSelectedItem] = useState<number>(0);
@@ -30,7 +32,7 @@ const CompletePickupModal = ({
     console.log(roomInfoState);
 
     const response = await axios.get(
-      `https://api.dessert-gallery.site/stores/${roomInfoState.storeId}/chat/reservations?nickname=${roomInfoState.partnerName}`,
+      `${baseURL}/stores/${roomInfoState.storeId}/chat/reservations?nickname=${roomInfoState.partnerName}`,
       { headers: { Authorization: getAccessToken() } }
     );
     console.log(response);
@@ -41,7 +43,7 @@ const CompletePickupModal = ({
   const fetchCompletePickup = async () => {
     if (selectedItem) {
       const response = await axios.put(
-        `https://api.dessert-gallery.site/stores/schedule?id=${selectedItem}`,
+        `${baseURL}/stores/schedule?id=${selectedItem}`,
         {},
         { headers: { Authorization: getAccessToken() } }
       );
