@@ -11,6 +11,7 @@ import LoginModal from "../components/LoginModal";
 import { loginPageApi } from "../../../apis/controller/loginPage";
 
 function VerifyContents() {
+  const baseURL = process.env.NEXT_PUBLIC_API_URL;
   const router = useRouter();
   const [isVerifyCodeSend, setIsVerifyCodeSend] = useState(false);
   const [signupData, setSignupData] = useSignupDataState();
@@ -34,7 +35,7 @@ function VerifyContents() {
 
     if (email !== "") {
       const response = await axios.post(
-        "https://api.dessert-gallery.site/users/mail/gmail",
+        `${baseURL}/users/mail/gmail`,
         {
           headers: {
             "Content-Type": "text/javascript",
@@ -62,7 +63,7 @@ function VerifyContents() {
     }
     try {
       const response: any = await axios.post(
-        "https://api.dessert-gallery.site/users/mail/verify",
+        `${baseURL}/users/mail/verify`,
         formData,
         {
           headers: {
