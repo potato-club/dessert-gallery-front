@@ -105,7 +105,8 @@ export default function Menu() {
                   const rt = getRefreshToken();
                   el.domain === 'logout'
                     ? logout({ at, rt })
-                    : withdrawal({ at, rt });
+                    : confirm('정말로 탈퇴 하시겠습니까?') &&
+                      withdrawal({ at, rt });
                 }}
               >
                 <CategoryLogo key={`SiteMenuLogo${idx}`} />
