@@ -18,11 +18,6 @@ const Reissue = () => {
           refreshToken: refreshToken,
         },
       });
-      return reissueResponse;
-    };
-
-    try {
-      const reissueResponse: any = fetchReissue();
 
       if (reissueResponse.status === 200) {
         sessionStorageService.set(
@@ -36,9 +31,9 @@ const Reissue = () => {
         );
         router.replace(`/`);
       }
-    } catch (error) {
-      console.log(error);
-    }
+    };
+
+    fetchReissue();
   }, []);
 
   return (
