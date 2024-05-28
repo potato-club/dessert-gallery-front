@@ -1,5 +1,5 @@
 import React, {useEffect, useRef} from 'react'
-import { NearbyStorePostWrap, TextWrap,Text, RatingWrap, MapWrap } from './NearbyStorePost.style'
+import { NearbyStorePostWrap, TextWrap,Text, RatingWrap, MapWrap, BottomWrap, TopWrap } from './NearbyStorePost.style'
 import Image from 'next/image'
 import Rating from '../../../components/Rating'
 import Tag from '../../../components/Tag'
@@ -11,7 +11,6 @@ interface nearbyStoreProps {
 
 function NearbyStorePost({item}: nearbyStoreProps) {
   const storeMap = useRef<HTMLDivElement>(null);
-
   useEffect(()=>{
 
     const script = document.createElement("script");
@@ -53,12 +52,17 @@ function NearbyStorePost({item}: nearbyStoreProps) {
     <NearbyStorePostWrap key={item.longitude+item.latitude}>
         <MapWrap ref={storeMap}/>
         <TextWrap>
+          <TopWrap>
             <Text bold fontSize='40px'>{item.storeName}</Text>
             <Text line fontSize='14px'>{item.storeAddress}</Text>
+          </TopWrap>
+          <BottomWrap>
             <RatingWrap>
               <Rating size='medium' ratingValue={item.score}/>
             </RatingWrap>
-            <Tag width='130px' height='32px' clickAble={true} title='보러가기' hoverCss={true} margin='8px 0 0 0' fontSize='11px' onClickHandler={()=>alert('click')}/>
+            <Tag width='120px' height='28px' clickAble={true} title='보러가기' hoverCss={true} margin='8px 0 0 0' fontSize='11px' onClickHandler={()=>window.location.href=`/galleryBoard/${item.storeId}`}/>
+          </BottomWrap>
+        
         </TextWrap>
     </NearbyStorePostWrap>
   )
