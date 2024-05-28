@@ -13,6 +13,10 @@ const slideInAnimation = keyframes`
   }
 `;
 
+interface labelProps {
+  checked: boolean
+}
+
 export const LocationSelectorWrap = styled.div`
     width: 1100px;
     height: 320px;
@@ -67,12 +71,39 @@ export const DistrictWrap = styled.div`
 
 
 export const CheckboxInput = styled.input.attrs({ type: 'radio' })`
-  
-  margin-right: 8px;
+  -webkit-appearance: none; // 웹킷 브라우저에서 기본 스타일 제거
+  -moz-appearance: none; // 모질라 브라우저에서 기본 스타일 제거 
+  appearance: none; // 기본 브라우저에서 기본 스타일 제거
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  outline: none; // focus 시에 나타나는 기본 스타일 제거
+  display: none;
 `;
 
-export const CheckboxLabel = styled.label`
+export const CheckboxLabel = styled.label<labelProps>`
+  display: flex;
+  justify-content: center;
+  align-items: center;
   font-family: noto-sans-cjk-kr;
+  background-color: #ff6f003d;
+  border: solid 2px none;
+  padding: 8px 12px;
+  border-radius: 4px;
   font-size: 16px;
-  margin: 16px 0;
+  margin: 8px 0;
+  cursor: pointer;
+
+  :hover {
+    font-weight: bold;
+  }
+
+  ${({checked}) => {
+    if(checked){
+      return `
+        font-weight: bold;
+        background-color: #fd8c35ac;
+      `
+    }
+  }};
 `;

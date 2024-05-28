@@ -49,12 +49,12 @@ export default function LocationSelector({selectedLocation, onChangeLocation}: l
           {
             regionsData.map(e => (
               selectOption.length !== 0 && selectOption[0].city === e.city? (
-                <CheckboxLabel key={e.city}>
+                <CheckboxLabel checked={true} key={e.city}>
                 {e.city}
                 <CheckboxInput onChange={onChangeSelectCity} key={e.city} name='city' id={e.city} value={e.city} checked={true}/>
               </CheckboxLabel>
               ):(
-                <CheckboxLabel key={e.city}>
+                <CheckboxLabel checked={false} key={e.city}>
                 {e.city}
                 
                 <CheckboxInput onChange={onChangeSelectCity} key={e.city} name='city' id={e.city} value={e.city}/>
@@ -68,12 +68,12 @@ export default function LocationSelector({selectedLocation, onChangeLocation}: l
         {
           selectOption.length !== 0 && selectOption[0].child.map((e,idx) => (
             districtOption === e? (
-              <CheckboxLabel key={e}>
+              <CheckboxLabel checked={true} key={e}>
               {e}
               <CheckboxInput onChange={()=>onChangeDistrict({location: selectOption[0], idx: idx})} key={e} name='district' id={e} value={e} checked={true}/>
             </CheckboxLabel>
             ):(
-              <CheckboxLabel key={e}>
+              <CheckboxLabel checked={false} key={e}>
               {e}
               <CheckboxInput onChange={()=>onChangeDistrict({location: selectOption[0], idx: idx})} key={e} name='district' id={e} value={e}/>
             </CheckboxLabel>
