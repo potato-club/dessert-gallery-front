@@ -1,7 +1,10 @@
+import { SESSION_KEY } from "../../constants/session";
+import sessionStorageService from "../../libs/sessionStorageService";
 import sendApi from "../sendApi";
 import axios from "axios";
 
 const baseURL = process.env.NEXT_PUBLIC_API_URL;
+const refreshToken = sessionStorageService.get(SESSION_KEY, "refreshToken");
 
 export const loginPageApi = {
   postLogin: async (loginData: { email: string; password?: string }) => {
@@ -28,30 +31,27 @@ export const loginPageApi = {
     return await axios.post(`${baseURL}/users/signup`, signupData);
   },
 
-  // 아래 2개의 코드는 현재의 sendApi 코드로는 불가능한 것으로 보이므로 일단 보류
-  postSendVerifyCode: async (recipientEmail: string) => {
-    return await sendApi.post(
-      // 기존에는 recipientEmil을 params로 전달 했었음
-      // 이대로 테스트해보고 안되면 파라미터로 바꾸기
-      "/users/mail/gmail",
+  postSendVerifyCode: async (recipientEmail?: string) => {
+    return await axios.post(
+      `${baseURL}/users/mail/gmail`,
       {
-        recipientEmail: recipientEmail,
+        headers: {
+          "Content-Type": "text/javascript",
+        },
+      },
+      {
+        params: {
+          recipientEmail: recipientEmail,
+        },
       }
     );
   },
   postCheckVerifyCode: async (formData: FormData) => {
-    return await sendApi.post(
-      "/users/mail/verify",
-      formData
-      // 원래 코드에는 헤더에 컨텐츠 타입을 지정해주는 코드가 있음
-      // 이대로 시도해보고 안되면 sendApi에 헤더를 지정해주는 부분을 추가하거나
-      //그냥 기존 방법대로 사용하기
-      // {
-      //   headers: {
-      //     "Content-Type": "multipart/form-data",
-      //   },
-      // }
-    );
+    return await axios.post(`${baseURL}/users/mail/verify`, formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
   },
 
   getTokenCheck: async () => {
@@ -59,6 +59,10 @@ export const loginPageApi = {
   },
 
   getReissue: async () => {
-    return await axios.get(`${baseURL}/users/reissue`);
+    return await axios.get(`${baseURL}/users/reissue`, {
+      headers: {
+        refreshToken: refreshToken,
+      },
+    });
   },
 };
