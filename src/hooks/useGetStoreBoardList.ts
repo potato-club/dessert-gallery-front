@@ -22,17 +22,15 @@ async function fetchStoreBoardData(req: boardSearchOptionData) {
   const queryString = queryStringLibrary.stringify(queryParams);
   let fullQueryString = `/list/stores?${queryString}`;
 
-  console.log('query:', fullQueryString);
-
   try {
     const { data } = await boardApiList.getBoardList(fullQueryString);
 
       // pageCount 1, 첫 검색시, 초기화
       if(Number(req.page) === 1 ){
         if(data.length ===0){  // 첫 검색인데 데이터 없을시
-          req.setToast(true);  // 데이터 없다고 띄우기
-          req.setReloadDone(true);
           req.setResData([])   // 데이터 초기화
+          req.setToast(true);  // 데이터 없다고 띄우기
+          req.setReloadDone.current = true;
         }else{                        // 검색해서 받은 데이터 있는 경우
           let temp = [];
           temp.push(data)             // 데이터 가공
@@ -45,7 +43,7 @@ async function fetchStoreBoardData(req: boardSearchOptionData) {
       else if(Number(req.page)-1 >=req.resData.length){
         if(data.length ===0 && req.resData.length !== 0){ // 새로 받은 데이터는 빈배열이나, 기존에 가지고 있는 데이터가 있는 경우
           req.setToast(true);                             // 데이터 없다고 띄우기
-          req.setReloadDone(true)
+          req.setReloadDone.current = true
         }else{                  // 새로 받은 데이터가 있는 경우
           let temp = req.resData;
           temp.push(data)     
@@ -67,6 +65,7 @@ export function useGetStoreBoardListdData(req: boardSearchOptionData) {
   return useInfiniteQuery(queryKey, () => fetchStoreBoardData(req), {
     getNextPageParam: (lastPage, pages) => {
       // 페이지 번호를 pageCount로 설정
+      console.log("현재 page counr, ", req.page)
       return req.page+1;
     },
   });

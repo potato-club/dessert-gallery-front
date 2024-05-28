@@ -29,7 +29,21 @@ export const TextWrap = styled.div`
     padding: 48px 48px;
     display: flex;
     flex-direction: column;
+    justify-content: space-between;
     align-items: flex-start;
+`
+
+export const TopWrap = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: space-around;
+`
+
+export const BottomWrap = styled.div`
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 `
 
 export const Text = styled.div<componentsProps>`
@@ -52,6 +66,10 @@ export const Text = styled.div<componentsProps>`
 `
 
 export const RatingWrap = styled.div`
+    height: 100%;
     margin-top: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 `
 

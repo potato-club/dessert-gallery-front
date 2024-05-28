@@ -11,7 +11,7 @@ import { SearchBoardSvg } from '../../../../../public/svg'
 
 function BoardOption({orderOption, setOrderOption,optionData,setOptionData, setPageCount, setReloadDone}: boardOptionValue) {
   const [isSelected, setIsSelected] = useState<boolean>(false)
-  const [selectCategory, setSelectCategory] = useState<number>(2)
+  const [selectCategory, setSelectCategory] = useState<number>(0)
   const [searchWord, setSearchWord] = useState<string>('')
   const [searchWordList, setSearchWordList] = useState<string[]>([])
   
@@ -36,7 +36,8 @@ function BoardOption({orderOption, setOrderOption,optionData,setOptionData, setP
     setIsSelected(false);
     setSearchWordList([])
     setPageCount(1);
-    setReloadDone(false);
+    setReloadDone.current = false;
+    console.log("검색 초기화")
   }
 
   /**
@@ -69,7 +70,7 @@ function BoardOption({orderOption, setOrderOption,optionData,setOptionData, setP
       setIsSelected(false);
     }
     setPageCount(1)
-    setReloadDone(false);
+    setReloadDone.current = false;
   }
 
   /**
@@ -91,7 +92,7 @@ function BoardOption({orderOption, setOrderOption,optionData,setOptionData, setP
     setIsSelected(true);
     setSearchWord('');
     setPageCount(1)
-    setReloadDone(false);
+    setReloadDone.current = false;
     }
   };
 
@@ -105,7 +106,7 @@ function BoardOption({orderOption, setOrderOption,optionData,setOptionData, setP
     }))
     setIsSelected(true)
     setPageCount(1)
-    setReloadDone(false);
+    setReloadDone.current = false;
   }
 
   const onClickTag = ({menu, idx=0}:tagClickData) => {
@@ -126,7 +127,7 @@ function BoardOption({orderOption, setOrderOption,optionData,setOptionData, setP
       isAllClean(menu);
     }
     setPageCount(1)
-    setReloadDone(false);
+    setReloadDone.current = false;
   }
 
   return (
@@ -168,8 +169,8 @@ function BoardOption({orderOption, setOrderOption,optionData,setOptionData, setP
         <SelectOptionCancleWrap>
           {
             isSelected 
-            ? <Tag margin='0 28px' width='210px' height='48px' title='선택 초기화' clickAble={true} hoverCss={true} onClickHandler={onClickResetForm} fontSize='20px' inversion={true}  />
-            : <Tag margin='0 28px' width='210px' height='48px' title='선택 초기화' clickAble={false}  fontSize='20px' inversion={false}  />
+            ? <Tag margin='0 28px' width='160px' height='40px' title='선택 초기화' clickAble={true} hoverCss={true} onClickHandler={onClickResetForm} fontSize='18px' inversion={true}  />
+            : <Tag margin='0 28px' width='160px' height='40px' title='선택 초기화' clickAble={false}  fontSize='18px' inversion={false}  />
           }
         </SelectOptionCancleWrap>
       </SelectOptionWrap>

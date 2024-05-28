@@ -98,6 +98,7 @@ function SlideImage({
                   <LeftMoveButtonIcon
                     width={`${width / 30}px`}
                     height={`${height / 30}px`}
+                    stroke="white"
                   />
                 </SvgWrap>
               </LeftMoveButton>
@@ -123,6 +124,7 @@ function SlideImage({
                     className="buttonShadow"
                     width={`${width / 30}px`}
                     height={`${height / 30}px`}
+                    stroke="white"
                   />
                 </SvgWrap>
               </RightMoveButton>

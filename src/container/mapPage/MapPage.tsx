@@ -74,6 +74,23 @@ const MapPage = () => {
     renderedMap.current.setCenter(new (window as any).kakao.maps.LatLng(lat, lng))
   }
 
+  //뒤로가기 이벤트 처리 로직
+  useEffect(() => {
+    const handleBackButton = (event:PopStateEvent) => {
+      setSearchData(prev => ({
+        ...prev,
+        page: 1
+      }))
+    };
+
+    window.addEventListener('popstate', handleBackButton);
+
+    return () => {
+      window.removeEventListener('popstate', handleBackButton);
+    };
+  }, []);
+
+
   // 도메인 해석 및 링크 업데이트 / page 업데이트 
   useEffect(()=>{
     if(!isReady) return;
@@ -240,5 +257,3 @@ const Container = styled.div`
     min-width: 500px; 
   }
 `;
-
-

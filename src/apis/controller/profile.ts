@@ -30,7 +30,7 @@ export const propfileApiList = {
  
 
 export const putUser = async (sendFormData: FormData) => {
-    const res = await axios.put('https://api.dessert-gallery.site/users', sendFormData, {
+    const res = await axios.put('https://api.dessertgallery.site/users', sendFormData, {
         headers: {
           'Content-Type': 'multipart/form-data',
           'Authorization': `${sessionStorageService.get('JWTSessionStorage', "accessToken")}`,
@@ -43,7 +43,7 @@ export const putUser = async (sendFormData: FormData) => {
 
 
 export const getCheckNicknamme = async (nicknameString: string) => {
-  const res = await axios.get(`https://api.dessert-gallery.site/users/duplication/nickname?nickname=${nicknameString}`, {
+  const res = await axios.get(`https://api.dessertgallery.site/users/duplication/nickname?nickname=${nicknameString}`, {
       headers: {
         'Authorization': `${sessionStorageService.get('JWTSessionStorage', "accessToken")}`,
       },
