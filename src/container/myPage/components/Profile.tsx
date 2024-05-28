@@ -60,15 +60,6 @@ function Profile() {
     setModifying(false)
   }
 
-  const convertURLtoFile = async (url: string) => {
-  const response = await fetch(url);
-  const data = await response.blob();
-  const ext = url.split(".").pop(); // url 구조에 맞게 수정할 것
-  const filename = url.split("/").pop(); // url 구조에 맞게 수정할 것
-  const metadata = { type: `image/${ext}` };
-  return new File([data], filename!, metadata);
-};
-
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
 
@@ -86,17 +77,17 @@ function Profile() {
 
     try {
       let sendFormData = new FormData();
-      let fileData = formData.file[0] ? formData.file[0]: await convertURLtoFile(userInfo.fileUrl);
 
       sendFormData.append('nickname', formData.nickname ? formData.nickname : userInfo.nickname);
       sendFormData.append('userRole', userInfo.userRole);
-      sendFormData.append('file', formData.file[0]);
-      sendFormData.append('fileName', userInfo.fileName);
-      sendFormData.append('fileUrl', userInfo.fileUrl);
+      if(formData.file[0]){
+        sendFormData.append('file', formData.file[0]);
+        sendFormData.append('fileName', userInfo.fileName);
+        sendFormData.append('fileUrl', userInfo.fileUrl);
+      }
 
       const response = await putUser(sendFormData)
 
-      console.log("response", response)
 
       if (response) {
         alert('내 정보 업데이트')
