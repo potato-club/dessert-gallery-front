@@ -1,11 +1,11 @@
-import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useRouter } from 'next/router';
+import { useEffect, useState } from 'react';
 import {
   useInfiniteQuery,
   useMutation,
   useQuery,
   useQueryClient,
-} from "react-query";
+} from 'react-query';
 import {
   getDetailPoster,
   getStoreReview,
@@ -15,9 +15,9 @@ import {
   deleteComment,
   postBoardComment,
   PostCommentType,
-} from "../apis/controller/detailStore";
-import { useRecoilValue, useSetRecoilState } from "recoil";
-import { modalBg } from "../recoil/modalBg/atom";
+} from '../apis/controller/detailStore';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { modalBg } from '../recoil/modalBg/atom';
 
 export const useGetInfinityPosterList = (storeId: number) => {
   const fetchPoster = async ({ pageParam = 1 }) => {
@@ -35,7 +35,7 @@ export const useGetInfinityPosterList = (storeId: number) => {
     hasNextPage,
     isLoading,
     refetch,
-  } = useInfiniteQuery(["posterList", storeId], fetchPoster, {
+  } = useInfiniteQuery(['posterList', storeId], fetchPoster, {
     getNextPageParam: (lastPage) => {
       if (!lastPage.isLast) return lastPage.nextPage;
       return undefined;
@@ -48,7 +48,7 @@ export const useGetInfinityPosterList = (storeId: number) => {
 
 export const useGetDetailBoard = (boardId: number) => {
   const { data } = useQuery(
-    ["detailBoard", boardId],
+    ['detailBoard', boardId],
     () => getDetailPoster(boardId),
     {
       refetchOnWindowFocus: false,
@@ -60,7 +60,7 @@ export const useGetDetailBoard = (boardId: number) => {
 
 export const useGetReviewList = ({ page, storeId, options }: any) => {
   const { data, refetch, isLoading } = useQuery(
-    ["review", storeId],
+    ['review', storeId],
     () => getStoreReview({ storeId, page }),
     {
       ...options,
@@ -71,7 +71,7 @@ export const useGetReviewList = ({ page, storeId, options }: any) => {
 };
 export const useGetStoreAnnounce = ({ storeId, options }: any) => {
   const { data: announceData, refetch } = useQuery(
-    ["storeAnnounce", storeId],
+    ['storeAnnounce', storeId],
     () => getStoreAnnounce(storeId),
     {
       ...options,
@@ -92,7 +92,7 @@ export const useInfinityModalComment = ({ boardId }: any) => {
   };
 
   const { data, fetchNextPage, hasNextPage, isLoading, refetch } =
-    useInfiniteQuery(["boardComment", boardId], fetchModalComment, {
+    useInfiniteQuery(['boardComment', boardId], fetchModalComment, {
       getNextPageParam: (lastPage, pages) => {
         if (!lastPage.isLast) return lastPage.nextPage;
         return undefined;
@@ -106,7 +106,7 @@ export const useInfinityModalComment = ({ boardId }: any) => {
 export const usePostComment = (boardId: number) => {
   const queryClient = useQueryClient();
   const { mutate: postCommentMutate, isLoading } = useMutation(
-    ["boardComment", boardId],
+    ['boardComment', boardId],
     (comment: string) => postBoardComment({ boardId, comment }),
     {
       onSuccess: () => {
@@ -114,8 +114,9 @@ export const usePostComment = (boardId: number) => {
       },
       onError: (err: any) => {
         if (err.response.status == 403) {
-          alert("로그인 해주세요.");
-        }
+          alert('로그인 해주세요.');
+        } else if (err.response.data.errorCode === 'F4001')
+          alert('해당 가게로부터 차단 되었습니다.');
       },
     }
   );
@@ -126,12 +127,12 @@ export const usePostComment = (boardId: number) => {
 export const useDeleteComment = (boardId: number) => {
   const queryClient = useQueryClient();
   const { mutate: deleteCommentMutate, isLoading } = useMutation(
-    ["boardComment", boardId],
+    ['boardComment', boardId],
     (commentId: number) => deleteComment(commentId),
     {
       onSuccess: () => {
         queryClient.refetchQueries();
-        alert("댓글이 삭제되었습니다.");
+        alert('댓글이 삭제되었습니다.');
       },
     }
   );
