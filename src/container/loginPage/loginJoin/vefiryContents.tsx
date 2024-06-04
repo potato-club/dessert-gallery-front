@@ -34,19 +34,8 @@ function VerifyContents() {
     console.log(email);
 
     if (email !== "") {
-      const response = await axios.post(
-        `${baseURL}/users/mail/gmail`,
-        {
-          headers: {
-            "Content-Type": "text/javascript",
-          },
-        },
-        {
-          params: {
-            recipientEmail: email,
-          },
-        }
-      );
+      const response = await loginPageApi.postSendVerifyCode(email);
+
       console.log(response);
       console.log(response.status);
       if (response.status === 200) {
@@ -62,15 +51,7 @@ function VerifyContents() {
       formData.append("key", key);
     }
     try {
-      const response: any = await axios.post(
-        `${baseURL}/users/mail/verify`,
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
+      const response: any = await loginPageApi.postCheckVerifyCode(formData);
       console.log(response);
       console.log(response.data.responseCode);
       if (response.status === 200) {
