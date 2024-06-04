@@ -13,10 +13,10 @@ const { persistAtom } = recoilPersist({
   storage: sessionStorage,
 });
 
-const defaultValue: messageObjectType[] = [];
+const defaultValue: messageObjectType[][] = [];
 
 // 리코일 atom 선언, effects_UNSTABLE 속성을 이용해 웹스토리지 사용 정의
-export const chatHistoryStateAtom = atom<messageObjectType[]>({
+export const chatHistoryStateAtom = atom<messageObjectType[][]>({
   key: "chatHistoryDataState",
   default: defaultValue,
   effects_UNSTABLE: [persistAtom],

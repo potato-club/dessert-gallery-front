@@ -1,4 +1,5 @@
 import sendApi from "../sendApi";
+import axios from "axios";
 
 export const getStoreInfo = async () => {
   const response = await sendApi.get(`/stores`);
@@ -22,14 +23,8 @@ export const getChatRoom = async () => {
   return response.data;
 };
 
-export const getChatHistory = async (roomId: number) => {
-  var today = new Date();
-
-  var year = today.getFullYear();
-  var month = ("0" + (today.getMonth() + 1)).slice(-2);
-  var day = ("0" + today.getDate()).slice(-2);
-
-  var dateTime = year + "-" + month + "-" + day;
+export const getChatHistory = async (roomId: number, dateTime: string) => {
+  
   const response = await sendApi.get(`/mypage/room/${roomId}?time=${dateTime}`);
   return response.data;
 };

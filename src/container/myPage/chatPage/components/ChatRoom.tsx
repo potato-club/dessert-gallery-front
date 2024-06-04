@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import styled from "styled-components";
 import ChatItem from "./ChatItem";
+import DateChat from "./DateChat";
 import { getChatHistory } from "../../../../apis/controller/chatPage";
 import { userInfoType } from "../ChatPage";
 import { useRoomInfoState } from "../../../../recoil/chat/roomInfoStateAtom";
@@ -23,16 +24,6 @@ function ChatRoom({ userInfo }: { userInfo?: userInfoType }) {
   const [roomInfoState, setRoomInfoState] = useRoomInfoState();
   const [chatHistoryState, setChatHistoryState] = useChatHistoryState();
 
-  const getNewChat = (newChatHistoryState: messageObjectType) => {
-    setChatHistoryState((prevChatList) => {
-      if (prevChatList) {
-        return [...prevChatList, newChatHistoryState];
-      } else {
-        return [newChatHistoryState];
-      }
-    });
-  };
-
   const { register, getValues, setValue, reset } = useForm();
 
   // const { item } = useGueryGetChatRoom();
@@ -41,9 +32,24 @@ function ChatRoom({ userInfo }: { userInfo?: userInfoType }) {
     useStompClientContext();
 
   const messageCheckHandler = async () => {
-    const chatHistory = await getChatHistory(roomInfoState.roomId);
+    var today = new Date();
+    var year = today.getFullYear();
+    var month = ("0" + (today.getMonth() + 1)).slice(-2);
+    var day = ("0" + today.getDate()).slice(-2);
+
+    var dateTime = year + "-" + month + "-" + day;
+
+    const chatHistory = await getChatHistory(roomInfoState.roomId, dateTime);
+    setChatHistoryState([chatHistory.chatList]);
     console.log(chatHistory);
-    setChatHistoryState(chatHistory.chatList);
+
+    if (chatHistory.lastDatetime) {
+      const lastHistory = await getChatHistory(
+        roomInfoState.roomId,
+        chatHistory.lastDatetime.split(":")[1]
+      );
+      setChatHistoryState((prevState) => [lastHistory.chatList, ...prevState]);
+    }
   };
 
   const handleKeyDown = (event: React.KeyboardEvent) => {
@@ -56,7 +62,6 @@ function ChatRoom({ userInfo }: { userInfo?: userInfoType }) {
     } else if (event.key === "Enter" && event.shiftKey) {
       event.preventDefault();
       setValue("message", getValues("message") + "\n");
-      // ((prevText) => prevText + '\n');
     }
   };
 
@@ -66,7 +71,6 @@ function ChatRoom({ userInfo }: { userInfo?: userInfoType }) {
 
     messageCheckHandler();
     connectHandler();
-    console.log(chatHistoryState);
 
     return () => {
       disconnectHandler();
@@ -99,13 +103,11 @@ function ChatRoom({ userInfo }: { userInfo?: userInfoType }) {
             <HeaderBottom roomInfoState={roomInfoState} userInfo={userInfo} />
             <Contents>
               {chatHistoryState?.map((item: any, index) => (
-                <ChatItem
+                <DateChat
                   key={index}
-                  messageType={item.messageType}
-                  myChat={userInfo?.nickname === item.sender}
-                  message={item.message}
-                  timestamp={item.dateTime}
-                ></ChatItem>
+                  chatList={item}
+                  userInfo={userInfo}
+                ></DateChat>
               ))}
             </Contents>
           </SubWrapper>

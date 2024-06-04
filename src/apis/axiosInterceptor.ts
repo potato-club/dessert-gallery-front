@@ -9,12 +9,10 @@ axiosClient.defaults.withCredentials = true;
 
 axiosClient.interceptors.response.use(
   async (response) => {
-    console.log("인터셉터", response.data);
     return response;
   },
   async (error) => {
     console.log("interceptor", error.response.data.code);
-
     const config = error.config;
 
     if (error.response.data.code === 4002) {
