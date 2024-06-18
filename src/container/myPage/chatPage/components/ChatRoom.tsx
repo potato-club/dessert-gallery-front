@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import ChatItem from "./ChatItem";
 import DateChat from "./DateChat";
@@ -10,7 +10,7 @@ import { useForm } from "react-hook-form";
 import HeaderBottom from "../components/HeaderBottom";
 import { useGueryGetChatRoom } from "../../../../hooks/useReactQueryChatRoom";
 import { useStompClientContext } from "../context/StompClientProvider";
-import { useChatHistoryState } from "../../../../recoil/chat/chatHistoryState";
+import { useTodayChatState } from "../../../../recoil/chat/todayChatState";
 
 export type messageObjectType = {
   chatRoomId: number;
@@ -22,7 +22,10 @@ export type messageObjectType = {
 
 function ChatRoom({ userInfo }: { userInfo?: userInfoType }) {
   const [roomInfoState, setRoomInfoState] = useRoomInfoState();
-  const [chatHistoryState, setChatHistoryState] = useChatHistoryState();
+  const [todayChatState, setTodayChatState] = useTodayChatState();
+  const [chatHistoryState, setChatHistoryState] = useState<
+    messageObjectType[][]
+  >([]);
 
   const { register, getValues, setValue, reset } = useForm();
 
@@ -39,15 +42,28 @@ function ChatRoom({ userInfo }: { userInfo?: userInfoType }) {
 
     var dateTime = year + "-" + month + "-" + day;
 
-    const chatHistory = await getChatHistory(roomInfoState.roomId, dateTime);
-    setChatHistoryState([chatHistory.chatList]);
-    console.log(chatHistory);
+    // 채팅방 렌더링 시 오늘의 채팅이 있는지 확인
+    const todayChat = await getChatHistory(roomInfoState.roomId, dateTime);
+    if (todayChat.chatList) {
+      setTodayChatState(todayChat.chatList);
+      console.log(todayChat);
+    } else {
+      setTodayChatState([]);
+    }
 
-    if (chatHistory.lastDatetime) {
+    console.log(todayChat);
+
+    //오늘의 채팅이 없고 예전에 채팅을 친 기록이 있으면 예전의 채팅을 호출
+    // if (todayChat.chatList === null && todayChat.lastDatetime) {
+    if (todayChat.lastDatetime) {
+      console.log("저번 기록 호출");
+
       const lastHistory = await getChatHistory(
         roomInfoState.roomId,
-        chatHistory.lastDatetime.split(":")[1]
+        todayChat.lastDatetime.split(":")[1]
       );
+      console.log(lastHistory);
+
       setChatHistoryState((prevState) => [lastHistory.chatList, ...prevState]);
     }
   };
@@ -71,7 +87,7 @@ function ChatRoom({ userInfo }: { userInfo?: userInfoType }) {
 
     messageCheckHandler();
     connectHandler();
-
+    setChatHistoryState([]);
     return () => {
       disconnectHandler();
     };
@@ -102,7 +118,14 @@ function ChatRoom({ userInfo }: { userInfo?: userInfoType }) {
             <div id="completePickupModal"></div>
             <HeaderBottom roomInfoState={roomInfoState} userInfo={userInfo} />
             <Contents>
-              {chatHistoryState?.map((item: any, index) => (
+              {chatHistoryState?.map((item: any, index: number) => (
+                <DateChat
+                  key={index}
+                  chatList={item}
+                  userInfo={userInfo}
+                ></DateChat>
+              ))}
+              {[todayChatState]?.map((item: any, index: number) => (
                 <DateChat
                   key={index}
                   chatList={item}

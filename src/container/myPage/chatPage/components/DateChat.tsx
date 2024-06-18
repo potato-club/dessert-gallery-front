@@ -24,11 +24,11 @@ function DateChat({
         {chatList?.length > 0 && (
           <TimeLine>
             {chatList &&
-              chatList[0].dateTime.split("-")[0] +
+              chatList[0].dateTime?.split("-")[0] +
                 "년 " +
-                chatList[0].dateTime.split("-")[1] +
+                chatList[0].dateTime?.split("-")[1] +
                 "월 " +
-                chatList[0].dateTime.split("-")[2] +
+                chatList[0].dateTime?.split("-")[2] +
                 "일 "}
           </TimeLine>
         )}
@@ -53,13 +53,13 @@ const TimeLineWrapper = styled.div`
   align-items: center;
   justify-content: center;
   width: 100%;
-  height: 22px;
-
   @media screen and (min-width: 1920px) {
     height: 29px;
+    margin: 10px 0;
   }
   @media screen and (max-width: 1919px) {
     height: 22px;
+    margin: 10px 0;
   }
 `;
 
@@ -72,11 +72,13 @@ const TimeLine = styled.div`
   border-radius: 15px;
   background-color: #fcf0e1;
   @media screen and (min-width: 1920px) {
+    height: 29px;
     width: 294px;
-    font-size: 13px;
+    font-size: 15px;
   }
   @media screen and (max-width: 1919px) {
+    height: 22px;
     width: 226px;
-    font-size: 10px;
+    font-size: 12px;
   }
 `;

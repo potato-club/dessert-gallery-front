@@ -5,7 +5,7 @@ import * as StompJs from "@stomp/stompjs";
 import { useRoomInfoState } from "../../../../recoil/chat/roomInfoStateAtom";
 import { userInfoType } from "../ChatPage";
 import { messageObjectType } from "../components/ChatRoom";
-import { useChatHistoryState } from "../../../../recoil/chat/chatHistoryState";
+import { useTodayChatState } from "../../../../recoil/chat/todayChatState";
 
 const StompClientContext = createContext(
   {} as {
@@ -28,11 +28,11 @@ export function StompClientProvider({
   userInfo?: userInfoType;
 }) {
   const [roomInfoState, setRoomInfoState] = useRoomInfoState();
-  const [chatHistoryState, setChatHistoryState] = useChatHistoryState();
+  const [todayChatState, setTodayChatState] = useTodayChatState();
   const { getAccessToken } = useTokenService();
 
   const getNewChat = (newChatHistoryState: messageObjectType) => {
-    setChatHistoryState((prevChatList) => {
+    setTodayChatState((prevChatList) => {
       if (prevChatList) {
         return [...prevChatList, newChatHistoryState];
       } else {
@@ -40,6 +40,33 @@ export function StompClientProvider({
       }
     });
   };
+  // const getNewChat = (newChatHistoryState: messageObjectType) => {
+  //   console.log(
+  //     chatHistoryState.length,
+  //     chatHistoryState[chatHistoryState.length - 1]?.length
+  //   );
+
+  //   if (
+  //     chatHistoryState &&
+  //     chatHistoryState.length > 0 &&
+  //     chatHistoryState[chatHistoryState.length - 1]?.length > 0
+  //   ) {
+  //     console.log("오늘의 기존 채팅이 있는 경우");
+  //     setChatHistoryState((prevChatHistory) => {
+  //       const newChatHistory = [...prevChatHistory];
+  //       newChatHistory[prevChatHistory.length - 1].push(newChatHistoryState);
+  //       console.log(newChatHistory.length);
+
+  //       return newChatHistory;
+  //     });
+  //   } else {
+  //     console.log("오늘의 기존 채팅이 없는 경우");
+  //     setChatHistoryState((prevChatHistory) => [
+  //       ...(prevChatHistory || []),
+  //       [newChatHistoryState],
+  //     ]);
+  //   }
+  // };
 
   const clientRef = useRef<any>({});
 

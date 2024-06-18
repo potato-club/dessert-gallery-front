@@ -9,23 +9,23 @@ const sessionStorage =
 
 // persistAtom 선언
 const { persistAtom } = recoilPersist({
-  key: "chatHistorySessionStorage", //원하는 key 값 입력
+  key: "todayChatSessionStorage", //원하는 key 값 입력
   storage: sessionStorage,
 });
 
-const defaultValue: messageObjectType[][] = [];
+const defaultValue: messageObjectType[] = [];
 
 // 리코일 atom 선언, effects_UNSTABLE 속성을 이용해 웹스토리지 사용 정의
-export const chatHistoryStateAtom = atom<messageObjectType[][]>({
-  key: "chatHistoryDataState",
+export const todayChatStateAtom = atom<messageObjectType[]>({
+  key: "todayChatDataState",
   default: defaultValue,
   effects_UNSTABLE: [persistAtom],
 });
 
 // next.js에서 recoil-persist 사용 시 발생하는 hydration 에러를 해결하기 위한 코드
-export function useChatHistoryState() {
+export function useTodayChatState() {
   const [isInitial, setIsInitial] = useState(true);
-  const [value, setValue] = useRecoilState(chatHistoryStateAtom);
+  const [value, setValue] = useRecoilState(todayChatStateAtom);
 
   useEffect(() => {
     setIsInitial(false);
