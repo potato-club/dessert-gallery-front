@@ -29,11 +29,11 @@ export const useGetFollowBoardList = () => {
     "getMainFollowBoardList",
     () => mainApiList.getMainFollowBoardList()
   );
-  console.log("useGetFollowBoardList isGuest?", isGuest)
 
   if(isGuest){
-    return { data: false, isLoading: false, error: "" }
+    return { data: [], isLoading: false, error: "" }
   }
+
 
   return { data, isLoading, error };
 };

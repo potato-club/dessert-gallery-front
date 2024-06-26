@@ -6,7 +6,6 @@ import ManagerProfile from './ManagerProfile';
 import { getCheckNicknamme, putUser } from '../../../apis/controller/profile';
 import defaultImage from "../../../../public/image/defaultPhoto.png";
 import { modalBg } from '../../../recoil/modalBg/atom';
-import { useSetRecoilState } from "recoil";
 
 export interface FormDataI {
   nickname: string;
@@ -103,8 +102,6 @@ function Profile() {
   
   
   if(userInfo){
-    console.log("profile ", userInfo)
-  console.log("profile 2222", userInfo.fileUrl, userInfo.fileUrl === null)
     return (
       <ContentsWrap width='100%' height='100%' direction='column' justifyContent='flex-start' alignItems='center' padding='64px'>
         <InputBox direction='column' width='1122px' padding='0 0 0 '>

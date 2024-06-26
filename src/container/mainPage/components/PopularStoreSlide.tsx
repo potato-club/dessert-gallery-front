@@ -7,23 +7,23 @@ import styled from 'styled-components';
 import { useLoginUserInfo } from '../../../hooks/useUser';
 import { LeftMoveButtonIcon, RightMoveButtonIcon } from '../../../../public/svg';
 import SwiperCore from 'swiper';
+import { accountInfoState } from '../../../recoil/login/accountInfoStateAtom';
+import { useRecoilValue } from 'recoil';
 
 interface PopularStoreProps {
   popularStoreList: resGalleryPost[];
-  isGuest: boolean;
 }
 
-export default function PopularStoreSlide({ popularStoreList,isGuest }: PopularStoreProps) {
-  const { data: userInfo } = useLoginUserInfo();
+export default function PopularStoreSlide({ popularStoreList }: PopularStoreProps) {
   const [slideCnt, setSlideCnt] = useState(3);
   const [idx, setIdx] = useState(0);
   const [swiper, setSwiper] = useState<SwiperCore>();
-  const dataLength = useRef(popularStoreList.length>6 ? 6:popularStoreList.length);
+  const accountInfo = useRecoilValue(accountInfoState);
+
 
   useEffect(() => {
     setSlideCnt(Math.trunc(window.innerWidth/380));
-    console.log("왜이래!!",Math.trunc(window.innerWidth/380) )
-  }, [popularStoreList, userInfo, slideCnt]);
+  }, [popularStoreList, accountInfo, slideCnt]);
 
 
   const moveToNext = () => {
@@ -44,7 +44,7 @@ export default function PopularStoreSlide({ popularStoreList,isGuest }: PopularS
     }
   }
 
-  if(isGuest){
+  if(!accountInfo.isLogin){
     return (
       <Wrap>
         {
@@ -136,7 +136,7 @@ export default function PopularStoreSlide({ popularStoreList,isGuest }: PopularS
                   tagValue={Number(e.score) > 4.5 ? "HOT": "none"}
                   height={444}
                   storeId={e.id}
-                  bookmark={userInfo?.userRole === 'USER'?true:false}/>
+                  bookmark={accountInfo.userRole === 'USER'?true:false}/>
               </SwiperSlide>
             ))}
         </Swiper>
