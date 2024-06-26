@@ -49,11 +49,7 @@ function GalleryBoardContainer() {
     // Intersection Observer 콜백
     const handleIntersection = (entries: IntersectionObserverEntry[]) => {
       const target = entries[0];
-      console.log("옵져버 발동!", reloadDone)
-
       if (target.isIntersecting && status === "success"&& !reloadDone.current) {
-      console.log("옵져버 발동 성공!!", reloadDone)
-
         window.scrollTo(0, window.scrollY - 100);
         setPageCount((prev) => prev + 1);
         fetchNextPage();

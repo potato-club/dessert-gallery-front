@@ -208,7 +208,6 @@ const MapPage = () => {
 
           if(renderedMap.current === null){
             // 지도를 생성합니다
-            console.log("지도 생성")
             let map = new (window as any).kakao.maps.Map(mapContainer.current, mapOption);
             renderedMap.current = map
             marker.setMap(map) ; // 지우면 에러
