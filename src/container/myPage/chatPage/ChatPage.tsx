@@ -2,10 +2,11 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import ChatList from "./components/ChatList";
 import ChatRoom from "./components/ChatRoom";
-import { getChatRoom, getUserInfo } from "../../../apis/controller/chatPage";
+import { getChatRoom, getSearchChatRoom, getUserInfo } from "../../../apis/controller/chatPage";
 import { loginPageApi } from "../../../apis/controller/loginPage";
 import { StompClientProvider } from "./context/StompClientProvider";
 import { useRoomInfoState } from "../../../recoil/chat/roomInfoStateAtom";
+import { useDebounce } from "../../../hooks/useDebounce";
 
 export type userInfoType = {
   nickname: string;
@@ -26,13 +27,23 @@ function ChatPage() {
   const [chatRoomList, setChatRoomList] = useState<roomInfoType[]>();
   const [userInfoState, setUserInfoState] = useState<userInfoType>();
   const [roomInfoState, setRoomInfoState] = useRoomInfoState();
+  const [searchKeyword, setSearchKeyword] = useState<string>('');
+  const debouncedSearchChatRoom = useDebounce(searchKeyword, 500);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const fetchChatRoom = async () => {
     const chatRoom = await getChatRoom();
     console.log(chatRoom);
     setChatRoomList(chatRoom.chatList);
     setChatRoomList(chatRoom.chatList);
+    setIsLoading(false)
   };
+
+  const fetchSearchChatRoom = async (keyword:string) => {
+    const chatRoom = await getSearchChatRoom(keyword);
+    setChatRoomList(chatRoom.chatList);
+    setIsLoading(false)
+  }
 
   const fetchUserInfo = async () => {
     const userInfo = await getUserInfo();
@@ -42,8 +53,12 @@ function ChatPage() {
   };
 
   useEffect(() => {
-    fetchChatRoom();
     fetchUserInfo();
+    if(searchKeyword.length !== 0 && debouncedSearchChatRoom){
+      fetchSearchChatRoom(debouncedSearchChatRoom);
+    }else{
+      fetchChatRoom();
+    }
     return () => {
       setRoomInfoState({
         roomId: 0,
@@ -51,13 +66,13 @@ function ChatPage() {
         partnerName: "",
       });
     };
-  }, []);
+  }, [debouncedSearchChatRoom]);
 
 
   return (
     <Layout>
       <Wrapper>
-        <ChatList chatRoomList={chatRoomList} userInfo={userInfoState} />
+        <ChatList chatRoomList={chatRoomList} isLoading={isLoading} loadingHandler={setIsLoading} chatSearchValue={searchKeyword} chatSearchHandler={setSearchKeyword} userInfo={userInfoState} />
         <StompClientProvider userInfo={userInfoState}>
           <ChatRoom userInfo={userInfoState} />
         </StompClientProvider>

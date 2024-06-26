@@ -22,6 +22,11 @@ export const getChatRoom = async () => {
   return response.data;
 };
 
+export const getSearchChatRoom = async (keyword: string) => {
+  const response = await sendApi.get(`/mypage/room/search?page=${1}&name=${keyword}`);
+  return response.data;
+};
+
 export const getChatHistory = async (roomId: number) => {
   var today = new Date();
 
