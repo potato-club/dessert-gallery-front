@@ -5,13 +5,10 @@ import { galleryPostValue } from '../../../types/componentsProps';
 import { useGetPopularStores } from '../../../hooks/useGetMain';
 import PopularStorePrevSlide from './PopularStorePrevSlide';
 import PopularStoreSlide from './PopularStoreSlide';
-import type { mainComponentsProps } from '../../../types/componentsProps';
 
 
-export default function PopularStore({ isGuest }: mainComponentsProps) {
+export default function PopularStore() {
   const {data, isLoading, error} = useGetPopularStores();
-
-  useEffect(() => {}, [isGuest]);
 
   return (
     <PopularStoreWrap>
@@ -21,7 +18,7 @@ export default function PopularStore({ isGuest }: mainComponentsProps) {
       </TextWrap>
       <ContentsWrap>
         {isLoading && <PopularStorePrevSlide/>}
-        {!isLoading && <PopularStoreSlide isGuest={isGuest} popularStoreList={data}/>}
+        {!isLoading && <PopularStoreSlide popularStoreList={data}/>}
       </ContentsWrap>
     </PopularStoreWrap>
   );

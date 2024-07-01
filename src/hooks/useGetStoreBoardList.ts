@@ -65,7 +65,6 @@ export function useGetStoreBoardListdData(req: boardSearchOptionData) {
   return useInfiniteQuery(queryKey, () => fetchStoreBoardData(req), {
     getNextPageParam: (lastPage, pages) => {
       // 페이지 번호를 pageCount로 설정
-      console.log("현재 page counr, ", req.page)
       return req.page+1;
     },
   });

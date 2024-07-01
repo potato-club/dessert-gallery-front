@@ -3,15 +3,6 @@ import sessionStorageService from "../../libs/sessionStorageService";
 import sendApi from "../sendApi";
 
 export const propfileApiList = {
-    getStoreProfile: async () => {
-        console.log("getStoreProfile")
-      try {
-        const res = (await sendApi.get('/stores')).data;
-        return {res};
-        } catch (error) {
-          return {res:'noneStore'}
-      }
-    },
       putUpdateStoreProfile: async ({sendFormData,id}: {sendFormData: FormData, id:number}) => {
       try {
         return (await sendApi.put(`/stores/${id}`, sendFormData)).data;
@@ -24,9 +15,20 @@ export const propfileApiList = {
       } catch (error) {
     }
   },
+  getStoreProfile: async () => {
+    try {
+      const res = (await sendApi.get('/stores')).data;
+      return {res};
+      } catch (error) {
+        return {res:'noneStore'}
+    }
+  },
   } 
 
-
+  export const getStoreProfile = async () => {
+        const res = await sendApi.get('/stores');
+        return res.data;
+  } 
  
 
 export const putUser = async (sendFormData: FormData) => {
@@ -37,7 +39,6 @@ export const putUser = async (sendFormData: FormData) => {
         },
       });
 
-      console.log("\n\n\nres", res)
   return res.data
 }
 
@@ -49,12 +50,5 @@ export const getCheckNicknamme = async (nicknameString: string) => {
       },
     });
 
-    console.log("\n\n\n getCheckNicknamme res", res)
 return res.data
 }
-
-// export const getStoreProfile = async () => {
-//     const res = await sendApi.get('/stores');
-
-//       console.log("\n\n\nres", res)
-// }

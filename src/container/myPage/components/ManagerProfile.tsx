@@ -1,6 +1,6 @@
 import React, { ChangeEvent, FormEvent, useEffect, useState } from 'react'
 import { Box, Text, ImgBox, ProfileForm, FileInput, BtnText, TextInput, InputBox } from './MyPage.style'
-import { propfileApiList } from '../../../apis/controller/profile';
+import { getStoreProfile, propfileApiList } from '../../../apis/controller/profile';
 import Tag from '../../../components/Tag'
 import AddressModal from './AddressModal';
 import { useRecoilState} from "recoil";
@@ -62,26 +62,26 @@ export default function ManagerProfile() {
   
 
   useEffect(()=>{
-    const getStoreProfile = async ()=> {
+    const getStoreProfileData = async ()=> {
       try {
-        const response = await propfileApiList.getStoreProfile()
+        const response = await getStoreProfile()
         setStoreInfo(response)
         setModiStoreValue({
-          name: response.res.name,
-          address: response.res.address,
-          content: response.res.content,
+          name: response.name,
+          address: response.address,
+          content: response.content,
           image: [],
-          info: response.res.info,
-          phoneNumber: response.res.phoneNumber,
-          storeId: response.res.id,
+          info: response.info,
+          phoneNumber: response.phoneNumber,
+          storeId: response.id,
           removeOriginImage: false,
-          url: response.res.fileUrl
+          url: response.fileUrl
         })
       } catch (error) {
         
       }
     }
-    getStoreProfile()
+    getStoreProfileData()
   },[])
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -101,7 +101,6 @@ export default function ManagerProfile() {
 };
 
   const handleImageDelete = () => {
-    console.log("modiStoreValue: ", modiStoreValue.url)
       setModiStoreValue({
         ...modiStoreValue,
         image: [],
@@ -126,15 +125,15 @@ export default function ManagerProfile() {
 
   const handleCancle = () => {
     setModiStoreValue({
-      name: storeInfo.res.name,
-      address: storeInfo.res.address,
-      content: storeInfo.res.content,
+      name: storeInfo.name,
+      address: storeInfo.address,
+      content: storeInfo.content,
       image: [],
-      info: storeInfo.res.info,
-      phoneNumber: storeInfo.res.phoneNumber,
-      storeId: storeInfo.res.id,
+      info: storeInfo.info,
+      phoneNumber: storeInfo.phoneNumber,
+      storeId: storeInfo.id,
       removeOriginImage: false,
-      url: storeInfo.res.storeImage?.fileUrl
+      url: storeInfo.storeImage?.fileUrl
     })
     setInputMode(false)
   }
@@ -227,7 +226,7 @@ export default function ManagerProfile() {
   };
 
   if(storeInfo !== null &&storeInfo.res!=='noneStore'&&!inputMode){
-  console.log("사장이면서, 정보가 있는 상태", storeInfo)
+  // console.log("사장이면서, 정보가 있는 상태", storeInfo)
   return (
     <>
       <InputBox direction='column' width='1122px' margin='64px 0 0 0' >
@@ -240,7 +239,7 @@ export default function ManagerProfile() {
           <Box border='2px solid #FF6F00' bgColor='#ffffffab' rounded='24px' padding='27px 57px'>
             <Box width='100%' justifyContent='center' height='fit-content'>
             <Box direction='column' alignItems='center'>
-              <ImgBox width='160px' height='160px' bgColor='#FDC886' imgUrl={storeInfo.res.storeImage !== null ? storeInfo.res.storeImage.fileUrl : defaultImage.src} />
+              <ImgBox width='160px' height='160px' bgColor='#FDC886' imgUrl={storeInfo.storeImage !== null ? storeInfo.storeImage.fileUrl : defaultImage.src} />
             </Box>
             </Box>
           </Box>
@@ -253,13 +252,13 @@ export default function ManagerProfile() {
             <Box width='100%' alignItems='center' justifyContent='space-between'>
               <Box  margin='24px 0'>
                 <Text width='72px' fontSize='17px' fontWeight='bold' color='#000000'>가게 이름</Text>
-                <Text fontSize='14px' fontWeight='bold' color='#000000' padding='0 64px'>{storeInfo.res.name}</Text>
+                <Text fontSize='14px' fontWeight='bold' color='#000000' padding='0 64px'>{storeInfo.name}</Text>
               </Box>
             </Box>
             <Box width='100%' alignItems='center' justifyContent='space-between'>
               <Box  margin='24px 0'>
                 <Text width='72px' fontSize='17px' fontWeight='bold' color='#000000'>전화번호</Text>
-                <Text fontSize='14px' fontWeight='bold' color='#000000' padding='0 64px'>{storeInfo.res.phoneNumber}</Text>
+                <Text fontSize='14px' fontWeight='bold' color='#000000' padding='0 64px'>{storeInfo.phoneNumber}</Text>
               </Box>
             </Box>
           </Box>
@@ -274,20 +273,20 @@ export default function ManagerProfile() {
             <Box width='100%' alignItems='center' justifyContent='space-between'>
               <Box  margin='24px 0'>
                 <Text width='72px' fontSize='17px' fontWeight='bold' color='#000000'>가게 정보</Text>
-                <Text fontSize='14px' fontWeight='bold' color='#000000' padding='0 64px'>{storeInfo.res.info}</Text>
+                <Text fontSize='14px' fontWeight='bold' color='#000000' padding='0 64px'>{storeInfo.info}</Text>
               </Box>
             </Box>
             <Box width='100%' alignItems='center' justifyContent='space-between'>
               <Box  margin='24px 0'>
                 <Text width='72px' fontSize='17px' fontWeight='bold' color='#000000'>가게 위치</Text>
-                <Text fontSize='14px' fontWeight='bold' color='#000000' padding='0 64px'>{storeInfo.res.address}</Text>
+                <Text fontSize='14px' fontWeight='bold' color='#000000' padding='0 64px'>{storeInfo.address}</Text>
               </Box>
             </Box>
 
             <Box width='100%' alignItems='center' justifyContent='space-between'>
               <Box  margin='24px 0'>
                 <Text width='72px' fontSize='17px' fontWeight='bold' color='#000000'>가게 설명</Text>
-                <Text fontSize='14px' fontWeight='bold' color='#000000' padding='0 64px'>{storeInfo.res.content}</Text>
+                <Text fontSize='14px' fontWeight='bold' color='#000000' padding='0 64px'>{storeInfo.content}</Text>
               </Box>
             </Box>
           </Box>
@@ -297,7 +296,7 @@ export default function ManagerProfile() {
     </>
   )
   }else if(storeInfo !== null &&storeInfo.res!=='noneStore'&&inputMode){
-  console.log("사장이면서, 정보 수정 중", storeInfo)
+  // console.log("사장이면서, 정보 수정 중", storeInfo)
     return (
       <>
       <InputBox direction='column' width='1122px' margin='64px 0 0 0' >
@@ -314,7 +313,7 @@ export default function ManagerProfile() {
               <Box direction='column' alignItems='center'>
                 {
                   modiStoreValue.url === null || modiStoreValue.url === undefined
-                    ? <ImgBox width='160px' height='160px' bgColor='#FDC886' imgUrl={storeInfo.res.storeImage?storeInfo.res.storeImage.fileUrl:defaultImage.src} />
+                    ? <ImgBox width='160px' height='160px' bgColor='#FDC886' imgUrl={storeInfo.storeImage?storeInfo.storeImage.fileUrl:defaultImage.src} />
                     : <ImgBox width='160px' height='160px' bgColor='#FDC886' imgUrl={modiStoreValue.url} />
                 }
                 
@@ -351,13 +350,13 @@ export default function ManagerProfile() {
               <Box width='100%' alignItems='center' justifyContent='space-between'>
                 <Box  margin='24px 0'>
                   <Text width='72px' fontSize='17px' fontWeight='bold' color='#000000'>가게 이름</Text>
-                  <TextInput  fontSize='14px' fontWeight='bold' color='#000000' padding='0 64px' type="text" id="name" name="name" value={modiStoreValue.name} onChange={handleInputChange} placeholder={`${storeInfo.res.name}`}/>
+                  <TextInput  fontSize='14px' fontWeight='bold' color='#000000' padding='0 64px' type="text" id="name" name="name" value={modiStoreValue.name} onChange={handleInputChange} placeholder={`${storeInfo.name}`}/>
                 </Box>
               </Box>
               <Box width='100%' alignItems='center' justifyContent='space-between'>
                 <Box  margin='24px 0'>
                   <Text width='72px' fontSize='17px' fontWeight='bold' color='#000000'>전화번호</Text>
-                  <TextInput fontSize='14px' fontWeight='bold' color='#000000' padding='0 64px' type="text" id="phoneNumber" name="phoneNumber" value={modiStoreValue.phoneNumber} onChange={handleInputChange} placeholder={`${storeInfo.res.phoneNumber}`}/>
+                  <TextInput fontSize='14px' fontWeight='bold' color='#000000' padding='0 64px' type="text" id="phoneNumber" name="phoneNumber" value={modiStoreValue.phoneNumber} onChange={handleInputChange} placeholder={`${storeInfo.phoneNumber}`}/>
                 </Box>
               </Box>
             </Box>
@@ -372,7 +371,7 @@ export default function ManagerProfile() {
               <Box width='100%' alignItems='center' justifyContent='space-between'>
                 <Box alignItems='center' margin='24px 0'>
                   <Text width='72px' fontSize='17px' fontWeight='bold' color='#000000'>가게 정보</Text>
-                  <TextInput fontSize='14px' fontWeight='bold' color='#000000' padding='0 64px' type="text" id="info" name="info" value={modiStoreValue.info} onChange={handleInputChange} placeholder={`${storeInfo.res.info}`}/>
+                  <TextInput fontSize='14px' fontWeight='bold' color='#000000' padding='0 64px' type="text" id="info" name="info" value={modiStoreValue.info} onChange={handleInputChange} placeholder={`${storeInfo.info}`}/>
                 </Box>
               </Box>
               <Box width='100%' alignItems='center' justifyContent='space-between'>
@@ -380,7 +379,7 @@ export default function ManagerProfile() {
                   <Text width='72px' fontSize='17px' fontWeight='bold' color='#000000'>가게 위치</Text>
                   <Box width='90%'>
                     <Box direction='column'>
-                      <TextInput disabled fontSize='14px' fontWeight='bold' color='#000000' padding='0 64px' type="text" id="address" name="address" value={modiStoreValue.address} onChange={handleInputChange} placeholder={`${storeInfo.res.address}`}/>
+                      <TextInput disabled fontSize='14px' fontWeight='bold' color='#000000' padding='0 64px' type="text" id="address" name="address" value={modiStoreValue.address} onChange={handleInputChange} placeholder={`${storeInfo.address}`}/>
                       {inputAddress && <TextInput fontSize='14px' margin='8px 0 0 0' fontWeight='bold' color='#000000' padding='0 64px' type="text" id="address" name="address" value={detailedAddress} onChange={handleAddressDetailChange} placeholder='상세 주소 입력'/>}
                     </Box>                    
                     <Tag onClickHandler={onClickInputAddress} clickAble={true} hoverCss={true} fontSize='16px' height='32px' width='120px' title='주소 입력'/>
@@ -392,7 +391,7 @@ export default function ManagerProfile() {
               <Box width='100%' alignItems='center' justifyContent='space-between'>
                 <Box alignItems='center' margin='24px 0'>
                   <Text width='72px' fontSize='17px' fontWeight='bold' color='#000000'>가게 설명</Text>
-                  <TextInput fontSize='14px' fontWeight='bold' color='#000000' padding='0 64px' type="text" id="content" name="content" value={modiStoreValue.content} onChange={handleInputChange} placeholder={`${storeInfo.res.content}`}/>
+                  <TextInput fontSize='14px' fontWeight='bold' color='#000000' padding='0 64px' type="text" id="content" name="content" value={modiStoreValue.content} onChange={handleInputChange} placeholder={`${storeInfo.content}`}/>
                 </Box>
               </Box>
             </Box>
@@ -402,7 +401,7 @@ export default function ManagerProfile() {
       </>
     )
   }else if(storeInfo !== null &&storeInfo.res==='noneStore'&&!inputMode){
-  console.log("사장아님, 가게 생성X", storeInfo)
+  //console.log("사장아님, 가게 생성X", storeInfo)
     return (
       <>
       <InputBox direction='column' width='1122px' margin='64px 0 0 0' >
@@ -473,7 +472,7 @@ export default function ManagerProfile() {
       </>
     )
     }else{
-      console.log("가게 생성중", storeInfo)
+      //console.log("가게 생성중", storeInfo)
       return (
         <>
         <InputBox direction='column' width='1122px' margin='64px 0 0 0' >
