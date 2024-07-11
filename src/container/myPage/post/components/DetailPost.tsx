@@ -1,9 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import {
-  useGetDetailPost,
-  useGetPostComment,
-} from "../../../../hooks/useGetDetailPost";
+import { useGetDetailPost } from "../../../../hooks/useGetDetailPost";
 import Image from "next/image";
 import useGetStoreInfo from "../../../../hooks/useGetStoreInfo";
 import defaultImage from "../../../../../public/image/defaultPhoto.png";
@@ -13,16 +10,18 @@ import ToggleOptionBox from "../../../../components/ToggleOptionBox";
 import EditPostModal from "./EditPostModal";
 import SlideImage from "../../../../components/SlideImage/SlideImage";
 
+import CommentList from "./CommentList";
+
 interface DetailPostProps {
+  storeId: number;
   postId: number;
   onClickOutside: () => void;
 }
 
-const DetailPost = ({ postId, onClickOutside }: DetailPostProps) => {
+const DetailPost = ({ storeId, postId, onClickOutside }: DetailPostProps) => {
   const [modalState, setModalState] = useState(false);
   const detailPost = useGetDetailPost(postId);
   const storeInfo = useGetStoreInfo();
-  const postComment = useGetPostComment(postId);
   const [putModalState, setPutModalState] = useState(false);
 
   const deleteClick = () => {
@@ -97,14 +96,7 @@ const DetailPost = ({ postId, onClickOutside }: DetailPostProps) => {
                 <div key={index}>{tag}</div>
               ))}
             </TagBox>
-            <CommentBox>
-              {postComment?.map((comment, index) => (
-                <Comment key={index}>
-                  <CommentName>{comment.nickname}</CommentName>
-                  <CommentContent>{comment.comment}</CommentContent>
-                </Comment>
-              ))}
-            </CommentBox>
+            <CommentList storeId={storeId} postId={postId} />
           </ContentBox>
           <ModifyBox>
             <ModifyBtn onClick={() => setPutModalState(true)}>
@@ -246,21 +238,12 @@ const CommentBox = styled.div`
   &::-webkit-scrollbar {
     display: none;
   }
-`;
-const Comment = styled.div`
-  width: 100%;
-  height: 35px;
   display: flex;
-  gap: 20px;
+  flex-direction: column;
+  gap: 5px;
+  align-items: center;
 `;
-const CommentName = styled.div`
-  font-size: 11px;
-  font-weight: 500;
-`;
-const CommentContent = styled.div`
-  font-size: 11px;
-  font-weight: 700;
-`;
+
 const ModifyBox = styled.div`
   width: 100%;
   height: 63px;

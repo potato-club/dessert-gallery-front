@@ -19,7 +19,7 @@ const EditPostModal = ({
 
   const [title, setTitle] = useState(`${detailPost.title}`);
   const [content, setContent] = useState(`${detailPost.content}`);
-  const [tags, setTags] = useState<string>(`${detailPost.tag}`);
+  const [tags, setTags] = useState<any>(`${detailPost.tags}`);
   const [imageSrc, setImageSrc] = useState(
     detailPost.images.map((image: any) => image.fileUrl)
   );
@@ -89,8 +89,7 @@ const EditPostModal = ({
     const newImageSrcs = newImages.map((file) => URL.createObjectURL(file));
     setImageSrc((prevImageSrcs: any) => [...prevImageSrcs, ...newImageSrcs]);
   };
-  console.log("태그", tags);
-
+  console.log("1", tags);
   return (
     <Background onClick={cancelClick}>
       <Wrapper onClick={handleModalClick}>
@@ -152,7 +151,7 @@ const EditPostModal = ({
             <PostCaption
               title={title}
               content={content}
-              tag={detailPost.tags}
+              tag={tags}
               onTitleChange={setTitle}
               onContentChange={setContent}
             />

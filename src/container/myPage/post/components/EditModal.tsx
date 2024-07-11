@@ -30,25 +30,23 @@ const EditModal: React.FC<EditModalProps> = ({
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const [tags, setTags] = useState<string>(""); // 태그를 배열이 아닌 문자열로 관리
+  const [tags, setTags] = useState<string>("");
 
   const handleAddTag = (tag: string) => {
-    // 띄어쓰기를 제거한 태그 추가
-    const trimmedTag = tag.replace(/\s/g, ""); // 띄어쓰기 제거
     setTags((prevTags) => {
-      // 이전 태그 문자열에 새 태그를 추가하고 앞에 #을 붙여서 반환
-      return prevTags ? `${prevTags}#${trimmedTag}` : `#${trimmedTag}`;
+      console.log(tags, typeof tags);
+      return prevTags ? `${prevTags}#${tag}` : `#${tag}`;
     });
   };
   const handleRemoveTag = (tag: string) => {
     setTags((prevTags) => {
-      // '#'과 태그를 구분하여 문자열을 배열로 분할
       const tagArray = prevTags.split("#").filter((t) => t.trim() !== "");
-      // 선택된 태그를 제외한 나머지 태그들로 업데이트하여 다시 문자열로 결합
       const updatedTags = tagArray.filter((t) => t !== tag).join("#");
-      return updatedTags;
+      const tagsWithHash = updatedTags ? `#${updatedTags}` : "";
+      return tagsWithHash;
     });
   };
+
   const handleExtendChange = (newTitle: string, newContent: string) => {
     setTitle(newTitle);
     setContent(newContent);

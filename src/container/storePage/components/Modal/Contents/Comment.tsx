@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
-import styled from 'styled-components';
-import DeleteIcon from '/public/svg/common/deleteIcon.svg';
-import { MdKeyboardDoubleArrowRight } from 'react-icons/md';
-import { MdKeyboardDoubleArrowLeft } from 'react-icons/md';
-import { useDeleteComment } from '../../../../../hooks/useBoard';
-/**
+import React, { useState } from "react";
+import styled from "styled-components";
+import DeleteIcon from "/public/svg/common/deleteIcon.svg";
+import { MdKeyboardDoubleArrowRight } from "react-icons/md";
+import { MdKeyboardDoubleArrowLeft } from "react-icons/md";
+import { useDeleteComment } from "../../../../../hooks/useBoard";
+
+/*
  * props 설명
  * profile : 유저의 프로필, 기본값은 DefaultProfileLogo
  * nickname : 유저의 닉네임 or 아이디
@@ -27,11 +28,12 @@ const Comment = ({ ...props }: CommentType) => {
   const [onArrowClick, setOnArrowClick] = useState<boolean>(false);
 
   const { deleteCommentMutate, isLoading } = useDeleteComment(boardId || 0);
+
   return (
     <Container onArrowClick={onArrowClick}>
       <Content>
         <Profile
-          src={profile?.fileUrl || '/svg/storePage/DefaultProfileLogo.svg'}
+          src={profile?.fileUrl || "/svg/storePage/DefaultProfileLogo.svg"}
         />
         <Nickname>{nickname}</Nickname>
         <Text>{comment}</Text>
@@ -83,7 +85,7 @@ const Container = styled.div<{ onArrowClick: boolean }>`
   position: relative;
   transition: all 200ms ease;
   transform: ${({ onArrowClick }) =>
-    onArrowClick ? 'translateX(-45px)' : 'translateX(0px)'};
+    onArrowClick ? "translateX(-45px)" : "translateX(0px)"};
 `;
 const Content = styled.div`
   display: flex;
