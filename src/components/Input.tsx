@@ -18,6 +18,7 @@ type inputType = {
    */
   marginBottom?: number;
   type?: "password";
+  handleKeyDown?: (event: any) => void;
 };
 
 const Input = <
@@ -27,6 +28,7 @@ const Input = <
   placeholder,
   marginBottom,
   type,
+  handleKeyDown,
   ...props
 }: inputType & UseControllerProps<TFieldValues, TName>) => {
   const { field, fieldState } = useController(props);
@@ -36,6 +38,7 @@ const Input = <
       placeholder={placeholder}
       marginBottom={marginBottom}
       type={type}
+      onKeyDown={handleKeyDown}
       {...field}
     ></StyledInput>
   );

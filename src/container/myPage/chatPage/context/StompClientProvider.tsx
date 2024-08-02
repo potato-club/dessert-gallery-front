@@ -5,7 +5,7 @@ import * as StompJs from "@stomp/stompjs";
 import { useRoomInfoState } from "../../../../recoil/chat/roomInfoStateAtom";
 import { userInfoType } from "../ChatPage";
 import { messageObjectType } from "../components/ChatRoom";
-import { useChatHistoryState } from "../../../../recoil/chat/chatHistoryState";
+import { useTodayChatState } from "../../../../recoil/chat/todayChatState";
 
 const StompClientContext = createContext(
   {} as {
@@ -28,11 +28,11 @@ export function StompClientProvider({
   userInfo?: userInfoType;
 }) {
   const [roomInfoState, setRoomInfoState] = useRoomInfoState();
-  const [chatHistoryState, setChatHistoryState] = useChatHistoryState();
+  const [todayChatState, setTodayChatState] = useTodayChatState();
   const { getAccessToken } = useTokenService();
 
   const getNewChat = (newChatHistoryState: messageObjectType) => {
-    setChatHistoryState((prevChatList) => {
+    setTodayChatState((prevChatList) => {
       if (prevChatList) {
         return [...prevChatList, newChatHistoryState];
       } else {
@@ -48,7 +48,7 @@ export function StompClientProvider({
       clientRef.current = new StompJs.Client({
         brokerURL: "wss://api.dessertgallery.site/ws/chat/websocket",
         debug: function (str) {
-          console.log(str);
+          // console.log(str);
         },
         // webSocketFactory: () => {
         //   return new SockJS(
@@ -65,15 +65,15 @@ export function StompClientProvider({
           `/sub/${roomInfoState.roomId}`,
           messageReceiveHandler
         );
-        console.log("연결성공", frame);
+        // console.log("연결성공", frame);
       };
       clientRef.current.onWebSocketError = (err: any) => {
-        console.log("웹소켓 에러");
-        console.log(err);
+        // console.log("웹소켓 에러");
+        // console.log(err);
       };
       clientRef.current.onStompError = function (frame: any) {
-        console.log("브로커 에러: ", frame.headers["message"]);
-        console.log("추가 정보: " + frame.body);
+        // console.log("브로커 에러: ", frame.headers["message"]);
+        // console.log("추가 정보: " + frame.body);
       };
       clientRef.current.activate();
     }
@@ -95,7 +95,7 @@ export function StompClientProvider({
 
     var dateTime = year + "-" + month + "-" + day;
 
-    console.log(userInfo?.nickname);
+    // console.log(userInfo?.nickname);
 
     clientRef.current.publish({
       destination: "/pub/chat",
@@ -112,7 +112,7 @@ export function StompClientProvider({
 
   const messageReceiveHandler = (messageResponse: any) => {
     const messageBody: messageObjectType = JSON.parse(messageResponse.body);
-    console.log(messageResponse.body);
+    // console.log(messageResponse.body);
 
     const { chatRoomId, sender, message, messageType, dateTime } = messageBody;
     const newChat = {
@@ -122,7 +122,7 @@ export function StompClientProvider({
       messageType,
       dateTime,
     };
-    console.log(newChat);
+    // console.log(newChat);
 
     getNewChat(newChat);
   };

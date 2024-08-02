@@ -16,6 +16,7 @@ function JoinContents() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalMessage, setModalMessage] = useState("");
   const [signupState, setSignupState] = useState(false);
+  const [isNicknameInputDisabled, setIsNicknameInputDisabled] = useState(false);
 
   const { getValues, control } = useForm<{
     email: string;
@@ -34,11 +35,20 @@ function JoinContents() {
 
   const handlCheckNickname = async () => {
     const nickname = getValues("nickname");
-    const response = await loginPageApi.getDuplicationNickname(nickname);
+    if (nickname) {
+      const response = await loginPageApi.getDuplicationNickname(nickname);
 
-    console.log(response);
-    if (response.status === 200) {
-      setIsNicknameChecked(true);
+      console.log(response);
+      if (response.data === false) {
+        setIsNicknameChecked(true);
+        setIsNicknameInputDisabled(true);
+        alert("사용 가능한 닉네임 입니다.");
+      } else {
+        setIsNicknameChecked(false);
+        alert("중복된 닉네임 입니다.");
+      }
+    } else {
+      alert("닉네임이 입력되지 않았습니다.");
     }
   };
 
@@ -68,7 +78,7 @@ function JoinContents() {
 
   const handleSignup = async () => {
     let message = "";
-
+    handlCheckNickname();
     if (
       checkEmail() !== "200" ||
       checkPassword() !== "200" ||
