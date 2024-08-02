@@ -40,33 +40,6 @@ export function StompClientProvider({
       }
     });
   };
-  // const getNewChat = (newChatHistoryState: messageObjectType) => {
-  //   console.log(
-  //     chatHistoryState.length,
-  //     chatHistoryState[chatHistoryState.length - 1]?.length
-  //   );
-
-  //   if (
-  //     chatHistoryState &&
-  //     chatHistoryState.length > 0 &&
-  //     chatHistoryState[chatHistoryState.length - 1]?.length > 0
-  //   ) {
-  //     console.log("오늘의 기존 채팅이 있는 경우");
-  //     setChatHistoryState((prevChatHistory) => {
-  //       const newChatHistory = [...prevChatHistory];
-  //       newChatHistory[prevChatHistory.length - 1].push(newChatHistoryState);
-  //       console.log(newChatHistory.length);
-
-  //       return newChatHistory;
-  //     });
-  //   } else {
-  //     console.log("오늘의 기존 채팅이 없는 경우");
-  //     setChatHistoryState((prevChatHistory) => [
-  //       ...(prevChatHistory || []),
-  //       [newChatHistoryState],
-  //     ]);
-  //   }
-  // };
 
   const clientRef = useRef<any>({});
 
@@ -75,7 +48,7 @@ export function StompClientProvider({
       clientRef.current = new StompJs.Client({
         brokerURL: "wss://api.dessertgallery.site/ws/chat/websocket",
         debug: function (str) {
-          console.log(str);
+          // console.log(str);
         },
         // webSocketFactory: () => {
         //   return new SockJS(
@@ -92,15 +65,15 @@ export function StompClientProvider({
           `/sub/${roomInfoState.roomId}`,
           messageReceiveHandler
         );
-        console.log("연결성공", frame);
+        // console.log("연결성공", frame);
       };
       clientRef.current.onWebSocketError = (err: any) => {
-        console.log("웹소켓 에러");
-        console.log(err);
+        // console.log("웹소켓 에러");
+        // console.log(err);
       };
       clientRef.current.onStompError = function (frame: any) {
-        console.log("브로커 에러: ", frame.headers["message"]);
-        console.log("추가 정보: " + frame.body);
+        // console.log("브로커 에러: ", frame.headers["message"]);
+        // console.log("추가 정보: " + frame.body);
       };
       clientRef.current.activate();
     }
@@ -122,7 +95,7 @@ export function StompClientProvider({
 
     var dateTime = year + "-" + month + "-" + day;
 
-    console.log(userInfo?.nickname);
+    // console.log(userInfo?.nickname);
 
     clientRef.current.publish({
       destination: "/pub/chat",
@@ -139,7 +112,7 @@ export function StompClientProvider({
 
   const messageReceiveHandler = (messageResponse: any) => {
     const messageBody: messageObjectType = JSON.parse(messageResponse.body);
-    console.log(messageResponse.body);
+    // console.log(messageResponse.body);
 
     const { chatRoomId, sender, message, messageType, dateTime } = messageBody;
     const newChat = {
@@ -149,7 +122,7 @@ export function StompClientProvider({
       messageType,
       dateTime,
     };
-    console.log(newChat);
+    // console.log(newChat);
 
     getNewChat(newChat);
   };

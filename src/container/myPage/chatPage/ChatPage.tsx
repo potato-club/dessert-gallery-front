@@ -53,13 +53,16 @@ function ChatPage() {
     };
   }, []);
 
-
   return (
     <Layout>
       <Wrapper>
         <ChatList chatRoomList={chatRoomList} userInfo={userInfoState} />
         <StompClientProvider userInfo={userInfoState}>
-          <ChatRoom userInfo={userInfoState} />
+          {roomInfoState.roomId === 0 ? (
+            <NoItemAlert>선택된 채팅방이 없습니다.</NoItemAlert>
+          ) : (
+            <ChatRoom userInfo={userInfoState} />
+          )}
         </StompClientProvider>
       </Wrapper>
     </Layout>
@@ -95,4 +98,13 @@ const Wrapper = styled.div`
   display: flex;
   background-color: #ffffff;
   border-right: 1px solid #dedede;
+`;
+
+const NoItemAlert = styled.div`
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 25px;
+  color: #a09f9f;
 `;

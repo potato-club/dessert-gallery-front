@@ -23,8 +23,10 @@ export const getChatRoom = async () => {
   return response.data;
 };
 
-export const getChatHistory = async (roomId: number, dateTime: string) => {
-  
+export const getChatHistory = async (
+  roomId: number,
+  dateTime?: string | null
+) => {
   const response = await sendApi.get(`/mypage/room/${roomId}?time=${dateTime}`);
   return response.data;
 };

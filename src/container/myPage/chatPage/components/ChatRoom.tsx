@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import ChatItem from "./ChatItem";
 import DateChat from "./DateChat";
@@ -11,6 +11,7 @@ import HeaderBottom from "../components/HeaderBottom";
 import { useGueryGetChatRoom } from "../../../../hooks/useReactQueryChatRoom";
 import { useStompClientContext } from "../context/StompClientProvider";
 import { useTodayChatState } from "../../../../recoil/chat/todayChatState";
+import { useInfiniteQuery } from "react-query";
 
 export type messageObjectType = {
   chatRoomId: number;
@@ -20,52 +21,97 @@ export type messageObjectType = {
   dateTime: string;
 };
 
+type chatHistoryResponseType = {
+  chatList: messageObjectType[];
+  lastDatetime: string | null;
+};
+
 function ChatRoom({ userInfo }: { userInfo?: userInfoType }) {
   const [roomInfoState, setRoomInfoState] = useRoomInfoState();
   const [todayChatState, setTodayChatState] = useTodayChatState();
   const [chatHistoryState, setChatHistoryState] = useState<
     messageObjectType[][]
   >([]);
+  const [lastDateState, setLastDateState] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [scrollState, setScrollState] = useState<boolean>(false);
+  const contentsRef = useRef<HTMLDivElement>(null);
 
   const { register, getValues, setValue, reset } = useForm();
-
-  // const { item } = useGueryGetChatRoom();
 
   const { connectHandler, messageHandler, disconnectHandler } =
     useStompClientContext();
 
   const messageCheckHandler = async () => {
-    var today = new Date();
-    var year = today.getFullYear();
-    var month = ("0" + (today.getMonth() + 1)).slice(-2);
-    var day = ("0" + today.getDate()).slice(-2);
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = ("0" + (today.getMonth() + 1)).slice(-2);
+    const day = ("0" + today.getDate()).slice(-2);
 
-    var dateTime = year + "-" + month + "-" + day;
+    const dateTime = year + "-" + month + "-" + day;
 
     // 채팅방 렌더링 시 오늘의 채팅이 있는지 확인
-    const todayChat = await getChatHistory(roomInfoState.roomId, dateTime);
+    const todayChat: chatHistoryResponseType = await getChatHistory(
+      roomInfoState.roomId,
+      dateTime
+    );
+
+    if (todayChat.lastDatetime) {
+      console.log("지난채팅 있음");
+      setLastDateState(
+        todayChat.lastDatetime === null
+          ? null
+          : todayChat.lastDatetime.split(":")[1]
+      );
+    }
+
     if (todayChat.chatList) {
       setTodayChatState(todayChat.chatList);
-      console.log(todayChat);
     } else {
       setTodayChatState([]);
     }
+    console.log("today", todayChat);
 
-    console.log(todayChat);
+    console.log(lastDateState);
 
     //오늘의 채팅이 없고 예전에 채팅을 친 기록이 있으면 예전의 채팅을 호출
-    // if (todayChat.chatList === null && todayChat.lastDatetime) {
-    if (todayChat.lastDatetime) {
-      console.log("저번 기록 호출");
-
+    if (todayChat.chatList === null && todayChat.lastDatetime) {
       const lastHistory = await getChatHistory(
         roomInfoState.roomId,
         todayChat.lastDatetime.split(":")[1]
       );
-      console.log(lastHistory);
-
-      setChatHistoryState((prevState) => [lastHistory.chatList, ...prevState]);
+      if (lastHistory.chatList) {
+        setChatHistoryState((prevState) => [
+          lastHistory.chatList,
+          ...prevState,
+        ]);
+      }
+      console.log("last", lastHistory);
+      setLastDateState(
+        lastHistory.lastDatetime === null
+          ? null
+          : lastHistory.lastDatetime.split(":")[1]
+      );
     }
+  };
+
+  const fetchMoreChatHistory = async () => {
+    if (isLoading || !lastDateState) return;
+    setIsLoading(true);
+    const lastHistory = await getChatHistory(
+      roomInfoState.roomId,
+      lastDateState
+    );
+    console.log(lastHistory);
+
+    setChatHistoryState((prevState) => [lastHistory.chatList, ...prevState]);
+
+    setLastDateState(
+      lastHistory.lastDatetime === null
+        ? null
+        : lastHistory.lastDatetime.split(":")[1]
+    );
+    setIsLoading(false);
   };
 
   const handleKeyDown = (event: React.KeyboardEvent) => {
@@ -81,81 +127,106 @@ function ChatRoom({ userInfo }: { userInfo?: userInfoType }) {
     }
   };
 
-  useEffect(() => {
-    console.log(roomInfoState.roomId);
-    console.log(roomInfoState);
+  const handleScroll = () => {
+    console.log("핸들");
+    if (contentsRef.current) {
+      if (contentsRef.current.scrollTop === 0 && lastDateState !== null) {
+        const prevScrollHeight = contentsRef.current.scrollHeight;
+        console.log(prevScrollHeight);
+        fetchMoreChatHistory().then(() => {
+          if (contentsRef.current) {
+            console.log("then");
+            contentsRef.current.scrollTop =
+              contentsRef.current.scrollHeight - prevScrollHeight;
+          }
+        });
+      }
+    }
+  };
 
+  useEffect(() => {
     messageCheckHandler();
     connectHandler();
-    setChatHistoryState([]);
+
     return () => {
       disconnectHandler();
+      setLastDateState(null);
+      setChatHistoryState([]);
+      setTodayChatState([]);
     };
   }, [roomInfoState]);
 
+  useEffect(() => {
+    if (contentsRef.current) {
+      contentsRef.current.scrollTop = contentsRef.current.scrollHeight;
+    }
+  }, [todayChatState]);
   return (
     <Wrapper>
-      {roomInfoState.roomId === 0 ? (
-        <NoItemAlert>선택된 채팅방이 없습니다.</NoItemAlert>
-      ) : (
-        <>
-          <HeaderTop>
-            <Profile>
-              <ProfileImage />
-              <PartnerName>
-                {roomInfoState.partnerName}
-                <PartnerNameHelper>님</PartnerNameHelper>
-              </PartnerName>
-            </Profile>
-            <OptionButton onClick={() => deleteChatRoom(roomInfoState.roomId)}>
-              {[1, 2, 3].map((index) => (
-                <Dot key={index}></Dot>
-              ))}
-            </OptionButton>
-          </HeaderTop>
-          <SubWrapper>
-            <div id="reservationModal"></div>
-            <div id="completePickupModal"></div>
-            <HeaderBottom roomInfoState={roomInfoState} userInfo={userInfo} />
-            <Contents>
-              {chatHistoryState?.map((item: any, index: number) => (
-                <DateChat
-                  key={index}
-                  chatList={item}
-                  userInfo={userInfo}
-                ></DateChat>
-              ))}
-              {[todayChatState]?.map((item: any, index: number) => (
-                <DateChat
-                  key={index}
-                  chatList={item}
-                  userInfo={userInfo}
-                ></DateChat>
-              ))}
-            </Contents>
-          </SubWrapper>
-
-          <Bottom>
-            <TextboxDiv>
-              <Textbox
-                placeholder="메세지를 입력해주세요"
-                onKeyDown={(event) => handleKeyDown(event)}
-                {...register("message")}
-              ></Textbox>
-              <SendButtonDiv>
-                <SendButton
-                  onClick={() => {
-                    messageHandler(getValues("message"), "CHAT");
-                    setValue("message", "");
-                  }}
-                >
-                  전송
-                </SendButton>
-              </SendButtonDiv>
-            </TextboxDiv>
-          </Bottom>
-        </>
-      )}
+      <HeaderTop>
+        <Profile>
+          <ProfileImage />
+          <PartnerName>
+            {roomInfoState.partnerName}
+            <PartnerNameHelper>님</PartnerNameHelper>
+          </PartnerName>
+        </Profile>
+        <OptionButton onClick={() => deleteChatRoom(roomInfoState.roomId)}>
+          {[1, 2, 3].map((index) => (
+            <Dot key={index}></Dot>
+          ))}
+        </OptionButton>
+      </HeaderTop>
+      <SubWrapper>
+        <div id="reservationModal"></div>
+        <div id="completePickupModal"></div>
+        <HeaderBottom roomInfoState={roomInfoState} userInfo={userInfo} />
+        <Contents ref={contentsRef} onScroll={handleScroll}>
+          {lastDateState &&
+            contentsRef.current &&
+            contentsRef.current?.scrollHeight >=
+              contentsRef.current?.clientHeight && (
+              <FetchMoreChatButtonDiv>
+                <FetchMoreChatButton onClick={fetchMoreChatHistory}>
+                  채팅 더보기
+                </FetchMoreChatButton>
+              </FetchMoreChatButtonDiv>
+            )}
+          {chatHistoryState?.map((item: any, index: number) => (
+            <DateChat
+              key={index}
+              chatList={item}
+              userInfo={userInfo}
+            ></DateChat>
+          ))}
+          {[todayChatState]?.map((item: any, index: number) => (
+            <DateChat
+              key={index}
+              chatList={item}
+              userInfo={userInfo}
+            ></DateChat>
+          ))}
+        </Contents>
+      </SubWrapper>
+      <Bottom>
+        <TextboxDiv>
+          <Textbox
+            placeholder="메세지를 입력해주세요"
+            onKeyDown={(event) => handleKeyDown(event)}
+            {...register("message")}
+          ></Textbox>
+          <SendButtonDiv>
+            <SendButton
+              onClick={() => {
+                messageHandler(getValues("message"), "CHAT");
+                setValue("message", "");
+              }}
+            >
+              전송
+            </SendButton>
+          </SendButtonDiv>
+        </TextboxDiv>
+      </Bottom>
     </Wrapper>
   );
 }
@@ -344,10 +415,27 @@ const SendButton = styled.button`
   }
 `;
 
-const NoItemAlert = styled.div`
+const FetchMoreChatButtonDiv = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 25px;
-  color: #a09f9f;
+  width: 100%;
+`;
+
+const FetchMoreChatButton = styled.button`
+  background-color: #fdc886;
+  color: white;
+  border: none;
+  border-radius: 15px;
+  cursor: pointer;
+  @media screen and (min-width: 1920px) {
+    height: 29px;
+    width: 294px;
+    font-size: 15px;
+  }
+  @media screen and (max-width: 1919px) {
+    height: 22px;
+    width: 226px;
+    font-size: 12px;
+  }
 `;
