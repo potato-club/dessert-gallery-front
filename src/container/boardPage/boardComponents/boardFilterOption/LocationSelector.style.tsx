@@ -88,7 +88,7 @@ export const CheckboxLabel = styled.label<labelProps>`
   font-family: noto-sans-cjk-kr;
   background-color: #ff6f003d;
   border: solid 2px none;
-  padding: 8px 12px;
+  padding: 8px 4px;
   border-radius: 4px;
   font-size: 16px;
   margin: 8px 0;

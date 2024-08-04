@@ -76,14 +76,16 @@ function ChatList({
               }
               thumbnailMessage={item.thumbnailMessage}
               onClickItem={() => {
-                setRoomInfoState({
-                  roomId: item.roomId,
-                  partnerName:
-                    userInfo?.userRole === "MANAGER"
-                      ? item.customerName
-                      : item.storeName,
-                  storeId: item.storeId,
-                });
+                if (roomInfoState.roomId !== item.roomId) {
+                  setRoomInfoState({
+                    roomId: item.roomId,
+                    partnerName:
+                      userInfo?.userRole === "MANAGER"
+                        ? item.customerName
+                        : item.storeName,
+                    storeId: item.storeId,
+                  });
+                }
               }}
             />
           ))}

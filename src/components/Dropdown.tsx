@@ -7,9 +7,13 @@ import LoginModal from "../container/loginPage/components/LoginModal";
 import sessionStorageService from "../libs/sessionStorageService";
 import { SESSION_KEY } from "../constants/session";
 import axios from "axios";
+import { useRecoilState } from "recoil";
+import { accountInfoState } from "../recoil/login/accountInfoStateAtom";
+
 
 const Dropdown = ({ dropdownState }: { dropdownState: boolean }) => {
   const baseURL = process.env.NEXT_PUBLIC_API_URL;
+  const [accountInfo, setAccountInfo] = useRecoilState(accountInfoState);
   const { getAccessToken, getRefreshToken, setToken } = useTokenService();
 
   const router = useRouter();
@@ -54,6 +58,15 @@ const Dropdown = ({ dropdownState }: { dropdownState: boolean }) => {
           sessionStorageService.delete(SESSION_KEY);
           setModalMessage("로그아웃 되었습니다.");
           setIsModalOpen(true);
+          setAccountInfo({
+            isLogin: false,
+            nickname: null,
+            loginType: null,
+            userRole: null,
+            storeId: null,
+            fileName:null,
+            fileUrl: null
+          })
         }}
       >
         로그아웃

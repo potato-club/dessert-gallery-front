@@ -136,7 +136,6 @@ function ChatItem({
             )}
             <MessageContents>
               <MessageTypeDiv>
-                {/* [예약 확정] */}
                 {messageType === "RESERVATION"
                   ? "[예약 확정]"
                   : messageType === "REVIEW"

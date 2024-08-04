@@ -66,14 +66,34 @@ function LoginMainContainer() {
         setModalMessage("정상 로그인 되었습니다.");
         setIsModalOpen(true);
         setIsLoginSuccess(true);
-      } else {
+      } else if (response.data.responseCode === "2001") {
+        console.log(response.data.responseCode);
         setIsModalOpen(true);
-        setModalMessage("로그인에 실패했습니다.");
+        setModalMessage("회원이 아닙니다.");
+        console.log("에러", response.data);
+      } else if (response.data.responseCode === "2002") {
+        console.log(response.data.responseCode);
+        setIsModalOpen(true);
+        setModalMessage("탈퇴한 아이디입니다.");
+        console.log("에러", response.data);
+      } else if (response.data.responseCode === "2003") {
+        console.log(response.data.responseCode);
+        setIsModalOpen(true);
+        setModalMessage(
+          "이메일 인증이 완료되지 않은 아이디 입니다. 다시 가입해주세요"
+        );
         console.log("에러", response.data);
       }
     } catch (error) {
       setIsModalOpen(true);
       setModalMessage("로그인에 실패했습니다.");
+    }
+  };
+
+  const handleKeyDown = (event: React.KeyboardEvent) => {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      handleLogin();
     }
   };
 
@@ -102,6 +122,7 @@ function LoginMainContainer() {
               placeholder="비밀번호 입력"
               type="password"
               name="password"
+              handleKeyDown={(event) => handleKeyDown(event)}
               control={control}
             />
           </InputDiv>

@@ -4,7 +4,8 @@ import SlideImage from '../../../components/SlideImage/SlideImage'
 import Tag from '../../../components/Tag'
 import Rating from '../../../components/Rating'
 import { galleryPostValue, galleryPostSizeValue } from '../../../types/componentsProps'
-
+import { accountInfoState } from '../../../recoil/login/accountInfoStateAtom';
+import { useRecoilValue } from 'recoil';
 
 export default function GalleryPost({storeId, height=444, width,location,imgArray,ratingValue,summary,size='big', tagValue='none', bookmark, onBookmark ,title, margin="48px 0"}:galleryPostValue) {
   const sizeValue:galleryPostSizeValue = useMemo(() => {
@@ -35,11 +36,10 @@ export default function GalleryPost({storeId, height=444, width,location,imgArra
     }
   }, [size]);
 
+
   const onClickGalleryPost = ()=>{
     window.location.href  = `/galleryBoard/${storeId}`
   }
-
-  console.log("storeID", storeId)
 
 
   return (

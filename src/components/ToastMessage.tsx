@@ -11,7 +11,6 @@ const ToastMessage = ({messageString, timer, clickEvent=false, eventFunc, wrapTy
 
 
   useEffect(()=>{
-    console.log("Toast")
     setTimeout(()=>{setVisible(false)}, timer)
   },[timer])
 
@@ -47,18 +46,6 @@ const ToastWrap = styled.div<styleProps>`
   border-radius: 16px;
   z-index: 100;
   cursor: default;
-
-  /* ${({ wrapType }) => {
-    if (wrapType === 'map') {
-      return `right: calc((100% - 439px) / 2);`;
-    } else if (wrapType === 'sideBarMap') {
-      return `right: calc((100% - 439px - 431px) / 2);`;
-    } else {
-      return `
-        left: 50%; 
-        transform: translateX(-50%);`
-    }
-  }} */
 `
 
 const AbleEventToastWrap = styled.div<styleProps>`
@@ -77,20 +64,4 @@ const AbleEventToastWrap = styled.div<styleProps>`
   border-radius: 16px;
   z-index: 100;
   cursor: pointer;
-
-  /* ${({ wrapType }) => {
-    if (wrapType === 'map') {
-      console.log('map')
-      return `right: calc((100% - 439px) / 2);`;
-    } else if (wrapType === 'sideBarMap') {
-      console.log('sideBarMap')
-      return `left: calc((100% - 439px - 431px) / 2);`;
-    } else {
-      return `
-      console.log('헹')
-
-        left: 50%; 
-        transform: translateX(-50%);`
-    }
-  }} */
 `

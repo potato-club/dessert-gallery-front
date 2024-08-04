@@ -4,7 +4,7 @@ import { PostWrap } from './FeedSwitcher.style'
 import { resGalleryPost } from '../../../types/apiTypes'
 
 interface userInfoProps {
-userRole: string
+  userRole: "USER"|"MANAGER"|null
 }
 interface contentsProps {
   contents: resGalleryPost[],

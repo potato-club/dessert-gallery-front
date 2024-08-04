@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Input from "../../../components/Input";
 import Tag from "../../../components/Tag";
 import styled from "styled-components";
@@ -71,6 +71,10 @@ function VerifyContents() {
       setIsModalOpen(true);
     }
   };
+
+  useEffect(() => {
+    alert("인증 코드 전송 버튼을 클릭해 인증 코드를 전송해주세요");
+  }, []);
 
   return (
     <VerifyContentsWrapper>
