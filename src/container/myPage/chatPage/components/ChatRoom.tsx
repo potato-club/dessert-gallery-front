@@ -115,6 +115,7 @@ function ChatRoom({ userInfo }: { userInfo?: userInfoType }) {
   };
 
   const handleKeyDown = (event: React.KeyboardEvent) => {
+    if (event.nativeEvent.isComposing) return;
     if (event.key === "Enter" && !event.shiftKey) {
       event.preventDefault();
       if (getValues("message")) {
@@ -307,7 +308,7 @@ const OptionButton = styled.button`
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  
+
   border: none;
   background: none;
   cursor: pointer;
