@@ -4,7 +4,7 @@ import SerchImage from "../../../../../public/svg/myPage/chatPage/searchImage.sv
 import ChatListItem from "./ChatListItem";
 import { userInfoType } from "../ChatPage";
 import { useRoomInfoState } from "../../../../recoil/chat/roomInfoStateAtom";
-import { roomInfoType } from "../ChatPage";
+import type { roomInfoType } from "../ChatPage";
 import NoneSearchChatRoom from "./NoneSearchChatRoom";
 import LoadingSpinner from "../../../storePage/components/Modal/LoadingSpinner";
 

@@ -66,7 +66,7 @@ function ChatPage() {
         partnerName: "",
       });
     };
-  }, [debouncedSearchChatRoom]);
+  }, [debouncedSearchChatRoom, searchKeyword.length]);
 
 
   return (
