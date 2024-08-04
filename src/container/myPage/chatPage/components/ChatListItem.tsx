@@ -23,7 +23,7 @@ function ChatListItem({
   };
   return (
     <Wrapper onClick={onClickItem}>
-      <Profile />
+      <Profile>{name.split("")[0]}</Profile>
       <ItemInfoWrapper>
         <InfoLeft>
           <UserName>
@@ -53,6 +53,10 @@ const Wrapper = styled.div`
 `;
 
 const Profile = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
   width: 40px;
   height: 40px;
   border-radius: 50px;
