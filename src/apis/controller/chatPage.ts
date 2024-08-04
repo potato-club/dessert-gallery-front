@@ -31,6 +31,11 @@ export const getChatHistory = async (
   return response.data;
 };
 
+export const getSearchChatRoom = async (keyword: string) => {
+  const response = await sendApi.get(`/mypage/room/search?page=${1}&name=${keyword}`);
+  return response.data;
+};
+
 export const deleteChatRoom = async (roomId: number) => {
   const response = await sendApi.delete(`/mypage/room/${roomId}`);
   return response.data;

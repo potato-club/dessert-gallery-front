@@ -27,7 +27,7 @@ export const sendApi = {
       req,
       authorization(sessionStorageService.get(SESSION_KEY, "accessToken"))
     );
-  },
+  }, 
 
   put: (url: string, req: object = {}) => {
     return axiosClient.put(

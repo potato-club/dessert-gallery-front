@@ -28,7 +28,7 @@ interface ButtonInfo {
 const NoticePage = () => {
   const [detailButton, setDetailButton] = useState<number | null>(null);
   const [type, setType] = useState<number>(2);
-  const [noticeId, setnoticeId] = useState<number>(0);
+  const [noticeId, setnoticeId] = useState<number | null>(null);
   const [modal, setModal] = useState<boolean>(false);
   const [inputValue, setuinputValue] = useState<string>("");
   const [search, setSearch] = useState<string>("");
@@ -40,9 +40,12 @@ const NoticePage = () => {
 
   const handleValueClick = (buttonIndex: number) => {
     setType(buttonIndex);
+    setnoticeId(null);
   };
 
   const handleDetailClick = (noticeId: number) => {
+    setModal(false);
+    setnoticeId(null);
     if (detailButton === noticeId) {
       setDetailButton(null);
     } else {
@@ -70,7 +73,7 @@ const NoticePage = () => {
     {
       title: "삭제하기",
       onClickHandler: async () => {
-        await deleteNotice(noticeId);
+        await deleteNotice(noticeId as number);
         location.reload();
       },
     },
@@ -101,6 +104,7 @@ const NoticePage = () => {
         });
     }
   }, [inView, search]);
+
   return (
     <Wrapper>
       <MenuWrapper>

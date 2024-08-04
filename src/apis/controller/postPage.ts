@@ -55,8 +55,17 @@ export const deletePost = async (postId: number) => {
 };
 
 export const getDetailPostComment = async (postId: number) => {
-  const res = await sendApi.get(`/comments/${postId}?1`);
+  const res = await sendApi.get(`/comments/${postId}`);
   return res.data.content;
+};
+
+export const blockComment = async (storeId: number, userName: string) => {
+  const res = await sendApi.post(`/mypage/blacklist`, {
+    storeId,
+    userName,
+  });
+  alert("해당 유저를 블락했습니다");
+  return res;
 };
 
 export const putStorePost = async (

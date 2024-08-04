@@ -1,20 +1,34 @@
-import React, { useState } from "react";
+import React, { ChangeEvent, useState } from "react";
 import styled from "styled-components";
 import SerchImage from "../../../../../public/svg/myPage/chatPage/searchImage.svg";
 import ChatListItem from "./ChatListItem";
 import { userInfoType } from "../ChatPage";
 import { useRoomInfoState } from "../../../../recoil/chat/roomInfoStateAtom";
-import { roomInfoType } from "../ChatPage";
+import type { roomInfoType } from "../ChatPage";
+import NoneSearchChatRoom from "./NoneSearchChatRoom";
+import LoadingSpinner from "../../../storePage/components/Modal/LoadingSpinner";
 
 function ChatList({
   chatRoomList,
   userInfo,
+  chatSearchHandler,
+  chatSearchValue,
+  isLoading,
+  loadingHandler
 }: {
   chatRoomList?: roomInfoType[];
   userInfo?: userInfoType;
+  chatSearchHandler: React.Dispatch<React.SetStateAction<string>>
+  chatSearchValue:string
+  isLoading: boolean
+  loadingHandler: React.Dispatch<React.SetStateAction<boolean>>
 }) {
   const [roomInfoState, setRoomInfoState] = useRoomInfoState();
   const [howToRewervationState, setHowToRewervationState] = useState(false);
+  const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+    loadingHandler(true);
+    chatSearchHandler(e.target.value);
+  };
 
   return (
     <Wrapper>
@@ -33,11 +47,23 @@ function ChatList({
           <ImageWrapper>
             <SerchImage />
           </ImageWrapper>
-          <SearchInput></SearchInput>
+          <SearchInput
+            value={chatSearchValue}
+            onChange={handleInputChange}
+          />
         </HeaderBottom>
       </Header>
       <ListContents>
-        {chatRoomList &&
+        {isLoading && 
+          <LoadingSpinnerWrap>
+            <LoadingSpinner height={48} width={48} borderWidth={8}/>
+          </LoadingSpinnerWrap>
+        }
+        {!chatRoomList && 
+         !isLoading &&
+          <NoneSearchChatRoom/>}
+        {chatRoomList && 
+         !isLoading &&
           chatRoomList.map((item, index) => (
             <ChatListItem
               key={index}
@@ -190,9 +216,18 @@ const SearchInput = styled.input`
   background: none;
   border: none;
   font-size: 11px;
+  :focus {
+    outline: none;
+  }
 `;
 
 const ListContents = styled.div`
   width: 100%;
   height: 100%;
 `;
+
+const LoadingSpinnerWrap = styled(ListContents)`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`
