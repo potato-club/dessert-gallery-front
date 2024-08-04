@@ -172,9 +172,7 @@ function ChatRoom({ userInfo }: { userInfo?: userInfoType }) {
           </PartnerName>
         </Profile>
         <OptionButton onClick={() => deleteChatRoom(roomInfoState.roomId)}>
-          {[1, 2, 3].map((index) => (
-            <Dot key={index}></Dot>
-          ))}
+          채팅 종료
         </OptionButton>
       </HeaderTop>
       <SubWrapper>
@@ -309,11 +307,20 @@ const OptionButton = styled.button`
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  height: 15px;
-  width: 3px;
+  
   border: none;
   background: none;
   cursor: pointer;
+  font-weight: bold;
+  font-size: 10px;
+  color: #828282;
+  margin-left: 4px;
+  @media screen and (min-width: 1920px) {
+    font-size: 13px;
+  }
+  @media screen and (max-width: 1919px) {
+    font-size: 10px;
+  }
 `;
 
 const Dot = styled.div`
