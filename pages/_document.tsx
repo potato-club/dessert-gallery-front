@@ -36,8 +36,37 @@ class MyDocument extends Document {
   render() {
     return (
       <Html>
-        <Head></Head>
+        <Head>
+          <script
+            type="text/javascript"
+            async
+            defer
+            src={`//dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.NEXT_PUBLIC_KAKAO_MAPS_API_KEY}&autoload=false`}
+          />
+          <script
+            type="text/javascript"
+            async
+            defer
+            src="https://t1.kakaocdn.net/kakao_js_sdk/2.6.0/kakao.min.js"
+          />
+
+          <script
+            dangerouslySetInnerHTML={{
+              __html: `
+                (function(d) {
+                  var config = {
+                    kitId: 'nfr5rvy',
+                    scriptTimeout: 3000,
+                    async: true
+                  },
+                  h=d.documentElement,t=setTimeout(function(){h.className=h.className.replace(/\bwf-loading\b/g,"")+" wf-inactive";},config.scriptTimeout),tk=d.createElement("script"),f=false,s=d.getElementsByTagName("script")[0],a;h.className+=" wf-loading";tk.src='https://use.typekit.net/'+config.kitId+'.js';tk.async=true;tk.onload=tk.onreadystatechange=function(){a=this.readyState;if(f||a&&a!="complete"&&a!="loaded")return;f=true;clearTimeout(t);try{Typekit.load(config)}catch(e){}};s.parentNode.insertBefore(tk,s)
+                })(document);
+              `,
+            }}
+          />
+        </Head>
         <body>
+          <div id="loginModal"></div>
           <Main />
           <NextScript />
         </body>

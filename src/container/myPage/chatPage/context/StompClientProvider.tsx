@@ -1,0 +1,140 @@
+import { useEffect, useRef, useState, createContext, useContext } from "react";
+import { useTokenService } from "../../../../hooks/useTokenService";
+import SockJS from "sockjs-client";
+import * as StompJs from "@stomp/stompjs";
+import { useRoomInfoState } from "../../../../recoil/chat/roomInfoStateAtom";
+import { userInfoType } from "../ChatPage";
+import { messageObjectType } from "../components/ChatRoom";
+import { useTodayChatState } from "../../../../recoil/chat/todayChatState";
+
+const StompClientContext = createContext(
+  {} as {
+    connectHandler: () => void;
+    disconnectHandler: () => void;
+    messageHandler: (
+      message: string,
+      messageType: "CHAT" | "RESERVATION" | "REVIEW" | "BOARD"
+    ) => void;
+  }
+);
+
+export const useStompClientContext = () => useContext(StompClientContext);
+
+export function StompClientProvider({
+  children,
+  userInfo,
+}: {
+  children: any;
+  userInfo?: userInfoType;
+}) {
+  const [roomInfoState, setRoomInfoState] = useRoomInfoState();
+  const [todayChatState, setTodayChatState] = useTodayChatState();
+  const { getAccessToken } = useTokenService();
+
+  const getNewChat = (newChatHistoryState: messageObjectType) => {
+    setTodayChatState((prevChatList) => {
+      if (prevChatList) {
+        return [...prevChatList, newChatHistoryState];
+      } else {
+        return [newChatHistoryState];
+      }
+    });
+  };
+
+  const clientRef = useRef<any>({});
+
+  const connectHandler = () => {
+    if (window !== undefined) {
+      clientRef.current = new StompJs.Client({
+        brokerURL: "wss://api.dessertgallery.site/ws/chat/websocket",
+        debug: function (str) {
+          // console.log(str);
+        },
+        // webSocketFactory: () => {
+        //   return new SockJS(
+        //     "https://api.dessertgallery.site/ws/chat"
+        //   ) as WebSocket;
+        // },
+        connectHeaders: { Authorization: getAccessToken() },
+        reconnectDelay: 5000, //자동 재연결
+        heartbeatIncoming: 4000,
+        heartbeatOutgoing: 4000,
+      });
+      clientRef.current.onConnect = function (frame: any) {
+        clientRef.current.subscribe(
+          `/sub/${roomInfoState.roomId}`,
+          messageReceiveHandler
+        );
+        // console.log("연결성공", frame);
+      };
+      clientRef.current.onWebSocketError = (err: any) => {
+        // console.log("웹소켓 에러");
+        // console.log(err);
+      };
+      clientRef.current.onStompError = function (frame: any) {
+        // console.log("브로커 에러: ", frame.headers["message"]);
+        // console.log("추가 정보: " + frame.body);
+      };
+      clientRef.current.activate();
+    }
+  };
+
+  const disconnectHandler = () => {
+    clientRef.current.deactivate();
+  };
+
+  const messageHandler = (
+    message: string,
+    messageType: "CHAT" | "RESERVATION" | "REVIEW" | "BOARD"
+  ) => {
+    var today = new Date();
+
+    var year = today.getFullYear();
+    var month = ("0" + (today.getMonth() + 1)).slice(-2);
+    var day = ("0" + today.getDate()).slice(-2);
+
+    var dateTime = year + "-" + month + "-" + day;
+
+    // console.log(userInfo?.nickname);
+
+    clientRef.current.publish({
+      destination: "/pub/chat",
+      body: JSON.stringify({
+        chatRoomId: roomInfoState.roomId,
+        message: message,
+        messageType: messageType,
+        sender: userInfo?.nickname,
+        dateTime: dateTime,
+      }),
+      headers: { Authorization: getAccessToken() },
+    });
+  };
+
+  const messageReceiveHandler = (messageResponse: any) => {
+    const messageBody: messageObjectType = JSON.parse(messageResponse.body);
+    // console.log(messageResponse.body);
+
+    const { chatRoomId, sender, message, messageType, dateTime } = messageBody;
+    const newChat = {
+      chatRoomId,
+      sender,
+      message,
+      messageType,
+      dateTime,
+    };
+    // console.log(newChat);
+
+    getNewChat(newChat);
+  };
+
+  const chatMethod = {
+    connectHandler,
+    messageHandler,
+    disconnectHandler,
+  };
+  return (
+    <StompClientContext.Provider value={chatMethod}>
+      {children}
+    </StompClientContext.Provider>
+  );
+}

@@ -1,0 +1,91 @@
+import React, {useState, useEffect, useRef} from 'react'
+import { Wrapper } from './ReviewBoardContainer.style'
+import BoardTop from '../boardComponents/BoardTop'
+import { useGetReviewBoardListdData } from '../../../hooks/useGetReviewBoardList'
+import BoardOption from '../boardComponents/boardFilterOption/BoardOption'
+import type { selectOrder } from '../../../types/componentsProps'
+import type { resReviewPost } from '../../../types/apiTypes'
+import { boardOptionData } from '../../../types/componentsData'
+import ToastMessage from '../../../components/ToastMessage'
+import Contents from './Contents'
+import { BoardBanner } from '../../../../public/image'
+import Bottom from '../boardComponents/Bottom'
+
+function ReviewBoardContainer() {
+  const [pageCount, setPageCount] = useState<number>(1)
+  const [orderOption, setOrderOption] = useState<selectOrder>({
+    kor: '팔로워순',
+    eng: 'FOLLOWER'
+  })
+  const [optionData, setOptionData] = useState<boardOptionData>({
+    location: '',
+    selectSearchWord: [],
+  })
+  const [toast, setToast] = useState<boolean>(false)
+  const reloadDone = useRef<boolean>(false)
+  // const [reloadDone, setReloadDone] = useState<boolean>(false)
+  const [resData, setResData] = useState<resReviewPost[][]>([])
+  const observerRef = useRef<HTMLDivElement>(null);
+
+  const {
+    data,
+    error,
+    fetchNextPage,
+    hasNextPage,
+    isFetching,
+    isFetchingNextPage,
+    status,} = useGetReviewBoardListdData({
+      page: pageCount.toString(),
+      sortType: orderOption.eng,
+      address: optionData.location,
+      searchType: optionData.selectSearchWord,
+      setToast: setToast,
+      setReloadDone: reloadDone,
+      setResData: setResData,
+      resData: resData
+    });
+
+    useEffect(() => {
+      // Intersection Observer 콜백
+    const handleIntersection = (entries: IntersectionObserverEntry[]) => {
+      const target = entries[0];
+      if (target.isIntersecting && status === "success" && !reloadDone && !toast ) {
+        window.scrollTo(0, window.scrollY - 100);
+        setPageCount((prev) => prev + 1);
+        fetchNextPage();
+      }
+    };
+
+    const options = {
+      root: null,
+      rootMargin: '0px',
+      threshold: 0.5,
+    };
+
+    const observer = new IntersectionObserver(handleIntersection, options);
+
+    if (observerRef.current) {
+      observer.observe(observerRef.current);
+    }
+
+    return () => {
+      if (observerRef.current && !reloadDone) {
+        observer.unobserve(observerRef.current);
+      }
+    };
+    }, [pageCount, reloadDone, toast]);
+
+  return (
+    <Wrapper>
+        <BoardTop title='후기 게시판' decription='다양한 가게의 후기를 볼 수 있는 가게 게시판입니다.' imgSrc={BoardBanner.src}/>
+        <BoardOption setReloadDone={reloadDone} orderOption={orderOption} setOrderOption={setOrderOption} optionData={optionData} setOptionData={setOptionData} setPageCount={setPageCount} />
+        {status === "loading" && <ToastMessage wrapType={'map'} messageString='불러오는 중...' timer={5000} />}
+        {status === "error" && <p>error</p>}
+        {status === "success" && resData.length !== 0 && <Contents data={resData} />}
+        {status === "success" && toast && <ToastMessage wrapType={'map'} messageString='더이상 불러올 리뷰 정보가 없습니다.' timer={5000}/>}
+        <Bottom observerRef={observerRef}/>
+    </Wrapper>
+  )
+}
+
+export default ReviewBoardContainer
