@@ -40,7 +40,7 @@ const Caption: React.FC<CaptionProps> = ({
   };
 
   const handleRemoveTag = (tag: string) => {
-    setHashTags(hashTags.filter((t) => t !== tag)); // 선택된 태그를 제외한 나머지 태그들로 업데이트
+    setHashTags(hashTags.filter((t) => t !== tag));
     removeTag(tag);
   };
   const changeHashTagInput = (e: React.ChangeEvent<HTMLInputElement>) => {

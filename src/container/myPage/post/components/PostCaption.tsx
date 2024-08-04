@@ -4,7 +4,7 @@ import styled from "styled-components";
 const PostCaption = ({
   title,
   content,
-  tags,
+  tag,
   onTitleChange,
   onContentChange,
 }: any) => {
@@ -24,6 +24,7 @@ const PostCaption = ({
 
   const [inputHashTag, setInputHashTag] = useState("");
   const [hashTags, setHashTags] = useState<string[]>([]);
+  const [tags, setTags] = useState(tag.split("#"));
 
   const addHashTag = (e: any) => {
     e.preventDefault();
@@ -36,7 +37,6 @@ const PostCaption = ({
   const changeHashTagInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputHashTag(e.target.value);
   };
-  console.log("태그", tags);
 
   return (
     <>
@@ -50,7 +50,7 @@ const PostCaption = ({
       <TagBox>
         <TagDiv>
           {tags?.map((tag: string, index: number) => (
-            <Tag key={index}>#{tag}</Tag>
+            <Tag key={index}>{tag}</Tag>
           ))}
         </TagDiv>
         <form onSubmit={addHashTag}>
@@ -117,18 +117,25 @@ const TagBox = styled.div`
   flex-direction: column;
   gap: 20px;
 `;
-const TagDiv = styled.div`
-  width: 100%;
-  border: 1px solid black;
-  display: flex;
-  gap: 5px;
-`;
+
 const TagInput = styled.input`
   width: 100%;
-  border: 1px solid black;
+  border: 3px solid #ff8d00;
+  border-radius: 20px;
+  height: 35px;
+  padding-left: 10px;
 `;
 
+const TagDiv = styled.div`
+  display: flex;
+  gap: 5px;
+  overflow-x: scroll;
+  height: 80px;
+  flex-wrap: wrap;
+`;
 const Tag = styled.div`
-  border: 1px solid black;
-  padding: 5px 10px;
+  color: #ff8d00;
+  flex-shrink: 0;
+  height: 20px;
+  cursor: pointer;
 `;

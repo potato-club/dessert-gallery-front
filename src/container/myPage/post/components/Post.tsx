@@ -51,9 +51,12 @@ const Post = () => {
           />
         ))}
       </BodyWrapper>
-
       {postId && (
-        <DetailPost postId={postId} onClickOutside={() => setPostId(null)} />
+        <DetailPost
+          storeId={storeId as number}
+          postId={postId}
+          onClickOutside={() => setPostId(null)}
+        />
       )}
     </>
   );
