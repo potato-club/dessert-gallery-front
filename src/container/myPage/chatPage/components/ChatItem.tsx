@@ -3,17 +3,20 @@ import React from "react";
 import styled from "styled-components";
 import { useRoomInfoState } from "../../../../recoil/chat/roomInfoStateAtom";
 import Image from "next/image";
+import { userInfoType } from "../ChatPage";
 
 function ChatItem({
   myChat,
   message,
   timestamp,
   messageType,
+  userInfo,
 }: {
   myChat: boolean;
   message: string;
   timestamp: string;
   messageType: "CHAT" | "RESERVATION" | "REVIEW" | "BOARD";
+  userInfo?: userInfoType;
 }) {
   const [roomInfoState, setRoomInfoState] = useRoomInfoState();
 
@@ -105,11 +108,11 @@ function ChatItem({
               </MessageButtonDiv>
             </MessageContents>
           </Message>
-          <Profile />
+          <Profile>{userInfo && userInfo.nickname.split("")[0]}</Profile>
         </>
       ) : (
         <>
-          <Profile />
+          <Profile>{roomInfoState.partnerName.split("")[0]}</Profile>
           <Message myChat={myChat}>
             {parsedThumbnail !== "" ? (
               <MessageThumbnailDiv
@@ -173,6 +176,10 @@ const Wrapper = styled.div<{ myChat: boolean }>`
 `;
 
 const Profile = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
   width: 47px;
   height: 47px;
   border-radius: 50px;

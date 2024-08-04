@@ -166,7 +166,7 @@ function ChatRoom({ userInfo }: { userInfo?: userInfoType }) {
     <Wrapper>
       <HeaderTop>
         <Profile>
-          <ProfileImage />
+          <ProfileImage>{roomInfoState.partnerName.split("")[0]}</ProfileImage>
           <PartnerName>
             {roomInfoState.partnerName}
             <PartnerNameHelper>님</PartnerNameHelper>
@@ -271,6 +271,9 @@ const Profile = styled.div`
 `;
 
 const ProfileImage = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
   width: 47px;
   height: 47px;
   background-color: #fcf0e1;

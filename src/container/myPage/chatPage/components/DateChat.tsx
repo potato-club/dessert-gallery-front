@@ -40,6 +40,7 @@ function DateChat({
           myChat={userInfo?.nickname === item?.sender}
           message={item?.message}
           timestamp={item?.dateTime}
+          userInfo={userInfo}
         ></ChatItem>
       ))}
     </>
