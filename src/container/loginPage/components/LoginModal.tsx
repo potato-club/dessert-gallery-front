@@ -49,7 +49,7 @@ const ModalWrapper = styled.div`
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  z-index: 10;
+  z-index: 100;
   border: 3px solid #ff6f00;
   border-radius: 6px;
   flex-direction: row;
