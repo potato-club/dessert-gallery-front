@@ -173,7 +173,7 @@ function ReviewModal({setShowReviewModal, writeAbleStoreData}: props) {
                 <ImageBox>
                 <Image src={writeAbleStoreData[index].storeImage?.fileUrl ?? defaultImage} alt={writeAbleStoreData[index].storeImage?.fileName ?? '빈이미지'} sizes='(max-width: 1023px) 50px, (min-width: 1024px) 80px' layout='fill'/>
                 </ImageBox>
-                <Box height='100%' direction='column' alignItems='flex-start' justifyContent='space-evenly' padding='0 24px'>
+                <Box height='100%' width='calc(100% - 104px)' direction='column' alignItems='flex-start' justifyContent='space-evenly' padding='0 24px'>
                   <Text textType='text'>{writeAbleStoreData[index].name}</Text>
                   <Text textType='sub'>{writeAbleStoreData[index].content}</Text>
                   <Text textType='text'>{writeAbleStoreData[index].address}</Text>
@@ -333,6 +333,13 @@ const ImageBox = styled.div`
 `
 
 const Text = styled.div<styleI>`
+  overflow: hidden;
+  white-space: break-word;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+  text-align: left;
 cursor: default;
  ${({textType})=>{
       if(textType === "title"){
