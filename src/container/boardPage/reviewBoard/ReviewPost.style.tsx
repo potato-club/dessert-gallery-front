@@ -43,10 +43,11 @@ export const ReviewPostWrap = styled.div<componentProps>`
 export const InformationWrap = styled.div<componentProps>`
     display: flex;
     flex-direction: column;
-    width: ${({width}) => `${width}px`};
+    width: 273px;
     align-items: start;
     padding-bottom: 12px;
-    border-radius: 0 0 16px 16px;
+    border-bottom: 3px solid #FF8D00;
+
 `
 
 export const TitleText = styled.div<componentProps>`
@@ -73,7 +74,7 @@ export const ReviewListWrap = styled.div`
 export const ReviewWrap = styled.div`
     width: 273px;
     height: 100px;
-    border-top: 3px solid #FF8D00;
+    border-bottom: 3px solid #FF8D00;
 `
 
 export const TopTextWrap = styled.div`  
@@ -81,6 +82,14 @@ export const TopTextWrap = styled.div`
     display: flex;
     justify-content: space-between;
     align-items: flex-end;    
+`
+
+export const NoneReview = styled.div`  
+    display: flex;
+    justify-content: center;
+    align-items: center;    
+    width: 273px;
+    height: 100px;
 `
 
 export const Text = styled.div<textComponentProps>`
@@ -113,7 +122,5 @@ export const TagWrap = styled.div`
     height: 64px;
     display: flex;
     justify-content: center;
-    align-items: center;
-    border-top: 3px solid #FF8D00;
-
+    align-items: flex-end;
 `
